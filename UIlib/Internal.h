@@ -13,7 +13,7 @@ class CSafeRelease
 {
 public:
    CSafeRelease(T* p) : m_p(p) { };
-   ~CSafeRelease() { if( m_p != NULL ) m_p->Release(); };
+   ~CSafeRelease() { if (m_p != NULL)  m_p->Release(); };
    T* Detach() { T* t = m_p; m_p = NULL; return t; };
    T* m_p;
 };

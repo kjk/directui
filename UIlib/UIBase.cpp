@@ -120,10 +120,10 @@ void CRect::Empty()
 
 void CRect::Join(const RECT& rc)
 {
-   if( rc.left < left ) left = rc.left;
-   if( rc.top < top ) top = rc.top;
-   if( rc.right > right ) right = rc.right;
-   if( rc.bottom > bottom ) bottom = rc.bottom;
+   if (rc.left < left)  left = rc.left;
+   if (rc.top < top)  top = rc.top;
+   if (rc.right > right)  right = rc.right;
+   if (rc.bottom > bottom)  bottom = rc.bottom;
 }
 
 void CRect::ResetOffset()
@@ -133,8 +133,8 @@ void CRect::ResetOffset()
 
 void CRect::Normalize()
 {
-   if( left > right ) { int iTemp = left; left = right; right = iTemp; }
-   if( top > bottom ) { int iTemp = top; top = bottom; bottom = iTemp; }
+   if (left > right)  { int iTemp = left; left = right; right = iTemp; }
+   if (top > bottom)  { int iTemp = top; top = bottom; bottom = iTemp; }
 }
 
 void CRect::Offset(int cx, int cy)
@@ -235,8 +235,8 @@ HWND CWindowWnd::Create(HWND hwndParent, const TCHAR* name, DWORD dwStyle, DWORD
 
 HWND CWindowWnd::Create(HWND hwndParent, const TCHAR* name, DWORD dwStyle, DWORD dwExStyle, int x, int y, int cx, int cy, HMENU hMenu)
 {
-   if( GetSuperClassName() != NULL && !RegisterSuperclass() ) return NULL;
-   if( GetSuperClassName() == NULL && !RegisterWindowClass() ) return NULL;
+   if (GetSuperClassName() != NULL && !RegisterSuperclass())  return NULL;
+   if (GetSuperClassName() == NULL && !RegisterWindowClass())  return NULL;
    m_hWnd = ::CreateWindowEx(dwExStyle, GetWindowClassName(), name, dwStyle, x, y, cx, cy, hwndParent, hMenu, CPaintManagerUI::GetResourceInstance(), this);
    ASSERT(m_hWnd!=NULL);
    return m_hWnd;
@@ -247,7 +247,7 @@ HWND CWindowWnd::Subclass(HWND hWnd)
    ASSERT(::IsWindow(hWnd));
    ASSERT(m_hWnd==NULL);
    m_OldWndProc = SubclassWindow(hWnd, __WndProc);
-   if( m_OldWndProc == NULL ) return NULL;
+   if (m_OldWndProc == NULL)  return NULL;
    m_bSubclassed = true;
    m_hWnd = hWnd;
    return m_hWnd;
@@ -256,8 +256,8 @@ HWND CWindowWnd::Subclass(HWND hWnd)
 void CWindowWnd::Unsubclass()
 {
    ASSERT(::IsWindow(m_hWnd));
-   if( !::IsWindow(m_hWnd) ) return;
-   if( !m_bSubclassed ) return;
+   if (!::IsWindow(m_hWnd))  return;
+   if (!m_bSubclassed)  return;
    SubclassWindow(m_hWnd, m_OldWndProc);
    m_OldWndProc = ::DefWindowProc;
    m_bSubclassed = false;
@@ -266,7 +266,7 @@ void CWindowWnd::Unsubclass()
 void CWindowWnd::ShowWindow(bool bShow /*= true*/, bool bTakeFocus /*= false*/)
 {
    ASSERT(::IsWindow(m_hWnd));
-   if( !::IsWindow(m_hWnd) ) return;
+   if (!::IsWindow(m_hWnd))  return;
    ::ShowWindow(m_hWnd, bShow ? (bTakeFocus ? SW_SHOWNORMAL : SW_SHOWNOACTIVATE) : SW_HIDE);
 }
 
@@ -277,27 +277,27 @@ bool CWindowWnd::ShowModal()
    ::ShowWindow(m_hWnd, SW_SHOWNORMAL);
    ::EnableWindow(hWndParent, FALSE);
    MSG msg = { 0 };
-   while( ::IsWindow(m_hWnd) && ::GetMessage(&msg, NULL, 0, 0) ) {
-      if( msg.message == WM_CLOSE ) {
+   while ( ::IsWindow(m_hWnd) && ::GetMessage(&msg, NULL, 0, 0))  {
+      if (msg.message == WM_CLOSE)  {
          ::EnableWindow(hWndParent, TRUE);
          ::SetFocus(hWndParent);
       }
-      if( !CPaintManagerUI::TranslateMessage(&msg) ) {
+      if (!CPaintManagerUI::TranslateMessage(&msg))  {
          ::TranslateMessage(&msg);
          ::DispatchMessage(&msg);
       }
-      if( msg.message == WM_QUIT ) break;
+      if (msg.message == WM_QUIT)  break;
    }
    ::EnableWindow(hWndParent, TRUE);
    ::SetFocus(hWndParent);
-   if( msg.message == WM_QUIT ) ::PostQuitMessage(msg.wParam);
+   if (msg.message == WM_QUIT)  ::PostQuitMessage(msg.wParam);
    return true;
 }
 
 void CWindowWnd::Close()
 {
    ASSERT(::IsWindow(m_hWnd));
-   if( !::IsWindow(m_hWnd) ) return;
+   if (!::IsWindow(m_hWnd))  return;
    PostMessage(WM_CLOSE);
 }
 
@@ -312,7 +312,7 @@ void CWindowWnd::CenterWindow()
    HWND hWndParent = ::GetParent(m_hWnd);
    HWND hWndCenter = ::GetWindowOwner(m_hWnd);
    ::SystemParametersInfo(SPI_GETWORKAREA, NULL, &rcArea, NULL);
-   if( hWndCenter == NULL ) rcCenter = rcArea; else ::GetWindowRect(hWndCenter, &rcCenter);
+   if (hWndCenter == NULL)  rcCenter = rcArea; else ::GetWindowRect(hWndCenter, &rcCenter);
 
    int DlgWidth = rcDlg.right - rcDlg.left;
    int DlgHeight = rcDlg.bottom - rcDlg.top;
@@ -322,10 +322,10 @@ void CWindowWnd::CenterWindow()
    int yTop = (rcCenter.top + rcCenter.bottom) / 2 - DlgHeight / 2;
 
    // The dialog is outside the screen, move it inside
-   if( xLeft < rcArea.left ) xLeft = rcArea.left;
-   else if( xLeft + DlgWidth > rcArea.right ) xLeft = rcArea.right - DlgWidth;
-   if( yTop < rcArea.top ) yTop = rcArea.top;
-   else if( yTop + DlgHeight > rcArea.bottom ) yTop = rcArea.bottom - DlgHeight;
+   if (xLeft < rcArea.left)  xLeft = rcArea.left;
+   else if (xLeft + DlgWidth > rcArea.right)  xLeft = rcArea.right - DlgWidth;
+   if (yTop < rcArea.top)  yTop = rcArea.top;
+   else if (yTop + DlgHeight > rcArea.bottom)  yTop = rcArea.bottom - DlgHeight;
    ::SetWindowPos(m_hWnd, NULL, xLeft, yTop, -1, -1, SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE);
 }
 
@@ -363,8 +363,8 @@ bool CWindowWnd::RegisterSuperclass()
    // window so we can subclass it later on...
    WNDCLASSEX wc = { 0 };
    wc.cbSize = sizeof(WNDCLASSEX);
-   if( !::GetClassInfoEx(NULL, GetSuperClassName(), &wc) ) {
-      if( !::GetClassInfoEx(CPaintManagerUI::GetResourceInstance(), GetSuperClassName(), &wc) ) {
+   if (!::GetClassInfoEx(NULL, GetSuperClassName(), &wc))  {
+      if (!::GetClassInfoEx(CPaintManagerUI::GetResourceInstance(), GetSuperClassName(), &wc))  {
          ASSERT(!"Unable to locate window class");
          return NULL;
       }
@@ -381,7 +381,7 @@ bool CWindowWnd::RegisterSuperclass()
 LRESULT CALLBACK CWindowWnd::__WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
    CWindowWnd* pThis = NULL;
-   if( uMsg == WM_NCCREATE ) {
+   if (uMsg == WM_NCCREATE)  {
       LPCREATESTRUCT lpcs = reinterpret_cast<LPCREATESTRUCT>(lParam);
       pThis = static_cast<CWindowWnd*>(lpcs->lpCreateParams);
       pThis->m_hWnd = hWnd;
@@ -389,16 +389,16 @@ LRESULT CALLBACK CWindowWnd::__WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPAR
    } 
    else {
       pThis = reinterpret_cast<CWindowWnd*>(::GetWindowLongPtr(hWnd, GWLP_USERDATA));
-      if( uMsg == WM_NCDESTROY && pThis != NULL ) {
+      if (uMsg == WM_NCDESTROY && pThis != NULL)  {
          LRESULT lRes = ::CallWindowProc(pThis->m_OldWndProc, hWnd, uMsg, wParam, lParam);
          ::SetWindowLongPtr(pThis->m_hWnd, GWLP_USERDATA, 0L);
-         if( pThis->m_bSubclassed ) pThis->Unsubclass();
+         if (pThis->m_bSubclassed)  pThis->Unsubclass();
          pThis->m_hWnd = NULL;
          pThis->OnFinalMessage(hWnd);
          return lRes;
       }
    }
-   if( pThis != NULL ) {
+   if (pThis != NULL)  {
       return pThis->HandleMessage(uMsg, wParam, lParam);
    } 
    else {
@@ -409,7 +409,7 @@ LRESULT CALLBACK CWindowWnd::__WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPAR
 LRESULT CALLBACK CWindowWnd::__ControlProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
    CWindowWnd* pThis = NULL;
-   if( uMsg == WM_NCCREATE ) {
+   if (uMsg == WM_NCCREATE)  {
       LPCREATESTRUCT lpcs = reinterpret_cast<LPCREATESTRUCT>(lParam);
       pThis = static_cast<CWindowWnd*>(lpcs->lpCreateParams);
       ::SetProp(hWnd, "WndX", (HANDLE) pThis);
@@ -417,16 +417,16 @@ LRESULT CALLBACK CWindowWnd::__ControlProc(HWND hWnd, UINT uMsg, WPARAM wParam, 
    } 
    else {
       pThis = reinterpret_cast<CWindowWnd*>(::GetProp(hWnd, "WndX"));
-      if( uMsg == WM_NCDESTROY && pThis != NULL ) {
+      if (uMsg == WM_NCDESTROY && pThis != NULL)  {
          LRESULT lRes = ::CallWindowProc(pThis->m_OldWndProc, hWnd, uMsg, wParam, lParam);
-         if( pThis->m_bSubclassed ) pThis->Unsubclass();
+         if (pThis->m_bSubclassed)  pThis->Unsubclass();
          ::SetProp(hWnd, "WndX", NULL);
          pThis->m_hWnd = NULL;
          pThis->OnFinalMessage(hWnd);
          return lRes;
       }
    }
-   if( pThis != NULL ) {
+   if (pThis != NULL)  {
       return pThis->HandleMessage(uMsg, wParam, lParam);
    } 
    else {
@@ -450,10 +450,10 @@ void CWindowWnd::ResizeClient(int cx /*= -1*/, int cy /*= -1*/)
 {
    ASSERT(::IsWindow(m_hWnd));
    RECT rc = { 0 };;
-   if( !::GetClientRect(m_hWnd, &rc) ) return;
-   if( cx != -1 ) rc.right = cx;
-   if( cy != -1 ) rc.bottom = cy;
-   if( !::AdjustWindowRectEx(&rc, GetWindowStyle(m_hWnd), (!(GetWindowStyle(m_hWnd) & WS_CHILD) && (::GetMenu(m_hWnd) != NULL)), GetWindowExStyle(m_hWnd)) ) return;
+   if (!::GetClientRect(m_hWnd, &rc))  return;
+   if (cx != -1)  rc.right = cx;
+   if (cy != -1)  rc.bottom = cy;
+   if (!::AdjustWindowRectEx(&rc, GetWindowStyle(m_hWnd), (!(GetWindowStyle(m_hWnd) & WS_CHILD) && (::GetMenu(m_hWnd) != NULL)), GetWindowExStyle(m_hWnd)))  return;
    UINT uFlags = SWP_NOZORDER | SWP_NOMOVE;
    ::SetWindowPos(m_hWnd, NULL, 0, 0, rc.right - rc.left, rc.bottom - rc.top, uFlags);
 }
@@ -471,17 +471,17 @@ void CWindowWnd::OnFinalMessage(HWND /*hWnd*/)
 CStdPtrArray::CStdPtrArray(int iPreallocSize) : m_ppVoid(NULL), m_nCount(0), m_nAllocated(iPreallocSize)
 {
    ASSERT(iPreallocSize>=0);
-   if( iPreallocSize > 0 ) m_ppVoid = static_cast<void**>(malloc(iPreallocSize * sizeof(void*)));
+   if (iPreallocSize > 0)  m_ppVoid = static_cast<void**>(malloc(iPreallocSize * sizeof(void*)));
 }
 
 CStdPtrArray::~CStdPtrArray()
 {
-   if( m_ppVoid != NULL ) free(m_ppVoid);
+   if (m_ppVoid != NULL)  free(m_ppVoid);
 }
 
 void CStdPtrArray::Empty()
 {
-   if( m_ppVoid != NULL ) free(m_ppVoid);
+   if (m_ppVoid != NULL)  free(m_ppVoid);
    m_ppVoid = NULL;
    m_nCount = m_nAllocated = 0;
 }
@@ -502,11 +502,11 @@ bool CStdPtrArray::IsEmpty() const
 
 bool CStdPtrArray::Add(void* data)
 {
-   if( ++m_nCount >= m_nAllocated) {
+   if (++m_nCount >= m_nAllocated) {
       m_nAllocated *= 2;
-      if( m_nAllocated == 0 ) m_nAllocated = 11;
+      if (m_nAllocated == 0)  m_nAllocated = 11;
       m_ppVoid = static_cast<void**>(realloc(m_ppVoid, m_nAllocated * sizeof(void*)));
-      if( m_ppVoid == NULL ) return false;
+      if (m_ppVoid == NULL)  return false;
    }
    m_ppVoid[m_nCount - 1] = data;
    return true;
@@ -514,13 +514,13 @@ bool CStdPtrArray::Add(void* data)
 
 bool CStdPtrArray::InsertAt(int idx, void* data)
 {
-   if( idx == m_nCount ) return Add(data);
-   if( idx < 0 || idx > m_nCount ) return false;
-   if( ++m_nCount >= m_nAllocated) {
+   if (idx == m_nCount)  return Add(data);
+   if (idx < 0 || idx > m_nCount)  return false;
+   if (++m_nCount >= m_nAllocated) {
       m_nAllocated *= 2;
-      if( m_nAllocated == 0 ) m_nAllocated = 11;
+      if (m_nAllocated == 0)  m_nAllocated = 11;
       m_ppVoid = static_cast<void**>(realloc(m_ppVoid, m_nAllocated * sizeof(void*)));
-      if( m_ppVoid == NULL ) return false;
+      if (m_ppVoid == NULL)  return false;
    }
    memmove(&m_ppVoid[idx + 1], &m_ppVoid[idx], (m_nCount - idx - 1) * sizeof(void*));
    m_ppVoid[idx] = data;
@@ -529,21 +529,21 @@ bool CStdPtrArray::InsertAt(int idx, void* data)
 
 bool CStdPtrArray::SetAt(int idx, void* data)
 {
-   if( idx < 0 || idx >= m_nCount ) return false;
+   if (idx < 0 || idx >= m_nCount)  return false;
    m_ppVoid[idx] = data;
    return true;
 }
 
 bool CStdPtrArray::Remove(int idx)
 {
-   if( idx < 0 || idx >= m_nCount ) return false;
-   if( idx < --m_nCount ) ::CopyMemory(m_ppVoid + idx, m_ppVoid + idx + 1, (m_nCount - idx) * sizeof(void*));
+   if (idx < 0 || idx >= m_nCount)  return false;
+   if (idx < --m_nCount)  ::CopyMemory(m_ppVoid + idx, m_ppVoid + idx + 1, (m_nCount - idx) * sizeof(void*));
    return true;
 }
 
 int CStdPtrArray::Find(void* data) const
 {
-   for( int i = 0; i < m_nCount; i++ ) if( m_ppVoid[i] == data ) return i;
+   for( int i = 0; i < m_nCount; i++)  if (m_ppVoid[i] == data)  return i;
    return -1;
 }
 
@@ -559,7 +559,7 @@ void** CStdPtrArray::GetData()
 
 void* CStdPtrArray::GetAt(int idx) const
 {
-   if( idx < 0 || idx >= m_nCount ) return NULL;
+   if (idx < 0 || idx >= m_nCount)  return NULL;
    return m_ppVoid[idx];
 }
 
@@ -578,12 +578,12 @@ CStdValArray::CStdValArray(int iElementSize, int iPreallocSize /*= 0*/) :
 {
    ASSERT(iElementSize>0);
    ASSERT(iPreallocSize>=0);
-   if( iPreallocSize > 0 ) m_pVoid = static_cast<LPBYTE>(malloc(iPreallocSize * m_iElementSize));
+   if (iPreallocSize > 0)  m_pVoid = static_cast<LPBYTE>(malloc(iPreallocSize * m_iElementSize));
 }
 
 CStdValArray::~CStdValArray()
 {
-   if( m_pVoid != NULL ) free(m_pVoid);
+   if (m_pVoid != NULL)  free(m_pVoid);
 }
 
 void CStdValArray::Empty()
@@ -598,11 +598,11 @@ bool CStdValArray::IsEmpty() const
 
 bool CStdValArray::Add(LPCVOID data)
 {
-   if( ++m_nCount >= m_nAllocated) {
+   if (++m_nCount >= m_nAllocated) {
       m_nAllocated *= 2;
-      if( m_nAllocated == 0 ) m_nAllocated = 11;
+      if (m_nAllocated == 0)  m_nAllocated = 11;
       m_pVoid = static_cast<LPBYTE>(realloc(m_pVoid, m_nAllocated * m_iElementSize));
-      if( m_pVoid == NULL ) return false;
+      if (m_pVoid == NULL)  return false;
    }
    ::CopyMemory(m_pVoid + ((m_nCount - 1) * m_iElementSize), data, m_iElementSize);
    return true;
@@ -610,8 +610,8 @@ bool CStdValArray::Add(LPCVOID data)
 
 bool CStdValArray::Remove(int idx)
 {
-   if( idx < 0 || idx >= m_nCount ) return false;
-   if( idx < --m_nCount ) ::CopyMemory(m_pVoid + (idx * m_iElementSize), m_pVoid + ((idx + 1) * m_iElementSize), (m_nCount - idx) * m_iElementSize);
+   if (idx < 0 || idx >= m_nCount)  return false;
+   if (idx < --m_nCount)  ::CopyMemory(m_pVoid + (idx * m_iElementSize), m_pVoid + ((idx + 1) * m_iElementSize), (m_nCount - idx) * m_iElementSize);
    return true;
 }
 
@@ -627,7 +627,7 @@ void* CStdValArray::GetData()
 
 void* CStdValArray::GetAt(int idx) const
 {
-   if( idx < 0 || idx >= m_nCount ) return NULL;
+   if (idx < 0 || idx >= m_nCount)  return NULL;
    return m_pVoid + (idx * m_iElementSize);
 }
 
@@ -673,7 +673,7 @@ CStdString::CStdString(const CStdString& src) : m_pstr(m_szBuffer)
 
 CStdString::~CStdString()
 {
-   if( m_pstr != m_szBuffer ) free(m_pstr);
+   if (m_pstr != m_szBuffer)  free(m_pstr);
 }
 
 CStdString CStdString::RES(UINT nRes)
@@ -698,8 +698,8 @@ CStdString::operator LPCTSTR() const
 void CStdString::Append(const TCHAR* pstr)
 {
    int nNewLength = GetLength() + (int) _tcslen(pstr);
-   if( nNewLength >= MAX_LOCAL_STRING_LEN ) {
-      if( m_pstr == m_szBuffer ) {
+   if (nNewLength >= MAX_LOCAL_STRING_LEN)  {
+      if (m_pstr == m_szBuffer)  {
          m_pstr = static_cast<TCHAR*>(malloc((nNewLength + 1) * sizeof(TCHAR)));
          _tcscpy(m_pstr, m_szBuffer);
          _tcscat(m_pstr, pstr);
@@ -710,7 +710,7 @@ void CStdString::Append(const TCHAR* pstr)
       }
    }
    else {
-      if( m_pstr != m_szBuffer ) {
+      if (m_pstr != m_szBuffer)  {
          free(m_pstr);
          m_pstr = m_szBuffer;
       }
@@ -720,16 +720,16 @@ void CStdString::Append(const TCHAR* pstr)
 
 void CStdString::Assign(const TCHAR* pstr, int cchMax)
 {
-   if( pstr == NULL ) pstr = _T("");
+   if (pstr == NULL)  pstr = _T("");
    cchMax = (cchMax < 0 ? (int) _tcslen(pstr) : cchMax);
-   if( cchMax < MAX_LOCAL_STRING_LEN ) {
-      if( m_pstr != m_szBuffer ) {
+   if (cchMax < MAX_LOCAL_STRING_LEN)  {
+      if (m_pstr != m_szBuffer)  {
          free(m_pstr);
          m_pstr = m_szBuffer;
       }
    }
-   else if( cchMax > GetLength() || m_pstr == m_szBuffer ) {
-      if( m_pstr == m_szBuffer ) m_pstr = NULL;
+   else if (cchMax > GetLength() || m_pstr == m_szBuffer)  {
+      if (m_pstr == m_szBuffer)  m_pstr = NULL;
       m_pstr = static_cast<TCHAR*>(realloc(m_pstr, (cchMax + 1) * sizeof(TCHAR)));
    }
    _tcsncpy(m_pstr, pstr, cchMax);
@@ -743,7 +743,7 @@ bool CStdString::IsEmpty() const
 
 void CStdString::Empty() 
 { 
-   if( m_pstr != m_szBuffer ) free(m_pstr);
+   if (m_pstr != m_szBuffer)  free(m_pstr);
    m_pstr = m_szBuffer;
    m_szBuffer[0] = '\0'; 
 }
@@ -783,7 +783,7 @@ const CStdString& CStdString::operator=(LPCWSTR lpwStr)
    ASSERT(!::IsBadStringPtrW(lpwStr,-1));
    int cchStr = ((int) wcslen(lpwStr) * 2) + 1;
    LPSTR pstr = (LPSTR) _alloca(cchStr);
-   if( pstr != NULL ) ::WideCharToMultiByte(::GetACP(), 0, lpwStr, -1, pstr, cchStr, NULL, NULL);
+   if (pstr != NULL)  ::WideCharToMultiByte(::GetACP(), 0, lpwStr, -1, pstr, cchStr, NULL, NULL);
    Assign(pstr);
    return *this;
 }
@@ -866,23 +866,23 @@ void CStdString::MakeLower()
 
 CStdString CStdString::Left(int iLength) const
 {
-   if( iLength < 0 ) iLength = 0;
-   if( iLength > GetLength() ) iLength = GetLength();
+   if (iLength < 0)  iLength = 0;
+   if (iLength > GetLength())  iLength = GetLength();
    return CStdString(m_pstr, iLength);
 }
 
 CStdString CStdString::Mid(int pos, int iLength) const
 {
-   if( iLength < 0 ) iLength = GetLength() - pos;
-   if( pos + iLength > GetLength() ) iLength = GetLength() - pos;
-   if( iLength <= 0 ) return CStdString();
+   if (iLength < 0)  iLength = GetLength() - pos;
+   if (pos + iLength > GetLength())  iLength = GetLength() - pos;
+   if (iLength <= 0)  return CStdString();
    return CStdString(m_pstr + pos, iLength);
 }
 
 CStdString CStdString::Right(int iLength) const
 {
    int pos = GetLength() - iLength;
-   if( pos < 0 ) {
+   if (pos < 0)  {
       pos = 0;
       iLength = GetLength();
    }
@@ -892,9 +892,9 @@ CStdString CStdString::Right(int iLength) const
 int CStdString::Find(TCHAR ch, int pos /*= 0*/) const
 {
    ASSERT(pos>=0 && pos<=GetLength());
-   if( pos != 0 && (pos < 0 || pos >= GetLength()) ) return -1;
+   if (pos != 0 && (pos < 0 || pos >= GetLength()))  return -1;
    const TCHAR* p = _tcschr(m_pstr + pos, ch);
-   if( p == NULL ) return -1;
+   if (p == NULL)  return -1;
    return p - m_pstr;
 }
 
@@ -902,16 +902,16 @@ int CStdString::Find(const TCHAR* pstrSub, int pos /*= 0*/) const
 {
    ASSERT(!::IsBadStringPtr(pstrSub,-1));
    ASSERT(pos>=0 && pos<=GetLength());
-   if( pos != 0 && (pos < 0 || pos > GetLength()) ) return -1;
+   if (pos != 0 && (pos < 0 || pos > GetLength()))  return -1;
    const TCHAR* p = _tcsstr(m_pstr + pos, pstrSub);
-   if( p == NULL ) return -1;
+   if (p == NULL)  return -1;
    return p - m_pstr;
 }
 
 int CStdString::ReverseFind(TCHAR ch) const
 {
    const TCHAR* p = _tcsrchr(m_pstr, ch);
-   if( p == NULL ) return -1;
+   if (p == NULL)  return -1;
    return p - m_pstr;
 }
 
@@ -920,10 +920,10 @@ int CStdString::Replace(const TCHAR* pstrFrom, const TCHAR* pstrTo)
    CStdString sTemp;
    int nCount = 0;
    int pos = Find(pstrFrom);
-   if( pos < 0 ) return 0;
+   if (pos < 0)  return 0;
    int cchFrom = (int) _tcslen(pstrFrom);
    int cchTo = (int) _tcslen(pstrTo);
-   while( pos >= 0 ) {
+   while ( pos >= 0)  {
       sTemp = Left(pos);
       sTemp += pstrTo;
       sTemp += Mid(pos + cchFrom);
@@ -953,11 +953,11 @@ void CStdString::ProcessResourceTokens()
 {
    // Replace string-tokens: %{nnn}  where nnn is a resource string identifier
    int pos = Find('%');
-   while( pos >= 0 ) {
-      if( GetAt(pos + 1) == '{' ) {
+   while (pos >= 0)  {
+      if (GetAt(pos + 1) == '{')  {
          int iEndPos = pos + 2;
-         while( isdigit(GetAt(iEndPos)) ) iEndPos++;
-         if( GetAt(iEndPos) == '}' ) {
+         while (isdigit(GetAt(iEndPos)))  iEndPos++;
+         if (GetAt(iEndPos) == '}')  {
             CStdString sTemp = CStdString::RES((UINT)_ttoi(m_pstr + pos + 2));
             Replace(Mid(pos, iEndPos - pos + 1), sTemp);
          }

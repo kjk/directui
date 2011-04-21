@@ -15,7 +15,7 @@ const TCHAR* CTabFolderUI::GetClass() const
 
 void CTabFolderUI::Init()
 {
-   if( m_curSel == -1 ) SelectItem(0);
+   if (m_curSel == -1)  SelectItem(0);
 }
 
 bool CTabFolderUI::Add(CControlUI* ctrl)
@@ -32,40 +32,40 @@ int CTabFolderUI::GetCurSel() const
 bool CTabFolderUI::SelectItem(int idx)
 {
    int iPrevSel = m_curSel;
-   if( idx < 0 || idx >= m_items.GetSize() ) return false;
-   if( idx == m_curSel ) return true;
+   if (idx < 0 || idx >= m_items.GetSize())  return false;
+   if (idx == m_curSel)  return true;
    // Assign page to internal pointers
-   if( m_pCurPage != NULL ) m_pCurPage->SetVisible(false);
+   if (m_pCurPage != NULL)  m_pCurPage->SetVisible(false);
    m_curSel = idx;
    m_pCurPage = static_cast<CControlUI*>(m_items[idx]);
-   if( m_manager != NULL ) m_manager->SendNotify(this, _T("itemselect"));
+   if (m_manager != NULL)  m_manager->SendNotify(this, _T("itemselect"));
    m_pCurPage->SetVisible(true);
    // Need to re-think the layout
-   if( m_manager != NULL ) m_manager->UpdateLayout();
+   if (m_manager != NULL)  m_manager->UpdateLayout();
    // Set focus on page
    m_pCurPage->SetFocus();
-   if( m_manager != NULL ) m_manager->SetNextTabControl();
+   if (m_manager != NULL)  m_manager->SetNextTabControl();
    return true;
 }
 
 void CTabFolderUI::Event(TEventUI& event)
 {
-   if( event.Type == UIEVENT_BUTTONDOWN && IsEnabled() )
+   if (event.Type == UIEVENT_BUTTONDOWN && IsEnabled()) 
    {
-      for( int i = 0; i < m_items.GetSize() && i < m_aTabAreas.GetSize(); i++ ) {
-         if( ::PtInRect( static_cast<LPRECT>(m_aTabAreas[i]), event.ptMouse) ) {
+      for( int i = 0; i < m_items.GetSize() && i < m_aTabAreas.GetSize(); i++)  {
+         if (::PtInRect( static_cast<LPRECT>(m_aTabAreas[i]), event.ptMouse))  {
             SelectItem(i);
             return;
          }
       }
    }
-   if( event.Type == UIEVENT_SYSKEY && IsEnabled() )
+   if (event.Type == UIEVENT_SYSKEY && IsEnabled()) 
    {
-      if( event.chKey == VK_PRIOR && (event.wKeyState & MK_ALT) != 0 ) {
+      if (event.chKey == VK_PRIOR && (event.wKeyState & MK_ALT) != 0)  {
          SelectItem(m_curSel - 1);
          return;
       }
-      if( event.chKey == VK_NEXT && (event.wKeyState & MK_ALT) != 0 ) {
+      if (event.chKey == VK_NEXT && (event.wKeyState & MK_ALT) != 0)  {
          SelectItem(m_curSel + 1);
          return;
       }
@@ -81,7 +81,7 @@ void CTabFolderUI::SetPos(RECT rc)
    ::SetRect(&m_rcClient, rc.left + m_rcInset.left, rc.top + m_rcInset.top + cyFont + 8, rc.right - m_rcInset.right, rc.bottom - m_rcInset.bottom);
    m_rcPage = m_rcClient;
    ::InflateRect(&m_rcPage, -8, -8);
-   if( m_pCurPage != NULL ) m_pCurPage->SetPos(m_rcPage);
+   if (m_pCurPage != NULL)  m_pCurPage->SetPos(m_rcPage);
 }
 
 void CTabFolderUI::DoPaint(HDC hDC, const RECT& rcPaint)
@@ -105,19 +105,19 @@ void CTabFolderUI::DoPaint(HDC hDC, const RECT& rcPaint)
       rcTabs.right -= m_rcInset.right;
       rcTabs.bottom = m_rcClient.top;
       RECT rcTemp = { 0 };
-      if( ::IntersectRect(&rcTemp, &rcPaint, &rcTabs) ) 
+      if (::IntersectRect(&rcTemp, &rcPaint, &rcTabs))  
       {
          int posX = 1;
          m_aTabAreas.Empty();
-         for( int i = 0; i < GetCount(); i++ ) 
+         for( int i = 0; i < GetCount(); i++)  
          {
             const CControlUI* pPage = GetItem(i);
             const CStdString& strText = pPage->GetText();
             RECT rcTab = { rcTabs.left + posX, rcTabs.top, rcTabs.right, m_rcClient.top };
             UINT uState = 0;
-            if( IsFocused() ) uState |= UISTATE_FOCUSED;
-            if( !IsEnabled() ) uState |= UISTATE_DISABLED;
-            if( m_curSel == i ) uState = UISTATE_PUSHED;
+            if (IsFocused())  uState |= UISTATE_FOCUSED;
+            if (!IsEnabled())  uState |= UISTATE_DISABLED;
+            if (m_curSel == i)  uState = UISTATE_PUSHED;
             CBlueRenderEngineUI::DoPaintTabFolder(hDC, m_manager, rcTab, strText, uState);
             posX += (rcTab.right - rcTab.left) + 2;
             m_aTabAreas.Add(&rcTab);
@@ -125,12 +125,12 @@ void CTabFolderUI::DoPaint(HDC hDC, const RECT& rcPaint)
       }
    }
 
-   if( m_pCurPage != NULL ) m_pCurPage->DoPaint(hDC, rcPaint);
+   if (m_pCurPage != NULL)  m_pCurPage->DoPaint(hDC, rcPaint);
 }
 
 void CTabFolderUI::SetAttribute(const TCHAR* name, const TCHAR* value)
 {
-   if( _tcscmp(name, _T("select")) == 0 ) SelectItem(_ttoi(value));
+   if (_tcscmp(name, _T("select")) == 0)  SelectItem(_ttoi(value));
    else CContainerUI::SetAttribute(name, value);
 }
 
@@ -147,8 +147,8 @@ const TCHAR* CTabPageUI::GetClass() const
 
 bool CTabPageUI::Activate()
 {
-   if( !CContainerUI::Activate() ) return false;
+   if (!CContainerUI::Activate())  return false;
    CControlUI* pParent = GetParent();
-   if( pParent == NULL || pParent->GetInterface(_T("ListOwner")) == NULL ) return false;
+   if (pParent == NULL || pParent->GetInterface(_T("ListOwner")) == NULL)  return false;
    return static_cast<IListOwnerUI*>(pParent->GetInterface(_T("ListOwner")))->SelectItem(0 /*m_idx*/);
 }

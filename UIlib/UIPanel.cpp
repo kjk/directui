@@ -14,7 +14,7 @@ const TCHAR* CNavigatorPanelUI::GetClass() const
 
 void* CNavigatorPanelUI::GetInterface(const TCHAR* name)
 {
-   if( _tcscmp(name, _T("ListOwner")) == 0 ) return static_cast<IListOwnerUI*>(this);
+   if (_tcscmp(name, _T("ListOwner")) == 0)  return static_cast<IListOwnerUI*>(this);
    return CVerticalLayoutUI::GetInterface(name);
 }
 
@@ -30,21 +30,21 @@ void CNavigatorPanelUI::Event(TEventUI& event)
 
 bool CNavigatorPanelUI::SelectItem(int idx)
 {
-   if( idx == m_curSel ) return true;
-   if( m_curSel >= 0 ) {
+   if (idx == m_curSel)  return true;
+   if (m_curSel >= 0)  {
       CControlUI* ctrl = GetItem(m_curSel);
       IListItemUI* pListItem = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
-      if( pListItem != NULL ) pListItem->Select(false);
+      if (pListItem != NULL)  pListItem->Select(false);
    }
    m_curSel = idx;
-   if( m_curSel >= 0 ) {
+   if (m_curSel >= 0)  {
       CControlUI* ctrl = GetItem(m_curSel);
       IListItemUI* pListItem = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
-      if( pListItem == NULL ) return false;
+      if (pListItem == NULL)  return false;
       pListItem->Select(true);
-      if( m_manager != NULL ) m_manager->SendNotify(ctrl, _T("itemclick"));
+      if (m_manager != NULL)  m_manager->SendNotify(ctrl, _T("itemclick"));
    }
-   if( m_manager != NULL ) m_manager->SendNotify(this, _T("itemselect"));
+   if (m_manager != NULL)  m_manager->SendNotify(this, _T("itemselect"));
    Invalidate();
    return true;
 }
@@ -52,7 +52,7 @@ bool CNavigatorPanelUI::SelectItem(int idx)
 bool CNavigatorPanelUI::Add(CControlUI* ctrl)
 {
    IListItemUI* pListItem = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
-   if( pListItem != NULL ) {
+   if (pListItem != NULL)  {
       pListItem->SetOwner(this);
       pListItem->SetIndex(m_items.GetSize());
    }
@@ -84,28 +84,28 @@ const TCHAR* CNavigatorButtonUI::GetClass() const
 
 void CNavigatorButtonUI::Event(TEventUI& event)
 {
-   if( event.Type == UIEVENT_BUTTONDOWN && IsEnabled() )
+   if (event.Type == UIEVENT_BUTTONDOWN && IsEnabled()) 
    {
       RECT rcButton = GetButtonRect(m_rcItem);
-      if( ::PtInRect(&rcButton, event.ptMouse) ) {
+      if (::PtInRect(&rcButton, event.ptMouse))  {
          m_uButtonState |= UISTATE_PUSHED | UISTATE_CAPTURED;
          Invalidate();
       }
    }
-   if( event.Type == UIEVENT_MOUSEMOVE )
+   if (event.Type == UIEVENT_MOUSEMOVE) 
    {
-      if( (m_uButtonState & UISTATE_CAPTURED) != 0 ) {
+      if ((m_uButtonState & UISTATE_CAPTURED) != 0)  {
          RECT rcButton = GetButtonRect(m_rcItem);
-         if( ::PtInRect(&rcButton, event.ptMouse) ) m_uButtonState |= UISTATE_PUSHED;
+         if (::PtInRect(&rcButton, event.ptMouse))  m_uButtonState |= UISTATE_PUSHED;
          else m_uButtonState &= ~UISTATE_PUSHED;
          Invalidate();
       }
    }
-   if( event.Type == UIEVENT_BUTTONUP )
+   if (event.Type == UIEVENT_BUTTONUP) 
    {
-      if( (m_uButtonState & UISTATE_CAPTURED) != 0 ) {
+      if ((m_uButtonState & UISTATE_CAPTURED) != 0)  {
          RECT rcButton = GetButtonRect(m_rcItem);
-         if( ::PtInRect(&rcButton, event.ptMouse) ) {
+         if (::PtInRect(&rcButton, event.ptMouse))  {
             m_manager->SendNotify(this, _T("link"));
             Select();
          }
@@ -129,13 +129,13 @@ void CNavigatorButtonUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
 {
    RECT rcButton = GetButtonRect(m_rcItem);
 
-   if( (m_uButtonState & UISTATE_PUSHED) != 0 ) {
+   if ((m_uButtonState & UISTATE_PUSHED) != 0)  {
       CBlueRenderEngineUI::DoFillRect(hDC, m_manager, rcButton, UICOLOR_NAVIGATOR_BUTTON_PUSHED);
    }
-   else if( m_bSelected ) {
+   else if (m_bSelected)  {
       CBlueRenderEngineUI::DoFillRect(hDC, m_manager, rcButton, UICOLOR_NAVIGATOR_BUTTON_SELECTED);
    }
-   else if( (m_uButtonState & UISTATE_PUSHED) != 0 ) {
+   else if ((m_uButtonState & UISTATE_PUSHED) != 0)  {
       CBlueRenderEngineUI::DoFillRect(hDC, m_manager, rcButton, UICOLOR_NAVIGATOR_BUTTON_HOVER);
    }
    ::SelectObject(hDC, m_manager->GetThemePen(m_bSelected ? UICOLOR_NAVIGATOR_BORDER_SELECTED : UICOLOR_NAVIGATOR_BORDER_NORMAL));
@@ -145,13 +145,13 @@ void CNavigatorButtonUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
    ::LineTo(hDC, rcButton.right, rcButton.bottom);
 
    UITYPE_COLOR iTextColor = UICOLOR_NAVIGATOR_TEXT_NORMAL;
-   if( (m_uButtonState & UISTATE_PUSHED) != 0 ) iTextColor = UICOLOR_NAVIGATOR_TEXT_PUSHED;
-   else if( m_bSelected ) iTextColor = UICOLOR_NAVIGATOR_TEXT_SELECTED;
+   if ((m_uButtonState & UISTATE_PUSHED) != 0)  iTextColor = UICOLOR_NAVIGATOR_TEXT_PUSHED;
+   else if (m_bSelected)  iTextColor = UICOLOR_NAVIGATOR_TEXT_SELECTED;
 
    RECT rcText = rcButton;
    ::OffsetRect(&rcText, 0, 1);
    ::InflateRect(&rcText, -8, 0);
-   if( (m_uButtonState & UISTATE_PUSHED) != 0 ) {
+   if ((m_uButtonState & UISTATE_PUSHED) != 0)  {
       rcText.left++; 
       rcText.top += 2;
    }
@@ -175,8 +175,8 @@ CTaskPanelUI::CTaskPanelUI() : m_hFadeBitmap(NULL)
 
 CTaskPanelUI::~CTaskPanelUI()
 {
-   if( m_hFadeBitmap != NULL ) ::DeleteObject(m_hFadeBitmap);
-   if( m_manager != NULL ) m_manager->KillTimer(this, FADE_TIMERID);
+   if (m_hFadeBitmap != NULL)  ::DeleteObject(m_hFadeBitmap);
+   if (m_manager != NULL)  m_manager->KillTimer(this, FADE_TIMERID);
 }
 
 const TCHAR* CTaskPanelUI::GetClass() const
@@ -189,15 +189,15 @@ SIZE CTaskPanelUI::EstimateSize(SIZE szAvailable)
    // The TaskPanel dissapears if the windows size becomes too small
    // Currently it is set to vasnish when its width gets below 1/4 of window.
    SIZE sz = m_cxyFixed;
-   if( m_manager->GetClientSize().cx <= m_cxyFixed.cx * 4 ) {
+   if (m_manager->GetClientSize().cx <= m_cxyFixed.cx * 4)  {
       // Generate a bitmap so we can paint this panel as slowly fading out.
       // Only do this when the control's size suddenly go below the threshold.
-      if( m_rcItem.right - m_rcItem.left > 1 && m_hFadeBitmap == NULL ) {
-         if( m_hFadeBitmap != NULL ) ::DeleteObject(m_hFadeBitmap);
+      if (m_rcItem.right - m_rcItem.left > 1 && m_hFadeBitmap == NULL)  {
+         if (m_hFadeBitmap != NULL)  ::DeleteObject(m_hFadeBitmap);
          m_hFadeBitmap = CBlueRenderEngineUI::GenerateAlphaBitmap(m_manager, this, m_rcItem, UICOLOR_DIALOG_BACKGROUND);
          // If we successfully created the 32bpp bitmap we'll set off the
          // timer so we can get animating...
-         if( m_hFadeBitmap != NULL ) m_manager->SetTimer(this, FADE_TIMERID, 50U);
+         if (m_hFadeBitmap != NULL)  m_manager->SetTimer(this, FADE_TIMERID, 50U);
          m_dwFadeTick = ::timeGetTime();
          m_rcFade = m_rcItem;
       }
@@ -208,11 +208,11 @@ SIZE CTaskPanelUI::EstimateSize(SIZE szAvailable)
 
 void CTaskPanelUI::Event(TEventUI& event)
 {
-   if( event.Type == UIEVENT_TIMER && event.wParam == FADE_TIMERID )
+   if (event.Type == UIEVENT_TIMER && event.wParam == FADE_TIMERID) 
    {
       // The fading animation runs for 500ms. Then we kill
       // the bitmap which in turn disables the animation.
-      if( event.dwTimestamp - m_dwFadeTick > FADE_DELAY ) {
+      if (event.dwTimestamp - m_dwFadeTick > FADE_DELAY)  {
          m_manager->KillTimer(this, FADE_TIMERID);
          ::DeleteObject(m_hFadeBitmap);
          m_hFadeBitmap = NULL;
@@ -234,7 +234,7 @@ void CTaskPanelUI::SetPos(RECT rc)
 void CTaskPanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
    // Handling gracefull fading of panel
-   if( m_hFadeBitmap != NULL ) {
+   if (m_hFadeBitmap != NULL)  {
       DWORD dwTimeDiff = ::timeGetTime() - m_dwFadeTick;
       TPostPaintUI job;
       job.rc = m_rcFade;
@@ -243,7 +243,7 @@ void CTaskPanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
       m_manager->AddPostPaintBlit(job);
    }
    // A tiny panel (see explaination in EstimateSize()) is invisible
-   if( m_rcItem.right - m_rcItem.left < 2) return;
+   if (m_rcItem.right - m_rcItem.left < 2) return;
    // Paint caption
    int cyFont = m_manager->GetThemeFontInfo(UIFONT_NORMAL).tmHeight;
    RECT rcArc = { m_rcItem.left, m_rcItem.top, m_rcItem.right, m_rcItem.top + cyFont + 6 };
@@ -286,10 +286,10 @@ void CSearchTitlePanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
    CBlueRenderEngineUI::DoPaintFrame(hDC, m_manager, rcFrame, UICOLOR_HEADER_SEPARATOR, UICOLOR_HEADER_SEPARATOR, UICOLOR_HEADER_BACKGROUND);
    RECT rcArc = { m_rcItem.left, m_rcItem.top + 14, m_rcItem.right, m_rcItem.top + 34 };
    RECT rcTemp = { 0 };
-   if( ::IntersectRect(&rcTemp, &rcPaint, &rcArc) ) {
+   if (::IntersectRect(&rcTemp, &rcPaint, &rcArc))  {
       CBlueRenderEngineUI::DoPaintArcCaption(hDC, m_manager, rcArc, _T(""), 0);
    }
-   if( m_iIconIndex >= 0 ) {
+   if (m_iIconIndex >= 0)  {
       HICON hIcon = m_manager->GetThemeIcon(m_iIconIndex, 50);
       ::DrawIconEx(hDC, m_rcItem.left + 5, m_rcItem.top, hIcon, 50, 50, 0, NULL, DI_NORMAL);
       ::DestroyIcon(hIcon);
@@ -299,7 +299,7 @@ void CSearchTitlePanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
 
 void CSearchTitlePanelUI::SetAttribute(const TCHAR* name, const TCHAR* value)
 {
-   if( _tcscmp(name, _T("image")) == 0 ) SetImage(_ttoi(value));
+   if (_tcscmp(name, _T("image")) == 0)  SetImage(_ttoi(value));
    else CHorizontalLayoutUI::SetAttribute(name, value);
 }
 
@@ -329,8 +329,8 @@ void CPaddingPanelUI::SetHeight(int cyHeight)
 
 void CPaddingPanelUI::SetAttribute(const TCHAR* name, const TCHAR* value)
 {
-   if( _tcscmp(name, _T("width")) == 0 ) SetWidth(_ttoi(value));
-   else if( _tcscmp(name, _T("height")) == 0 ) SetHeight(_ttoi(value));
+   if (_tcscmp(name, _T("width")) == 0)  SetWidth(_ttoi(value));
+   else if (_tcscmp(name, _T("height")) == 0)  SetHeight(_ttoi(value));
    else CControlUI::SetAttribute(name, value);
 }
 
@@ -356,15 +356,15 @@ CImagePanelUI::CImagePanelUI() : m_hBitmap(NULL)
 
 CImagePanelUI::~CImagePanelUI()
 {
-   if( m_hBitmap != NULL ) ::DeleteObject(m_hBitmap);
+   if (m_hBitmap != NULL)  ::DeleteObject(m_hBitmap);
 }
 
 bool CImagePanelUI::SetImage(const TCHAR* pstrBitmap)
 {
-   if( m_hBitmap != NULL ) ::DeleteObject(m_hBitmap);
+   if (m_hBitmap != NULL)  ::DeleteObject(m_hBitmap);
    m_hBitmap = (HBITMAP) ::LoadImage(m_manager->GetResourceInstance(), pstrBitmap, IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION);
    ASSERT(m_hBitmap);
-   if( m_hBitmap == NULL ) return false;
+   if (m_hBitmap == NULL)  return false;
    BITMAP bm = { 0 };
    ::GetObject(m_hBitmap, sizeof(BITMAP), &bm);
    SetWidth(bm.bmWidth);
@@ -386,9 +386,9 @@ void CImagePanelUI::SetHeight(int cyHeight)
 
 void CImagePanelUI::SetAttribute(const TCHAR* name, const TCHAR* value)
 {
-   if( _tcscmp(name, _T("width")) == 0 ) SetWidth(_ttoi(value));
-   else if( _tcscmp(name, _T("height")) == 0 ) SetHeight(_ttoi(value));
-   else if( _tcscmp(name, _T("image")) == 0 ) SetImage(value);
+   if (_tcscmp(name, _T("width")) == 0)  SetWidth(_ttoi(value));
+   else if (_tcscmp(name, _T("height")) == 0)  SetHeight(_ttoi(value));
+   else if (_tcscmp(name, _T("image")) == 0)  SetImage(value);
    else CControlUI::SetAttribute(name, value);
 }
 
@@ -421,8 +421,8 @@ const TCHAR* CTextPanelUI::GetClass() const
 
 bool CTextPanelUI::Activate()
 {
-   if( !CLabelPanelUI::Activate() ) return false;
-   if( m_nLinks > 0 ) m_manager->SendNotify(this, _T("link"));
+   if (!CLabelPanelUI::Activate())  return false;
+   if (m_nLinks > 0)  m_manager->SendNotify(this, _T("link"));
    return true;
 }
 
@@ -445,41 +445,41 @@ UINT CTextPanelUI::GetControlFlags() const
 
 void CTextPanelUI::Event(TEventUI& event)
 {
-   if( event.Type == UIEVENT_SETCURSOR ) {
-      for( int i = 0; i < m_nLinks; i++ ) {
-         if( ::PtInRect(&m_rcLinks[i], event.ptMouse) ) {
+   if (event.Type == UIEVENT_SETCURSOR)  {
+      for( int i = 0; i < m_nLinks; i++)  {
+         if (::PtInRect(&m_rcLinks[i], event.ptMouse))  {
             ::SetCursor(::LoadCursor(NULL, MAKEINTRESOURCE(IDC_HAND)));
             return;
          }
       }      
    }
-   if( event.Type == UIEVENT_BUTTONDOWN && IsEnabled() ) {
-      for( int i = 0; i < m_nLinks; i++ ) {
-         if( ::PtInRect(&m_rcLinks[i], event.ptMouse) ) {
+   if (event.Type == UIEVENT_BUTTONDOWN && IsEnabled())  {
+      for( int i = 0; i < m_nLinks; i++)  {
+         if (::PtInRect(&m_rcLinks[i], event.ptMouse))  {
             m_uButtonState |= UISTATE_PUSHED;
             Invalidate();
             return;
          }
       }      
    }
-   if( event.Type == UIEVENT_BUTTONUP ) {
-      for( int i = 0; i < m_nLinks; i++ ) {
-         if( ::PtInRect(&m_rcLinks[i], event.ptMouse) ) Activate();
+   if (event.Type == UIEVENT_BUTTONUP)  {
+      for( int i = 0; i < m_nLinks; i++)  {
+         if (::PtInRect(&m_rcLinks[i], event.ptMouse))  Activate();
       }      
       m_uButtonState &= ~UISTATE_PUSHED;
       Invalidate();
       return;
    }
    // When you move over a link
-   if( m_nLinks > 0 && event.Type == UIEVENT_MOUSEMOVE ) Invalidate();
-   if( m_nLinks > 0 && event.Type == UIEVENT_MOUSELEAVE ) Invalidate();
+   if (m_nLinks > 0 && event.Type == UIEVENT_MOUSEMOVE)  Invalidate();
+   if (m_nLinks > 0 && event.Type == UIEVENT_MOUSELEAVE)  Invalidate();
    CLabelPanelUI::Event(event);
 }
 
 void CTextPanelUI::SetAttribute(const TCHAR* name, const TCHAR* value)
 {
-   if( _tcscmp(name, _T("textColor")) == 0 ) SetTextColor((UITYPE_COLOR)_ttoi(value));
-   else if( _tcscmp(name, _T("backColor")) == 0 ) SetBkColor((UITYPE_COLOR)_ttoi(value));
+   if (_tcscmp(name, _T("textColor")) == 0)  SetTextColor((UITYPE_COLOR)_ttoi(value));
+   else if (_tcscmp(name, _T("backColor")) == 0)  SetBkColor((UITYPE_COLOR)_ttoi(value));
    else CLabelPanelUI::SetAttribute(name, value);
 }
 
@@ -509,7 +509,7 @@ const TCHAR* CWarningPanelUI::GetClass() const
 
 void CWarningPanelUI::SetWarningType(UINT uType)
 {
-   switch( uType ) {
+   switch( uType)  {
    case MB_ICONERROR:
       m_BackColor = UICOLOR_STANDARD_RED;
       break;
@@ -524,9 +524,9 @@ void CWarningPanelUI::SetWarningType(UINT uType)
 
 void CWarningPanelUI::SetAttribute(const TCHAR* name, const TCHAR* value)
 {
-   if( _tcscmp(name, _T("type")) == 0 ) {
-      if( _tcscmp(value, _T("error")) == 0 ) SetWarningType(MB_ICONERROR);
-      if( _tcscmp(value, _T("warning")) == 0 ) SetWarningType(MB_ICONWARNING);
+   if (_tcscmp(name, _T("type")) == 0)  {
+      if (_tcscmp(value, _T("error")) == 0)  SetWarningType(MB_ICONERROR);
+      if (_tcscmp(value, _T("warning")) == 0)  SetWarningType(MB_ICONWARNING);
    }
    else CTextPanelUI::SetAttribute(name, value);
 }

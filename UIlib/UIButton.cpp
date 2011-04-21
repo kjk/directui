@@ -21,35 +21,35 @@ UINT CButtonUI::GetControlFlags() const
 
 void CButtonUI::Event(TEventUI& event)
 {
-   if( event.Type == UIEVENT_BUTTONDOWN || event.Type == UIEVENT_DBLCLICK )
+   if (event.Type == UIEVENT_BUTTONDOWN || event.Type == UIEVENT_DBLCLICK) 
    {
-      if( ::PtInRect(&m_rcItem, event.ptMouse) && IsEnabled() ) {
+      if (::PtInRect(&m_rcItem, event.ptMouse) && IsEnabled())  {
          m_uButtonState |= UISTATE_PUSHED | UISTATE_CAPTURED;
          Invalidate();
       }
    }
-   if( event.Type == UIEVENT_MOUSEMOVE )
+   if (event.Type == UIEVENT_MOUSEMOVE) 
    {
-      if( (m_uButtonState & UISTATE_CAPTURED) != 0 ) {
-         if( ::PtInRect(&m_rcItem, event.ptMouse) ) m_uButtonState |= UISTATE_PUSHED;
+      if ((m_uButtonState & UISTATE_CAPTURED) != 0)  {
+         if (::PtInRect(&m_rcItem, event.ptMouse))  m_uButtonState |= UISTATE_PUSHED;
          else m_uButtonState &= ~UISTATE_PUSHED;
          Invalidate();
       }
    }
-   if( event.Type == UIEVENT_BUTTONUP )
+   if (event.Type == UIEVENT_BUTTONUP) 
    {
-      if( (m_uButtonState & UISTATE_CAPTURED) != 0 ) {
-         if( ::PtInRect(&m_rcItem, event.ptMouse) ) Activate();
+      if ((m_uButtonState & UISTATE_CAPTURED) != 0)  {
+         if (::PtInRect(&m_rcItem, event.ptMouse))  Activate();
          m_uButtonState &= ~(UISTATE_PUSHED | UISTATE_CAPTURED);
          Invalidate();
       }
    }
-   if( event.Type == UIEVENT_MOUSEENTER)
+   if (event.Type == UIEVENT_MOUSEENTER)
    {
       m_uButtonState |= UISTATE_HOT;
       Invalidate();
    }
-   if( event.Type == UIEVENT_MOUSELEAVE)
+   if (event.Type == UIEVENT_MOUSELEAVE)
    {
       m_uButtonState &= ~UISTATE_HOT;
       Invalidate();
@@ -61,13 +61,13 @@ void CButtonUI::SetText(const TCHAR* pstrText)
 {
    CControlUI::SetText(pstrText);
    // Automatic assignment of keyboard shortcut
-   if( _tcschr(pstrText, '&') != NULL ) m_chShortcut = *(_tcschr(pstrText, '&') + 1);
+   if (_tcschr(pstrText, '&') != NULL)  m_chShortcut = *(_tcschr(pstrText, '&') + 1);
 }
 
 bool CButtonUI::Activate()
 {
-   if( !CControlUI::Activate() ) return false;
-   if( m_manager != NULL ) m_manager->SendNotify(this, _T("click"));
+   if (!CControlUI::Activate())  return false;
+   if (m_manager != NULL)  m_manager->SendNotify(this, _T("click"));
    return true;
 }
 
@@ -79,10 +79,10 @@ void CButtonUI::SetWidth(int cxWidth)
 
 void CButtonUI::SetAttribute(const TCHAR* name, const TCHAR* value)
 {
-   if( _tcscmp(name, _T("width")) == 0 ) SetWidth(_ttoi(value));
-   else if( _tcscmp(name, _T("align")) == 0 ) {
-      if( _tcsstr(value, _T("center")) != NULL ) m_uTextStyle |= DT_CENTER;
-      if( _tcsstr(value, _T("right")) != NULL ) m_uTextStyle |= DT_RIGHT;
+   if (_tcscmp(name, _T("width")) == 0)  SetWidth(_ttoi(value));
+   else if (_tcscmp(name, _T("align")) == 0)  {
+      if (_tcsstr(value, _T("center")) != NULL)  m_uTextStyle |= DT_CENTER;
+      if (_tcsstr(value, _T("right")) != NULL)  m_uTextStyle |= DT_RIGHT;
    }
    else CControlUI::SetAttribute(name, value);
 }
@@ -97,7 +97,7 @@ void CButtonUI::SetPadding(int cx, int cy)
 SIZE CButtonUI::EstimateSize(SIZE /*szAvailable*/)
 {
    SIZE sz = { m_cxWidth, 12 + m_manager->GetThemeFontInfo(UIFONT_NORMAL).tmHeight };
-   if( m_cxWidth == 0 && m_manager != NULL ) {
+   if (m_cxWidth == 0 && m_manager != NULL)  {
       RECT rcText = { 0, 0, 9999, 20 };
       int nLinks = 0;
       CBlueRenderEngineUI::DoPaintPrettyText(m_manager->GetPaintDC(), m_manager, rcText, m_sText, UICOLOR_STANDARD_BLACK, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE | DT_CALCRECT);
@@ -112,8 +112,8 @@ void CButtonUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
    // Draw button
    UINT uState = 0;
-   if( IsFocused() ) uState |= UISTATE_FOCUSED;
-   if( !IsEnabled() ) uState |= UISTATE_DISABLED;
+   if (IsFocused())  uState |= UISTATE_FOCUSED;
+   if (!IsEnabled())  uState |= UISTATE_DISABLED;
    RECT rcPadding = { m_szPadding.cx, m_szPadding.cy, m_szPadding.cx, m_szPadding.cy };
    CBlueRenderEngineUI::DoPaintButton(hDC, m_manager, m_rcItem, m_sText, rcPadding, m_uButtonState | uState, m_uTextStyle);
 }
@@ -135,25 +135,25 @@ UINT COptionUI::GetControlFlags() const
 
 void COptionUI::Event(TEventUI& event)
 {
-   if( event.Type == UIEVENT_BUTTONDOWN || event.Type == UIEVENT_DBLCLICK )
+   if (event.Type == UIEVENT_BUTTONDOWN || event.Type == UIEVENT_DBLCLICK) 
    {
-      if( ::PtInRect(&m_rcItem, event.ptMouse) && IsEnabled() ) {
+      if (::PtInRect(&m_rcItem, event.ptMouse) && IsEnabled())  {
          m_uButtonState |= UISTATE_PUSHED | UISTATE_CAPTURED;
          Invalidate();
       }
    }
-   if( event.Type == UIEVENT_MOUSEMOVE )
+   if (event.Type == UIEVENT_MOUSEMOVE) 
    {
-      if( (m_uButtonState & UISTATE_CAPTURED) != 0 ) {
-         if( ::PtInRect(&m_rcItem, event.ptMouse) ) m_uButtonState |= UISTATE_PUSHED;
+      if ((m_uButtonState & UISTATE_CAPTURED) != 0)  {
+         if (::PtInRect(&m_rcItem, event.ptMouse))  m_uButtonState |= UISTATE_PUSHED;
          else m_uButtonState &= ~UISTATE_PUSHED;
          Invalidate();
       }
    }
-   if( event.Type == UIEVENT_BUTTONUP )
+   if (event.Type == UIEVENT_BUTTONUP) 
    {
-      if( (m_uButtonState & UISTATE_CAPTURED) != 0 ) {
-         if( ::PtInRect(&m_rcItem, event.ptMouse) ) Activate();
+      if ((m_uButtonState & UISTATE_CAPTURED) != 0)  {
+         if (::PtInRect(&m_rcItem, event.ptMouse))  Activate();
          m_uButtonState &= ~(UISTATE_PUSHED | UISTATE_CAPTURED);
          Invalidate();
       }
@@ -168,15 +168,15 @@ bool COptionUI::IsChecked() const
 
 void COptionUI::SetCheck(bool bSelected)
 {
-   if( m_bSelected == bSelected ) return;
+   if (m_bSelected == bSelected)  return;
    m_bSelected = bSelected;
-   if( m_manager != NULL ) m_manager->SendNotify(this, _T("changed"));
+   if (m_manager != NULL)  m_manager->SendNotify(this, _T("changed"));
    Invalidate();
 }
 
 bool COptionUI::Activate()
 {
-   if( !CControlUI::Activate() ) return false;
+   if (!CControlUI::Activate())  return false;
    SetCheck(true);
    return true;
 }
@@ -189,10 +189,10 @@ void COptionUI::SetWidth(int cxWidth)
 
 void COptionUI::SetAttribute(const TCHAR* name, const TCHAR* value)
 {
-   if( _tcscmp(name, _T("width")) == 0 ) SetWidth(_ttoi(value));
-   else if( _tcscmp(name, _T("selected")) == 0 ) SetCheck(_tcscmp(value, _T("true")) == 0);
-   else if( _tcscmp(name, _T("align")) == 0 ) {
-      if( _tcsstr(value, _T("right")) != NULL ) m_uStyle |= DT_RIGHT;
+   if (_tcscmp(name, _T("width")) == 0)  SetWidth(_ttoi(value));
+   else if (_tcscmp(name, _T("selected")) == 0)  SetCheck(_tcscmp(value, _T("true")) == 0);
+   else if (_tcscmp(name, _T("align")) == 0)  {
+      if (_tcsstr(value, _T("right")) != NULL)  m_uStyle |= DT_RIGHT;
    }
    else CControlUI::SetAttribute(name, value);
 }
@@ -206,9 +206,9 @@ void COptionUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
    // Draw button
    UINT uState = 0;
-   if( m_bSelected ) uState |= UISTATE_CHECKED;
-   if( IsFocused() ) uState |= UISTATE_FOCUSED;
-   if( !IsEnabled() ) uState |= UISTATE_DISABLED;
+   if (m_bSelected)  uState |= UISTATE_CHECKED;
+   if (IsFocused())  uState |= UISTATE_FOCUSED;
+   if (!IsEnabled())  uState |= UISTATE_DISABLED;
    CBlueRenderEngineUI::DoPaintOptionBox(hDC, m_manager, m_rcItem, m_sText, m_uButtonState | uState, m_uStyle);
 }
 

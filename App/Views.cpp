@@ -23,7 +23,7 @@ void CStandardPageWnd::OnFinalMessage(HWND /*hWnd*/)
 
 LRESULT CStandardPageWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-   if( uMsg == WM_CREATE ) {     
+   if (uMsg == WM_CREATE)  {     
       m_pm.Init(m_hWnd);
       CDialogBuilder builder;
       CControlUI* pRoot = builder.Create(GetDialogResource());
@@ -34,7 +34,7 @@ LRESULT CStandardPageWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
       return 0;
    }
    LRESULT lRes = 0;
-   if( m_pm.MessageHandler(uMsg, wParam, lParam, lRes) ) return lRes;
+   if (m_pm.MessageHandler(uMsg, wParam, lParam, lRes))  return lRes;
    return CWindowWnd::HandleMessage(uMsg, wParam, lParam);
 }
 
@@ -48,7 +48,7 @@ void CStandardPageWnd::OnPrepareAnimation()
 
 void CStandardPageWnd::Notify(TNotifyUI& msg)
 {
-   if( msg.sType == _T("windowinit") ) OnPrepareAnimation();
+   if (msg.sType == _T("windowinit"))  OnPrepareAnimation();
 }
 
 
@@ -249,17 +249,17 @@ void CRegistersPageWnd::OnPrepareAnimation()
 {
    CListUI* pList = static_cast<CListUI*>(m_pm.FindControl(_T("list")));
    pList->SetTextCallback(this);                                          // We want GetItemText for items
-   for( int i = 0; i < 1000; i++ ) pList->Add(new CListTextElementUI);    // We want 1000 items in list
+   for( int i = 0; i < 1000; i++)  pList->Add(new CListTextElementUI);    // We want 1000 items in list
 }
 
 const TCHAR* CRegistersPageWnd::GetItemText(CControlUI* ctrl, int idx, int iSubItem)
 {
-   if( idx == 0 && iSubItem == 0 ) return _T("<i 3>Item1");
-   if( idx == 1 && iSubItem == 0 ) return _T("<i 3>Item2");
-   if( idx == 2 && iSubItem == 0 ) return _T("<i 3>Item3");
-   if( idx == 0 && iSubItem == 1 ) return _T("Horse");
-   if( idx == 1 && iSubItem == 1 ) return _T("Dog");
-   if( idx == 2 && iSubItem == 1 ) return _T("Rabbit");
+   if (idx == 0 && iSubItem == 0)  return _T("<i 3>Item1");
+   if (idx == 1 && iSubItem == 0)  return _T("<i 3>Item2");
+   if (idx == 2 && iSubItem == 0)  return _T("<i 3>Item3");
+   if (idx == 0 && iSubItem == 1)  return _T("Horse");
+   if (idx == 1 && iSubItem == 1)  return _T("Dog");
+   if (idx == 2 && iSubItem == 1)  return _T("Rabbit");
    static CStdString sTemp;
    sTemp.Format(_T("Item %d %d"), idx, iSubItem);
    return sTemp;
@@ -336,21 +336,21 @@ const TCHAR* CSystemsPageWnd::GetDialogResource() const
 
 void CSystemsPageWnd::Notify(TNotifyUI& msg)
 {
-   if( msg.sType == _T("itemexpand") ) OnExpandItem(msg.pSender);
+   if (msg.sType == _T("itemexpand"))  OnExpandItem(msg.pSender);
    CStandardPageWnd::Notify(msg);
 }
 
 const TCHAR* CSystemsPageWnd::GetItemText(CControlUI* ctrl, int idx, int iSubItem)
 {
-   if( idx == 0 && iSubItem == 1 ) return _T("Expanding Item #1");
-   if( idx == 1 && iSubItem == 1 ) return _T("Expanding Item #2");
-   if( idx == 2 && iSubItem == 1 ) return _T("Expanding Item #3");
-   if( idx == 0 && iSubItem == 2 ) return _T("100.0");
-   if( idx == 1 && iSubItem == 2 ) return _T("20.0");
-   if( idx == 2 && iSubItem == 2 ) return _T("30.0");
-   if( idx == 0 && iSubItem == 3 ) return _T("<a>Kunde #1</a>");
-   if( idx == 1 && iSubItem == 3 ) return _T("");
-   if( idx == 2 && iSubItem == 3 ) return _T("<a>Kunde #3</a>");
+   if (idx == 0 && iSubItem == 1)  return _T("Expanding Item #1");
+   if (idx == 1 && iSubItem == 1)  return _T("Expanding Item #2");
+   if (idx == 2 && iSubItem == 1)  return _T("Expanding Item #3");
+   if (idx == 0 && iSubItem == 2)  return _T("100.0");
+   if (idx == 1 && iSubItem == 2)  return _T("20.0");
+   if (idx == 2 && iSubItem == 2)  return _T("30.0");
+   if (idx == 0 && iSubItem == 3)  return _T("<a>Kunde #1</a>");
+   if (idx == 1 && iSubItem == 3)  return _T("");
+   if (idx == 2 && iSubItem == 3)  return _T("<a>Kunde #3</a>");
    return _T("");
 }
 
@@ -446,13 +446,13 @@ void CSearchPageWnd::Init()
 
 void CSearchPageWnd::Notify(TNotifyUI& msg)
 {
-   if( msg.sType == _T("click") ) 
+   if (msg.sType == _T("click"))  
    {
-      if( msg.pSender->GetName() == _T("ok") ) {
+      if (msg.pSender->GetName() == _T("ok"))  {
          CStandardPageWnd* pWindow = new CEditPageWnd;
          pWindow->Create(m_hWnd, NULL, UI_WNDSTYLE_FRAME, 0L);
       }
-      if( msg.pSender->GetName() == _T("cancel") ) Close();
+      if (msg.pSender->GetName() == _T("cancel"))  Close();
    }
    CStandardPageWnd::Notify(msg);
 }
@@ -514,8 +514,8 @@ void CEditPageWnd::Init()
 
 void CEditPageWnd::Notify(TNotifyUI& msg)
 {
-   if( msg.sType == _T("click") && msg.pSender->GetName() == _T("cancel") ) Close();
-   if( msg.sType == _T("link") && msg.pSender->GetName() == _T("warning") ) {
+   if (msg.sType == _T("click") && msg.pSender->GetName() == _T("cancel"))  Close();
+   if (msg.sType == _T("link") && msg.pSender->GetName() == _T("warning"))  {
       CPopupWnd* pPopup = new CPopupWnd;
       pPopup->Create(m_hWnd, _T(""), UI_WNDSTYLE_DIALOG, UI_WNDSTYLE_EX_DIALOG, 0, 0, 0, 0, NULL);
       pPopup->ShowModal();
@@ -623,7 +623,7 @@ void CPopupWnd::Init()
 
 void CPopupWnd::Notify(TNotifyUI& msg)
 {
-   if( msg.sType == _T("click") ) Close();
+   if (msg.sType == _T("click"))  Close();
    CStandardPageWnd::Notify(msg);
 }
 

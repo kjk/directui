@@ -56,37 +56,37 @@ CAnimationSpooler::~CAnimationSpooler()
 bool CAnimationSpooler::Init(HWND hWnd)
 {
    ASSERT(::IsWindow(hWnd));
-   if( m_bIsInitialized ) return true;
+   if (m_bIsInitialized)  return true;
    // This is our master window
    m_hWnd = hWnd;
    // Gather window information
    RECT rcWindow = { 0 };
    ::GetWindowRect(hWnd, &rcWindow);
-   if( ::IsRectEmpty(&rcWindow) ) return false;
+   if (::IsRectEmpty(&rcWindow))  return false;
    // Is window topmost?
    HWND hWndFocus = hWnd;
-   while( ::GetParent(hWndFocus) != NULL ) hWndFocus = ::GetParent(hWndFocus);
+   while ( ::GetParent(hWndFocus) != NULL)  hWndFocus = ::GetParent(hWndFocus);
    // Is DirectX v9 available at all?
    HMODULE hMod = ::LoadLibrary("D3D9.DLL");
-   if( hMod == NULL ) return false;
+   if (hMod == NULL)  return false;
    ::FreeLibrary(hMod);
    // Initialize Direct3D
    // Fortunately we can delay-load the DirectX9 library so we
    // don't actually have a link dependency on it.
-   if( m_pD3D != NULL ) m_pD3D->Release();
+   if (m_pD3D != NULL)  m_pD3D->Release();
    m_pD3D = ::Direct3DCreate9(D3D_SDK_VERSION);
-   if( m_pD3D == NULL ) return false;
+   if (m_pD3D == NULL)  return false;
    HRESULT Hr;
    D3DDISPLAYMODE d3ddm = { 0 };
    Hr = m_pD3D->GetAdapterDisplayMode(D3DADAPTER_DEFAULT, &d3ddm);
-   if( FAILED(Hr) ) return false;
+   if (FAILED(Hr))  return false;
    m_ColorFormat = d3ddm.Format;
    Hr = m_pD3D->CheckDeviceType(D3DADAPTER_DEFAULT,
                                 D3DDEVTYPE_HAL,
                                 m_ColorFormat,
                                 m_ColorFormat,
                                 TRUE);
-   if( FAILED(Hr) ) return false;
+   if (FAILED(Hr))  return false;
    D3DPRESENT_PARAMETERS d3dpp = { 0 };
    d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;; //D3DSWAPEFFECT_FLIP
    d3dpp.Windowed = TRUE;
@@ -102,13 +102,13 @@ bool CAnimationSpooler::Init(HWND hWnd)
                              D3DCREATE_SOFTWARE_VERTEXPROCESSING,
                              &d3dpp,
                              &m_p3DDevice);
-   if( FAILED(Hr) ) return false;       
+   if (FAILED(Hr))  return false;       
    // Check device caps
    D3DCAPS9 caps;
    Hr = m_p3DDevice->GetDeviceCaps(&caps);
-   if( caps.MaxTextureWidth < 128 ) return false;
-   if( (caps.Caps3 & D3DCAPS3_COPY_TO_VIDMEM) == 0 ) return false;
-   if( FAILED(Hr) ) return false;
+   if (caps.MaxTextureWidth < 128)  return false;
+   if ((caps.Caps3 & D3DCAPS3_COPY_TO_VIDMEM) == 0)  return false;
+   if (FAILED(Hr))  return false;
    // Set viewport
    D3DVIEWPORT9 vp;
    vp.X = vp.Y = 0;
@@ -117,7 +117,7 @@ bool CAnimationSpooler::Init(HWND hWnd)
    vp.MinZ = 0.0;
    vp.MaxZ = 1.0;
    Hr = m_p3DDevice->SetViewport(&vp);
-   if( FAILED(Hr) ) return false;
+   if (FAILED(Hr))  return false;
    // Set the render flags.
    m_p3DDevice->SetRenderState(D3DRS_COLORVERTEX, TRUE);
    m_p3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
@@ -143,19 +143,19 @@ void CAnimationSpooler::Term()
 {
    // Get rid of the animation jobs
    int i;
-   for( i = 0; i < m_aJobs.GetSize(); i++ ) delete static_cast<CAnimJobUI*>(m_aJobs[i]);
+   for( i = 0; i < m_aJobs.GetSize(); i++)  delete static_cast<CAnimJobUI*>(m_aJobs[i]);
    m_aJobs.Empty();
    // Release Direct3D references
-   for( i = 0; i < m_nBuffers; i++ ) {
+   for( i = 0; i < m_nBuffers; i++)  {
       m_p3DVertices[i]->Release();
       m_p3DTextures[i]->Release();
    }
    m_nBuffers = 0;
-   if( m_p3DBackSurface != NULL ) m_p3DBackSurface->Release();
+   if (m_p3DBackSurface != NULL)  m_p3DBackSurface->Release();
    m_p3DBackSurface = NULL;
-   if( m_p3DDevice != NULL ) m_p3DDevice->Release();
+   if (m_p3DDevice != NULL)  m_p3DDevice->Release();
    m_p3DDevice = NULL;
-   if( m_pD3D != NULL ) m_pD3D->Release();
+   if (m_pD3D != NULL)  m_pD3D->Release();
    m_pD3D = NULL;
    // Almost done...
    m_bIsAnimating = false;
@@ -179,9 +179,9 @@ bool CAnimationSpooler::IsJobScheduled() const
 
 bool CAnimationSpooler::PrepareAnimation(HWND hWnd)
 {
-   if( !m_bIsInitialized ) return false;
+   if (!m_bIsInitialized)  return false;
    // Release old image of window
-   if( m_p3DBackSurface != NULL ) m_p3DBackSurface->Release();
+   if (m_p3DBackSurface != NULL)  m_p3DBackSurface->Release();
    m_p3DBackSurface= NULL;
    // Create the backdrop surface
    RECT rcClient;
@@ -189,25 +189,25 @@ bool CAnimationSpooler::PrepareAnimation(HWND hWnd)
    int cx = rcClient.right - rcClient.left;
    int cy = rcClient.bottom - rcClient.top;
    HRESULT Hr = m_p3DDevice->CreateOffscreenPlainSurface(cx, cy, m_ColorFormat, D3DPOOL_SYSTEMMEM, &m_p3DBackSurface, NULL);
-   if( FAILED(Hr) ) return false;
+   if (FAILED(Hr))  return false;
    // Paint the background
    HDC hDC = NULL;
    Hr = m_p3DBackSurface->GetDC(&hDC);
-   if( FAILED(Hr) ) return false;
+   if (FAILED(Hr))  return false;
    ::SendMessage(hWnd, WM_PRINTCLIENT, (WPARAM) hDC, PRF_CHECKVISIBLE | PRF_CLIENT | PRF_ERASEBKGND | PRF_CHILDREN);
    m_p3DBackSurface->ReleaseDC(hDC);
    // Allow each job to prepare its 3D objects
-   for( int i = 0; i < m_aJobs.GetSize(); i++ ) {
+   for( int i = 0; i < m_aJobs.GetSize(); i++)  {
       CAnimJobUI* pJob = static_cast<CAnimJobUI*>(m_aJobs[i]);
-      switch( pJob->AnimType ) {
+      switch( pJob->AnimType)  {
       case UIANIMTYPE_FLAT:
-         if( !PrepareJob_Flat(pJob) ) return false;
+         if (!PrepareJob_Flat(pJob))  return false;
          break;
       }
    }
    // Assign start time
    DWORD dwTick = ::timeGetTime();
-   for( int j = 0; j < m_aJobs.GetSize(); j++ ) {
+   for( int j = 0; j < m_aJobs.GetSize(); j++)  {
       CAnimJobUI* pJob = static_cast<CAnimJobUI*>(m_aJobs[j]);
       pJob->dwStartTick += dwTick;
    }
@@ -217,37 +217,37 @@ bool CAnimationSpooler::PrepareAnimation(HWND hWnd)
 
 bool CAnimationSpooler::Render()
 {
-   if( !m_bIsAnimating ) return false;
-   if( !m_bIsInitialized ) return false;
+   if (!m_bIsAnimating)  return false;
+   if (!m_bIsInitialized)  return false;
    // Get render target
    HRESULT Hr;
    LPDIRECT3DSURFACE9 p3DTargetSurface;
    Hr = m_p3DDevice->GetRenderTarget(0, &p3DTargetSurface);
-   if( FAILED(Hr) ) return false;
+   if (FAILED(Hr))  return false;
    CSafeRelease<IDirect3DSurface9> RefTargetSurface = p3DTargetSurface;
    // Copy backdrop
    Hr = m_p3DDevice->Clear(0, NULL, D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0,0,255), 1.0f, 0L);
    Hr = m_p3DDevice->UpdateSurface(m_p3DBackSurface, NULL, p3DTargetSurface, NULL);
    // Here begins the rendering loop.
    Hr = m_p3DDevice->BeginScene();
-   if( FAILED(Hr) ) return false;
+   if (FAILED(Hr))  return false;
    int nAnimated = 0;
    DWORD dwTick = ::timeGetTime();
-   for( int i = 0; i < m_aJobs.GetSize(); i++ ) {
+   for( int i = 0; i < m_aJobs.GetSize(); i++)  {
       const CAnimJobUI* pJob = static_cast<CAnimJobUI*>(m_aJobs[i]);
-      if( dwTick < pJob->dwStartTick ) continue;
+      if (dwTick < pJob->dwStartTick)  continue;
       DWORD dwTickNow = MIN(dwTick, pJob->dwStartTick + pJob->dwDuration);
-      switch( pJob->AnimType ) {
+      switch( pJob->AnimType)  {
       case UIANIMTYPE_FLAT:
          RenderJob_Flat(pJob, p3DTargetSurface, dwTickNow);
          break;
       }
-      if( dwTick < pJob->dwStartTick + pJob->dwDuration ) nAnimated++;
+      if (dwTick < pJob->dwStartTick + pJob->dwDuration)  nAnimated++;
    }
    m_p3DDevice->EndScene();
    m_p3DDevice->Present(NULL, NULL, NULL, NULL);
    // No more frames to animate?
-   if( nAnimated == 0 ) Term();
+   if (nAnimated == 0)  Term();
    return true;
 }
 
@@ -270,12 +270,12 @@ static double CosineInterpolate(double y1, double y2, double mu)
 COLORREF CAnimationSpooler::TranslateColor(LPDIRECT3DSURFACE9 pSurface, COLORREF clrColor) const
 {
    ASSERT(pSurface);
-   if( clrColor == CLR_INVALID ) return clrColor;
+   if (clrColor == CLR_INVALID)  return clrColor;
    // The only way to actually determine what color a certain RGB value gets, is
    // to put a pixel on the surface and taste it.
    HDC hDC = NULL;
    HRESULT Hr = pSurface->GetDC(&hDC);
-   if( FAILED(Hr) ) return false;
+   if (FAILED(Hr))  return false;
    COLORREF clrOld = ::GetPixel(hDC, 0, 0);
    ::SetPixel(hDC, 0, 0, clrColor);
    clrColor = ::GetPixel(hDC, 0,0);
@@ -289,7 +289,7 @@ bool CAnimationSpooler::SetColorKey(LPDIRECT3DTEXTURE9 pTexture, LPDIRECT3DSURFA
    ASSERT(pTexture);
    ASSERT(pSurface);
 
-   if( clrColorKey == CLR_INVALID ) return true;
+   if (clrColorKey == CLR_INVALID)  return true;
 
    // Get colorkey's red, green, and blue components
    // and put the colorkey in the texture's native format
@@ -301,23 +301,23 @@ bool CAnimationSpooler::SetColorKey(LPDIRECT3DTEXTURE9 pTexture, LPDIRECT3DSURFA
    HRESULT Hr;
    LPDIRECT3DTEXTURE9 pTex = NULL;
    Hr = m_p3DDevice->CreateTexture(iTexSize, iTexSize, 1, D3DUSAGE_DYNAMIC, D3DFMT_A8R8G8B8, D3DPOOL_SYSTEMMEM, &pTex, NULL);
-   if( FAILED(Hr) ) return false;
+   if (FAILED(Hr))  return false;
    CSafeRelease<IDirect3DTexture9> RefTex = pTex;
    LPDIRECT3DSURFACE9 pTexSurf = NULL;
    Hr = pTex->GetSurfaceLevel(0, &pTexSurf);
-   if( FAILED(Hr) ) return false;
+   if (FAILED(Hr))  return false;
    CSafeRelease<IDirect3DSurface9> RefTexSurf = pTexSurf;
    Hr = m_p3DDevice->GetRenderTargetData(pSurface, pTexSurf);
-   if( FAILED(Hr) ) return false;
+   if (FAILED(Hr))  return false;
 
    // Lock the texture and scan through each pixel, replacing the colorkey pixels
    D3DLOCKED_RECT d3dlr;
    Hr = pTex->LockRect(0, &d3dlr, 0, 0);
-   if( FAILED(Hr) ) return false;
+   if (FAILED(Hr))  return false;
    DWORD* pBits = static_cast<DWORD*>(d3dlr.pBits);
-   for( int y = 0; y < iTexSize; y++ ) {
-      for( int x = 0; x < iTexSize; x++ ) {
-         if( pBits[x] == dwColorKey ) pBits[x] = 0x00000000;
+   for( int y = 0; y < iTexSize; y++)  {
+      for( int x = 0; x < iTexSize; x++)  {
+         if (pBits[x] == dwColorKey)  pBits[x] = 0x00000000;
       }
       pBits += d3dlr.Pitch / sizeof(DWORD);
    }
@@ -345,20 +345,20 @@ bool CAnimationSpooler::PrepareJob_Flat(CAnimJobUI* pJob)
    D3DCOLOR col = 0xffffffff;
    // Determine texture size
    int iTexSize = 128;
-   if( cx < 64 ) iTexSize = 64;
-   if( cx < 32 ) iTexSize = 32;
+   if (cx < 64)  iTexSize = 64;
+   if (cx < 32)  iTexSize = 32;
    FLOAT fTexSize = (FLOAT) iTexSize;
    // Start building tiles
    pJob->iBufferStart = m_nBuffers;
-   for( int x = rc.left; x < rc.right; x += iTexSize ) {
-      for( int y = rc.top; y < rc.bottom; y += iTexSize ) {
+   for( int x = rc.left; x < rc.right; x += iTexSize)  {
+      for( int y = rc.top; y < rc.bottom; y += iTexSize)  {
          RECT rcTile = { x, y, MIN(rc.right, x + iTexSize), MIN(rc.bottom, y + iTexSize) };
          // Adjust texture coordinates, because last tile may only use parts
          // of the texture...
          FLOAT tcoordx = (iTexSize - (x + fTexSize - rc.right)) / fTexSize;
          FLOAT tcoordy = (iTexSize - (y + fTexSize - rc.bottom)) / fTexSize;
-         if( tcoordx > 1.0f ) tcoordx = 1.0f;
-         if( tcoordy > 1.0f ) tcoordy = 1.0f;
+         if (tcoordx > 1.0f)  tcoordx = 1.0f;
+         if (tcoordy > 1.0f)  tcoordy = 1.0f;
          // Create the vertex buffer
          CUSTOMFAN verts = 
          {
@@ -369,32 +369,32 @@ bool CAnimationSpooler::PrepareJob_Flat(CAnimJobUI* pJob)
          };
          LPDIRECT3DVERTEXBUFFER9 pVertex = NULL;
          Hr = m_p3DDevice->CreateVertexBuffer(4 * sizeof(CUSTOMVERTEX), D3DUSAGE_WRITEONLY, D3DFVF_CUSTOMVERTEX, D3DPOOL_DEFAULT, &pVertex, NULL);
-         if( FAILED(Hr) ) return false;
+         if (FAILED(Hr))  return false;
          CSafeRelease<IDirect3DVertexBuffer9> RefVertex = pVertex;
          memcpy(m_fans[m_nBuffers], verts, sizeof(verts));
 
          LPDIRECT3DTEXTURE9 pTex1 = NULL;
          Hr = m_p3DDevice->CreateTexture(iTexSize, iTexSize, 1, 0, m_ColorFormat, D3DPOOL_DEFAULT, &pTex1, NULL);
-         if( FAILED(Hr) ) return false;
+         if (FAILED(Hr))  return false;
          CSafeRelease<IDirect3DTexture9> RefTex1 = pTex1;
          LPDIRECT3DSURFACE9 pTexSurf1 = NULL;
          Hr = pTex1->GetSurfaceLevel(0, &pTexSurf1);
-         if( FAILED(Hr) ) return false;
+         if (FAILED(Hr))  return false;
          CSafeRelease<IDirect3DSurface9> RefTexSurf1 = pTexSurf1;
          POINT pt = { 0, 0 };         
          Hr = m_p3DDevice->UpdateSurface(m_p3DBackSurface, &rcTile, pTexSurf1, &pt);
-         if( FAILED(Hr) ) return false;
+         if (FAILED(Hr))  return false;
          LPDIRECT3DTEXTURE9 pTex2 = NULL;
          RECT rcDest = { 0, 0, rcTile.right - rcTile.left, rcTile.bottom - rcTile.top };
          Hr = m_p3DDevice->CreateTexture(iTexSize, iTexSize, 1, D3DUSAGE_RENDERTARGET, D3DFMT_A8R8G8B8, D3DPOOL_DEFAULT, &pTex2, NULL);
-         if( FAILED(Hr) ) return false;
+         if (FAILED(Hr))  return false;
          CSafeRelease<IDirect3DTexture9> RefTex2 = pTex2;
          LPDIRECT3DSURFACE9 pTexSurf2 = NULL;
          Hr = pTex2->GetSurfaceLevel(0, &pTexSurf2);
-         if( FAILED(Hr) ) return false;
+         if (FAILED(Hr))  return false;
          CSafeRelease<IDirect3DSurface9> RefTexSurf2 = pTexSurf2;
          Hr = m_p3DDevice->StretchRect(pTexSurf1, &rcDest, pTexSurf2, &rcDest, D3DTEXF_NONE);
-         if( FAILED(Hr) ) return false;
+         if (FAILED(Hr))  return false;
          // Replace colorkey pixels with alpha
          SetColorKey(pTex2, pTexSurf2, iTexSize, pJob->data.plot.clrKey);
          // Finally, assign the texture
@@ -407,10 +407,10 @@ bool CAnimationSpooler::PrepareJob_Flat(CAnimJobUI* pJob)
    ASSERT(m_nBuffers<MAX_BUFFERS);
    // Clear the background so the sprite can take its place
    COLORREF clrBack = pJob->data.plot.clrBack;
-   if( clrBack != CLR_INVALID) {
+   if (clrBack != CLR_INVALID) {
       HDC hDC = NULL;
       Hr = m_p3DBackSurface->GetDC(&hDC);
-      if( FAILED(Hr) ) return false;
+      if (FAILED(Hr))  return false;
       HBRUSH hBrush = ::CreateSolidBrush(clrBack);
       ::FillRect(hDC, &rc, hBrush);
       ::DeleteObject(hBrush);
@@ -424,8 +424,8 @@ bool CAnimationSpooler::RenderJob_Flat(const CAnimJobUI* pJob, LPDIRECT3DSURFACE
    RECT rc = pJob->data.plot.rcFrom;
    FLOAT mu = (FLOAT)(pJob->dwStartTick + pJob->dwDuration - dwTick) / (FLOAT) pJob->dwDuration;
    FLOAT scale1 = 0.0;
-   if( pJob->data.plot.iInterpolate == CAnimJobUI::INTERPOLATE_LINEAR ) scale1 = (FLOAT) LinearInterpolate(0.0, 1.0, mu);
-   if( pJob->data.plot.iInterpolate == CAnimJobUI::INTERPOLATE_COS ) scale1 = (FLOAT) CosineInterpolate(0.0, 1.0, mu);
+   if (pJob->data.plot.iInterpolate == CAnimJobUI::INTERPOLATE_LINEAR)  scale1 = (FLOAT) LinearInterpolate(0.0, 1.0, mu);
+   if (pJob->data.plot.iInterpolate == CAnimJobUI::INTERPOLATE_COS)  scale1 = (FLOAT) CosineInterpolate(0.0, 1.0, mu);
    FLOAT scale2 = 1.0f - scale1;
    D3DVECTOR ptCenter = { rc.left + ((rc.right - rc.left) / 2.0f), rc.top + ((rc.bottom - rc.top) / 2.0f) };
    FLOAT xtrans = (FLOAT) pJob->data.plot.mFrom.xtrans * scale1;
@@ -435,15 +435,15 @@ bool CAnimationSpooler::RenderJob_Flat(const CAnimJobUI* pJob, LPDIRECT3DSURFACE
    FLOAT fCos = (FLOAT) cos(pJob->data.plot.mFrom.zrot * scale1);
    DWORD clrAlpha = ((DWORD)(0xFF - (FLOAT) abs(pJob->data.plot.mFrom.alpha) * (pJob->data.plot.mFrom.alpha >= 0 ? scale1 : scale2)) << 24) | 0xffffff;
    HRESULT Hr = 0;
-   for( int iBuffer = pJob->iBufferStart; iBuffer < pJob->iBufferEnd; iBuffer++ ) {
+   for( int iBuffer = pJob->iBufferStart; iBuffer < pJob->iBufferEnd; iBuffer++)  {
       // Lock the vertex buffer and apply transformation
       LPDIRECT3DVERTEXBUFFER9 pVBuffer = m_p3DVertices[iBuffer];
       void* pVertices = NULL;
       Hr = pVBuffer->Lock(0, sizeof(CUSTOMFAN), &pVertices, 0);
-      if( FAILED(Hr) ) return false;
+      if (FAILED(Hr))  return false;
       CUSTOMFAN verts;
       memcpy(verts, m_fans[iBuffer], sizeof(CUSTOMFAN));
-      for( int i = 0; i < sizeof(CUSTOMFAN) / sizeof(CUSTOMVERTEX); i++ ) {
+      for( int i = 0; i < sizeof(CUSTOMFAN) / sizeof(CUSTOMVERTEX); i++)  {
          verts[i].x -= ptCenter.x;
          verts[i].y -= ptCenter.y;
          verts[i].x += xtrans;                         // Translate

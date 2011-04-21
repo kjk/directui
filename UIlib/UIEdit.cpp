@@ -65,10 +65,10 @@ LRESULT CSingleLineEditWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lPara
 {
    LRESULT lRes = 0;
    BOOL bHandled = TRUE;
-   if( uMsg == WM_KILLFOCUS ) lRes = OnKillFocus(uMsg, wParam, lParam, bHandled);
-   else if( uMsg == OCM_COMMAND && GET_WM_COMMAND_CMD(wParam, lParam) == EN_CHANGE ) lRes = OnEditChanged(uMsg, wParam, lParam, bHandled);
+   if (uMsg == WM_KILLFOCUS)  lRes = OnKillFocus(uMsg, wParam, lParam, bHandled);
+   else if (uMsg == OCM_COMMAND && GET_WM_COMMAND_CMD(wParam, lParam) == EN_CHANGE)  lRes = OnEditChanged(uMsg, wParam, lParam, bHandled);
    else bHandled = FALSE;
-   if( !bHandled ) return CWindowWnd::HandleMessage(uMsg, wParam, lParam);
+   if (!bHandled)  return CWindowWnd::HandleMessage(uMsg, wParam, lParam);
    return lRes;
 }
 
@@ -81,12 +81,12 @@ LRESULT CSingleLineEditWnd::OnKillFocus(UINT uMsg, WPARAM wParam, LPARAM lParam,
 
 LRESULT CSingleLineEditWnd::OnEditChanged(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
-   if( m_owner == NULL ) return 0;
+   if (m_owner == NULL)  return 0;
    // Copy text back
    int cchLen = ::GetWindowTextLength(m_hWnd) + 1;
    TCHAR* pstr = static_cast<TCHAR*>(_alloca(cchLen * sizeof(TCHAR)));
    ASSERT(pstr);
-   if( pstr == NULL ) return 0;
+   if (pstr == NULL)  return 0;
    ::GetWindowText(m_hWnd, pstr, cchLen);
    m_owner->SetText(pstr);
    return 0;
@@ -109,26 +109,26 @@ UINT CSingleLineEditUI::GetControlFlags() const
 
 void CSingleLineEditUI::Event(TEventUI& event)
 {
-   if( event.Type == UIEVENT_SETCURSOR )
+   if (event.Type == UIEVENT_SETCURSOR) 
    {
-      if( IsEnabled() ) {
+      if (IsEnabled())  {
          ::SetCursor(::LoadCursor(NULL, MAKEINTRESOURCE(IDC_IBEAM)));
          return;
       }
    }
-   if( event.Type == UIEVENT_WINDOWSIZE )
+   if (event.Type == UIEVENT_WINDOWSIZE) 
    {
-      if( m_pWindow != NULL ) m_manager->SetFocus(NULL);
+      if (m_pWindow != NULL)  m_manager->SetFocus(NULL);
    }
-   if( event.Type == UIEVENT_SETFOCUS ) 
+   if (event.Type == UIEVENT_SETFOCUS)  
    {
-      if( IsEnabled() ) {
+      if (IsEnabled())  {
          m_pWindow = new CSingleLineEditWnd();
          ASSERT(m_pWindow);
          m_pWindow->Init(this);
       }
    }
-   if( event.Type == UIEVENT_BUTTONDOWN && IsFocused() && m_pWindow == NULL ) 
+   if (event.Type == UIEVENT_BUTTONDOWN && IsFocused() && m_pWindow == NULL)  
    {
       // FIX: In the case of window having lost focus, editor is gone, but
       //      we don't get another SetFocus when we click on the control again.
@@ -143,7 +143,7 @@ void CSingleLineEditUI::Event(TEventUI& event)
 void CSingleLineEditUI::SetText(const TCHAR* pstrText)
 {
    m_sText = pstrText;
-   if( m_manager != NULL ) m_manager->SendNotify(this, _T("changed"));
+   if (m_manager != NULL)  m_manager->SendNotify(this, _T("changed"));
    Invalidate();
 }
 
@@ -172,9 +172,9 @@ SIZE CSingleLineEditUI::EstimateSize(SIZE /*szAvailable*/)
 void CSingleLineEditUI::DoPaint(HDC hDC, const RECT& /*rcPaint*/)
 {
    UINT uState = 0;
-   if( IsFocused() ) uState |= UISTATE_FOCUSED;
-   if( IsReadOnly() ) uState |= UISTATE_READONLY;
-   if( !IsEnabled() ) uState |= UISTATE_DISABLED;
+   if (IsFocused())  uState |= UISTATE_FOCUSED;
+   if (IsReadOnly())  uState |= UISTATE_READONLY;
+   if (!IsEnabled())  uState |= UISTATE_DISABLED;
    CBlueRenderEngineUI::DoPaintEditBox(hDC, m_manager, m_rcItem, m_sText, uState, m_uEditStyle, false);
 }
 
@@ -206,7 +206,7 @@ void CMultiLineEditWnd::Init(CMultiLineEditUI* owner)
    SendMessage(EM_SETMARGINS, EC_LEFTMARGIN | EC_RIGHTMARGIN, MAKELPARAM(2, 2));
    Edit_SetReadOnly(m_hWnd, owner->IsReadOnly() == true);
    Edit_Enable(m_hWnd, owner->IsEnabled() == true);
-   if( owner->IsVisible() ) ::ShowWindow(m_hWnd, SW_SHOWNOACTIVATE);
+   if (owner->IsVisible())  ::ShowWindow(m_hWnd, SW_SHOWNOACTIVATE);
    m_owner = owner;
 }
 
@@ -230,15 +230,15 @@ LRESULT CMultiLineEditWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam
 {
    LRESULT lRes = 0;
    BOOL bHandled = TRUE;
-   if( uMsg == OCM_COMMAND && GET_WM_COMMAND_CMD(wParam, lParam) == EN_CHANGE ) lRes = OnEditChanged(uMsg, wParam, lParam, bHandled);
+   if (uMsg == OCM_COMMAND && GET_WM_COMMAND_CMD(wParam, lParam) == EN_CHANGE)  lRes = OnEditChanged(uMsg, wParam, lParam, bHandled);
    else bHandled = FALSE;
-   if( !bHandled ) return CWindowWnd::HandleMessage(uMsg, wParam, lParam);
+   if (!bHandled)  return CWindowWnd::HandleMessage(uMsg, wParam, lParam);
    return lRes;
 }
 
 LRESULT CMultiLineEditWnd::OnEditChanged(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
-   if( m_owner == NULL ) return 0;
+   if (m_owner == NULL)  return 0;
    // Copy text back
    int cchLen = ::GetWindowTextLength(m_hWnd) + 1;
    TCHAR* pstr = static_cast<TCHAR*>(_alloca(cchLen * sizeof(TCHAR)));
@@ -256,7 +256,7 @@ CMultiLineEditUI::CMultiLineEditUI() : m_pWindow(NULL)
 
 CMultiLineEditUI::~CMultiLineEditUI()
 {
-   if( m_pWindow != NULL && ::IsWindow(*m_pWindow) ) m_pWindow->Close();
+   if (m_pWindow != NULL && ::IsWindow(*m_pWindow))  m_pWindow->Close();
 }
 
 void CMultiLineEditUI::Init()
@@ -279,14 +279,14 @@ UINT CMultiLineEditUI::GetControlFlags() const
 void CMultiLineEditUI::SetText(const TCHAR* pstrText)
 {
    m_sText = pstrText;
-   if( m_pWindow != NULL ) SetWindowText(*m_pWindow, pstrText);
-   if( m_manager != NULL ) m_manager->SendNotify(this, _T("changed"));
+   if (m_pWindow != NULL)  SetWindowText(*m_pWindow, pstrText);
+   if (m_manager != NULL)  m_manager->SendNotify(this, _T("changed"));
    Invalidate();
 }
 
 CStdString CMultiLineEditUI::GetText() const
 {
-   if( m_pWindow != NULL ) {
+   if (m_pWindow != NULL)  {
       int cchLen = ::GetWindowTextLength(*m_pWindow) + 1;
       TCHAR* pstr = static_cast<TCHAR*>(_alloca(cchLen * sizeof(TCHAR)));
       ASSERT(pstr);
@@ -299,18 +299,18 @@ CStdString CMultiLineEditUI::GetText() const
 void CMultiLineEditUI::SetVisible(bool bVisible)
 {
    CControlUI::SetVisible(bVisible);
-   if( m_pWindow != NULL ) ::ShowWindow(*m_pWindow, bVisible ? SW_SHOWNOACTIVATE : SW_HIDE);
+   if (m_pWindow != NULL)  ::ShowWindow(*m_pWindow, bVisible ? SW_SHOWNOACTIVATE : SW_HIDE);
 }
 
 void CMultiLineEditUI::SetEnabled(bool bEnabled)
 {
    CControlUI::SetEnabled(bEnabled);
-   if( m_pWindow != NULL ) ::EnableWindow(*m_pWindow, bEnabled == true);
+   if (m_pWindow != NULL)  ::EnableWindow(*m_pWindow, bEnabled == true);
 }
 
 void CMultiLineEditUI::SetReadOnly(bool bReadOnly)
 {
-   if( m_pWindow != NULL ) Edit_SetReadOnly(*m_pWindow, bReadOnly == true);
+   if (m_pWindow != NULL)  Edit_SetReadOnly(*m_pWindow, bReadOnly == true);
    Invalidate();
 }
 
@@ -326,7 +326,7 @@ SIZE CMultiLineEditUI::EstimateSize(SIZE /*szAvailable*/)
 
 void CMultiLineEditUI::SetPos(RECT rc)
 {
-   if( m_pWindow != NULL ) {
+   if (m_pWindow != NULL)  {
       CRect rcEdit = rc;
       rcEdit.Deflate(3, 3);
       ::SetWindowPos(*m_pWindow, HWND_TOP, rcEdit.left, rcEdit.top, rcEdit.GetWidth(), rcEdit.GetHeight(), SWP_NOACTIVATE);
@@ -341,13 +341,13 @@ void CMultiLineEditUI::SetPos(int left, int top, int right, int bottom)
 
 void CMultiLineEditUI::Event(TEventUI& event)
 {
-   if( event.Type == UIEVENT_WINDOWSIZE )
+   if (event.Type == UIEVENT_WINDOWSIZE) 
    {
-      if( m_pWindow != NULL ) m_manager->SetFocus(NULL);
+      if (m_pWindow != NULL)  m_manager->SetFocus(NULL);
    }
-   if( event.Type == UIEVENT_SETFOCUS ) 
+   if (event.Type == UIEVENT_SETFOCUS)  
    {
-      if( m_pWindow != NULL ) ::SetFocus(*m_pWindow);
+      if (m_pWindow != NULL)  ::SetFocus(*m_pWindow);
    }
    CControlUI::Event(event);
 }
@@ -355,9 +355,9 @@ void CMultiLineEditUI::Event(TEventUI& event)
 void CMultiLineEditUI::DoPaint(HDC hDC, const RECT& /*rcPaint*/)
 {
    UINT uState = 0;
-   if( IsFocused() ) uState |= UISTATE_FOCUSED;
-   if( IsReadOnly() ) uState |= UISTATE_READONLY;
-   if( !IsEnabled() ) uState |= UISTATE_DISABLED;
+   if (IsFocused())  uState |= UISTATE_FOCUSED;
+   if (IsReadOnly())  uState |= UISTATE_READONLY;
+   if (!IsEnabled())  uState |= UISTATE_DISABLED;
    CBlueRenderEngineUI::DoPaintEditBox(hDC, m_manager, m_rcItem, _T(""), uState, 0, true);
 }
 

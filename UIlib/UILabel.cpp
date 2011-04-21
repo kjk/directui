@@ -14,7 +14,7 @@ const TCHAR* CLabelPanelUI::GetClass() const
 void CLabelPanelUI::SetText(const TCHAR* pstrText)
 {
    // Automatic assignment of keyboard shortcut
-   if( _tcschr(pstrText, '&') != NULL ) m_chShortcut = *(_tcschr(pstrText, '&') + 1);
+   if (_tcschr(pstrText, '&') != NULL)  m_chShortcut = *(_tcschr(pstrText, '&') + 1);
    CControlUI::SetText(pstrText);
 }
 
@@ -32,11 +32,11 @@ void CLabelPanelUI::SetTextStyle(UINT uStyle)
 
 void CLabelPanelUI::SetAttribute(const TCHAR* name, const TCHAR* value)
 {
-   if( _tcscmp(name, _T("align")) == 0 ) {
-      if( _tcsstr(value, _T("center")) != NULL ) m_uTextStyle |= DT_CENTER;
-      if( _tcsstr(value, _T("right")) != NULL ) m_uTextStyle |= DT_RIGHT;
+   if (_tcscmp(name, _T("align")) == 0)  {
+      if (_tcsstr(value, _T("center")) != NULL)  m_uTextStyle |= DT_CENTER;
+      if (_tcsstr(value, _T("right")) != NULL)  m_uTextStyle |= DT_RIGHT;
    }
-   else if( _tcscmp(name, _T("width")) == 0 ) SetWidth(_ttoi(value));
+   else if (_tcscmp(name, _T("width")) == 0)  SetWidth(_ttoi(value));
    else CControlUI::SetAttribute(name, value);
 }
 
