@@ -278,7 +278,7 @@ void CListFooterUI::DoPaint(HDC hDC, const RECT& rcPaint)
 }
 
 
-CListUI::CListUI() : m_pCallback(NULL), m_iCurSel(-1), m_iExpandedItem(-1)
+CListUI::CListUI() : m_pCallback(NULL), m_curSel(-1), m_iExpandedItem(-1)
 {
    m_pList = new CVerticalLayoutUI;
    m_pHeader = new CListHeaderUI;
@@ -343,7 +343,7 @@ bool CListUI::Remove(CControlUI* ctrl)
 
 void CListUI::RemoveAll()
 {
-   m_iCurSel = -1;
+   m_curSel = -1;
    m_iExpandedItem = -1;
    m_pList->RemoveAll();
 }
@@ -392,31 +392,31 @@ void CListUI::Event(TEventUI& event)
    case UIEVENT_KEYDOWN:
       switch( event.chKey ) {
       case VK_UP:
-         SelectItem(FindSelectable(m_iCurSel - 1, false));
-         EnsureVisible(m_iCurSel);
+         SelectItem(FindSelectable(m_curSel - 1, false));
+         EnsureVisible(m_curSel);
          return;
       case VK_DOWN:
-         SelectItem(FindSelectable(m_iCurSel + 1, true));
-         EnsureVisible(m_iCurSel);
+         SelectItem(FindSelectable(m_curSel + 1, true));
+         EnsureVisible(m_curSel);
          return;
       case VK_PRIOR:
-         SelectItem(FindSelectable(m_iCurSel - 10, false));
-         EnsureVisible(m_iCurSel);
+         SelectItem(FindSelectable(m_curSel - 10, false));
+         EnsureVisible(m_curSel);
          return;
       case VK_NEXT:
-         SelectItem(FindSelectable(m_iCurSel + 10, true));
-         EnsureVisible(m_iCurSel);
+         SelectItem(FindSelectable(m_curSel + 10, true));
+         EnsureVisible(m_curSel);
          return;
       case VK_HOME:
          SelectItem(FindSelectable(0, false));
-         EnsureVisible(m_iCurSel);
+         EnsureVisible(m_curSel);
          return;
       case VK_END:
          SelectItem(FindSelectable(GetCount() - 1, true));
-         EnsureVisible(m_iCurSel);
+         EnsureVisible(m_curSel);
          return;
       case VK_RETURN:
-         if( m_iCurSel != -1 ) GetItem(m_iCurSel)->Activate();
+         if( m_curSel != -1 ) GetItem(m_curSel)->Activate();
          return;
       }
       break;
@@ -424,12 +424,12 @@ void CListUI::Event(TEventUI& event)
       {
          switch( LOWORD(event.wParam) ) {
          case SB_LINEUP:
-            SelectItem(FindSelectable(m_iCurSel - 1, false));
-            EnsureVisible(m_iCurSel);
+            SelectItem(FindSelectable(m_curSel - 1, false));
+            EnsureVisible(m_curSel);
             return;
          case SB_LINEDOWN:
-            SelectItem(FindSelectable(m_iCurSel + 1, true));
-            EnsureVisible(m_iCurSel);
+            SelectItem(FindSelectable(m_curSel + 1, true));
+            EnsureVisible(m_curSel);
             return;
          }
       }
@@ -455,15 +455,15 @@ CContainerUI* CListUI::GetList() const
 
 int CListUI::GetCurSel() const
 {
-   return m_iCurSel;
+   return m_curSel;
 }
 
 bool CListUI::SelectItem(int idx)
 {
-   if( idx == m_iCurSel ) return true;
+   if( idx == m_curSel ) return true;
    // We should first unselect the currently selected item
-   if( m_iCurSel >= 0 ) {
-      CControlUI* ctrl = GetItem(m_iCurSel);
+   if( m_curSel >= 0 ) {
+      CControlUI* ctrl = GetItem(m_curSel);
       if( ctrl != NULL ) {
          IListItemUI* pListItem = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
          if( pListItem != NULL ) pListItem->Select(false);
@@ -477,9 +477,9 @@ bool CListUI::SelectItem(int idx)
    if( !ctrl->IsEnabled() ) return false;
    IListItemUI* pListItem = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
    if( pListItem == NULL ) return false;
-   m_iCurSel = idx;
+   m_curSel = idx;
    if( !pListItem->Select(true) ) {
-      m_iCurSel = -1;
+      m_curSel = -1;
       return false;
    }
    ctrl->SetFocus();
@@ -535,7 +535,7 @@ int CListUI::GetExpandedItem() const
 
 void CListUI::EnsureVisible(int idx)
 {
-   if( m_iCurSel < 0 ) return;
+   if( m_curSel < 0 ) return;
    RECT rcItem = m_pList->GetItem(idx)->GetPos();
    RECT rcList = m_pList->GetPos();
    int pos = m_pList->GetScrollPos();

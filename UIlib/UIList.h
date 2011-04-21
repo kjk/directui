@@ -183,7 +183,7 @@ public:
    void SetTextCallback(IListCallbackUI* pCallback);
 
 protected:
-   int m_iCurSel;
+   int m_curSel;
    int m_iExpandedItem;
    IListCallbackUI* m_pCallback;
    CVerticalLayoutUI* m_pList;

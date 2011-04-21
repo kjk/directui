@@ -29,7 +29,7 @@ public:
    void SetAttribute(const TCHAR* name, const TCHAR* value);
 
 protected:
-   int m_iCurSel;
+   int m_curSel;
    RECT m_rcPage;
    RECT m_rcClient;
    CControlUI* m_pCurPage;

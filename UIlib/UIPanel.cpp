@@ -3,7 +3,7 @@
 #include "UIPanel.h"
 
 
-CNavigatorPanelUI::CNavigatorPanelUI() : m_iCurSel(-1)
+CNavigatorPanelUI::CNavigatorPanelUI() : m_curSel(-1)
 {
 }
 
@@ -20,7 +20,7 @@ void* CNavigatorPanelUI::GetInterface(const TCHAR* name)
 
 int CNavigatorPanelUI::GetCurSel() const
 {
-   return m_iCurSel;
+   return m_curSel;
 }
 
 void CNavigatorPanelUI::Event(TEventUI& event)
@@ -30,15 +30,15 @@ void CNavigatorPanelUI::Event(TEventUI& event)
 
 bool CNavigatorPanelUI::SelectItem(int idx)
 {
-   if( idx == m_iCurSel ) return true;
-   if( m_iCurSel >= 0 ) {
-      CControlUI* ctrl = GetItem(m_iCurSel);
+   if( idx == m_curSel ) return true;
+   if( m_curSel >= 0 ) {
+      CControlUI* ctrl = GetItem(m_curSel);
       IListItemUI* pListItem = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
       if( pListItem != NULL ) pListItem->Select(false);
    }
-   m_iCurSel = idx;
-   if( m_iCurSel >= 0 ) {
-      CControlUI* ctrl = GetItem(m_iCurSel);
+   m_curSel = idx;
+   if( m_curSel >= 0 ) {
+      CControlUI* ctrl = GetItem(m_curSel);
       IListItemUI* pListItem = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
       if( pListItem == NULL ) return false;
       pListItem->Select(true);

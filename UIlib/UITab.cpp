@@ -3,7 +3,7 @@
 #include "UITab.h"
 
 
-CTabFolderUI::CTabFolderUI() : m_iCurSel(-1), m_pCurPage(NULL), m_aTabAreas(sizeof(RECT))
+CTabFolderUI::CTabFolderUI() : m_curSel(-1), m_pCurPage(NULL), m_aTabAreas(sizeof(RECT))
 {
    m_chShortcut = VK_NEXT;
 }
@@ -15,7 +15,7 @@ const TCHAR* CTabFolderUI::GetClass() const
 
 void CTabFolderUI::Init()
 {
-   if( m_iCurSel == -1 ) SelectItem(0);
+   if( m_curSel == -1 ) SelectItem(0);
 }
 
 bool CTabFolderUI::Add(CControlUI* ctrl)
@@ -26,17 +26,17 @@ bool CTabFolderUI::Add(CControlUI* ctrl)
 
 int CTabFolderUI::GetCurSel() const
 {
-   return m_iCurSel;
+   return m_curSel;
 }
 
 bool CTabFolderUI::SelectItem(int idx)
 {
-   int iPrevSel = m_iCurSel;
+   int iPrevSel = m_curSel;
    if( idx < 0 || idx >= m_items.GetSize() ) return false;
-   if( idx == m_iCurSel ) return true;
+   if( idx == m_curSel ) return true;
    // Assign page to internal pointers
    if( m_pCurPage != NULL ) m_pCurPage->SetVisible(false);
-   m_iCurSel = idx;
+   m_curSel = idx;
    m_pCurPage = static_cast<CControlUI*>(m_items[idx]);
    if( m_manager != NULL ) m_manager->SendNotify(this, _T("itemselect"));
    m_pCurPage->SetVisible(true);
@@ -62,11 +62,11 @@ void CTabFolderUI::Event(TEventUI& event)
    if( event.Type == UIEVENT_SYSKEY && IsEnabled() )
    {
       if( event.chKey == VK_PRIOR && (event.wKeyState & MK_ALT) != 0 ) {
-         SelectItem(m_iCurSel - 1);
+         SelectItem(m_curSel - 1);
          return;
       }
       if( event.chKey == VK_NEXT && (event.wKeyState & MK_ALT) != 0 ) {
-         SelectItem(m_iCurSel + 1);
+         SelectItem(m_curSel + 1);
          return;
       }
    }
@@ -117,7 +117,7 @@ void CTabFolderUI::DoPaint(HDC hDC, const RECT& rcPaint)
             UINT uState = 0;
             if( IsFocused() ) uState |= UISTATE_FOCUSED;
             if( !IsEnabled() ) uState |= UISTATE_DISABLED;
-            if( m_iCurSel == i ) uState = UISTATE_PUSHED;
+            if( m_curSel == i ) uState = UISTATE_PUSHED;
             CBlueRenderEngineUI::DoPaintTabFolder(hDC, m_manager, rcTab, strText, uState);
             posX += (rcTab.right - rcTab.left) + 2;
             m_aTabAreas.Add(&rcTab);

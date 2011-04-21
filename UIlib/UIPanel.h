@@ -49,7 +49,7 @@ public:
    void DoPaint(HDC hDC, const RECT& rcPaint);
 
 protected:
-   int m_iCurSel;
+   int m_curSel;
 };
 
 class UILIB_API CNavigatorButtonUI : public CListElementUI

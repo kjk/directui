@@ -58,7 +58,7 @@ public:
    void DoPaint(HDC hDC, const RECT& rcPaint);
 
 protected:
-   int m_iCurSel;
+   int m_curSel;
    int m_cxWidth;
    SIZE m_szDropBox;
    RECT m_rcButton;

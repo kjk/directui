@@ -215,7 +215,7 @@ LRESULT CDropDownWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 
 CDropDownUI::CDropDownUI() : 
-   m_iCurSel(-1), 
+   m_curSel(-1), 
    m_uButtonState(0)
 {
    m_szDropBox = CSize(0, 150);
@@ -240,22 +240,22 @@ UINT CDropDownUI::GetControlFlags() const
 
 void CDropDownUI::Init()
 {
-   if( m_iCurSel < 0 ) SelectItem(0);
+   if( m_curSel < 0 ) SelectItem(0);
 }
 
 int CDropDownUI::GetCurSel() const
 {
-   return m_iCurSel;
+   return m_curSel;
 }
 
 bool CDropDownUI::SelectItem(int idx)
 {
-   if( idx == m_iCurSel ) return true;
-   if( m_iCurSel >= 0 ) {
-      CControlUI* ctrl = static_cast<CControlUI*>(m_items[m_iCurSel]);
+   if( idx == m_curSel ) return true;
+   if( m_curSel >= 0 ) {
+      CControlUI* ctrl = static_cast<CControlUI*>(m_items[m_curSel]);
       IListItemUI* pListItem = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
       if( pListItem != NULL ) pListItem->Select(false);
-      m_iCurSel = -1;
+      m_curSel = -1;
    }
    if( m_items.GetSize() == 0 ) return false;
    if( idx < 0 ) idx = 0;
@@ -265,7 +265,7 @@ bool CDropDownUI::SelectItem(int idx)
    if( !ctrl->IsEnabled() ) return false;
    IListItemUI* pListItem = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
    if( pListItem == NULL ) return false;
-   m_iCurSel = idx;
+   m_curSel = idx;
    ctrl->SetFocus();
    pListItem->Select(true);
    if( m_manager != NULL ) m_manager->SendNotify(ctrl, _T("itemclick"));
@@ -292,7 +292,7 @@ bool CDropDownUI::Remove(CControlUI* ctrl)
 
 void CDropDownUI::RemoveAll()
 {
-   m_iCurSel = -1;
+   m_curSel = -1;
    CContainerUI::RemoveAll();
 }
 
@@ -325,16 +325,16 @@ void CDropDownUI::Event(TEventUI& event)
          Activate();
          return;
       case VK_UP:
-         SelectItem(FindSelectable(m_iCurSel - 1, false));
+         SelectItem(FindSelectable(m_curSel - 1, false));
          return;
       case VK_DOWN:
-         SelectItem(FindSelectable(m_iCurSel + 1, true));
+         SelectItem(FindSelectable(m_curSel + 1, true));
          return;
       case VK_PRIOR:
-         SelectItem(FindSelectable(m_iCurSel - 10, false));
+         SelectItem(FindSelectable(m_curSel - 10, false));
          return;
       case VK_NEXT:
-         SelectItem(FindSelectable(m_iCurSel + 10, true));
+         SelectItem(FindSelectable(m_curSel + 10, true));
          return;
       case VK_HOME:
          SelectItem(FindSelectable(0, false));
@@ -347,7 +347,7 @@ void CDropDownUI::Event(TEventUI& event)
    if( event.Type == UIEVENT_SCROLLWHEEL )
    {
       bool bDownward = LOWORD(event.wParam) == SB_LINEDOWN;
-      SelectItem(FindSelectable(m_iCurSel + (bDownward ? 1 : -1), bDownward));
+      SelectItem(FindSelectable(m_curSel + (bDownward ? 1 : -1), bDownward));
       return;
    }
    CControlUI::Event(event);
@@ -365,8 +365,8 @@ bool CDropDownUI::Activate()
 
 CStdString CDropDownUI::GetText() const
 {
-   if( m_iCurSel < 0 ) return _T("");
-   CControlUI* ctrl = static_cast<CControlUI*>(m_items[m_iCurSel]);
+   if( m_curSel < 0 ) return _T("");
+   CControlUI* ctrl = static_cast<CControlUI*>(m_items[m_curSel]);
    return ctrl->GetText();
 }
 
@@ -416,8 +416,8 @@ void CDropDownUI::DoPaint(HDC hDC, const RECT& rcPaint)
    }
    // Paint dropdown edit box
    ::InflateRect(&rcText, -1, -1);
-   if( m_iCurSel >= 0 ) {
-      CControlUI* ctrl = static_cast<CControlUI*>(m_items[m_iCurSel]);
+   if( m_curSel >= 0 ) {
+      CControlUI* ctrl = static_cast<CControlUI*>(m_items[m_curSel]);
       IListItemUI* pElement = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
       if( pElement != NULL ) {
          // Render item with specific draw-style
