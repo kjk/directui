@@ -135,7 +135,7 @@ void CBlueRenderEngineUI::DoPaintBitmap(HDC hDC, CPaintManagerUI* pManager, HBIT
    ::SelectObject(hdcBmp, hOldBitmap);
 }
 
-void CBlueRenderEngineUI::DoPaintArcCaption(HDC hDC, CPaintManagerUI* pManager, RECT rc, LPCTSTR pstrText, UINT uStyle)
+void CBlueRenderEngineUI::DoPaintArcCaption(HDC hDC, CPaintManagerUI* pManager, RECT rc, const TCHAR* pstrText, UINT uStyle)
 {
    CRenderClip clip;
    GenerateClip(hDC, rc, clip);
@@ -163,7 +163,7 @@ void CBlueRenderEngineUI::DoPaintArcCaption(HDC hDC, CPaintManagerUI* pManager, 
    }
 }
 
-void CBlueRenderEngineUI::DoPaintButton(HDC hDC, CPaintManagerUI* pManager, RECT rc, LPCTSTR pstrText, RECT rcPadding, UINT uState, UINT uStyle)
+void CBlueRenderEngineUI::DoPaintButton(HDC hDC, CPaintManagerUI* pManager, RECT rc, const TCHAR* pstrText, RECT rcPadding, UINT uState, UINT uStyle)
 {
    ASSERT(::GetObjectType(hDC)==OBJ_DC || ::GetObjectType(hDC)==OBJ_MEMDC);
    // Draw focus rectangle
@@ -222,7 +222,7 @@ void CBlueRenderEngineUI::DoPaintButton(HDC hDC, CPaintManagerUI* pManager, RECT
    DoPaintPrettyText(hDC, pManager, rcText, pstrText, clrText, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE | uStyle);
 }
 
-void CBlueRenderEngineUI::DoPaintEditBox(HDC hDC, CPaintManagerUI* pManager, RECT rcItem, LPCTSTR pstrText, UINT uState, UINT uDrawStyle, bool bPaintFrameOnly)
+void CBlueRenderEngineUI::DoPaintEditBox(HDC hDC, CPaintManagerUI* pManager, RECT rcItem, const TCHAR* pstrText, UINT uState, UINT uDrawStyle, bool bPaintFrameOnly)
 {
    ASSERT(::GetObjectType(hDC)==OBJ_DC || ::GetObjectType(hDC)==OBJ_MEMDC);
    if( (uState & UISTATE_DISABLED) != 0 ) {
@@ -247,7 +247,7 @@ void CBlueRenderEngineUI::DoPaintEditBox(HDC hDC, CPaintManagerUI* pManager, REC
    ::DrawText(hDC, pstrText, -1, &rcEdit, DT_SINGLELINE | DT_VCENTER | DT_NOPREFIX | DT_EDITCONTROL | uDrawStyle);
 }
 
-void CBlueRenderEngineUI::DoPaintOptionBox(HDC hDC, CPaintManagerUI* pManager, RECT rcItem, LPCTSTR pstrText, UINT uState, UINT uStyle)
+void CBlueRenderEngineUI::DoPaintOptionBox(HDC hDC, CPaintManagerUI* pManager, RECT rcItem, const TCHAR* pstrText, UINT uState, UINT uStyle)
 {
    ASSERT(::GetObjectType(hDC)==OBJ_DC || ::GetObjectType(hDC)==OBJ_MEMDC);
    // Determine placement of elements
@@ -284,7 +284,7 @@ void CBlueRenderEngineUI::DoPaintOptionBox(HDC hDC, CPaintManagerUI* pManager, R
    }
 }
 
-void CBlueRenderEngineUI::DoPaintTabFolder(HDC hDC, CPaintManagerUI* pManager, RECT& rcItem, LPCTSTR pstrText, UINT uState)
+void CBlueRenderEngineUI::DoPaintTabFolder(HDC hDC, CPaintManagerUI* pManager, RECT& rcItem, const TCHAR* pstrText, UINT uState)
 {
    ASSERT(::GetObjectType(hDC)==OBJ_DC || ::GetObjectType(hDC)==OBJ_MEMDC);
    ::SetBkMode(hDC, TRANSPARENT);
@@ -343,7 +343,7 @@ void CBlueRenderEngineUI::DoPaintTabFolder(HDC hDC, CPaintManagerUI* pManager, R
    rcItem = rcTab;
 }
 
-void CBlueRenderEngineUI::DoPaintToolbarButton(HDC hDC, CPaintManagerUI* pManager, RECT rc, LPCTSTR pstrText, SIZE szPadding, UINT uState)
+void CBlueRenderEngineUI::DoPaintToolbarButton(HDC hDC, CPaintManagerUI* pManager, RECT rc, const TCHAR* pstrText, SIZE szPadding, UINT uState)
 {
    ASSERT(::GetObjectType(hDC)==OBJ_DC || ::GetObjectType(hDC)==OBJ_MEMDC);
    if( (uState & UISTATE_PUSHED) != 0 ) {
@@ -372,7 +372,7 @@ void CBlueRenderEngineUI::DoPaintQuickText(HDC hDC, CPaintManagerUI* pManager, R
    ::DrawText(hDC, pstrText, -1, &rc, DT_SINGLELINE);
 }
 
-void CBlueRenderEngineUI::DoPaintPrettyText(HDC hDC, CPaintManagerUI* pManager, RECT& rc, LPCTSTR pstrText, UITYPE_COLOR iTextColor, UITYPE_COLOR iBackColor, RECT* prcLinks, int& nLinkRects, UINT uStyle)
+void CBlueRenderEngineUI::DoPaintPrettyText(HDC hDC, CPaintManagerUI* pManager, RECT& rc, const TCHAR* pstrText, UITYPE_COLOR iTextColor, UITYPE_COLOR iBackColor, RECT* prcLinks, int& nLinkRects, UINT uStyle)
 {
    ASSERT(::GetObjectType(hDC)==OBJ_DC || ::GetObjectType(hDC)==OBJ_MEMDC);
 
@@ -640,7 +640,7 @@ void CBlueRenderEngineUI::DoPaintPrettyText(HDC hDC, CPaintManagerUI* pManager, 
          POINT ptPos = pt;
          int cchChars = 0;
          int cchLastGoodWord = 0;
-         LPCTSTR p = pstrText;
+         const TCHAR* p = pstrText;
          SIZE szText = { 0 };
          if( *p == '<' ) p++, cchChars++;
          while( *p != '\0' && *p != '<' && *p != '\n' && *p != '&' ) {

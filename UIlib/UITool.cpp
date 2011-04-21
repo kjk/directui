@@ -7,7 +7,7 @@
 //
 //
 
-LPCTSTR CStatusbarUI::GetClass() const
+const TCHAR* CStatusbarUI::GetClass() const
 {
    return _T("StatusbarUI");
 }
@@ -35,7 +35,7 @@ CToolbarTitlePanelUI::CToolbarTitlePanelUI() : m_iPadding(6)
 {
 }
 
-LPCTSTR CToolbarTitlePanelUI::GetClass() const
+const TCHAR* CToolbarTitlePanelUI::GetClass() const
 {
    return _T("ToolbarTitlePanelUI");
 }
@@ -71,7 +71,7 @@ CToolbarUI::CToolbarUI()
    SetPadding(2);
 }
 
-LPCTSTR CToolbarUI::GetClass() const
+const TCHAR* CToolbarUI::GetClass() const
 {
    return _T("ToolbarUI");
 }
@@ -96,7 +96,7 @@ CToolButtonUI::CToolButtonUI()
 {
 }
 
-LPCTSTR CToolButtonUI::GetClass() const
+const TCHAR* CToolButtonUI::GetClass() const
 {
    return _T("ToolButtonUI");
 }
@@ -114,7 +114,7 @@ void CToolButtonUI::DoPaint(HDC hDC, const RECT& rcPaint)
 //
 //
 
-LPCTSTR CToolSeparatorUI::GetClass() const
+const TCHAR* CToolSeparatorUI::GetClass() const
 {
    return _T("ToolSeparatorUI");
 }
@@ -137,7 +137,7 @@ void CToolSeparatorUI::DoPaint(HDC hDC, const RECT& rcPaint)
 //
 //
 
-LPCTSTR CToolGripperUI::GetClass() const
+const TCHAR* CToolGripperUI::GetClass() const
 {
    return _T("ToolGripperUI");
 }

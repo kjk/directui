@@ -11,11 +11,11 @@ class UILIB_API CMarkup
 {
 friend CMarkupNode;
 public:
-   CMarkup(LPCTSTR pstrXML = NULL);
+   CMarkup(const TCHAR* pstrXML = NULL);
    ~CMarkup();
 
-   bool Load(LPCTSTR pstrXML);
-   bool LoadFromFile(LPCTSTR pstrFilename);
+   bool Load(const TCHAR* pstrXML);
+   bool LoadFromFile(const TCHAR* pstrFilename);
    void Release();
    bool IsValid() const;
 
@@ -48,13 +48,13 @@ private:
    bool _Parse(LPTSTR& pstrText, ULONG iParent);
    XMLELEMENT* _ReserveElement();
    inline void _SkipWhitespace(LPTSTR& pstr) const;
-   inline void _SkipWhitespace(LPCTSTR& pstr) const;
+   inline void _SkipWhitespace(const TCHAR*& pstr) const;
    inline void _SkipIdentifier(LPTSTR& pstr) const;
-   inline void _SkipIdentifier(LPCTSTR& pstr) const;
+   inline void _SkipIdentifier(const TCHAR*& pstr) const;
    bool _ParseData(LPTSTR& pstrText, LPTSTR& pstrData, char cEnd);
    void _ParseMetaChar(LPTSTR& pstrText, LPTSTR& pstrDest);
    bool _ParseAttributes(LPTSTR& pstrText);
-   bool _Failed(LPCTSTR pstrError, LPCTSTR pstrLocation = NULL);
+   bool _Failed(const TCHAR* pstrError, const TCHAR* pstrLocation = NULL);
 };
 
 
@@ -71,21 +71,21 @@ public:
    CMarkupNode GetParent();
    CMarkupNode GetSibling();
    CMarkupNode GetChild();
-   CMarkupNode GetChild(LPCTSTR pstrName);
+   CMarkupNode GetChild(const TCHAR* pstrName);
 
    bool HasSiblings() const;
    bool HasChildren() const;
-   LPCTSTR GetName() const;
-   LPCTSTR GetValue() const;
+   const TCHAR* GetName() const;
+   const TCHAR* GetValue() const;
 
    bool HasAttributes();
-   bool HasAttribute(LPCTSTR pstrName);
+   bool HasAttribute(const TCHAR* pstrName);
    int GetAttributeCount();
-   LPCTSTR GetAttributeName(int iIndex);
-   LPCTSTR GetAttributeValue(int iIndex);
-   LPCTSTR GetAttributeValue(LPCTSTR pstrName);
+   const TCHAR* GetAttributeName(int iIndex);
+   const TCHAR* GetAttributeValue(int iIndex);
+   const TCHAR* GetAttributeValue(const TCHAR* pstrName);
    bool GetAttributeValue(int iIndex, LPTSTR pstrValue, SIZE_T cchMax);
-   bool GetAttributeValue(LPCTSTR pstrName, LPTSTR pstrValue, SIZE_T cchMax);
+   bool GetAttributeValue(const TCHAR* pstrName, LPTSTR pstrValue, SIZE_T cchMax);
 
 private:
    void _MapAttributes();

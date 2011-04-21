@@ -7,14 +7,14 @@
 class IDialogBuilderCallback
 {
 public:
-   virtual CControlUI* CreateControl(LPCTSTR pstrClass) = 0;
+   virtual CControlUI* CreateControl(const TCHAR* pstrClass) = 0;
 };
 
 
 class UILIB_API CDialogBuilder
 {
 public:
-   CControlUI* Create(LPCTSTR pstrXML, IDialogBuilderCallback* pCallback = NULL);
+   CControlUI* Create(const TCHAR* pstrXML, IDialogBuilderCallback* pCallback = NULL);
    CControlUI* CreateFromResource(UINT nRes, IDialogBuilderCallback* pCallback = NULL);
 
 private:

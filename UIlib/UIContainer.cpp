@@ -23,12 +23,12 @@ CContainerUI::~CContainerUI()
    RemoveAll();
 }
 
-LPCTSTR CContainerUI::GetClass() const
+const TCHAR* CContainerUI::GetClass() const
 {
    return _T("ContainerUI");
 }
 
-void* CContainerUI::GetInterface(LPCTSTR pstrName)
+void* CContainerUI::GetInterface(const TCHAR* pstrName)
 {
    if( _tcscmp(pstrName, _T("Container")) == 0 ) return static_cast<IContainerUI*>(this);
    return CControlUI::GetInterface(pstrName);
@@ -254,7 +254,7 @@ SIZE CContainerUI::EstimateSize(SIZE /*szAvailable*/)
    return m_cxyFixed;
 }
 
-void CContainerUI::SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue)
+void CContainerUI::SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue)
 {
    if( _tcscmp(pstrName, _T("inset")) == 0 ) SetInset(CSize(_ttoi(pstrValue), _ttoi(pstrValue)));
    else if( _tcscmp(pstrName, _T("padding")) == 0 ) SetPadding(_ttoi(pstrValue));
@@ -352,7 +352,7 @@ CCanvasUI::~CCanvasUI()
    if( m_hBitmap != NULL ) ::DeleteObject(m_hBitmap);
 }
 
-LPCTSTR CCanvasUI::GetClass() const
+const TCHAR* CCanvasUI::GetClass() const
 {
    return _T("CanvasUI");
 }
@@ -362,7 +362,7 @@ bool CCanvasUI::SetWatermark(UINT iBitmapRes, int iOrientation)
    return SetWatermark(MAKEINTRESOURCE(iBitmapRes), iOrientation);
 }
 
-bool CCanvasUI::SetWatermark(LPCTSTR pstrBitmap, int iOrientation)
+bool CCanvasUI::SetWatermark(const TCHAR* pstrBitmap, int iOrientation)
 {
    if( m_hBitmap != NULL ) ::DeleteObject(m_hBitmap);
    m_hBitmap = (HBITMAP) ::LoadImage(m_pManager->GetResourceInstance(), pstrBitmap, IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION);
@@ -405,7 +405,7 @@ void CCanvasUI::DoPaint(HDC hDC, const RECT& rcPaint)
    CContainerUI::DoPaint(hDC, rcPaint);
 }
 
-void CCanvasUI::SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue)
+void CCanvasUI::SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue)
 {
    if( _tcscmp(pstrName, _T("watermark")) == 0 ) SetWatermark(pstrValue);
    else CContainerUI::SetAttribute(pstrName, pstrValue);
@@ -422,7 +422,7 @@ CWindowCanvasUI::CWindowCanvasUI()
    m_clrBack = m_pManager->GetThemeColor(UICOLOR_WINDOW_BACKGROUND);
 }
 
-LPCTSTR CWindowCanvasUI::GetClass() const
+const TCHAR* CWindowCanvasUI::GetClass() const
 {
    return _T("WindowCanvasUI");
 }
@@ -438,7 +438,7 @@ CControlCanvasUI::CControlCanvasUI()
    m_clrBack = m_pManager->GetThemeColor(UICOLOR_CONTROL_BACKGROUND_NORMAL);
 }
 
-LPCTSTR CControlCanvasUI::GetClass() const
+const TCHAR* CControlCanvasUI::GetClass() const
 {
    return _T("ControlCanvasUI");
 }
@@ -454,7 +454,7 @@ CWhiteCanvasUI::CWhiteCanvasUI()
    m_clrBack = m_pManager->GetThemeColor(UICOLOR_STANDARD_WHITE);
 }
 
-LPCTSTR CWhiteCanvasUI::GetClass() const
+const TCHAR* CWhiteCanvasUI::GetClass() const
 {
    return _T("WhiteCanvasUI");
 }
@@ -470,7 +470,7 @@ CDialogCanvasUI::CDialogCanvasUI()
    m_clrBack = m_pManager->GetThemeColor(UICOLOR_DIALOG_BACKGROUND);
 }
 
-LPCTSTR CDialogCanvasUI::GetClass() const
+const TCHAR* CDialogCanvasUI::GetClass() const
 {
    return _T("DialogCanvasUI");
 }
@@ -487,7 +487,7 @@ CTabFolderCanvasUI::CTabFolderCanvasUI()
    m_pManager->GetThemeColorPair(UICOLOR_TAB_FOLDER_NORMAL, clrColor1, m_clrBack);
 }
 
-LPCTSTR CTabFolderCanvasUI::GetClass() const
+const TCHAR* CTabFolderCanvasUI::GetClass() const
 {
    return _T("TabFolderCanvasUI");
 }
@@ -501,7 +501,7 @@ CVerticalLayoutUI::CVerticalLayoutUI() : m_cyNeeded(0)
 {
 }
 
-LPCTSTR CVerticalLayoutUI::GetClass() const
+const TCHAR* CVerticalLayoutUI::GetClass() const
 {
    return _T("VertialLayoutUI");
 }
@@ -563,7 +563,7 @@ CHorizontalLayoutUI::CHorizontalLayoutUI()
 {
 }
 
-LPCTSTR CHorizontalLayoutUI::GetClass() const
+const TCHAR* CHorizontalLayoutUI::GetClass() const
 {
    return _T("HorizontalLayoutUI");
 }
@@ -620,7 +620,7 @@ CTileLayoutUI::CTileLayoutUI() : m_nColumns(2), m_cyNeeded(0)
    SetInset(CSize(10, 10));
 }
 
-LPCTSTR CTileLayoutUI::GetClass() const
+const TCHAR* CTileLayoutUI::GetClass() const
 {
    return _T("TileLayoutUI");
 }
@@ -693,12 +693,12 @@ CDialogLayoutUI::CDialogLayoutUI() : m_bFirstResize(true), m_aModes(sizeof(STRET
    ::ZeroMemory(&m_rcDialog, sizeof(m_rcDialog));
 }
 
-LPCTSTR CDialogLayoutUI::GetClass() const
+const TCHAR* CDialogLayoutUI::GetClass() const
 {
    return _T("DialogLayoutUI");
 }
 
-void* CDialogLayoutUI::GetInterface(LPCTSTR pstrName)
+void* CDialogLayoutUI::GetInterface(const TCHAR* pstrName)
 {
    if( _tcscmp(pstrName, _T("DialogLayout")) == 0 ) return this;
    return CContainerUI::GetInterface(pstrName);

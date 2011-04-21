@@ -18,10 +18,10 @@ friend CSingleLineEditWnd;
 public:
    CSingleLineEditUI();
 
-   LPCTSTR GetClass() const;
+   const TCHAR* GetClass() const;
    UINT GetControlFlags() const;
 
-   void SetText(LPCTSTR pstrText);
+   void SetText(const TCHAR* pstrText);
 
    void SetEditStyle(UINT uStyle);
    void SetReadOnly(bool bReadOnly);
@@ -53,13 +53,13 @@ public:
    CMultiLineEditUI();
    ~CMultiLineEditUI();
 
-   LPCTSTR GetClass() const;
+   const TCHAR* GetClass() const;
    UINT GetControlFlags() const;
 
    void Init();
    
    CStdString GetText() const;
-   void SetText(LPCTSTR pstrText);
+   void SetText(const TCHAR* pstrText);
 
    void SetEnabled(bool bEnabled);
    void SetVisible(bool bVisible);

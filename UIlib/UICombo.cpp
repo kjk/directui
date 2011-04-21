@@ -13,7 +13,7 @@ CSingleLinePickUI::CSingleLinePickUI() : m_cxWidth(0), m_nLinks(0), m_uButtonSta
    ::ZeroMemory(&m_rcButton, sizeof(m_rcButton));
 }
 
-LPCTSTR CSingleLinePickUI::GetClass() const
+const TCHAR* CSingleLinePickUI::GetClass() const
 {
    return _T("SinglePrettyEditUI");
 }
@@ -130,7 +130,7 @@ class CDropDownWnd : public CWindowWnd
 {
 public:
    void Init(CDropDownUI* pOwner);
-   LPCTSTR GetWindowClassName() const;
+   const TCHAR* GetWindowClassName() const;
    void OnFinalMessage(HWND hWnd);
 
    LRESULT HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam);
@@ -161,7 +161,7 @@ void CDropDownWnd::Init(CDropDownUI* pOwner)
    ::SendMessage(hWndParent, WM_NCACTIVATE, TRUE, 0L);
 }
 
-LPCTSTR CDropDownWnd::GetWindowClassName() const
+const TCHAR* CDropDownWnd::GetWindowClassName() const
 {
    return _T("DropDownWnd");
 }
@@ -231,12 +231,12 @@ CDropDownUI::CDropDownUI() :
    ::ZeroMemory(&m_rcButton, sizeof(RECT));
 }
 
-LPCTSTR CDropDownUI::GetClass() const
+const TCHAR* CDropDownUI::GetClass() const
 {
    return _T("DropDownUI");
 }
 
-void* CDropDownUI::GetInterface(LPCTSTR pstrName)
+void* CDropDownUI::GetInterface(const TCHAR* pstrName)
 {
    if( _tcscmp(pstrName, _T("ListOwner")) == 0 ) return static_cast<IListOwnerUI*>(this);
    return CContainerUI::GetInterface(pstrName);

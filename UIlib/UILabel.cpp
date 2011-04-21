@@ -11,12 +11,12 @@ CLabelPanelUI::CLabelPanelUI() : m_cxWidth(0), m_uTextStyle(DT_VCENTER)
 {
 }
 
-LPCTSTR CLabelPanelUI::GetClass() const
+const TCHAR* CLabelPanelUI::GetClass() const
 {
    return _T("LabelPanelUI");
 }
 
-void CLabelPanelUI::SetText(LPCTSTR pstrText)
+void CLabelPanelUI::SetText(const TCHAR* pstrText)
 {
    // Automatic assignment of keyboard shortcut
    if( _tcschr(pstrText, '&') != NULL ) m_chShortcut = *(_tcschr(pstrText, '&') + 1);
@@ -35,7 +35,7 @@ void CLabelPanelUI::SetTextStyle(UINT uStyle)
    Invalidate();
 }
 
-void CLabelPanelUI::SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue)
+void CLabelPanelUI::SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue)
 {
    if( _tcscmp(pstrName, _T("align")) == 0 ) {
       if( _tcsstr(pstrValue, _T("center")) != NULL ) m_uTextStyle |= DT_CENTER;
@@ -62,7 +62,7 @@ void CLabelPanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
 //
 //
 
-LPCTSTR CGreyTextHeaderUI::GetClass() const
+const TCHAR* CGreyTextHeaderUI::GetClass() const
 {
    return _T("GreyTextHeaderUI");
 }

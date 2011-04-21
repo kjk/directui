@@ -14,8 +14,8 @@ public:
 
    void Init(CSingleLineEditUI* pOwner);
 
-   LPCTSTR GetWindowClassName() const;
-   LPCTSTR GetSuperClassName() const;
+   const TCHAR* GetWindowClassName() const;
+   const TCHAR* GetSuperClassName() const;
    void OnFinalMessage(HWND hWnd);
 
    LRESULT HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam);
@@ -48,12 +48,12 @@ void CSingleLineEditWnd::Init(CSingleLineEditUI* pOwner)
    m_pOwner = pOwner;
 }
 
-LPCTSTR CSingleLineEditWnd::GetWindowClassName() const
+const TCHAR* CSingleLineEditWnd::GetWindowClassName() const
 {
    return _T("SingleLineEditWnd");
 }
 
-LPCTSTR CSingleLineEditWnd::GetSuperClassName() const
+const TCHAR* CSingleLineEditWnd::GetSuperClassName() const
 {
    return WC_EDIT;
 }
@@ -105,7 +105,7 @@ CSingleLineEditUI::CSingleLineEditUI() : m_pWindow(NULL), m_uEditStyle(ES_AUTOHS
 {
 }
 
-LPCTSTR CSingleLineEditUI::GetClass() const
+const TCHAR* CSingleLineEditUI::GetClass() const
 {
    return _T("SingleLineEditUI");
 }
@@ -148,7 +148,7 @@ void CSingleLineEditUI::Event(TEventUI& event)
    CControlUI::Event(event);
 }
 
-void CSingleLineEditUI::SetText(LPCTSTR pstrText)
+void CSingleLineEditUI::SetText(const TCHAR* pstrText)
 {
    m_sText = pstrText;
    if( m_pManager != NULL ) m_pManager->SendNotify(this, _T("changed"));
@@ -196,8 +196,8 @@ class CMultiLineEditWnd : public CWindowWnd
 public:
    void Init(CMultiLineEditUI* pOwner);
 
-   LPCTSTR GetWindowClassName() const;
-   LPCTSTR GetSuperClassName() const;
+   const TCHAR* GetWindowClassName() const;
+   const TCHAR* GetSuperClassName() const;
    void OnFinalMessage(HWND hWnd);
 
    LRESULT HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam);
@@ -223,12 +223,12 @@ void CMultiLineEditWnd::Init(CMultiLineEditUI* pOwner)
    m_pOwner = pOwner;
 }
 
-LPCTSTR CMultiLineEditWnd::GetWindowClassName() const
+const TCHAR* CMultiLineEditWnd::GetWindowClassName() const
 {
    return _T("MultiLineEditWnd");
 }
 
-LPCTSTR CMultiLineEditWnd::GetSuperClassName() const
+const TCHAR* CMultiLineEditWnd::GetSuperClassName() const
 {
    return WC_EDIT;
 }
@@ -283,7 +283,7 @@ void CMultiLineEditUI::Init()
    m_pWindow->Init(this);
 }
 
-LPCTSTR CMultiLineEditUI::GetClass() const
+const TCHAR* CMultiLineEditUI::GetClass() const
 {
    return _T("MultiLineEditUI");
 }
@@ -293,7 +293,7 @@ UINT CMultiLineEditUI::GetControlFlags() const
    return UIFLAG_TABSTOP;
 }
 
-void CMultiLineEditUI::SetText(LPCTSTR pstrText)
+void CMultiLineEditUI::SetText(const TCHAR* pstrText)
 {
    m_sText = pstrText;
    if( m_pWindow != NULL ) SetWindowText(*m_pWindow, pstrText);

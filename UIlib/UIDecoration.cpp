@@ -7,7 +7,7 @@
 //
 //
 
-LPCTSTR CTitleShadowUI::GetClass() const
+const TCHAR* CTitleShadowUI::GetClass() const
 {
    return _T("TitleShadowUI");
 }
@@ -30,7 +30,7 @@ void CTitleShadowUI::DoPaint(HDC hDC, const RECT& /*rcPaint*/)
 //
 //
 
-LPCTSTR CListHeaderShadowUI::GetClass() const
+const TCHAR* CListHeaderShadowUI::GetClass() const
 {
    return _T("ListHeaderShadowUI");
 }
@@ -53,7 +53,7 @@ void CListHeaderShadowUI::DoPaint(HDC hDC, const RECT& /*rcPaint*/)
 //
 //
 
-LPCTSTR CFadedLineUI::GetClass() const
+const TCHAR* CFadedLineUI::GetClass() const
 {
    return _T("FadedLineUI");
 }
@@ -78,7 +78,7 @@ void CFadedLineUI::DoPaint(HDC hDC, const RECT& /*rcPaint*/)
 //
 //
 
-LPCTSTR CSeparatorLineUI::GetClass() const
+const TCHAR* CSeparatorLineUI::GetClass() const
 {
    return _T("SeparatorLineUI");
 }

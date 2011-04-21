@@ -22,7 +22,7 @@ UINT CListElementUI::GetControlFlags() const
    return UIFLAG_WANTRETURN;
 }
 
-void* CListElementUI::GetInterface(LPCTSTR pstrName)
+void* CListElementUI::GetInterface(const TCHAR* pstrName)
 {
    if( _tcscmp(pstrName, _T("ListItem")) == 0 ) return static_cast<IListItemUI*>(this);
    return CControlUI::GetInterface(pstrName);
@@ -97,7 +97,7 @@ void CListElementUI::Event(TEventUI& event)
    if( m_pOwner != NULL ) m_pOwner->Event(event); else CControlUI::Event(event);
 }
 
-void CListElementUI::SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue)
+void CListElementUI::SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue)
 {
    if( _tcscmp(pstrName, _T("selected")) == 0 ) Select();
    else CControlUI::SetAttribute(pstrName, pstrValue);
@@ -113,12 +113,12 @@ CListHeaderUI::CListHeaderUI()
    SetInset(CSize(0, 0));
 }
 
-LPCTSTR CListHeaderUI::GetClass() const
+const TCHAR* CListHeaderUI::GetClass() const
 {
    return _T("ListHeaderUI");
 }
 
-void* CListHeaderUI::GetInterface(LPCTSTR pstrName)
+void* CListHeaderUI::GetInterface(const TCHAR* pstrName)
 {
    if( _tcscmp(pstrName, _T("ListHeader")) == 0 ) return this;
    return CHorizontalLayoutUI::GetInterface(pstrName);
@@ -150,12 +150,12 @@ CListHeaderItemUI::CListHeaderItemUI() : m_uDragState(0)
 {
 }
 
-LPCTSTR CListHeaderItemUI::GetClass() const
+const TCHAR* CListHeaderItemUI::GetClass() const
 {
    return _T("ListHeaderItemUI");
 }
 
-void CListHeaderItemUI::SetText(LPCTSTR pstrText)
+void CListHeaderItemUI::SetText(const TCHAR* pstrText)
 {
    m_sText = pstrText;
    UpdateLayout();
@@ -167,7 +167,7 @@ void CListHeaderItemUI::SetWidth(int cxWidth)
    UpdateLayout();
 }
 
-void CListHeaderItemUI::SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue)
+void CListHeaderItemUI::SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue)
 {
    if( _tcscmp(pstrName, _T("width")) == 0 ) SetWidth(_ttol(pstrValue));
    else CControlUI::SetAttribute(pstrName, pstrValue);
@@ -265,12 +265,12 @@ CListFooterUI::CListFooterUI()
    Add(pPadding);
 }
 
-LPCTSTR CListFooterUI::GetClass() const
+const TCHAR* CListFooterUI::GetClass() const
 {
    return _T("ListFooterUI");
 }
 
-void* CListFooterUI::GetInterface(LPCTSTR pstrName)
+void* CListFooterUI::GetInterface(const TCHAR* pstrName)
 {
    if( _tcscmp(pstrName, _T("ListFooter")) == 0 ) return this;
    return CHorizontalLayoutUI::GetInterface(pstrName);
@@ -320,7 +320,7 @@ CListUI::CListUI() : m_pCallback(NULL), m_iCurSel(-1), m_iExpandedItem(-1)
    ::ZeroMemory(&m_ListInfo, sizeof(TListInfoUI));
 }
 
-LPCTSTR CListUI::GetClass() const
+const TCHAR* CListUI::GetClass() const
 {
    return _T("ListUI");
 }
@@ -330,7 +330,7 @@ UINT CListUI::GetControlFlags() const
    return UIFLAG_TABSTOP;
 }
 
-void* CListUI::GetInterface(LPCTSTR pstrName)
+void* CListUI::GetInterface(const TCHAR* pstrName)
 {
    if( _tcscmp(pstrName, _T("List")) == 0 ) return static_cast<IListUI*>(this);
    if( _tcscmp(pstrName, _T("ListOwner")) == 0 ) return static_cast<IListOwnerUI*>(this);
@@ -573,7 +573,7 @@ void CListUI::Scroll(int dx, int dy)
    m_pList->SetScrollPos(m_pList->GetScrollPos() + dy);
 }
 
-void CListUI::SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue)
+void CListUI::SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue)
 {
    if( _tcscmp(pstrName, _T("header")) == 0 ) GetHeader()->SetVisible(_tcscmp(pstrValue, _T("hidden")) != 0);
    else if( _tcscmp(pstrName, _T("footer")) == 0 ) GetFooter()->SetVisible(_tcscmp(pstrValue, _T("hidden")) != 0);
@@ -600,7 +600,7 @@ CListLabelElementUI::CListLabelElementUI() : m_cxWidth(0), m_uTextStyle(DT_VCENT
 {
 }
 
-LPCTSTR CListLabelElementUI::GetClass() const
+const TCHAR* CListLabelElementUI::GetClass() const
 {
    return _T("ListLabelElementUI");
 }
@@ -639,7 +639,7 @@ void CListLabelElementUI::Event(TEventUI& event)
    CListElementUI::Event(event);
 }
 
-void CListLabelElementUI::SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue)
+void CListLabelElementUI::SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue)
 {
    if( _tcscmp(pstrName, _T("width")) == 0 ) {
       SetWidth(_ttoi(pstrValue));
@@ -709,7 +709,7 @@ CListTextElementUI::CListTextElementUI() : m_cyItem(0), m_nLinks(0), m_pOwner(NU
    ::ZeroMemory(&m_rcLinks, sizeof(m_rcLinks));
 }
 
-LPCTSTR CListTextElementUI::GetClass() const
+const TCHAR* CListTextElementUI::GetClass() const
 {
    return _T("ListTextElementUI");
 }
@@ -747,7 +747,7 @@ SIZE CListTextElementUI::EstimateSize(SIZE szAvailable)
    // We calculate the item height only once, because it will not wrap on the
    // line anyway when the screen is resized.
    if( m_cyItem == 0 ) {
-      LPCTSTR pstrText = _T("XXX");
+      const TCHAR* pstrText = _T("XXX");
       RECT rcText = { 0, 0, 9999, 9999 };
       int nLinks = 0;
       CBlueRenderEngineUI::DoPaintPrettyText(m_pManager->GetPaintDC(), m_pManager, rcText, pstrText, UICOLOR__INVALID, UICOLOR__INVALID, NULL, nLinks, DT_CALCRECT | m_uTextStyle);
@@ -792,7 +792,7 @@ void CListTextElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
    {
       // Paint text
       RECT rcItem = { pInfo->rcColumn[i].left, m_rcItem.top, pInfo->rcColumn[i].right, m_rcItem.bottom - 1 };
-      LPCTSTR pstrText = pCallback->GetItemText(this, m_iIndex, i);
+      const TCHAR* pstrText = pCallback->GetItemText(this, m_iIndex, i);
       ::InflateRect(&rcItem, -4, 0);
       CBlueRenderEngineUI::DoPaintPrettyText(hDC, m_pManager, rcItem, pstrText, iTextColor, UICOLOR__INVALID, m_rcLinks, nLinks, DT_SINGLELINE | m_uTextStyle);
       if( nLinks > 0 ) m_nLinks = nLinks, nLinks = 0; else nLinks = lengthof(m_rcLinks);
@@ -815,7 +815,7 @@ CListExpandElementUI::~CListExpandElementUI()
    delete m_pContainer;
 }
 
-LPCTSTR CListExpandElementUI::GetClass() const
+const TCHAR* CListExpandElementUI::GetClass() const
 {
    return _T("ListExpandElementUI");
 }
@@ -880,7 +880,7 @@ SIZE CListExpandElementUI::EstimateSize(SIZE szAvailable)
    // We calculate the item height only once, because it will not wrap on the
    // line anyway when the screen is resized.
    if( m_cyItem == 0 ) {
-      LPCTSTR pstrText = _T("XXX");
+      const TCHAR* pstrText = _T("XXX");
       RECT rcText = { 0, 0, 9999, 9999 };
       int nLinks = 0;
       CBlueRenderEngineUI::DoPaintPrettyText(m_pManager->GetPaintDC(), m_pManager, rcText, pstrText, UICOLOR__INVALID, UICOLOR__INVALID, NULL, nLinks, DT_CALCRECT | m_uTextStyle);
@@ -1001,7 +1001,7 @@ void CListExpandElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
    {
       // Paint text
       RECT rcItem = { pInfo->rcColumn[i].left, m_rcItem.top, pInfo->rcColumn[i].right, m_rcItem.top + m_cyItem };
-      LPCTSTR pstrText = pCallback->GetItemText(this, m_iIndex, i);
+      const TCHAR* pstrText = pCallback->GetItemText(this, m_iIndex, i);
       // If list control is expandable then we'll automaticially draw
       // the expander-box at the first column.
       if( i == 0 && pInfo->bExpandable ) {

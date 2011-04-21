@@ -14,16 +14,16 @@ class UILIB_API CLabelPanelUI : public CControlUI
 public:
    CLabelPanelUI();
 
-   LPCTSTR GetClass() const;
+   const TCHAR* GetClass() const;
 
-   void SetText(LPCTSTR pstrText);
+   void SetText(const TCHAR* pstrText);
 
    void SetWidth(int cxWidth);
    void SetTextStyle(UINT uStyle);
 
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
-   void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
+   void SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue);
 
 protected:
    int m_cxWidth;
@@ -37,7 +37,7 @@ protected:
 class UILIB_API CGreyTextHeaderUI : public CControlUI
 {
 public:
-   LPCTSTR GetClass() const;
+   const TCHAR* GetClass() const;
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
 };

@@ -318,7 +318,7 @@ public:
    bool AddNotifier(INotifyUI* pControl);
    bool RemoveNotifier(INotifyUI* pControl);   
    void SendNotify(TNotifyUI& Msg);
-   void SendNotify(CControlUI* pControl, LPCTSTR pstrMessage, WPARAM wParam = 0, LPARAM lParam = 0);
+   void SendNotify(CControlUI* pControl, const TCHAR* pstrMessage, WPARAM wParam = 0, LPARAM lParam = 0);
 
    bool AddMessageFilter(IMessageFilterUI* pFilter);
    bool RemoveMessageFilter(IMessageFilterUI* pFilter);
@@ -327,7 +327,7 @@ public:
    bool AddPostPaintBlit(const TPostPaintUI& job);
 
    CControlUI* FindControl(POINT pt) const;
-   CControlUI* FindControl(LPCTSTR pstrName);
+   CControlUI* FindControl(const TCHAR* pstrName);
 
    static void MessageLoop();
    static bool TranslateMessage(const LPMSG pMsg);
@@ -399,17 +399,17 @@ public:
 
 public:
    virtual CStdString GetName() const;
-   virtual void SetName(LPCTSTR pstrName);
-   virtual void* GetInterface(LPCTSTR pstrName);
+   virtual void SetName(const TCHAR* pstrName);
+   virtual void* GetInterface(const TCHAR* pstrName);
 
    virtual bool Activate();
    virtual CControlUI* GetParent() const;
 
    virtual CStdString GetText() const;
-   virtual void SetText(LPCTSTR pstrText);
+   virtual void SetText(const TCHAR* pstrText);
 
    virtual CStdString GetToolTip() const;
-   virtual void SetToolTip(LPCTSTR pstrText);
+   virtual void SetToolTip(const TCHAR* pstrText);
 
    virtual TCHAR GetShortcut() const;
    virtual void SetShortcut(TCHAR ch);
@@ -441,10 +441,10 @@ public:
    virtual void Event(TEventUI& event);
    virtual void Notify(TNotifyUI& msg);
 
-   virtual void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
-   CControlUI* ApplyAttributeList(LPCTSTR pstrList);
+   virtual void SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue);
+   CControlUI* ApplyAttributeList(const TCHAR* pstrList);
 
-   virtual LPCTSTR GetClass() const = 0;
+   virtual const TCHAR* GetClass() const = 0;
    virtual SIZE EstimateSize(SIZE szAvailable) = 0;
    virtual void DoPaint(HDC hDC, const RECT& rcPaint) = 0;
 

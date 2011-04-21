@@ -37,8 +37,8 @@ class CPaintManagerUI;
    #define TRACEMSG _T("")
 #endif
 
-void UILIB_API __Trace(LPCTSTR pstrFormat, ...);
-LPCTSTR __TraceMsg(UINT uMsg);
+void UILIB_API __Trace(const TCHAR* pstrFormat, ...);
+const TCHAR* __TraceMsg(UINT uMsg);
 
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -161,8 +161,8 @@ public:
    bool RegisterWindowClass();
    bool RegisterSuperclass();
 
-   HWND Create(HWND hwndParent, LPCTSTR pstrName, DWORD dwStyle, DWORD dwExStyle, const RECT rc, HMENU hMenu = NULL);
-   HWND Create(HWND hwndParent, LPCTSTR pstrName, DWORD dwStyle, DWORD dwExStyle, int x = CW_USEDEFAULT, int y = CW_USEDEFAULT, int cx = CW_USEDEFAULT, int cy = CW_USEDEFAULT, HMENU hMenu = NULL);
+   HWND Create(HWND hwndParent, const TCHAR* pstrName, DWORD dwStyle, DWORD dwExStyle, const RECT rc, HMENU hMenu = NULL);
+   HWND Create(HWND hwndParent, const TCHAR* pstrName, DWORD dwStyle, DWORD dwExStyle, int x = CW_USEDEFAULT, int y = CW_USEDEFAULT, int cx = CW_USEDEFAULT, int cy = CW_USEDEFAULT, HMENU hMenu = NULL);
    HWND Subclass(HWND hWnd);
    void Unsubclass();
    void ShowWindow(bool bShow = true, bool bTakeFocus = true);
@@ -172,8 +172,8 @@ public:
    void SetIcon(UINT nRes);
 
 protected:
-   virtual LPCTSTR GetWindowClassName() const = 0;
-   virtual LPCTSTR GetSuperClassName() const;
+   virtual const TCHAR* GetWindowClassName() const = 0;
+   virtual const TCHAR* GetSuperClassName() const;
    virtual UINT GetClassStyle() const;
 
    LRESULT SendMessage(UINT uMsg, WPARAM wParam = 0, LPARAM lParam = 0L);
@@ -218,7 +218,7 @@ public:
    CStdString();
    CStdString(const TCHAR ch);
    CStdString(const CStdString& src);
-   CStdString(LPCTSTR lpsz, int nLen = -1);
+   CStdString(const TCHAR* lpsz, int nLen = -1);
    virtual ~CStdString();
 
    static CStdString RES(UINT nRes);
@@ -227,9 +227,9 @@ public:
    int GetLength() const;
    bool IsEmpty() const;
    TCHAR GetAt(int nIndex) const;
-   void Append(LPCTSTR pstr);
-   void Assign(LPCTSTR pstr, int nLength = -1);
-   LPCTSTR GetData();
+   void Append(const TCHAR* pstr);
+   void Assign(const TCHAR* pstr, int nLength = -1);
+   const TCHAR* GetData();
    
    void SetAt(int nIndex, TCHAR ch);
    operator LPCTSTR() const;
@@ -237,25 +237,25 @@ public:
    TCHAR operator[] (int nIndex) const;
    const CStdString& operator=(const CStdString& src);
    const CStdString& operator=(const TCHAR ch);
-   const CStdString& operator=(LPCTSTR pstr);
+   const CStdString& operator=(const TCHAR* pstr);
 #ifndef _UNICODE
    const CStdString& CStdString::operator=(LPCWSTR lpwStr);
 #endif
    CStdString operator+(const CStdString& src);
-   CStdString operator+(LPCTSTR pstr);
+   CStdString operator+(const TCHAR* pstr);
    const CStdString& operator+=(const CStdString& src);
-   const CStdString& operator+=(LPCTSTR pstr);
+   const CStdString& operator+=(const TCHAR* pstr);
    const CStdString& operator+=(const TCHAR ch);
 
-   bool operator == (LPCTSTR str) const;
-   bool operator != (LPCTSTR str) const;
-   bool operator <= (LPCTSTR str) const;
-   bool operator <  (LPCTSTR str) const;
-   bool operator >= (LPCTSTR str) const;
-   bool operator >  (LPCTSTR str) const;
+   bool operator == (const TCHAR* str) const;
+   bool operator != (const TCHAR* str) const;
+   bool operator <= (const TCHAR* str) const;
+   bool operator <  (const TCHAR* str) const;
+   bool operator >= (const TCHAR* str) const;
+   bool operator >  (const TCHAR* str) const;
 
-   int Compare(LPCTSTR pstr) const;
-   int CompareNoCase(LPCTSTR pstr) const;
+   int Compare(const TCHAR* pstr) const;
+   int CompareNoCase(const TCHAR* pstr) const;
    
    void MakeUpper();
    void MakeLower();
@@ -265,12 +265,12 @@ public:
    CStdString Right(int nLength) const;
 
    int Find(TCHAR ch, int iPos = 0) const;
-   int Find(LPCTSTR pstr, int iPos = 0) const;
+   int Find(const TCHAR* pstr, int iPos = 0) const;
    int ReverseFind(TCHAR ch) const;
-   int Replace(LPCTSTR pstrFrom, LPCTSTR pstrTo);
+   int Replace(const TCHAR* pstrFrom, const TCHAR* pstrTo);
    
    void ProcessResourceTokens();
-   int __cdecl Format(LPCTSTR pstrFormat, ...);
+   int __cdecl Format(const TCHAR* pstrFormat, ...);
 
 protected:
    LPTSTR m_pstr;

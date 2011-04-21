@@ -10,7 +10,7 @@
 //
 //
 
-static UINT GetNameHash(LPCTSTR pstrName)
+static UINT GetNameHash(const TCHAR* pstrName)
 {
    UINT i = 0;
    SIZE_T len = _tcslen(pstrName);
@@ -644,7 +644,7 @@ bool CPaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LR
          m_ToolTip.hwnd = m_hWndPaint;
          m_ToolTip.uId = (UINT) m_hWndPaint;
          m_ToolTip.hinst = m_hInstance;
-         m_ToolTip.lpszText = const_cast<LPTSTR>( (LPCTSTR) sToolTip );
+         m_ToolTip.lpszText = const_cast<LPTSTR>( (const TCHAR*) sToolTip );
          m_ToolTip.rect = pHover->GetPos();
          if( m_hwndTooltip == NULL ) {
             m_hwndTooltip = ::CreateWindowEx(0, TOOLTIPS_CLASS, NULL, WS_POPUP | TTS_NOPREFIX | TTS_ALWAYSTIP, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, m_hWndPaint, NULL, m_hInstance, NULL);
@@ -1147,7 +1147,7 @@ bool CPaintManagerUI::RemoveMessageFilter(IMessageFilterUI* pFilter)
    return false;
 }
 
-void CPaintManagerUI::SendNotify(CControlUI* pControl, LPCTSTR pstrMessage, WPARAM wParam /*= 0*/, LPARAM lParam /*= 0*/)
+void CPaintManagerUI::SendNotify(CControlUI* pControl, const TCHAR* pstrMessage, WPARAM wParam /*= 0*/, LPARAM lParam /*= 0*/)
 {
    TNotifyUI Msg;
    Msg.pSender = pControl;
@@ -1231,7 +1231,7 @@ bool CPaintManagerUI::GetThemeColorPair(UITYPE_COLOR Index, COLORREF& clr1, COLO
    return true;
 }
 
-CControlUI* CPaintManagerUI::FindControl(LPCTSTR pstrName)
+CControlUI* CPaintManagerUI::FindControl(const TCHAR* pstrName)
 {
    ASSERT(m_pRoot);
    // First time here? Build hash array...
@@ -1400,7 +1400,7 @@ CStdString CControlUI::GetText() const
    return m_sText;
 }
 
-void CControlUI::SetText(LPCTSTR pstrText)
+void CControlUI::SetText(const TCHAR* pstrText)
 {
    m_sText = pstrText;
    Invalidate();
@@ -1416,7 +1416,7 @@ void CControlUI::SetTag(UINT_PTR pTag)
    m_pTag = pTag;
 }
 
-void CControlUI::SetToolTip(LPCTSTR pstrText)
+void CControlUI::SetToolTip(const TCHAR* pstrText)
 {
    m_sToolTip = pstrText;
 }
@@ -1448,12 +1448,12 @@ CStdString CControlUI::GetName() const
    return m_sName;
 }
 
-void CControlUI::SetName(LPCTSTR pstrName)
+void CControlUI::SetName(const TCHAR* pstrName)
 {
    m_sName = pstrName;
 }
 
-void* CControlUI::GetInterface(LPCTSTR pstrName)
+void* CControlUI::GetInterface(const TCHAR* pstrName)
 {
    if( _tcscmp(pstrName, _T("Control")) == 0 ) return this;
    return NULL;
@@ -1522,7 +1522,7 @@ void CControlUI::Notify(TNotifyUI& /*msg*/)
 {
 }
 
-void CControlUI::SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue)
+void CControlUI::SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue)
 {
    if( _tcscmp(pstrName, _T("pos")) == 0 ) {
       RECT rcPos = { 0 };
@@ -1541,7 +1541,7 @@ void CControlUI::SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue)
    else if( _tcscmp(pstrName, _T("shortcut")) == 0 ) SetShortcut(pstrValue[0]);
 }
 
-CControlUI* CControlUI::ApplyAttributeList(LPCTSTR pstrList)
+CControlUI* CControlUI::ApplyAttributeList(const TCHAR* pstrList)
 {
    CStdString sItem;
    CStdString sValue;

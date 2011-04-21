@@ -21,10 +21,10 @@ public:
    CActiveXUI();
    virtual ~CActiveXUI();
 
-   LPCTSTR GetClass() const;
+   const TCHAR* GetClass() const;
 
    bool CreateControl(const CLSID clsid);
-   bool CreateControl(LPCTSTR pstrCLSID);
+   bool CreateControl(const TCHAR* pstrCLSID);
    HRESULT GetControl(const IID iid, LPVOID* ppRet);
 
    void SetWidth(int cx);
@@ -34,7 +34,7 @@ public:
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
 
-   void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
+   void SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue);
 
    LRESULT MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, bool& bHandled);
 

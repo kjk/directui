@@ -35,7 +35,7 @@ typedef struct tagTListInfoUI
 class IListCallbackUI
 {
 public:
-   virtual LPCTSTR GetItemText(CControlUI* pList, int iItem, int iSubItem) = 0;
+   virtual const TCHAR* GetItemText(CControlUI* pList, int iItem, int iSubItem) = 0;
    virtual int CompareItem(CControlUI* pList, CControlUI* pItem1, CControlUI* pItem2) = 0;
 };
 
@@ -83,7 +83,7 @@ public:
    CListElementUI();
 
    UINT GetControlFlags() const;
-   void* GetInterface(LPCTSTR pstrName);
+   void* GetInterface(const TCHAR* pstrName);
 
    int GetIndex() const;
    void SetIndex(int iIndex);
@@ -98,7 +98,7 @@ public:
    bool Activate();
 
    void Event(TEventUI& event);
-   void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
+   void SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue);
 
 protected:
    int m_iIndex;
@@ -115,8 +115,8 @@ class UILIB_API CListHeaderUI : public CHorizontalLayoutUI
 public:
    CListHeaderUI();
 
-   LPCTSTR GetClass() const;
-   void* GetInterface(LPCTSTR pstrName);
+   const TCHAR* GetClass() const;
+   void* GetInterface(const TCHAR* pstrName);
 
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
@@ -131,10 +131,10 @@ class UILIB_API CListHeaderItemUI : public CControlUI
 public:
    CListHeaderItemUI();
 
-   LPCTSTR GetClass() const;
+   const TCHAR* GetClass() const;
    UINT GetControlFlags() const;
    
-   void SetText(LPCTSTR pstrText);
+   void SetText(const TCHAR* pstrText);
 
    void Event(TEventUI& event);
 
@@ -142,7 +142,7 @@ public:
    void DoPaint(HDC hDC, const RECT& rcPaint);
 
    void SetWidth(int cxWidth);
-   void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
+   void SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue);
 
    RECT GetThumbRect(RECT rc) const;
 
@@ -161,8 +161,8 @@ class UILIB_API CListFooterUI : public CHorizontalLayoutUI
 public:
    CListFooterUI();
 
-   LPCTSTR GetClass() const;
-   void* GetInterface(LPCTSTR pstrName);
+   const TCHAR* GetClass() const;
+   void* GetInterface(const TCHAR* pstrName);
 
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
@@ -177,9 +177,9 @@ class UILIB_API CListUI : public CVerticalLayoutUI, public IListUI
 public:
    CListUI();
 
-   LPCTSTR GetClass() const;
+   const TCHAR* GetClass() const;
    UINT GetControlFlags() const;
-   void* GetInterface(LPCTSTR pstrName);
+   void* GetInterface(const TCHAR* pstrName);
 
    int GetCurSel() const;
    bool SelectItem(int iIndex);
@@ -205,7 +205,7 @@ public:
 
    void SetPos(RECT rc);
    void Event(TEventUI& event);
-   void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
+   void SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue);
 
    IListCallbackUI* GetTextCallback() const;
    void SetTextCallback(IListCallbackUI* pCallback);
@@ -229,7 +229,7 @@ class UILIB_API CListLabelElementUI : public CListElementUI
 public:
    CListLabelElementUI();
 
-   LPCTSTR GetClass() const;
+   const TCHAR* GetClass() const;
 
    void SetWidth(int cxWidth);
    void SetTextStyle(UINT uStyle);
@@ -240,7 +240,7 @@ public:
 
    void DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle);
 
-   void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
+   void SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue);
 
 protected:
    int m_cxWidth;
@@ -257,7 +257,7 @@ class UILIB_API CListTextElementUI : public CListLabelElementUI
 public:
    CListTextElementUI();
 
-   LPCTSTR GetClass() const;
+   const TCHAR* GetClass() const;
    UINT GetControlFlags() const;
 
    void SetOwner(CControlUI* pOwner);
@@ -285,7 +285,7 @@ public:
    CListExpandElementUI();
    virtual ~CListExpandElementUI();
 
-   LPCTSTR GetClass() const;
+   const TCHAR* GetClass() const;
 
    void SetPos(RECT rc);
    void Event(TEventUI& event);

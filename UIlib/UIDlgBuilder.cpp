@@ -3,7 +3,7 @@
 #include "UIDlgBuilder.h"
 
 
-CControlUI* CDialogBuilder::Create(LPCTSTR pstrXML, IDialogBuilderCallback* pCallback /*= NULL*/)
+CControlUI* CDialogBuilder::Create(const TCHAR* pstrXML, IDialogBuilderCallback* pCallback /*= NULL*/)
 {
    m_pCallback = pCallback;
    if( !m_xml.Load(pstrXML) ) return NULL;
@@ -35,7 +35,7 @@ CControlUI* CDialogBuilder::_Parse(CMarkupNode* pRoot, CControlUI* pParent)
    IContainerUI* pContainer = NULL;
    CControlUI* pReturn = NULL;
    for( CMarkupNode node = pRoot->GetChild() ; node.IsValid(); node = node.GetSibling() ) {
-      LPCTSTR pstrClass = node.GetName();
+      const TCHAR* pstrClass = node.GetName();
       SIZE_T cchLen = _tcslen(pstrClass);
       CControlUI* pControl = NULL;
       switch( cchLen ) {

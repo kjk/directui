@@ -20,7 +20,7 @@ public:
    enum { FADE_TIMERID = 10 };
    enum { FADE_DELAY = 500UL };
 
-   LPCTSTR GetClass() const;
+   const TCHAR* GetClass() const;
 
    void Event(TEventUI& event);
    void SetPos(RECT rc);
@@ -42,8 +42,8 @@ class UILIB_API CNavigatorPanelUI : public CVerticalLayoutUI, public IListOwnerU
 public:
    CNavigatorPanelUI();
 
-   LPCTSTR GetClass() const;   
-   void* GetInterface(LPCTSTR pstrName);
+   const TCHAR* GetClass() const;   
+   void* GetInterface(const TCHAR* pstrName);
 
    bool Add(CControlUI* pControl);
 
@@ -68,7 +68,7 @@ class UILIB_API CNavigatorButtonUI : public CListElementUI
 public:
    CNavigatorButtonUI();
 
-   LPCTSTR GetClass() const;
+   const TCHAR* GetClass() const;
    void Event(TEventUI& event);
    
    SIZE EstimateSize(SIZE szAvailable);
@@ -90,13 +90,13 @@ class UILIB_API CSearchTitlePanelUI : public CHorizontalLayoutUI
 public:
    CSearchTitlePanelUI();
 
-   LPCTSTR GetClass() const;
+   const TCHAR* GetClass() const;
 
    void SetImage(int iIndex);
 
    void SetPos(RECT rc);
    void DoPaint(HDC hDC, const RECT& rcPaint);
-   void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
+   void SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue);
 
 protected:
    int m_iIconIndex;
@@ -112,14 +112,14 @@ public:
    CPaddingPanelUI();
    CPaddingPanelUI(int cx, int cy);
 
-   LPCTSTR GetClass() const;
+   const TCHAR* GetClass() const;
 
    void SetWidth(int cx);
    void SetHeight(int cy);
 
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
-   void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
+   void SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue);
 
 protected:
    SIZE m_cxyFixed;
@@ -135,15 +135,15 @@ public:
    CImagePanelUI();
    virtual ~CImagePanelUI();
 
-   LPCTSTR GetClass() const;
+   const TCHAR* GetClass() const;
 
-   bool SetImage(LPCTSTR pstrImage);
+   bool SetImage(const TCHAR* pstrImage);
    void SetWidth(int cx);
    void SetHeight(int cy);
 
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
-   void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
+   void SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue);
 
 protected:
    HBITMAP m_hBitmap;
@@ -159,7 +159,7 @@ class UILIB_API CTextPanelUI : public CLabelPanelUI
 public:
    CTextPanelUI();
 
-   LPCTSTR GetClass() const;
+   const TCHAR* GetClass() const;
    UINT GetControlFlags() const;
 
    bool Activate();
@@ -171,7 +171,7 @@ public:
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
 
-   void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
+   void SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue);
 
 protected:
    int m_nLinks;
@@ -190,13 +190,13 @@ class UILIB_API CWarningPanelUI : public CTextPanelUI
 public:
    CWarningPanelUI();
 
-   LPCTSTR GetClass() const;
+   const TCHAR* GetClass() const;
 
    void SetWarningType(UINT uType);
 
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);  
-   void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
+   void SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue);
 
 protected:
    UITYPE_COLOR m_BackColor;

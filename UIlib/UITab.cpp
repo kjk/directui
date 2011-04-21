@@ -12,7 +12,7 @@ CTabFolderUI::CTabFolderUI() : m_iCurSel(-1), m_pCurPage(NULL), m_aTabAreas(size
    m_chShortcut = VK_NEXT;
 }
 
-LPCTSTR CTabFolderUI::GetClass() const
+const TCHAR* CTabFolderUI::GetClass() const
 {
    return _T("TabFolderUI");
 }
@@ -132,7 +132,7 @@ void CTabFolderUI::DoPaint(HDC hDC, const RECT& rcPaint)
    if( m_pCurPage != NULL ) m_pCurPage->DoPaint(hDC, rcPaint);
 }
 
-void CTabFolderUI::SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue)
+void CTabFolderUI::SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue)
 {
    if( _tcscmp(pstrName, _T("select")) == 0 ) SelectItem(_ttoi(pstrValue));
    else CContainerUI::SetAttribute(pstrName, pstrValue);
@@ -148,7 +148,7 @@ CTabPageUI::CTabPageUI()
    SetInset(CSize(6, 6));
 }
 
-LPCTSTR CTabPageUI::GetClass() const
+const TCHAR* CTabPageUI::GetClass() const
 {
    return _T("TabPageUI");
 }

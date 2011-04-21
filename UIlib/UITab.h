@@ -16,7 +16,7 @@ class UILIB_API CTabFolderUI : public CContainerUI, public IListOwnerUI
 public:
    CTabFolderUI();
 
-   LPCTSTR GetClass() const;
+   const TCHAR* GetClass() const;
 
    void Init();
 
@@ -30,7 +30,7 @@ public:
    void SetPos(RECT rc);
    void DoPaint(HDC hDC, const RECT& rcPaint);
 
-   void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
+   void SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue);
 
 protected:
    int m_iCurSel;
@@ -45,7 +45,7 @@ class UILIB_API CTabPageUI : public CContainerUI
 {
 public:
    CTabPageUI();
-   LPCTSTR GetClass() const;
+   const TCHAR* GetClass() const;
 
    bool Activate();
 };

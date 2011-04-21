@@ -11,12 +11,12 @@ CNavigatorPanelUI::CNavigatorPanelUI() : m_iCurSel(-1)
 {
 }
 
-LPCTSTR CNavigatorPanelUI::GetClass() const
+const TCHAR* CNavigatorPanelUI::GetClass() const
 {
    return _T("NavigatorPanelUI");
 }
 
-void* CNavigatorPanelUI::GetInterface(LPCTSTR pstrName)
+void* CNavigatorPanelUI::GetInterface(const TCHAR* pstrName)
 {
    if( _tcscmp(pstrName, _T("ListOwner")) == 0 ) return static_cast<IListOwnerUI*>(this);
    return CVerticalLayoutUI::GetInterface(pstrName);
@@ -85,7 +85,7 @@ CNavigatorButtonUI::CNavigatorButtonUI() : m_uButtonState(0)
 {
 }
 
-LPCTSTR CNavigatorButtonUI::GetClass() const
+const TCHAR* CNavigatorButtonUI::GetClass() const
 {
    return _T("NavigatorButton");
 }
@@ -191,7 +191,7 @@ CTaskPanelUI::~CTaskPanelUI()
    if( m_pManager != NULL ) m_pManager->KillTimer(this, FADE_TIMERID);
 }
 
-LPCTSTR CTaskPanelUI::GetClass() const
+const TCHAR* CTaskPanelUI::GetClass() const
 {
    return _T("TaskPanelUI");
 }
@@ -280,7 +280,7 @@ CSearchTitlePanelUI::CSearchTitlePanelUI() : m_iIconIndex(-1)
    SetInset(CSize(0, 0));
 }
 
-LPCTSTR CSearchTitlePanelUI::GetClass() const
+const TCHAR* CSearchTitlePanelUI::GetClass() const
 {
    return _T("SearchTitlePanelUI");
 }
@@ -314,7 +314,7 @@ void CSearchTitlePanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
    CHorizontalLayoutUI::DoPaint(hDC, rcPaint);
 }
 
-void CSearchTitlePanelUI::SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue)
+void CSearchTitlePanelUI::SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue)
 {
    if( _tcscmp(pstrName, _T("image")) == 0 ) SetImage(_ttoi(pstrValue));
    else CHorizontalLayoutUI::SetAttribute(pstrName, pstrValue);
@@ -348,14 +348,14 @@ void CPaddingPanelUI::SetHeight(int cyHeight)
    UpdateLayout();
 }
 
-void CPaddingPanelUI::SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue)
+void CPaddingPanelUI::SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue)
 {
    if( _tcscmp(pstrName, _T("width")) == 0 ) SetWidth(_ttoi(pstrValue));
    else if( _tcscmp(pstrName, _T("height")) == 0 ) SetHeight(_ttoi(pstrValue));
    else CControlUI::SetAttribute(pstrName, pstrValue);
 }
 
-LPCTSTR CPaddingPanelUI::GetClass() const
+const TCHAR* CPaddingPanelUI::GetClass() const
 {
    return _T("PaddingPanel");
 }
@@ -384,7 +384,7 @@ CImagePanelUI::~CImagePanelUI()
    if( m_hBitmap != NULL ) ::DeleteObject(m_hBitmap);
 }
 
-bool CImagePanelUI::SetImage(LPCTSTR pstrBitmap)
+bool CImagePanelUI::SetImage(const TCHAR* pstrBitmap)
 {
    if( m_hBitmap != NULL ) ::DeleteObject(m_hBitmap);
    m_hBitmap = (HBITMAP) ::LoadImage(m_pManager->GetResourceInstance(), pstrBitmap, IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION);
@@ -409,7 +409,7 @@ void CImagePanelUI::SetHeight(int cyHeight)
    UpdateLayout();
 }
 
-void CImagePanelUI::SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue)
+void CImagePanelUI::SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue)
 {
    if( _tcscmp(pstrName, _T("width")) == 0 ) SetWidth(_ttoi(pstrValue));
    else if( _tcscmp(pstrName, _T("height")) == 0 ) SetHeight(_ttoi(pstrValue));
@@ -417,7 +417,7 @@ void CImagePanelUI::SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue)
    else CControlUI::SetAttribute(pstrName, pstrValue);
 }
 
-LPCTSTR CImagePanelUI::GetClass() const
+const TCHAR* CImagePanelUI::GetClass() const
 {
    return _T("ImagePanel");
 }
@@ -443,7 +443,7 @@ CTextPanelUI::CTextPanelUI() : m_nLinks(0), m_uButtonState(0), m_TextColor(UICOL
    ::ZeroMemory(m_rcLinks, sizeof(m_rcLinks));
 }
 
-LPCTSTR CTextPanelUI::GetClass() const
+const TCHAR* CTextPanelUI::GetClass() const
 {
    return _T("TextPanelUI");
 }
@@ -505,7 +505,7 @@ void CTextPanelUI::Event(TEventUI& event)
    CLabelPanelUI::Event(event);
 }
 
-void CTextPanelUI::SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue)
+void CTextPanelUI::SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue)
 {
    if( _tcscmp(pstrName, _T("textColor")) == 0 ) SetTextColor((UITYPE_COLOR)_ttoi(pstrValue));
    else if( _tcscmp(pstrName, _T("backColor")) == 0 ) SetBkColor((UITYPE_COLOR)_ttoi(pstrValue));
@@ -536,7 +536,7 @@ CWarningPanelUI::CWarningPanelUI() : m_BackColor(UICOLOR_STANDARD_YELLOW)
 {
 }
 
-LPCTSTR CWarningPanelUI::GetClass() const
+const TCHAR* CWarningPanelUI::GetClass() const
 {
    return _T("WarningPanelUI");
 }
@@ -556,7 +556,7 @@ void CWarningPanelUI::SetWarningType(UINT uType)
    }
 }
 
-void CWarningPanelUI::SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue)
+void CWarningPanelUI::SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue)
 {
    if( _tcscmp(pstrName, _T("type")) == 0 ) {
       if( _tcscmp(pstrValue, _T("error")) == 0 ) SetWarningType(MB_ICONERROR);

@@ -11,7 +11,7 @@ class CFrameWindowWnd : public CWindowWnd, public INotifyUI
 {
 public:
    CFrameWindowWnd() : m_hWndClient(NULL) { };
-   LPCTSTR GetWindowClassName() const { return _T("UIMainFrame"); };
+   const TCHAR* GetWindowClassName() const { return _T("UIMainFrame"); };
    UINT GetClassStyle() const { return UI_CLASSSTYLE_FRAME; };
    void OnFinalMessage(HWND /*hWnd*/) { delete this; };
 

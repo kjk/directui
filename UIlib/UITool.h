@@ -16,7 +16,7 @@ class UILIB_API CToolbarUI : public CHorizontalLayoutUI
 public:
    CToolbarUI();
 
-   LPCTSTR GetClass() const;
+   const TCHAR* GetClass() const;
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
 };
@@ -32,7 +32,7 @@ public:
 
    void SetPadding(int iPadding);
 
-   LPCTSTR GetClass() const;   
+   const TCHAR* GetClass() const;   
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
 
@@ -47,7 +47,7 @@ protected:
 class UILIB_API CToolSeparatorUI : public CControlUI
 {
 public:
-   LPCTSTR GetClass() const;
+   const TCHAR* GetClass() const;
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
 };
@@ -59,7 +59,7 @@ public:
 class UILIB_API CToolGripperUI : public CControlUI
 {
 public:
-   LPCTSTR GetClass() const;
+   const TCHAR* GetClass() const;
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
 };
@@ -73,7 +73,7 @@ class UILIB_API CToolButtonUI : public CButtonUI
 public:
    CToolButtonUI();
 
-   LPCTSTR GetClass() const;
+   const TCHAR* GetClass() const;
 
    void DoPaint(HDC hDC, const RECT& rcPaint);
 };
@@ -85,7 +85,7 @@ public:
 class UILIB_API CStatusbarUI : public CContainerUI
 {
 public:
-   LPCTSTR GetClass() const;
+   const TCHAR* GetClass() const;
 
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);

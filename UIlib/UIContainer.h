@@ -30,8 +30,8 @@ public:
    virtual ~CContainerUI();
 
 public:
-   LPCTSTR GetClass() const;
-   LPVOID GetInterface(LPCTSTR pstrName);
+   const TCHAR* GetClass() const;
+   LPVOID GetInterface(const TCHAR* pstrName);
 
    CControlUI* GetItem(int iIndex) const;
    int GetCount() const;
@@ -55,7 +55,7 @@ public:
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
 
-   void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
+   void SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue);
 
    void SetManager(CPaintManagerUI* pManager, CControlUI* pParent);
    CControlUI* FindControl(FINDCONTROLPROC Proc, void* pData, UINT uFlags);
@@ -90,14 +90,14 @@ public:
    CCanvasUI();
    virtual ~CCanvasUI();
 
-   LPCTSTR GetClass() const;
+   const TCHAR* GetClass() const;
 
    bool SetWatermark(UINT iBitmapRes, int iOrientation = HTBOTTOMRIGHT);
-   bool SetWatermark(LPCTSTR pstrBitmap, int iOrientation = HTBOTTOMRIGHT);
+   bool SetWatermark(const TCHAR* pstrBitmap, int iOrientation = HTBOTTOMRIGHT);
 
    void DoPaint(HDC hDC, const RECT& rcPaint);
 
-   void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
+   void SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue);
 
 protected:
    COLORREF m_clrBack;
@@ -114,7 +114,7 @@ class UILIB_API CWindowCanvasUI : public CCanvasUI
 {
 public:
    CWindowCanvasUI();
-   LPCTSTR GetClass() const;
+   const TCHAR* GetClass() const;
 };
 
 
@@ -125,7 +125,7 @@ class UILIB_API CControlCanvasUI : public CCanvasUI
 {
 public:
    CControlCanvasUI();
-   LPCTSTR GetClass() const;
+   const TCHAR* GetClass() const;
 };
 
 
@@ -136,7 +136,7 @@ class UILIB_API CWhiteCanvasUI : public CCanvasUI
 {
 public:
    CWhiteCanvasUI();
-   LPCTSTR GetClass() const;
+   const TCHAR* GetClass() const;
 };
 
 
@@ -147,7 +147,7 @@ class UILIB_API CDialogCanvasUI : public CCanvasUI
 {
 public:
    CDialogCanvasUI();
-   LPCTSTR GetClass() const;
+   const TCHAR* GetClass() const;
 };
 
 
@@ -158,7 +158,7 @@ class UILIB_API CTabFolderCanvasUI : public CCanvasUI
 {
 public:
    CTabFolderCanvasUI();
-   LPCTSTR GetClass() const;
+   const TCHAR* GetClass() const;
 };
 
 
@@ -170,7 +170,7 @@ class UILIB_API CVerticalLayoutUI : public CContainerUI
 public:
    CVerticalLayoutUI();
 
-   LPCTSTR GetClass() const;
+   const TCHAR* GetClass() const;
    void SetPos(RECT rc);
 
 protected:
@@ -187,7 +187,7 @@ class UILIB_API CHorizontalLayoutUI : public CContainerUI
 public:
    CHorizontalLayoutUI();
 
-   LPCTSTR GetClass() const;
+   const TCHAR* GetClass() const;
    void SetPos(RECT rc);
 };
 
@@ -200,7 +200,7 @@ class UILIB_API CTileLayoutUI : public CContainerUI
 public:
    CTileLayoutUI();
 
-   LPCTSTR GetClass() const;
+   const TCHAR* GetClass() const;
 
    void SetPos(RECT rc);
    void SetColumns(int nCols);
@@ -219,8 +219,8 @@ class UILIB_API CDialogLayoutUI : public CContainerUI
 public:
    CDialogLayoutUI();
 
-   LPCTSTR GetClass() const;
-   void* GetInterface(LPCTSTR pstrName);
+   const TCHAR* GetClass() const;
+   void* GetInterface(const TCHAR* pstrName);
 
    void SetStretchMode(CControlUI* pControl, UINT uMode);
 

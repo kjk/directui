@@ -55,12 +55,12 @@ void CStandardPageWnd::Notify(TNotifyUI& msg)
 ////////////////////////////////////////////////////////////////////////
 //
 
-LPCTSTR CStartPageWnd::GetWindowClassName() const 
+const TCHAR* CStartPageWnd::GetWindowClassName() const 
 { 
    return _T("UIStart"); 
 }
 
-LPCTSTR CStartPageWnd::GetDialogResource() const 
+const TCHAR* CStartPageWnd::GetDialogResource() const 
 { 
    return "<Dialog>"
       "<HorizontalLayout>"
@@ -121,12 +121,12 @@ void CStartPageWnd::Init()
 ////////////////////////////////////////////////////////////////////////
 //
 
-LPCTSTR CConfigurePageWnd::GetWindowClassName() const 
+const TCHAR* CConfigurePageWnd::GetWindowClassName() const 
 { 
    return _T("UIConfigure"); 
 }
 
-LPCTSTR CConfigurePageWnd::GetDialogResource() const 
+const TCHAR* CConfigurePageWnd::GetDialogResource() const 
 { 
    return "<Dialog>"
       "<HorizontalLayout>"
@@ -194,12 +194,12 @@ void CConfigurePageWnd::OnPrepareAnimation()
 ////////////////////////////////////////////////////////////////////////
 //
 
-LPCTSTR CRegistersPageWnd::GetWindowClassName() const 
+const TCHAR* CRegistersPageWnd::GetWindowClassName() const 
 { 
    return _T("UIRegisters"); 
 }
 
-LPCTSTR CRegistersPageWnd::GetDialogResource() const 
+const TCHAR* CRegistersPageWnd::GetDialogResource() const 
 { 
    return "<Dialog>"
       "<HorizontalLayout>"
@@ -252,7 +252,7 @@ void CRegistersPageWnd::OnPrepareAnimation()
    for( int i = 0; i < 1000; i++ ) pList->Add(new CListTextElementUI);    // We want 1000 items in list
 }
 
-LPCTSTR CRegistersPageWnd::GetItemText(CControlUI* pControl, int iIndex, int iSubItem)
+const TCHAR* CRegistersPageWnd::GetItemText(CControlUI* pControl, int iIndex, int iSubItem)
 {
    if( iIndex == 0 && iSubItem == 0 ) return _T("<i 3>Item1");
    if( iIndex == 1 && iSubItem == 0 ) return _T("<i 3>Item2");
@@ -274,12 +274,12 @@ int CRegistersPageWnd::CompareItem(CControlUI* pList, CControlUI* pItem1, CContr
 ////////////////////////////////////////////////////////////////////////
 //
 
-LPCTSTR CSystemsPageWnd::GetWindowClassName() const 
+const TCHAR* CSystemsPageWnd::GetWindowClassName() const 
 { 
    return _T("UISystems"); 
 }
 
-LPCTSTR CSystemsPageWnd::GetDialogResource() const 
+const TCHAR* CSystemsPageWnd::GetDialogResource() const 
 { 
    return "<Dialog>"
       "<HorizontalLayout>"
@@ -340,7 +340,7 @@ void CSystemsPageWnd::Notify(TNotifyUI& msg)
    CStandardPageWnd::Notify(msg);
 }
 
-LPCTSTR CSystemsPageWnd::GetItemText(CControlUI* pControl, int iIndex, int iSubItem)
+const TCHAR* CSystemsPageWnd::GetItemText(CControlUI* pControl, int iIndex, int iSubItem)
 {
    if( iIndex == 0 && iSubItem == 1 ) return _T("Expanding Item #1");
    if( iIndex == 1 && iSubItem == 1 ) return _T("Expanding Item #2");
@@ -383,12 +383,12 @@ void CSystemsPageWnd::OnExpandItem(CControlUI* pControl)
 ////////////////////////////////////////////////////////////////////////
 //
 
-LPCTSTR CReportsPageWnd::GetWindowClassName() const 
+const TCHAR* CReportsPageWnd::GetWindowClassName() const 
 { 
    return _T("UIReports"); 
 }
 
-LPCTSTR CReportsPageWnd::GetDialogResource() const 
+const TCHAR* CReportsPageWnd::GetDialogResource() const 
 { 
    return "<Dialog>"
       "<HorizontalLayout>"
@@ -434,7 +434,7 @@ void CReportsPageWnd::OnPrepareAnimation()
 ////////////////////////////////////////////////////////////////////////
 //
 
-LPCTSTR CSearchPageWnd::GetWindowClassName() const 
+const TCHAR* CSearchPageWnd::GetWindowClassName() const 
 { 
    return _T("UISearch"); 
 }
@@ -457,7 +457,7 @@ void CSearchPageWnd::Notify(TNotifyUI& msg)
    CStandardPageWnd::Notify(msg);
 }
 
-LPCTSTR CSearchPageWnd::GetDialogResource() const 
+const TCHAR* CSearchPageWnd::GetDialogResource() const 
 { 
    return "<Dialog caption=\"Search Page\" >"
       "<VerticalLayout>"
@@ -501,7 +501,7 @@ LPCTSTR CSearchPageWnd::GetDialogResource() const
 ////////////////////////////////////////////////////////////////////////
 //
 
-LPCTSTR CEditPageWnd::GetWindowClassName() const 
+const TCHAR* CEditPageWnd::GetWindowClassName() const 
 { 
    return _T("UIEdit"); 
 }
@@ -523,7 +523,7 @@ void CEditPageWnd::Notify(TNotifyUI& msg)
    CStandardPageWnd::Notify(msg);
 }
 
-LPCTSTR CEditPageWnd::GetDialogResource() const 
+const TCHAR* CEditPageWnd::GetDialogResource() const 
 { 
    return "<Dialog caption=\"Rediger Person\" >"
       "<VerticalLayout>"
@@ -610,7 +610,7 @@ UINT CPopupWnd::GetClassStyle() const
    return UI_CLASSSTYLE_DIALOG;
 }
 
-LPCTSTR CPopupWnd::GetWindowClassName() const 
+const TCHAR* CPopupWnd::GetWindowClassName() const 
 { 
    return _T("UIPopup"); 
 }
@@ -627,7 +627,7 @@ void CPopupWnd::Notify(TNotifyUI& msg)
    CStandardPageWnd::Notify(msg);
 }
 
-LPCTSTR CPopupWnd::GetDialogResource() const 
+const TCHAR* CPopupWnd::GetDialogResource() const 
 { 
    return "<Dialog>"
       "<VerticalLayout>"

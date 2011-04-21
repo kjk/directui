@@ -13,7 +13,7 @@ CButtonUI::CButtonUI() : m_cxWidth(0), m_uButtonState(0), m_uTextStyle(DT_SINGLE
    m_szPadding.cy = 0;
 }
 
-LPCTSTR CButtonUI::GetClass() const
+const TCHAR* CButtonUI::GetClass() const
 {
    return _T("ButtonUI");
 }
@@ -61,7 +61,7 @@ void CButtonUI::Event(TEventUI& event)
    CControlUI::Event(event);
 }
 
-void CButtonUI::SetText(LPCTSTR pstrText)
+void CButtonUI::SetText(const TCHAR* pstrText)
 {
    CControlUI::SetText(pstrText);
    // Automatic assignment of keyboard shortcut
@@ -81,7 +81,7 @@ void CButtonUI::SetWidth(int cxWidth)
    UpdateLayout();
 }
 
-void CButtonUI::SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue)
+void CButtonUI::SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue)
 {
    if( _tcscmp(pstrName, _T("width")) == 0 ) SetWidth(_ttoi(pstrValue));
    else if( _tcscmp(pstrName, _T("align")) == 0 ) {
@@ -132,7 +132,7 @@ COptionUI::COptionUI() : m_cxWidth(0), m_uButtonState(0), m_uStyle(DT_LEFT), m_b
 {
 }
 
-LPCTSTR COptionUI::GetClass() const
+const TCHAR* COptionUI::GetClass() const
 {
    return _T("OptionUI");
 }
@@ -196,7 +196,7 @@ void COptionUI::SetWidth(int cxWidth)
    UpdateLayout();
 }
 
-void COptionUI::SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue)
+void COptionUI::SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue)
 {
    if( _tcscmp(pstrName, _T("width")) == 0 ) SetWidth(_ttoi(pstrValue));
    else if( _tcscmp(pstrName, _T("selected")) == 0 ) SetCheck(_tcscmp(pstrValue, _T("true")) == 0);

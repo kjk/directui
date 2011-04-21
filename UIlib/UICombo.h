@@ -16,7 +16,7 @@ public:
 
    void SetWidth(int cxWidth);
 
-   LPCTSTR GetClass() const;
+   const TCHAR* GetClass() const;
    UINT GetControlFlags() const;
    void Event(TEventUI& event);
 
@@ -40,8 +40,8 @@ class UILIB_API CDropDownUI : public CContainerUI, public IListOwnerUI
 public:
    CDropDownUI();
 
-   LPCTSTR GetClass() const;
-   void* GetInterface(LPCTSTR pstrName);
+   const TCHAR* GetClass() const;
+   void* GetInterface(const TCHAR* pstrName);
    
    void Init();
    UINT GetControlFlags() const;

@@ -14,12 +14,12 @@ class UILIB_API CButtonUI : public CControlUI
 public:
    CButtonUI();
 
-   LPCTSTR GetClass() const;
+   const TCHAR* GetClass() const;
    UINT GetControlFlags() const;
 
    bool Activate();
 
-   void SetText(LPCTSTR pstrText);
+   void SetText(const TCHAR* pstrText);
 
    void SetWidth(int cxWidth);
    void SetPadding(int cx, int cy);
@@ -28,7 +28,7 @@ public:
 
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
-   void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
+   void SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue);
 
 protected:
    int m_cxWidth;
@@ -46,7 +46,7 @@ class UILIB_API COptionUI : public CControlUI
 public:
    COptionUI();
 
-   LPCTSTR GetClass() const;
+   const TCHAR* GetClass() const;
    UINT GetControlFlags() const;
 
    bool Activate();
@@ -59,7 +59,7 @@ public:
 
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
-   void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
+   void SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue);
 
 protected:
    bool m_bSelected;

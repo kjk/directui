@@ -12,7 +12,7 @@
 //
 //
 
-void UILIB_API __Trace(LPCTSTR pstrFormat, ...)
+void UILIB_API __Trace(const TCHAR* pstrFormat, ...)
 {
 #ifdef _DEBUG
    TCHAR szBuffer[300] = { 0 };
@@ -25,7 +25,7 @@ void UILIB_API __Trace(LPCTSTR pstrFormat, ...)
 #endif
 }
 
-LPCTSTR __TraceMsg(UINT uMsg)
+const TCHAR* __TraceMsg(UINT uMsg)
 {
 #define MSGDEF(x) if(uMsg==x) return #x
    MSGDEF(WM_SETCURSOR);
@@ -242,7 +242,7 @@ UINT CWindowWnd::GetClassStyle() const
    return 0;
 }
 
-LPCTSTR CWindowWnd::GetSuperClassName() const
+const TCHAR* CWindowWnd::GetSuperClassName() const
 {
    return NULL;
 }
@@ -252,12 +252,12 @@ CWindowWnd::operator HWND() const
    return m_hWnd;
 }
 
-HWND CWindowWnd::Create(HWND hwndParent, LPCTSTR pstrName, DWORD dwStyle, DWORD dwExStyle, const RECT rc, HMENU hMenu)
+HWND CWindowWnd::Create(HWND hwndParent, const TCHAR* pstrName, DWORD dwStyle, DWORD dwExStyle, const RECT rc, HMENU hMenu)
 {
    return Create(hwndParent, pstrName, dwStyle, dwExStyle, rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top, hMenu);
 }
 
-HWND CWindowWnd::Create(HWND hwndParent, LPCTSTR pstrName, DWORD dwStyle, DWORD dwExStyle, int x, int y, int cx, int cy, HMENU hMenu)
+HWND CWindowWnd::Create(HWND hwndParent, const TCHAR* pstrName, DWORD dwStyle, DWORD dwExStyle, int x, int y, int cx, int cy, HMENU hMenu)
 {
    if( GetSuperClassName() != NULL && !RegisterSuperclass() ) return NULL;
    if( GetSuperClassName() == NULL && !RegisterWindowClass() ) return NULL;
@@ -700,7 +700,7 @@ CStdString::CStdString(const TCHAR ch) : m_pstr(m_szBuffer)
    m_szBuffer[1] = '\0';
 }
 
-CStdString::CStdString(LPCTSTR lpsz, int nLen) : m_pstr(m_szBuffer)
+CStdString::CStdString(const TCHAR* lpsz, int nLen) : m_pstr(m_szBuffer)
 {      
    ASSERT(!::IsBadStringPtr(lpsz,-1) || lpsz==NULL);
    Assign(lpsz, nLen);
@@ -735,7 +735,7 @@ CStdString::operator LPCTSTR() const
    return m_pstr; 
 }
 
-void CStdString::Append(LPCTSTR pstr)
+void CStdString::Append(const TCHAR* pstr)
 {
    int nNewLength = GetLength() + (int) _tcslen(pstr);
    if( nNewLength >= MAX_LOCAL_STRING_LEN ) {
@@ -758,7 +758,7 @@ void CStdString::Append(LPCTSTR pstr)
    }
 }
 
-void CStdString::Assign(LPCTSTR pstr, int cchMax)
+void CStdString::Assign(const TCHAR* pstr, int cchMax)
 {
    if( pstr == NULL ) pstr = _T("");
    cchMax = (cchMax < 0 ? (int) _tcslen(pstr) : cchMax);
@@ -788,7 +788,7 @@ void CStdString::Empty()
    m_szBuffer[0] = '\0'; 
 }
 
-LPCTSTR CStdString::GetData()
+const TCHAR* CStdString::GetData()
 {
    return m_pstr;
 }
@@ -809,7 +809,7 @@ const CStdString& CStdString::operator=(const CStdString& src)
    return *this;
 }
 
-const CStdString& CStdString::operator=(LPCTSTR lpStr)
+const CStdString& CStdString::operator=(const TCHAR* lpStr)
 {      
    ASSERT(!::IsBadStringPtr(lpStr,-1));
    Assign(lpStr);
@@ -844,7 +844,7 @@ CStdString CStdString::operator+(const CStdString& src)
    return *this;
 }
 
-CStdString CStdString::operator+(LPCTSTR lpStr)
+CStdString CStdString::operator+(const TCHAR* lpStr)
 {
    ASSERT(!::IsBadStringPtr(lpStr,-1));
    Append(lpStr);
@@ -857,7 +857,7 @@ const CStdString& CStdString::operator+=(const CStdString& src)
    return *this;
 }
 
-const CStdString& CStdString::operator+=(LPCTSTR lpStr)
+const CStdString& CStdString::operator+=(const TCHAR* lpStr)
 {      
    ASSERT(!::IsBadStringPtr(lpStr,-1));
    Append(lpStr);
@@ -871,12 +871,12 @@ const CStdString& CStdString::operator+=(const TCHAR ch)
    return *this;
 }
 
-bool CStdString::operator == (LPCTSTR str) const { return (Compare(str) == 0); };
-bool CStdString::operator != (LPCTSTR str) const { return (Compare(str) != 0); };
-bool CStdString::operator <= (LPCTSTR str) const { return (Compare(str) <= 0); };
-bool CStdString::operator <  (LPCTSTR str) const { return (Compare(str) <  0); };
-bool CStdString::operator >= (LPCTSTR str) const { return (Compare(str) >= 0); };
-bool CStdString::operator >  (LPCTSTR str) const { return (Compare(str) >  0); };
+bool CStdString::operator == (const TCHAR* str) const { return (Compare(str) == 0); };
+bool CStdString::operator != (const TCHAR* str) const { return (Compare(str) != 0); };
+bool CStdString::operator <= (const TCHAR* str) const { return (Compare(str) <= 0); };
+bool CStdString::operator <  (const TCHAR* str) const { return (Compare(str) <  0); };
+bool CStdString::operator >= (const TCHAR* str) const { return (Compare(str) >= 0); };
+bool CStdString::operator >  (const TCHAR* str) const { return (Compare(str) >  0); };
 
 void CStdString::SetAt(int nIndex, TCHAR ch)
 {
@@ -884,12 +884,12 @@ void CStdString::SetAt(int nIndex, TCHAR ch)
    m_pstr[nIndex] = ch;
 }
 
-int CStdString::Compare(LPCTSTR lpsz) const 
+int CStdString::Compare(const TCHAR* lpsz) const 
 { 
    return _tcscmp(m_pstr, lpsz); 
 }
 
-int CStdString::CompareNoCase(LPCTSTR lpsz) const 
+int CStdString::CompareNoCase(const TCHAR* lpsz) const 
 { 
    return _tcsicmp(m_pstr, lpsz); 
 }
@@ -933,29 +933,29 @@ int CStdString::Find(TCHAR ch, int iPos /*= 0*/) const
 {
    ASSERT(iPos>=0 && iPos<=GetLength());
    if( iPos != 0 && (iPos < 0 || iPos >= GetLength()) ) return -1;
-   LPCTSTR p = _tcschr(m_pstr + iPos, ch);
+   const TCHAR* p = _tcschr(m_pstr + iPos, ch);
    if( p == NULL ) return -1;
    return p - m_pstr;
 }
 
-int CStdString::Find(LPCTSTR pstrSub, int iPos /*= 0*/) const
+int CStdString::Find(const TCHAR* pstrSub, int iPos /*= 0*/) const
 {
    ASSERT(!::IsBadStringPtr(pstrSub,-1));
    ASSERT(iPos>=0 && iPos<=GetLength());
    if( iPos != 0 && (iPos < 0 || iPos > GetLength()) ) return -1;
-   LPCTSTR p = _tcsstr(m_pstr + iPos, pstrSub);
+   const TCHAR* p = _tcsstr(m_pstr + iPos, pstrSub);
    if( p == NULL ) return -1;
    return p - m_pstr;
 }
 
 int CStdString::ReverseFind(TCHAR ch) const
 {
-   LPCTSTR p = _tcsrchr(m_pstr, ch);
+   const TCHAR* p = _tcsrchr(m_pstr, ch);
    if( p == NULL ) return -1;
    return p - m_pstr;
 }
 
-int CStdString::Replace(LPCTSTR pstrFrom, LPCTSTR pstrTo)
+int CStdString::Replace(const TCHAR* pstrFrom, const TCHAR* pstrTo)
 {
    CStdString sTemp;
    int nCount = 0;
@@ -974,7 +974,7 @@ int CStdString::Replace(LPCTSTR pstrFrom, LPCTSTR pstrTo)
    return nCount;
 }
 
-int CStdString::Format(LPCTSTR pstrFormat, ...)
+int CStdString::Format(const TCHAR* pstrFormat, ...)
 {
    CStdString sFormat = pstrFormat;
    sFormat.ProcessResourceTokens();

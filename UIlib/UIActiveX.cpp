@@ -19,7 +19,7 @@ class CActiveXWnd : public CWindowWnd
 public:
    HWND Init(CActiveXCtrl* pOwner, HWND hWndParent);
 
-   LPCTSTR GetWindowClassName() const;
+   const TCHAR* GetWindowClassName() const;
    void OnFinalMessage(HWND hWnd);
 
    LRESULT HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam);
@@ -755,7 +755,7 @@ HWND CActiveXWnd::Init(CActiveXCtrl* pOwner, HWND hWndParent)
    return m_hWnd;
 }
 
-LPCTSTR CActiveXWnd::GetWindowClassName() const
+const TCHAR* CActiveXWnd::GetWindowClassName() const
 {
    return _T("ActiveXWnd");
 }
@@ -854,7 +854,7 @@ CActiveXUI::~CActiveXUI()
    ReleaseControl();
 }
 
-LPCTSTR CActiveXUI::GetClass() const
+const TCHAR* CActiveXUI::GetClass() const
 {
    return _T("ActiveXUI");
 }
@@ -916,7 +916,7 @@ void CActiveXUI::DoPaint(HDC hDC, const RECT& /*rcPaint*/)
    }
 }
 
-void CActiveXUI::SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue)
+void CActiveXUI::SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue)
 {
    if( _tcscmp(pstrName, _T("clsid")) == 0 ) CreateControl(pstrValue);
    else if( _tcscmp(pstrName, _T("width")) == 0 ) SetWidth(_ttoi(pstrValue));
@@ -979,7 +979,7 @@ void CActiveXUI::SetHeight(int cy)
    m_szFixed.cy = cy;
 }
 
-bool CActiveXUI::CreateControl(LPCTSTR pstrCLSID)
+bool CActiveXUI::CreateControl(const TCHAR* pstrCLSID)
 {
    CLSID clsid = { 0 };
    OLECHAR szCLSID[100] = { 0 };
