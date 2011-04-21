@@ -81,10 +81,10 @@ public:
    bool HasAttributes();
    bool HasAttribute(const TCHAR* name);
    int GetAttributeCount();
-   const TCHAR* GetAttributeName(int iIndex);
-   const TCHAR* GetAttributeValue(int iIndex);
+   const TCHAR* GetAttributeName(int idx);
+   const TCHAR* GetAttributeValue(int idx);
    const TCHAR* GetAttributeValue(const TCHAR* name);
-   bool GetAttributeValue(int iIndex, TCHAR* value, SIZE_T cchMax);
+   bool GetAttributeValue(int idx, TCHAR* value, SIZE_T cchMax);
    bool GetAttributeValue(const TCHAR* name, TCHAR* value, SIZE_T cchMax);
 
 private:

@@ -44,7 +44,7 @@ public:
    void SetDropDownSize(SIZE szDropBox);
 
    int GetCurSel() const;  
-   bool SelectItem(int iIndex);
+   bool SelectItem(int idx);
 
    bool Add(CControlUI* ctrl);
    bool Remove(CControlUI* ctrl);

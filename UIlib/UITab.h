@@ -19,7 +19,7 @@ public:
    bool Add(CControlUI* ctrl);
 
    int GetCurSel() const;
-   bool SelectItem(int iIndex);
+   bool SelectItem(int idx);
 
    void Event(TEventUI& Event);
 

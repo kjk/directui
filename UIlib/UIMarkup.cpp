@@ -81,20 +81,20 @@ const TCHAR* CMarkupNode::GetValue() const
    return m_pOwner->m_pstrXML + m_pOwner->m_pElements[m_iPos].iData;
 }
 
-const TCHAR* CMarkupNode::GetAttributeName(int iIndex)
+const TCHAR* CMarkupNode::GetAttributeName(int idx)
 {
    if( m_pOwner == NULL ) return NULL;
    if( m_nAttributes == 0 ) _MapAttributes();
-   if( iIndex < 0 || iIndex >= m_nAttributes ) return _T("");
-   return m_pOwner->m_pstrXML + m_aAttributes[iIndex].iName;
+   if( idx < 0 || idx >= m_nAttributes ) return _T("");
+   return m_pOwner->m_pstrXML + m_aAttributes[idx].iName;
 }
 
-const TCHAR* CMarkupNode::GetAttributeValue(int iIndex)
+const TCHAR* CMarkupNode::GetAttributeValue(int idx)
 {
    if( m_pOwner == NULL ) return NULL;
    if( m_nAttributes == 0 ) _MapAttributes();
-   if( iIndex < 0 || iIndex >= m_nAttributes ) return _T("");
-   return m_pOwner->m_pstrXML + m_aAttributes[iIndex].iValue;
+   if( idx < 0 || idx >= m_nAttributes ) return _T("");
+   return m_pOwner->m_pstrXML + m_aAttributes[idx].iValue;
 }
 
 const TCHAR* CMarkupNode::GetAttributeValue(const TCHAR* name)
@@ -107,12 +107,12 @@ const TCHAR* CMarkupNode::GetAttributeValue(const TCHAR* name)
    return _T("");
 }
 
-bool CMarkupNode::GetAttributeValue(int iIndex, TCHAR* value, SIZE_T cchMax)
+bool CMarkupNode::GetAttributeValue(int idx, TCHAR* value, SIZE_T cchMax)
 {
    if( m_pOwner == NULL ) return false;
    if( m_nAttributes == 0 ) _MapAttributes();
-   if( iIndex < 0 || iIndex >= m_nAttributes ) return false;
-   _tcsncpy(value, m_pOwner->m_pstrXML + m_aAttributes[iIndex].iValue, cchMax);
+   if( idx < 0 || idx >= m_nAttributes ) return false;
+   _tcsncpy(value, m_pOwner->m_pstrXML + m_aAttributes[idx].iValue, cchMax);
    return true;
 }
 

@@ -1162,7 +1162,7 @@ HFONT CPaintManagerUI::GetThemeFont(UITYPE_FONT Index) const
    return m_hFonts[Index];
 }
 
-HICON CPaintManagerUI::GetThemeIcon(int iIndex, int cxySize) const
+HICON CPaintManagerUI::GetThemeIcon(int idx, int cxySize) const
 {
    if( m_himgIcons16 == NULL ) {
       m_himgIcons16 = ImageList_LoadImage(m_hInstance, MAKEINTRESOURCE(IDB_ICONS16), 16, 0, RGB(255,0,255), IMAGE_BITMAP, LR_CREATEDIBSECTION);
@@ -1170,10 +1170,10 @@ HICON CPaintManagerUI::GetThemeIcon(int iIndex, int cxySize) const
       m_himgIcons32 = ImageList_LoadImage(m_hInstance, MAKEINTRESOURCE(IDB_ICONS16), 16, 0, RGB(255,0,255), IMAGE_BITMAP, LR_CREATEDIBSECTION);
       m_himgIcons50 = ImageList_LoadImage(m_hInstance, MAKEINTRESOURCE(IDB_ICONS50), 50, 0, RGB(255,0,255), IMAGE_BITMAP, LR_CREATEDIBSECTION);
    }
-   if( cxySize == 16 ) return ImageList_GetIcon(m_himgIcons16, iIndex, ILD_NORMAL);
-   else if( cxySize == 24 ) return ImageList_GetIcon(m_himgIcons24, iIndex, ILD_NORMAL);
-   else if( cxySize == 32 ) return ImageList_GetIcon(m_himgIcons32, iIndex, ILD_NORMAL);
-   else if( cxySize == 50 ) return ImageList_GetIcon(m_himgIcons50, iIndex, ILD_NORMAL);
+   if( cxySize == 16 ) return ImageList_GetIcon(m_himgIcons16, idx, ILD_NORMAL);
+   else if( cxySize == 24 ) return ImageList_GetIcon(m_himgIcons24, idx, ILD_NORMAL);
+   else if( cxySize == 32 ) return ImageList_GetIcon(m_himgIcons32, idx, ILD_NORMAL);
+   else if( cxySize == 50 ) return ImageList_GetIcon(m_himgIcons50, idx, ILD_NORMAL);
    return NULL;
 }
 

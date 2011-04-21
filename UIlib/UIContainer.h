@@ -9,7 +9,7 @@
 class IContainerUI
 {
 public:
-   virtual CControlUI* GetItem(int iIndex) const = 0;
+   virtual CControlUI* GetItem(int idx) const = 0;
    virtual int GetCount() const = 0;
    virtual bool Add(CControlUI* ctrl) = 0;
    virtual bool Remove(CControlUI* ctrl) = 0;
@@ -26,7 +26,7 @@ public:
    const TCHAR* GetClass() const;
    LPVOID GetInterface(const TCHAR* name);
 
-   CControlUI* GetItem(int iIndex) const;
+   CControlUI* GetItem(int idx) const;
    int GetCount() const;
    bool Add(CControlUI* ctrl);
    bool Remove(CControlUI* ctrl);
@@ -42,7 +42,7 @@ public:
    virtual void SetHeight(int cy);
    virtual void SetAutoDestroy(bool bAuto);
 
-   virtual int FindSelectable(int iIndex, bool bForward = true) const;
+   virtual int FindSelectable(int idx, bool bForward = true) const;
 
    void SetPos(RECT rc);
    SIZE EstimateSize(SIZE szAvailable);

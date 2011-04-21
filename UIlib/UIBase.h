@@ -83,15 +83,15 @@ public:
    void Empty();
    void Resize(int iSize);
    bool IsEmpty() const;
-   int Find(void* iIndex) const;
+   int Find(void* idx) const;
    bool Add(void* pData);
-   bool SetAt(int iIndex, void* pData);
-   bool InsertAt(int iIndex, void* pData);
-   bool Remove(int iIndex);
+   bool SetAt(int idx, void* pData);
+   bool InsertAt(int idx, void* pData);
+   bool Remove(int idx);
    int GetSize() const;
    void** GetData();
 
-   void* GetAt(int iIndex) const;
+   void* GetAt(int idx) const;
    void* operator[] (int nIndex) const;
 
 protected:
@@ -110,11 +110,11 @@ public:
    void Empty();
    bool IsEmpty() const;
    bool Add(LPCVOID pData);
-   bool Remove(int iIndex);
+   bool Remove(int idx);
    int GetSize() const;
    void* GetData();
 
-   void* GetAt(int iIndex) const;
+   void* GetAt(int idx) const;
    void* operator[] (int nIndex) const;
 
 protected:

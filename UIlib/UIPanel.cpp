@@ -28,15 +28,15 @@ void CNavigatorPanelUI::Event(TEventUI& event)
    CVerticalLayoutUI::Event(event);
 }
 
-bool CNavigatorPanelUI::SelectItem(int iIndex)
+bool CNavigatorPanelUI::SelectItem(int idx)
 {
-   if( iIndex == m_iCurSel ) return true;
+   if( idx == m_iCurSel ) return true;
    if( m_iCurSel >= 0 ) {
       CControlUI* ctrl = GetItem(m_iCurSel);
       IListItemUI* pListItem = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
       if( pListItem != NULL ) pListItem->Select(false);
    }
-   m_iCurSel = iIndex;
+   m_iCurSel = idx;
    if( m_iCurSel >= 0 ) {
       CControlUI* ctrl = GetItem(m_iCurSel);
       IListItemUI* pListItem = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
@@ -268,9 +268,9 @@ const TCHAR* CSearchTitlePanelUI::GetClass() const
    return _T("SearchTitlePanelUI");
 }
 
-void CSearchTitlePanelUI::SetImage(int iIndex)
+void CSearchTitlePanelUI::SetImage(int idx)
 {
-   m_iIconIndex = iIndex;
+   m_iIconIndex = idx;
 }
 
 void CSearchTitlePanelUI::SetPos(RECT rc)

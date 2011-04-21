@@ -29,15 +29,15 @@ int CTabFolderUI::GetCurSel() const
    return m_iCurSel;
 }
 
-bool CTabFolderUI::SelectItem(int iIndex)
+bool CTabFolderUI::SelectItem(int idx)
 {
    int iPrevSel = m_iCurSel;
-   if( iIndex < 0 || iIndex >= m_items.GetSize() ) return false;
-   if( iIndex == m_iCurSel ) return true;
+   if( idx < 0 || idx >= m_items.GetSize() ) return false;
+   if( idx == m_iCurSel ) return true;
    // Assign page to internal pointers
    if( m_pCurPage != NULL ) m_pCurPage->SetVisible(false);
-   m_iCurSel = iIndex;
-   m_pCurPage = static_cast<CControlUI*>(m_items[iIndex]);
+   m_iCurSel = idx;
+   m_pCurPage = static_cast<CControlUI*>(m_items[idx]);
    if( m_pManager != NULL ) m_pManager->SendNotify(this, _T("itemselect"));
    m_pCurPage->SetVisible(true);
    // Need to re-think the layout
@@ -150,5 +150,5 @@ bool CTabPageUI::Activate()
    if( !CContainerUI::Activate() ) return false;
    CControlUI* pParent = GetParent();
    if( pParent == NULL || pParent->GetInterface(_T("ListOwner")) == NULL ) return false;
-   return static_cast<IListOwnerUI*>(pParent->GetInterface(_T("ListOwner")))->SelectItem(0 /*m_iIndex*/);
+   return static_cast<IListOwnerUI*>(pParent->GetInterface(_T("ListOwner")))->SelectItem(0 /*m_idx*/);
 }

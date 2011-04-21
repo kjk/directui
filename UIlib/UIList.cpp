@@ -6,7 +6,7 @@
 #include "UIPanel.h"
 
 CListElementUI::CListElementUI() : 
-   m_iIndex(-1),
+   m_idx(-1),
    m_pOwner(NULL), 
    m_bSelected(false)
 {
@@ -30,12 +30,12 @@ void CListElementUI::SetOwner(CControlUI* pOwner)
 
 int CListElementUI::GetIndex() const
 {
-   return m_iIndex;
+   return m_idx;
 }
 
-void CListElementUI::SetIndex(int iIndex)
+void CListElementUI::SetIndex(int idx)
 {
-   m_iIndex = iIndex;
+   m_idx = idx;
 }
 
 bool CListElementUI::Activate()
@@ -55,7 +55,7 @@ bool CListElementUI::Select(bool bSelect)
    if( !IsEnabled() ) return false;
    if( bSelect == m_bSelected ) return true;
    m_bSelected = bSelect;
-   if( bSelect && m_pOwner != NULL ) m_pOwner->SelectItem(m_iIndex);
+   if( bSelect && m_pOwner != NULL ) m_pOwner->SelectItem(m_idx);
    Invalidate();
    return true;
 }
@@ -348,9 +348,9 @@ void CListUI::RemoveAll()
    m_pList->RemoveAll();
 }
 
-CControlUI* CListUI::GetItem(int iIndex) const
+CControlUI* CListUI::GetItem(int idx) const
 {
-   return m_pList->GetItem(iIndex);
+   return m_pList->GetItem(idx);
 }
 
 int CListUI::GetCount() const
@@ -458,9 +458,9 @@ int CListUI::GetCurSel() const
    return m_iCurSel;
 }
 
-bool CListUI::SelectItem(int iIndex)
+bool CListUI::SelectItem(int idx)
 {
-   if( iIndex == m_iCurSel ) return true;
+   if( idx == m_iCurSel ) return true;
    // We should first unselect the currently selected item
    if( m_iCurSel >= 0 ) {
       CControlUI* ctrl = GetItem(m_iCurSel);
@@ -471,13 +471,13 @@ bool CListUI::SelectItem(int iIndex)
    }
    // Now figure out if the control can be selected
    // TODO: Redo old selected if failure
-   CControlUI* ctrl = GetItem(iIndex);
+   CControlUI* ctrl = GetItem(idx);
    if( ctrl == NULL ) return false;
    if( !ctrl->IsVisible() ) return false;
    if( !ctrl->IsEnabled() ) return false;
    IListItemUI* pListItem = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
    if( pListItem == NULL ) return false;
-   m_iCurSel = iIndex;
+   m_iCurSel = idx;
    if( !pListItem->Select(true) ) {
       m_iCurSel = -1;
       return false;
@@ -501,7 +501,7 @@ void CListUI::SetExpanding(bool bExpandable)
    m_ListInfo.bExpandable = bExpandable;
 }
 
-bool CListUI::ExpandItem(int iIndex, bool bExpand /*= true*/)
+bool CListUI::ExpandItem(int idx, bool bExpand /*= true*/)
 {
    if( !m_ListInfo.bExpandable ) return false;
    if( m_iExpandedItem >= 0 ) {
@@ -513,12 +513,12 @@ bool CListUI::ExpandItem(int iIndex, bool bExpand /*= true*/)
       m_iExpandedItem = -1;
    }
    if( bExpand ) {
-      CControlUI* ctrl = GetItem(iIndex);
+      CControlUI* ctrl = GetItem(idx);
       if( ctrl == NULL ) return false;
       if( !ctrl->IsVisible() ) return false;
       IListItemUI* item = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
       if( item == NULL ) return false;
-      m_iExpandedItem = iIndex;
+      m_iExpandedItem = idx;
       if( !item->Expand(true) ) {
          m_iExpandedItem = -1;
          return false;
@@ -533,10 +533,10 @@ int CListUI::GetExpandedItem() const
    return m_iExpandedItem;
 }
 
-void CListUI::EnsureVisible(int iIndex)
+void CListUI::EnsureVisible(int idx)
 {
    if( m_iCurSel < 0 ) return;
-   RECT rcItem = m_pList->GetItem(iIndex)->GetPos();
+   RECT rcItem = m_pList->GetItem(idx)->GetPos();
    RECT rcList = m_pList->GetPos();
    int iPos = m_pList->GetScrollPos();
    if( rcItem.top >= rcList.top && rcItem.bottom < rcList.bottom ) return;
@@ -763,7 +763,7 @@ void CListTextElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
    {
       // Paint text
       RECT rcItem = { pInfo->rcColumn[i].left, m_rcItem.top, pInfo->rcColumn[i].right, m_rcItem.bottom - 1 };
-      const TCHAR* pstrText = pCallback->GetItemText(this, m_iIndex, i);
+      const TCHAR* pstrText = pCallback->GetItemText(this, m_idx, i);
       ::InflateRect(&rcItem, -4, 0);
       CBlueRenderEngineUI::DoPaintPrettyText(hDC, m_pManager, rcItem, pstrText, iTextColor, UICOLOR__INVALID, m_rcLinks, nLinks, DT_SINGLELINE | m_uTextStyle);
       if( nLinks > 0 ) m_nLinks = nLinks, nLinks = 0; else nLinks = lengthof(m_rcLinks);
@@ -793,7 +793,7 @@ bool CListExpandElementUI::Expand(bool bExpand)
    if( m_pOwner == NULL ) return false;  
    if( bExpand == m_bExpanded ) return true;
    m_bExpanded = bExpand;
-   if( !m_pOwner->ExpandItem(m_iIndex, bExpand) ) return false;
+   if( !m_pOwner->ExpandItem(m_idx, bExpand) ) return false;
    // We need to manage the "expanding items", which are actually embedded controls
    // that we selectively display or not.
    if( bExpand ) 
@@ -891,10 +891,10 @@ void CListExpandElementUI::RemoveAll()
    if( m_pContainer != NULL ) m_pContainer->RemoveAll();
 }
 
-CControlUI* CListExpandElementUI::GetItem(int iIndex) const
+CControlUI* CListExpandElementUI::GetItem(int idx) const
 {
    if( m_pContainer == NULL ) return NULL;
-   return m_pContainer->GetItem(iIndex);
+   return m_pContainer->GetItem(idx);
 }
 
 int CListExpandElementUI::GetCount() const
@@ -968,7 +968,7 @@ void CListExpandElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
    {
       // Paint text
       RECT rcItem = { pInfo->rcColumn[i].left, m_rcItem.top, pInfo->rcColumn[i].right, m_rcItem.top + m_cyItem };
-      const TCHAR* pstrText = pCallback->GetItemText(this, m_iIndex, i);
+      const TCHAR* pstrText = pCallback->GetItemText(this, m_idx, i);
       // If list control is expandable then we'll automaticially draw
       // the expander-box at the first column.
       if( i == 0 && pInfo->bExpandable ) {

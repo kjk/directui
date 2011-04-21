@@ -512,32 +512,32 @@ bool CStdPtrArray::Add(void* pData)
    return true;
 }
 
-bool CStdPtrArray::InsertAt(int iIndex, void* pData)
+bool CStdPtrArray::InsertAt(int idx, void* pData)
 {
-   if( iIndex == m_nCount ) return Add(pData);
-   if( iIndex < 0 || iIndex > m_nCount ) return false;
+   if( idx == m_nCount ) return Add(pData);
+   if( idx < 0 || idx > m_nCount ) return false;
    if( ++m_nCount >= m_nAllocated) {
       m_nAllocated *= 2;
       if( m_nAllocated == 0 ) m_nAllocated = 11;
       m_ppVoid = static_cast<void**>(realloc(m_ppVoid, m_nAllocated * sizeof(void*)));
       if( m_ppVoid == NULL ) return false;
    }
-   memmove(&m_ppVoid[iIndex + 1], &m_ppVoid[iIndex], (m_nCount - iIndex - 1) * sizeof(void*));
-   m_ppVoid[iIndex] = pData;
+   memmove(&m_ppVoid[idx + 1], &m_ppVoid[idx], (m_nCount - idx - 1) * sizeof(void*));
+   m_ppVoid[idx] = pData;
    return true;
 }
 
-bool CStdPtrArray::SetAt(int iIndex, void* pData)
+bool CStdPtrArray::SetAt(int idx, void* pData)
 {
-   if( iIndex < 0 || iIndex >= m_nCount ) return false;
-   m_ppVoid[iIndex] = pData;
+   if( idx < 0 || idx >= m_nCount ) return false;
+   m_ppVoid[idx] = pData;
    return true;
 }
 
-bool CStdPtrArray::Remove(int iIndex)
+bool CStdPtrArray::Remove(int idx)
 {
-   if( iIndex < 0 || iIndex >= m_nCount ) return false;
-   if( iIndex < --m_nCount ) ::CopyMemory(m_ppVoid + iIndex, m_ppVoid + iIndex + 1, (m_nCount - iIndex) * sizeof(void*));
+   if( idx < 0 || idx >= m_nCount ) return false;
+   if( idx < --m_nCount ) ::CopyMemory(m_ppVoid + idx, m_ppVoid + idx + 1, (m_nCount - idx) * sizeof(void*));
    return true;
 }
 
@@ -557,16 +557,16 @@ void** CStdPtrArray::GetData()
    return m_ppVoid;
 }
 
-void* CStdPtrArray::GetAt(int iIndex) const
+void* CStdPtrArray::GetAt(int idx) const
 {
-   if( iIndex < 0 || iIndex >= m_nCount ) return NULL;
-   return m_ppVoid[iIndex];
+   if( idx < 0 || idx >= m_nCount ) return NULL;
+   return m_ppVoid[idx];
 }
 
-void* CStdPtrArray::operator[] (int iIndex) const
+void* CStdPtrArray::operator[] (int idx) const
 {
-   ASSERT(iIndex>=0 && iIndex<m_nCount);
-   return m_ppVoid[iIndex];
+   ASSERT(idx>=0 && idx<m_nCount);
+   return m_ppVoid[idx];
 }
 
 
@@ -608,10 +608,10 @@ bool CStdValArray::Add(LPCVOID pData)
    return true;
 }
 
-bool CStdValArray::Remove(int iIndex)
+bool CStdValArray::Remove(int idx)
 {
-   if( iIndex < 0 || iIndex >= m_nCount ) return false;
-   if( iIndex < --m_nCount ) ::CopyMemory(m_pVoid + (iIndex * m_iElementSize), m_pVoid + ((iIndex + 1) * m_iElementSize), (m_nCount - iIndex) * m_iElementSize);
+   if( idx < 0 || idx >= m_nCount ) return false;
+   if( idx < --m_nCount ) ::CopyMemory(m_pVoid + (idx * m_iElementSize), m_pVoid + ((idx + 1) * m_iElementSize), (m_nCount - idx) * m_iElementSize);
    return true;
 }
 
@@ -625,16 +625,16 @@ void* CStdValArray::GetData()
    return static_cast<void*>(m_pVoid);
 }
 
-void* CStdValArray::GetAt(int iIndex) const
+void* CStdValArray::GetAt(int idx) const
 {
-   if( iIndex < 0 || iIndex >= m_nCount ) return NULL;
-   return m_pVoid + (iIndex * m_iElementSize);
+   if( idx < 0 || idx >= m_nCount ) return NULL;
+   return m_pVoid + (idx * m_iElementSize);
 }
 
-void* CStdValArray::operator[] (int iIndex) const
+void* CStdValArray::operator[] (int idx) const
 {
-   ASSERT(iIndex>=0 && iIndex<m_nCount);
-   return m_pVoid + (iIndex * m_iElementSize);
+   ASSERT(idx>=0 && idx<m_nCount);
+   return m_pVoid + (idx * m_iElementSize);
 }
 
 

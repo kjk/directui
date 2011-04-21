@@ -29,10 +29,10 @@ void* CContainerUI::GetInterface(const TCHAR* name)
    return CControlUI::GetInterface(name);
 }
 
-CControlUI* CContainerUI::GetItem(int iIndex) const
+CControlUI* CContainerUI::GetItem(int idx) const
 {
-   if( iIndex < 0 || iIndex >= m_items.GetSize() ) return NULL;
-   return static_cast<CControlUI*>(m_items[iIndex]);
+   if( idx < 0 || idx >= m_items.GetSize() ) return NULL;
+   return static_cast<CControlUI*>(m_items[idx]);
 }
 
 int CContainerUI::GetCount() const
@@ -206,14 +206,14 @@ void CContainerUI::EnableScrollBar(bool bEnable)
    m_bAllowScrollbars = bEnable;
 }
 
-int CContainerUI::FindSelectable(int iIndex, bool bForward /*= true*/) const
+int CContainerUI::FindSelectable(int idx, bool bForward /*= true*/) const
 {
    // NOTE: This is actually a helper-function for the list/combo/ect controls
    //       that allow them to find the next enabled/available selectable item
    if( GetCount() == 0 ) return -1;
-   iIndex = CLAMP(iIndex, 0, GetCount() - 1);
+   idx = CLAMP(idx, 0, GetCount() - 1);
    if( bForward ) {
-      for( int i = iIndex; i < GetCount(); i++ ) {
+      for( int i = idx; i < GetCount(); i++ ) {
          if( GetItem(i)->GetInterface(_T("ListItem")) != NULL 
              && GetItem(i)->IsVisible()
              && GetItem(i)->IsEnabled() ) return i;
@@ -221,7 +221,7 @@ int CContainerUI::FindSelectable(int iIndex, bool bForward /*= true*/) const
       return -1;
    }
    else {
-      for( int i = iIndex; i >= 0; --i ) {
+      for( int i = idx; i >= 0; --i ) {
          if( GetItem(i)->GetInterface(_T("ListItem")) != NULL 
              && GetItem(i)->IsVisible()
              && GetItem(i)->IsEnabled() ) return i;
@@ -616,11 +616,11 @@ void CTileLayoutUI::SetPos(RECT rc)
       // If this panel expands vertically
       if( m_cxyFixed.cy == 0) {
          SIZE szAvailable = { rcTile.right - rcTile.left, 9999 };
-         int iIndex = iCount;
+         int idx = iCount;
          for( int it2 = it1; it2 < m_items.GetSize(); it2++ ) {
             SIZE szTile = static_cast<CControlUI*>(m_items[it2])->EstimateSize(szAvailable);
             cyHeight = MAX(cyHeight, szTile.cy);
-            if( (++iIndex % m_nColumns) == 0) break;
+            if( (++idx % m_nColumns) == 0) break;
          }
       }
       // Set position

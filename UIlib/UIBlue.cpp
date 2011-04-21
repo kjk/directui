@@ -526,10 +526,10 @@ void CBlueRenderEngineUI::DoPaintPrettyText(HDC hDC, CPaintManagerUI* pManager, 
                int iSize = 16;
                if( *pstrText == ' ' ) pstrText++;
                if( isdigit(*pstrText) ) {
-                  int iIndex = (int) _tcstol(pstrText, const_cast<TCHAR**>(&pstrText), 10);
+                  int idx = (int) _tcstol(pstrText, const_cast<TCHAR**>(&pstrText), 10);
                   iSize = MAX(16, _ttoi(pstrText));
                   if( bDraw ) {
-                     HICON hIcon = pManager->GetThemeIcon(iIndex, iSize);
+                     HICON hIcon = pManager->GetThemeIcon(idx, iSize);
                      ASSERT(hIcon!=NULL);
                      ::DrawIconEx(hDC, pt.x, pt.y, hIcon, iSize, iSize, 0, NULL, DI_NORMAL);
                      ::DestroyIcon(hIcon);

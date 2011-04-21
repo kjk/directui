@@ -34,7 +34,7 @@ class IListOwnerUI
 {
 public:
    virtual int GetCurSel() const = 0;
-   virtual bool SelectItem(int iIndex) = 0;
+   virtual bool SelectItem(int idx) = 0;
    virtual void Event(TEventUI& event) = 0;
 };
 
@@ -47,7 +47,7 @@ public:
    virtual const TListInfoUI* GetListInfo() const = 0;
    virtual IListCallbackUI* GetTextCallback() const = 0;
    virtual void SetTextCallback(IListCallbackUI* pCallback) = 0;
-   virtual bool ExpandItem(int iIndex, bool bExpand = true) = 0;
+   virtual bool ExpandItem(int idx, bool bExpand = true) = 0;
    virtual int GetExpandedItem() const = 0;
 };
 
@@ -55,7 +55,7 @@ class IListItemUI
 {
 public:
    virtual int GetIndex() const = 0;
-   virtual void SetIndex(int iIndex) = 0;
+   virtual void SetIndex(int idx) = 0;
    virtual void SetOwner(CControlUI* pOwner) = 0;
    virtual bool IsSelected() const = 0;
    virtual bool Select(bool bSelect = true) = 0;
@@ -74,7 +74,7 @@ public:
    void* GetInterface(const TCHAR* name);
 
    int GetIndex() const;
-   void SetIndex(int iIndex);
+   void SetIndex(int idx);
 
    void SetOwner(CControlUI* pOwner);
 
@@ -89,7 +89,7 @@ public:
    void SetAttribute(const TCHAR* name, const TCHAR* value);
 
 protected:
-   int m_iIndex;
+   int m_idx;
    bool m_bSelected;
    IListOwnerUI* m_pOwner;
 };
@@ -154,26 +154,26 @@ public:
    void* GetInterface(const TCHAR* name);
 
    int GetCurSel() const;
-   bool SelectItem(int iIndex);
+   bool SelectItem(int idx);
 
    CListHeaderUI* GetHeader() const;
    CListFooterUI* GetFooter() const;   
    CContainerUI* GetList() const;
    const TListInfoUI* GetListInfo() const;
 
-   CControlUI* GetItem(int iIndex) const;
+   CControlUI* GetItem(int idx) const;
    int GetCount() const;
    bool Add(CControlUI* ctrl);
    bool Remove(CControlUI* ctrl);
    void RemoveAll();
 
-   void EnsureVisible(int iIndex);
+   void EnsureVisible(int idx);
    void Scroll(int dx, int dy);
 
    void SetExpanding(bool bExpandable);
 
    int GetExpandedItem() const;
-   bool ExpandItem(int iIndex, bool bExpand = true);
+   bool ExpandItem(int idx, bool bExpand = true);
 
    void SetPos(RECT rc);
    void Event(TEventUI& event);
@@ -255,7 +255,7 @@ public:
    void SetManager(CPaintManagerUI* pManager, CControlUI* pParent);
    CControlUI* FindControl(FINDCONTROLPROC Proc, void* pData, UINT uFlags);
 
-   CControlUI* GetItem(int iIndex) const;
+   CControlUI* GetItem(int idx) const;
    int GetCount() const;
    bool Add(CControlUI* ctrl);
    bool Remove(CControlUI* ctrl);
