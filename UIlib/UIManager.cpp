@@ -1376,12 +1376,12 @@ TCHAR CControlUI::GetShortcut() const
 
 CStdString CControlUI::GetText() const
 {
-   return m_sText;
+   return m_txt;
 }
 
 void CControlUI::SetText(const TCHAR* txt)
 {
-   m_sText = txt;
+   m_txt = txt;
    Invalidate();
 }
 

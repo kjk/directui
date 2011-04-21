@@ -84,7 +84,7 @@ SIZE CSingleLinePickUI::EstimateSize(SIZE /*szAvailable*/)
       RECT rcText = m_rcItem;
       ::InflateRect(&rcText, -4, -2);
       m_nLinks = lengthof(m_rcLinks);
-      CBlueRenderEngineUI::DoPaintPrettyText(m_manager->GetPaintDC(), m_manager, rcText, m_sText, UICOLOR_EDIT_TEXT_NORMAL, UICOLOR__INVALID, m_rcLinks, m_nLinks, DT_SINGLELINE | DT_CALCRECT);
+      CBlueRenderEngineUI::DoPaintPrettyText(m_manager->GetPaintDC(), m_manager, rcText, m_txt, UICOLOR_EDIT_TEXT_NORMAL, UICOLOR__INVALID, m_rcLinks, m_nLinks, DT_SINGLELINE | DT_CALCRECT);
       sz.cy = rcText.bottom - rcText.top;
    }
    return sz;
@@ -111,7 +111,7 @@ void CSingleLinePickUI::DoPaint(HDC hDC, const RECT& rcPaint)
    CBlueRenderEngineUI::DoPaintFrame(hDC, m_manager, rcText, iBorderColor, iBorderColor, iBackColor);
    ::InflateRect(&rcText, -4, -2);
    m_nLinks = lengthof(m_rcLinks);
-   CBlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcText, m_sText, iTextColor, UICOLOR__INVALID, m_rcLinks, m_nLinks, DT_SINGLELINE);
+   CBlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcText, m_txt, iTextColor, UICOLOR__INVALID, m_rcLinks, m_nLinks, DT_SINGLELINE);
    RECT rcPadding = { 0 };
    CBlueRenderEngineUI::DoPaintButton(hDC, m_manager, m_rcButton, _T("<i 4>"), rcPadding, m_uButtonState, 0);
 }

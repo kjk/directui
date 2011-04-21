@@ -144,7 +144,7 @@ const TCHAR* CListHeaderItemUI::GetClass() const
 
 void CListHeaderItemUI::SetText(const TCHAR* txt)
 {
-   m_sText = txt;
+   m_txt = txt;
    UpdateLayout();
 }
 
@@ -224,7 +224,7 @@ void CListHeaderItemUI::DoPaint(HDC hDC, const RECT& rcPaint)
    rcMessage.left += 6;
    rcMessage.bottom -= 1;
    int nLinks = 0;
-   CBlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcMessage, m_sText, UICOLOR_HEADER_TEXT, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE | DT_VCENTER);
+   CBlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcMessage, m_txt, UICOLOR_HEADER_TEXT, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE | DT_VCENTER);
    // Draw gripper
    POINT ptTemp = { 0 };
    RECT rcThumb = GetThumbRect(m_rcItem);
@@ -671,7 +671,7 @@ void CListLabelElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uDrawStyle)
    RECT rcText = rcItem;
    ::InflateRect(&rcText, -4, 0);
    int nLinks = 0;
-   CBlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcText, m_sText, iTextColor, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE | m_uTextStyle);
+   CBlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcText, m_txt, iTextColor, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE | m_uTextStyle);
 }
 
 

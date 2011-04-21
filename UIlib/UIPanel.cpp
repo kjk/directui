@@ -156,7 +156,7 @@ void CNavigatorButtonUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
       rcText.top += 2;
    }
    int nLinks = 0;
-   CBlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcText, m_sText, iTextColor, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE | DT_VCENTER);
+   CBlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcText, m_txt, iTextColor, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE | DT_VCENTER);
 }
 
 RECT CNavigatorButtonUI::GetButtonRect(RECT rc) const
@@ -247,7 +247,7 @@ void CTaskPanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
    // Paint caption
    int cyFont = m_manager->GetThemeFontInfo(UIFONT_NORMAL).tmHeight;
    RECT rcArc = { m_rcItem.left, m_rcItem.top, m_rcItem.right, m_rcItem.top + cyFont + 6 };
-   CBlueRenderEngineUI::DoPaintArcCaption(hDC, m_manager, rcArc, m_sText, UIARC_GRIPPER);
+   CBlueRenderEngineUI::DoPaintArcCaption(hDC, m_manager, rcArc, m_txt, UIARC_GRIPPER);
    // Paint background
    RECT rcClient = { m_rcItem.left, rcArc.bottom, m_rcItem.right, m_rcItem.bottom };
    COLORREF clrFirst, clrSecond;
@@ -487,7 +487,7 @@ SIZE CTextPanelUI::EstimateSize(SIZE szAvailable)
 {
    RECT rcText = { 0, 0, MAX(szAvailable.cx, m_cxWidth), 9999 };
    m_nLinks = 0;
-   CBlueRenderEngineUI::DoPaintPrettyText(m_manager->GetPaintDC(), m_manager, rcText, m_sText, UICOLOR_EDIT_TEXT_NORMAL, UICOLOR__INVALID, NULL, m_nLinks, DT_CALCRECT | m_uTextStyle);
+   CBlueRenderEngineUI::DoPaintPrettyText(m_manager->GetPaintDC(), m_manager, rcText, m_txt, UICOLOR_EDIT_TEXT_NORMAL, UICOLOR__INVALID, NULL, m_nLinks, DT_CALCRECT | m_uTextStyle);
    return CSize(rcText.right - rcText.left, rcText.bottom - rcText.left);
 }
 
@@ -495,7 +495,7 @@ void CTextPanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
    RECT rcText = m_rcItem;
    m_nLinks = lengthof(m_rcLinks);
-   CBlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcText, m_sText, m_TextColor, m_BackColor, m_rcLinks, m_nLinks, m_uTextStyle);
+   CBlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcText, m_txt, m_TextColor, m_BackColor, m_rcLinks, m_nLinks, m_uTextStyle);
 }
 
 CWarningPanelUI::CWarningPanelUI() : m_BackColor(UICOLOR_STANDARD_YELLOW)
@@ -536,7 +536,7 @@ SIZE CWarningPanelUI::EstimateSize(SIZE szAvailable)
    RECT rcText = { 0, 0, szAvailable.cx, szAvailable.cy };
    ::InflateRect(&rcText, -6, -4);
    int nLinks = 0;
-   CBlueRenderEngineUI::DoPaintPrettyText(m_manager->GetPaintDC(), m_manager, rcText, m_sText, UICOLOR_EDIT_TEXT_NORMAL, UICOLOR__INVALID, NULL, nLinks, DT_WORDBREAK | DT_CALCRECT);
+   CBlueRenderEngineUI::DoPaintPrettyText(m_manager->GetPaintDC(), m_manager, rcText, m_txt, UICOLOR_EDIT_TEXT_NORMAL, UICOLOR__INVALID, NULL, nLinks, DT_WORDBREAK | DT_CALCRECT);
    return CSize(0, (rcText.bottom - rcText.top) + 16);
 }
 
@@ -548,5 +548,5 @@ void CWarningPanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
    RECT rcText = rcSign;
    ::InflateRect(&rcText, -6, -4);
    m_nLinks = lengthof(m_rcLinks);
-   CBlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcText, m_sText, UICOLOR_BUTTON_TEXT_NORMAL, UICOLOR__INVALID, m_rcLinks, m_nLinks, DT_WORDBREAK);
+   CBlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcText, m_txt, UICOLOR_BUTTON_TEXT_NORMAL, UICOLOR__INVALID, m_rcLinks, m_nLinks, DT_WORDBREAK);
 }

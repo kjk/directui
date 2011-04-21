@@ -142,7 +142,7 @@ void CSingleLineEditUI::Event(TEventUI& event)
 
 void CSingleLineEditUI::SetText(const TCHAR* txt)
 {
-   m_sText = txt;
+   m_txt = txt;
    if (m_manager != NULL)  m_manager->SendNotify(this, _T("changed"));
    Invalidate();
 }
@@ -175,7 +175,7 @@ void CSingleLineEditUI::DoPaint(HDC hDC, const RECT& /*rcPaint*/)
    if (IsFocused())  uState |= UISTATE_FOCUSED;
    if (IsReadOnly())  uState |= UISTATE_READONLY;
    if (!IsEnabled())  uState |= UISTATE_DISABLED;
-   CBlueRenderEngineUI::DoPaintEditBox(hDC, m_manager, m_rcItem, m_sText, uState, m_uEditStyle, false);
+   CBlueRenderEngineUI::DoPaintEditBox(hDC, m_manager, m_rcItem, m_txt, uState, m_uEditStyle, false);
 }
 
 class CMultiLineEditWnd : public CWindowWnd
@@ -201,7 +201,7 @@ void CMultiLineEditWnd::Init(CMultiLineEditUI* owner)
    ::InflateRect(&rcPos, -1, -3);
    Create(owner->m_manager->GetPaintWindow(), NULL, WS_CHILD | WS_CLIPCHILDREN | WS_CLIPSIBLINGS | WS_VSCROLL | ES_MULTILINE | ES_AUTOVSCROLL, 0, rcPos);
    SetWindowFont(m_hWnd, owner->m_manager->GetThemeFont(UIFONT_NORMAL), TRUE);
-   Edit_SetText(m_hWnd, owner->m_sText);
+   Edit_SetText(m_hWnd, owner->m_txt);
    Edit_SetModify(m_hWnd, FALSE);
    SendMessage(EM_SETMARGINS, EC_LEFTMARGIN | EC_RIGHTMARGIN, MAKELPARAM(2, 2));
    Edit_SetReadOnly(m_hWnd, owner->IsReadOnly() == true);
@@ -244,7 +244,7 @@ LRESULT CMultiLineEditWnd::OnEditChanged(UINT /*uMsg*/, WPARAM /*wParam*/, LPARA
    TCHAR* pstr = static_cast<TCHAR*>(_alloca(cchLen * sizeof(TCHAR)));
    ASSERT(pstr);
    ::GetWindowText(m_hWnd, pstr, cchLen);
-   m_owner->m_sText = pstr;
+   m_owner->m_txt = pstr;
    m_owner->GetManager()->SendNotify(m_owner, _T("changed"));
    return 0;
 }
@@ -278,7 +278,7 @@ UINT CMultiLineEditUI::GetControlFlags() const
 
 void CMultiLineEditUI::SetText(const TCHAR* txt)
 {
-   m_sText = txt;
+   m_txt = txt;
    if (m_pWindow != NULL)  SetWindowText(*m_pWindow, txt);
    if (m_manager != NULL)  m_manager->SendNotify(this, _T("changed"));
    Invalidate();
@@ -293,7 +293,7 @@ CStdString CMultiLineEditUI::GetText() const
       ::GetWindowText(*m_pWindow, pstr, cchLen);
       return CStdString(pstr);
    }
-   return m_sText;
+   return m_txt;
 }
 
 void CMultiLineEditUI::SetVisible(bool bVisible)

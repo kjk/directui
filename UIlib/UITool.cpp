@@ -19,7 +19,7 @@ void CStatusbarUI::DoPaint(HDC hDC, const RECT& rcPaint)
    RECT rcMessage = m_rcItem;
    ::InflateRect(&rcMessage, -8, -2);
    int nLinks = 0;
-   CBlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcMessage, m_sText, UICOLOR_TITLE_TEXT, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE | DT_VCENTER);
+   CBlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcMessage, m_txt, UICOLOR_TITLE_TEXT, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE | DT_VCENTER);
 }
 
 
@@ -38,7 +38,7 @@ SIZE CToolbarTitlePanelUI::EstimateSize(SIZE szAvailable)
    RECT rcText = { 0, 0, szAvailable.cx, szAvailable.cy };
    ::InflateRect(&rcText, -m_iPadding, -m_iPadding);
    int nLinks = 0;
-   CBlueRenderEngineUI::DoPaintPrettyText(m_manager->GetPaintDC(), m_manager, rcText, m_sText, UICOLOR_EDIT_TEXT_NORMAL, UICOLOR__INVALID, NULL, nLinks, DT_WORDBREAK | DT_CALCRECT);
+   CBlueRenderEngineUI::DoPaintPrettyText(m_manager->GetPaintDC(), m_manager, rcText, m_txt, UICOLOR_EDIT_TEXT_NORMAL, UICOLOR__INVALID, NULL, nLinks, DT_WORDBREAK | DT_CALCRECT);
    sz.cy = (rcText.bottom - rcText.top) + (m_iPadding * 2);
    return sz;
 }
@@ -49,7 +49,7 @@ void CToolbarTitlePanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
    RECT rcText = m_rcItem;
    ::InflateRect(&rcText, -m_iPadding, -m_iPadding);
    int nLinks = 0;
-   CBlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcText, m_sText, UICOLOR_TITLE_TEXT, UICOLOR__INVALID, NULL, nLinks, DT_WORDBREAK | DT_NOPREFIX);
+   CBlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcText, m_txt, UICOLOR_TITLE_TEXT, UICOLOR__INVALID, NULL, nLinks, DT_WORDBREAK | DT_NOPREFIX);
 }
 
 CToolbarUI::CToolbarUI()
@@ -88,7 +88,7 @@ void CToolButtonUI::DoPaint(HDC hDC, const RECT& rcPaint)
    UINT uState = 0;
    if (IsFocused())  uState |= UISTATE_FOCUSED;
    if (!IsEnabled())  uState |= UISTATE_DISABLED;
-   CBlueRenderEngineUI::DoPaintToolbarButton(hDC, m_manager, m_rcItem, m_sText, m_szPadding, m_uButtonState | uState);
+   CBlueRenderEngineUI::DoPaintToolbarButton(hDC, m_manager, m_rcItem, m_txt, m_szPadding, m_uButtonState | uState);
 }
 
 const TCHAR* CToolSeparatorUI::GetClass() const

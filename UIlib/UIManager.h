@@ -432,7 +432,7 @@ protected:
    CControlUI* m_pParent;
    TCHAR m_chShortcut;
    CStdString m_sName;
-   CStdString m_sText;
+   CStdString m_txt;
    CStdString m_sToolTip;
    UINT_PTR m_pTag;
    RECT m_rcItem;
