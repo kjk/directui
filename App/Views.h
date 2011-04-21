@@ -46,7 +46,7 @@ public:
    const TCHAR* GetDialogResource() const;
    void OnPrepareAnimation();
    // IListCallbackUI
-   const TCHAR* GetItemText(CControlUI* ctrl, int iIndex, int iSubItem);
+   const TCHAR* GetItemText(CControlUI* ctrl, int idx, int iSubItem);
    int CompareItem(CControlUI* pList, CControlUI* item1, CControlUI* item2);
 };
 
@@ -67,7 +67,7 @@ public:
    void OnPrepareAnimation();
    void OnExpandItem(CControlUI* ctrl);
    // IListCallbackUI
-   const TCHAR* GetItemText(CControlUI* ctrl, int iIndex, int iSubItem);
+   const TCHAR* GetItemText(CControlUI* ctrl, int idx, int iSubItem);
    int CompareItem(CControlUI* pList, CControlUI* item1, CControlUI* item2);
 };
 

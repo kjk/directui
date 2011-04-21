@@ -252,16 +252,16 @@ void CRegistersPageWnd::OnPrepareAnimation()
    for( int i = 0; i < 1000; i++ ) pList->Add(new CListTextElementUI);    // We want 1000 items in list
 }
 
-const TCHAR* CRegistersPageWnd::GetItemText(CControlUI* ctrl, int iIndex, int iSubItem)
+const TCHAR* CRegistersPageWnd::GetItemText(CControlUI* ctrl, int idx, int iSubItem)
 {
-   if( iIndex == 0 && iSubItem == 0 ) return _T("<i 3>Item1");
-   if( iIndex == 1 && iSubItem == 0 ) return _T("<i 3>Item2");
-   if( iIndex == 2 && iSubItem == 0 ) return _T("<i 3>Item3");
-   if( iIndex == 0 && iSubItem == 1 ) return _T("Horse");
-   if( iIndex == 1 && iSubItem == 1 ) return _T("Dog");
-   if( iIndex == 2 && iSubItem == 1 ) return _T("Rabbit");
+   if( idx == 0 && iSubItem == 0 ) return _T("<i 3>Item1");
+   if( idx == 1 && iSubItem == 0 ) return _T("<i 3>Item2");
+   if( idx == 2 && iSubItem == 0 ) return _T("<i 3>Item3");
+   if( idx == 0 && iSubItem == 1 ) return _T("Horse");
+   if( idx == 1 && iSubItem == 1 ) return _T("Dog");
+   if( idx == 2 && iSubItem == 1 ) return _T("Rabbit");
    static CStdString sTemp;
-   sTemp.Format(_T("Item %d %d"), iIndex, iSubItem);
+   sTemp.Format(_T("Item %d %d"), idx, iSubItem);
    return sTemp;
 }
 
@@ -340,17 +340,17 @@ void CSystemsPageWnd::Notify(TNotifyUI& msg)
    CStandardPageWnd::Notify(msg);
 }
 
-const TCHAR* CSystemsPageWnd::GetItemText(CControlUI* ctrl, int iIndex, int iSubItem)
+const TCHAR* CSystemsPageWnd::GetItemText(CControlUI* ctrl, int idx, int iSubItem)
 {
-   if( iIndex == 0 && iSubItem == 1 ) return _T("Expanding Item #1");
-   if( iIndex == 1 && iSubItem == 1 ) return _T("Expanding Item #2");
-   if( iIndex == 2 && iSubItem == 1 ) return _T("Expanding Item #3");
-   if( iIndex == 0 && iSubItem == 2 ) return _T("100.0");
-   if( iIndex == 1 && iSubItem == 2 ) return _T("20.0");
-   if( iIndex == 2 && iSubItem == 2 ) return _T("30.0");
-   if( iIndex == 0 && iSubItem == 3 ) return _T("<a>Kunde #1</a>");
-   if( iIndex == 1 && iSubItem == 3 ) return _T("");
-   if( iIndex == 2 && iSubItem == 3 ) return _T("<a>Kunde #3</a>");
+   if( idx == 0 && iSubItem == 1 ) return _T("Expanding Item #1");
+   if( idx == 1 && iSubItem == 1 ) return _T("Expanding Item #2");
+   if( idx == 2 && iSubItem == 1 ) return _T("Expanding Item #3");
+   if( idx == 0 && iSubItem == 2 ) return _T("100.0");
+   if( idx == 1 && iSubItem == 2 ) return _T("20.0");
+   if( idx == 2 && iSubItem == 2 ) return _T("30.0");
+   if( idx == 0 && iSubItem == 3 ) return _T("<a>Kunde #1</a>");
+   if( idx == 1 && iSubItem == 3 ) return _T("");
+   if( idx == 2 && iSubItem == 3 ) return _T("<a>Kunde #3</a>");
    return _T("");
 }
 

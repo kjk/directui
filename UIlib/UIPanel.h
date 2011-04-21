@@ -41,7 +41,7 @@ public:
    bool Add(CControlUI* ctrl);
 
    int GetCurSel() const;
-   bool SelectItem(int iIndex);
+   bool SelectItem(int idx);
 
    void Event(TEventUI& event);
 
@@ -77,7 +77,7 @@ public:
 
    const TCHAR* GetClass() const;
 
-   void SetImage(int iIndex);
+   void SetImage(int idx);
 
    void SetPos(RECT rc);
    void DoPaint(HDC hDC, const RECT& rcPaint);
