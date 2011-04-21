@@ -481,7 +481,7 @@ void CBlueRenderEngineUI::DoPaintPrettyText(HDC hDC, CPaintManagerUI* pManager, 
             break;
          case 'f':  // Font
             {
-               UITYPE_FONT iFont = (UITYPE_FONT) _tcstol(pstrText, const_cast<LPTSTR*>(&pstrText), 10);
+               UITYPE_FONT iFont = (UITYPE_FONT) _tcstol(pstrText, const_cast<TCHAR**>(&pstrText), 10);
                ::SelectObject(hDC, pManager->GetThemeFont(iFont));
                tm = pManager->GetThemeFontInfo(iFont);
                cyLine = MAX(cyLine, tm.tmHeight + tm.tmExternalLeading);
@@ -496,7 +496,7 @@ void CBlueRenderEngineUI::DoPaintPrettyText(HDC hDC, CPaintManagerUI* pManager, 
             break;
          case 'x':  // Indent
             {
-               iLineIndent = (int) _tcstol(pstrText, const_cast<LPTSTR*>(&pstrText), 10);
+               iLineIndent = (int) _tcstol(pstrText, const_cast<TCHAR**>(&pstrText), 10);
                if( pt.x < rc.left + iLineIndent ) pt.x = rc.left + iLineIndent;
             }
             break;
@@ -526,7 +526,7 @@ void CBlueRenderEngineUI::DoPaintPrettyText(HDC hDC, CPaintManagerUI* pManager, 
                int iSize = 16;
                if( *pstrText == ' ' ) pstrText++;
                if( isdigit(*pstrText) ) {
-                  int iIndex = (int) _tcstol(pstrText, const_cast<LPTSTR*>(&pstrText), 10);
+                  int iIndex = (int) _tcstol(pstrText, const_cast<TCHAR**>(&pstrText), 10);
                   iSize = MAX(16, _ttoi(pstrText));
                   if( bDraw ) {
                      HICON hIcon = pManager->GetThemeIcon(iIndex, iSize);
@@ -561,12 +561,12 @@ void CBlueRenderEngineUI::DoPaintPrettyText(HDC hDC, CPaintManagerUI* pManager, 
                if( *pstrText == ' ' ) pstrText++;
                if( *pstrText == '#') {
                   pstrText++;
-                  COLORREF clrColor = _tcstol(pstrText, const_cast<LPTSTR*>(&pstrText), 16);
+                  COLORREF clrColor = _tcstol(pstrText, const_cast<TCHAR**>(&pstrText), 16);
                   clrColor = RGB(GetBValue(clrColor), GetGValue(clrColor), GetRValue(clrColor));
                   ::SetTextColor(hDC, clrColor);
                }
                else {
-                  UITYPE_COLOR Color = (UITYPE_COLOR) _tcstol(pstrText, const_cast<LPTSTR*>(&pstrText), 10);
+                  UITYPE_COLOR Color = (UITYPE_COLOR) _tcstol(pstrText, const_cast<TCHAR**>(&pstrText), 10);
                   ::SetTextColor(hDC, pManager->GetThemeColor(Color));
                }
             }

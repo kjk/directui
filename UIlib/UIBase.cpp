@@ -700,12 +700,12 @@ void CStdString::Append(const TCHAR* pstr)
    int nNewLength = GetLength() + (int) _tcslen(pstr);
    if( nNewLength >= MAX_LOCAL_STRING_LEN ) {
       if( m_pstr == m_szBuffer ) {
-         m_pstr = static_cast<LPTSTR>(malloc((nNewLength + 1) * sizeof(TCHAR)));
+         m_pstr = static_cast<TCHAR*>(malloc((nNewLength + 1) * sizeof(TCHAR)));
          _tcscpy(m_pstr, m_szBuffer);
          _tcscat(m_pstr, pstr);
       }
       else {
-         m_pstr = static_cast<LPTSTR>(realloc(m_pstr, (nNewLength + 1) * sizeof(TCHAR)));
+         m_pstr = static_cast<TCHAR*>(realloc(m_pstr, (nNewLength + 1) * sizeof(TCHAR)));
          _tcscat(m_pstr, pstr);
       }
    }
@@ -730,7 +730,7 @@ void CStdString::Assign(const TCHAR* pstr, int cchMax)
    }
    else if( cchMax > GetLength() || m_pstr == m_szBuffer ) {
       if( m_pstr == m_szBuffer ) m_pstr = NULL;
-      m_pstr = static_cast<LPTSTR>(realloc(m_pstr, (cchMax + 1) * sizeof(TCHAR)));
+      m_pstr = static_cast<TCHAR*>(realloc(m_pstr, (cchMax + 1) * sizeof(TCHAR)));
    }
    _tcsncpy(m_pstr, pstr, cchMax);
    m_pstr[cchMax] = '\0';

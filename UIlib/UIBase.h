@@ -239,7 +239,7 @@ public:
    int __cdecl Format(const TCHAR* pstrFormat, ...);
 
 protected:
-   LPTSTR m_pstr;
+   TCHAR* m_pstr;
    TCHAR m_szBuffer[MAX_LOCAL_STRING_LEN + 1];
 };
 

@@ -629,7 +629,7 @@ bool CPaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LR
          m_ToolTip.hwnd = m_hWndPaint;
          m_ToolTip.uId = (UINT) m_hWndPaint;
          m_ToolTip.hinst = m_hInstance;
-         m_ToolTip.lpszText = const_cast<LPTSTR>( (const TCHAR*) sToolTip );
+         m_ToolTip.lpszText = const_cast<TCHAR*>( (const TCHAR*) sToolTip );
          m_ToolTip.rect = pHover->GetPos();
          if( m_hwndTooltip == NULL ) {
             m_hwndTooltip = ::CreateWindowEx(0, TOOLTIPS_CLASS, NULL, WS_POPUP | TTS_NOPREFIX | TTS_ALWAYSTIP, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, m_hWndPaint, NULL, m_hInstance, NULL);
@@ -1505,7 +1505,7 @@ void CControlUI::SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue)
 {
    if( _tcscmp(pstrName, _T("pos")) == 0 ) {
       RECT rcPos = { 0 };
-      LPTSTR pstr = NULL;
+      TCHAR* pstr = NULL;
       rcPos.left = _tcstol(pstrValue, &pstr, 10);  ASSERT(pstr);    
       rcPos.top = _tcstol(pstr + 1, &pstr, 10);    ASSERT(pstr);    
       rcPos.right = _tcstol(pstr + 1, &pstr, 10);  ASSERT(pstr);    

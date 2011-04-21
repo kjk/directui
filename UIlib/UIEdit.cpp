@@ -84,7 +84,7 @@ LRESULT CSingleLineEditWnd::OnEditChanged(UINT /*uMsg*/, WPARAM /*wParam*/, LPAR
    if( m_pOwner == NULL ) return 0;
    // Copy text back
    int cchLen = ::GetWindowTextLength(m_hWnd) + 1;
-   LPTSTR pstr = static_cast<LPTSTR>(_alloca(cchLen * sizeof(TCHAR)));
+   TCHAR* pstr = static_cast<TCHAR*>(_alloca(cchLen * sizeof(TCHAR)));
    ASSERT(pstr);
    if( pstr == NULL ) return 0;
    ::GetWindowText(m_hWnd, pstr, cchLen);
@@ -241,7 +241,7 @@ LRESULT CMultiLineEditWnd::OnEditChanged(UINT /*uMsg*/, WPARAM /*wParam*/, LPARA
    if( m_pOwner == NULL ) return 0;
    // Copy text back
    int cchLen = ::GetWindowTextLength(m_hWnd) + 1;
-   LPTSTR pstr = static_cast<LPTSTR>(_alloca(cchLen * sizeof(TCHAR)));
+   TCHAR* pstr = static_cast<TCHAR*>(_alloca(cchLen * sizeof(TCHAR)));
    ASSERT(pstr);
    ::GetWindowText(m_hWnd, pstr, cchLen);
    m_pOwner->m_sText = pstr;
@@ -288,7 +288,7 @@ CStdString CMultiLineEditUI::GetText() const
 {
    if( m_pWindow != NULL ) {
       int cchLen = ::GetWindowTextLength(*m_pWindow) + 1;
-      LPTSTR pstr = static_cast<LPTSTR>(_alloca(cchLen * sizeof(TCHAR)));
+      TCHAR* pstr = static_cast<TCHAR*>(_alloca(cchLen * sizeof(TCHAR)));
       ASSERT(pstr);
       ::GetWindowText(*m_pWindow, pstr, cchLen);
       return CStdString(pstr);

@@ -20,8 +20,8 @@ public:
    bool IsValid() const;
 
    void SetPreserveWhitespace(bool bPreserve = true);
-   void GetLastErrorMessage(LPTSTR pstrMessage, SIZE_T cchMax) const;
-   void GetLastErrorLocation(LPTSTR pstrSource, SIZE_T cchMax) const;
+   void GetLastErrorMessage(TCHAR* pstrMessage, SIZE_T cchMax) const;
+   void GetLastErrorLocation(TCHAR* pstrSource, SIZE_T cchMax) const;
 
    CMarkupNode GetRoot();
 
@@ -35,7 +35,7 @@ private:
       ULONG iData;
    } XMLELEMENT;
    
-   LPTSTR m_pstrXML;
+   TCHAR* m_pstrXML;
    XMLELEMENT* m_pElements;
    ULONG m_nElements;
    ULONG m_nReservedElements;
@@ -45,15 +45,15 @@ private:
 
 private:
    bool _Parse();
-   bool _Parse(LPTSTR& pstrText, ULONG iParent);
+   bool _Parse(TCHAR*& pstrText, ULONG iParent);
    XMLELEMENT* _ReserveElement();
-   inline void _SkipWhitespace(LPTSTR& pstr) const;
+   inline void _SkipWhitespace(TCHAR*& pstr) const;
    inline void _SkipWhitespace(const TCHAR*& pstr) const;
-   inline void _SkipIdentifier(LPTSTR& pstr) const;
+   inline void _SkipIdentifier(TCHAR*& pstr) const;
    inline void _SkipIdentifier(const TCHAR*& pstr) const;
-   bool _ParseData(LPTSTR& pstrText, LPTSTR& pstrData, char cEnd);
-   void _ParseMetaChar(LPTSTR& pstrText, LPTSTR& pstrDest);
-   bool _ParseAttributes(LPTSTR& pstrText);
+   bool _ParseData(TCHAR*& pstrText, TCHAR*& pstrData, char cEnd);
+   void _ParseMetaChar(TCHAR*& pstrText, TCHAR*& pstrDest);
+   bool _ParseAttributes(TCHAR*& pstrText);
    bool _Failed(const TCHAR* pstrError, const TCHAR* pstrLocation = NULL);
 };
 
@@ -84,8 +84,8 @@ public:
    const TCHAR* GetAttributeName(int iIndex);
    const TCHAR* GetAttributeValue(int iIndex);
    const TCHAR* GetAttributeValue(const TCHAR* pstrName);
-   bool GetAttributeValue(int iIndex, LPTSTR pstrValue, SIZE_T cchMax);
-   bool GetAttributeValue(const TCHAR* pstrName, LPTSTR pstrValue, SIZE_T cchMax);
+   bool GetAttributeValue(int iIndex, TCHAR* pstrValue, SIZE_T cchMax);
+   bool GetAttributeValue(const TCHAR* pstrName, TCHAR* pstrValue, SIZE_T cchMax);
 
 private:
    void _MapAttributes();

@@ -107,7 +107,7 @@ const TCHAR* CMarkupNode::GetAttributeValue(const TCHAR* pstrName)
    return _T("");
 }
 
-bool CMarkupNode::GetAttributeValue(int iIndex, LPTSTR pstrValue, SIZE_T cchMax)
+bool CMarkupNode::GetAttributeValue(int iIndex, TCHAR* pstrValue, SIZE_T cchMax)
 {
    if( m_pOwner == NULL ) return false;
    if( m_nAttributes == 0 ) _MapAttributes();
@@ -116,7 +116,7 @@ bool CMarkupNode::GetAttributeValue(int iIndex, LPTSTR pstrValue, SIZE_T cchMax)
    return true;
 }
 
-bool CMarkupNode::GetAttributeValue(const TCHAR* pstrName, LPTSTR pstrValue, SIZE_T cchMax)
+bool CMarkupNode::GetAttributeValue(const TCHAR* pstrName, TCHAR* pstrValue, SIZE_T cchMax)
 {
    if( m_pOwner == NULL ) return false;
    if( m_nAttributes == 0 ) _MapAttributes();
@@ -199,7 +199,7 @@ bool CMarkup::Load(const TCHAR* pstrXML)
 {
    Release();
    SIZE_T cbLen = (_tcslen(pstrXML) + 1) * sizeof(TCHAR);
-   m_pstrXML = static_cast<LPTSTR>(malloc(cbLen));
+   m_pstrXML = static_cast<TCHAR*>(malloc(cbLen));
    ::CopyMemory(m_pstrXML, pstrXML, cbLen);
    bool bRes = _Parse();
    if( !bRes ) Release();
@@ -219,7 +219,7 @@ bool CMarkup::LoadFromFile(const TCHAR* pstrFilename)
    ::CloseHandle(hFile);
    return false;
 #else
-   m_pstrXML = static_cast<LPTSTR>(malloc(dwSize + 1));
+   m_pstrXML = static_cast<TCHAR*>(malloc(dwSize + 1));
    ::ReadFile(hFile, m_pstrXML, dwSize, &dwRead, NULL);
    ::CloseHandle(hFile);
    m_pstrXML[dwSize] = '\0';
@@ -242,12 +242,12 @@ void CMarkup::Release()
    m_nElements;
 }
 
-void CMarkup::GetLastErrorMessage(LPTSTR pstrMessage, SIZE_T cchMax) const
+void CMarkup::GetLastErrorMessage(TCHAR* pstrMessage, SIZE_T cchMax) const
 {
    _tcsncpy(pstrMessage, m_szErrorMsg, cchMax);
 }
 
-void CMarkup::GetLastErrorLocation(LPTSTR pstrSource, SIZE_T cchMax) const
+void CMarkup::GetLastErrorLocation(TCHAR* pstrSource, SIZE_T cchMax) const
 {
    _tcsncpy(pstrSource, m_szErrorXML, cchMax);
 }
@@ -263,11 +263,11 @@ bool CMarkup::_Parse()
    _ReserveElement(); // Reserve index 0 for errors
    ::ZeroMemory(m_szErrorMsg, sizeof(m_szErrorMsg));
    ::ZeroMemory(m_szErrorXML, sizeof(m_szErrorXML));
-   LPTSTR pstrXML = m_pstrXML;
+   TCHAR* pstrXML = m_pstrXML;
    return _Parse(pstrXML, 0);
 }
 
-bool CMarkup::_Parse(LPTSTR& pstrText, ULONG iParent)
+bool CMarkup::_Parse(TCHAR*& pstrText, ULONG iParent)
 {
    ULONG iPrevious = 0;
    for( ; ; ) 
@@ -296,7 +296,7 @@ bool CMarkup::_Parse(LPTSTR& pstrText, ULONG iParent)
       // Parse name
       const TCHAR* pstrName = pstrText;
       _SkipIdentifier(pstrText);
-      LPTSTR pstrNameEnd = pstrText;
+      TCHAR* pstrNameEnd = pstrText;
       if( *pstrText == '\0' ) return _Failed(_T("Error parsing element name"), pstrText);
       // Parse attributes
       if( !_ParseAttributes(pstrText) ) return false;
@@ -312,7 +312,7 @@ bool CMarkup::_Parse(LPTSTR& pstrText, ULONG iParent)
          if( *pstrText != '>' ) return _Failed(_T("Expected start-tag closing"), pstrText);
          // Parse node data
          pEl->iData = ++pstrText - m_pstrXML;
-         LPTSTR pstrDest = pstrText;
+         TCHAR* pstrDest = pstrText;
          if( !_ParseData(pstrText, pstrDest, '<') ) return false;
          // Determine type of next element
          if( *pstrText == '\0' && iParent <= 1 ) return true;
@@ -352,7 +352,7 @@ void CMarkup::_SkipWhitespace(const TCHAR*& pstr) const
    while( *pstr != '\0' && *pstr <= ' ' ) pstr++;
 }
 
-void CMarkup::_SkipWhitespace(LPTSTR& pstr) const
+void CMarkup::_SkipWhitespace(TCHAR*& pstr) const
 {
    while( *pstr != '\0' && *pstr <= ' ' ) pstr++;
 }
@@ -362,12 +362,12 @@ void CMarkup::_SkipIdentifier(const TCHAR*& pstr) const
    while( *pstr != '\0' && (*pstr == '_' || *pstr == ':' || _istalnum(*pstr)) ) pstr++;
 }
 
-void CMarkup::_SkipIdentifier(LPTSTR& pstr) const
+void CMarkup::_SkipIdentifier(TCHAR*& pstr) const
 {
    while( *pstr != '\0' && (*pstr == '_' || *pstr == ':' || _istalnum(*pstr)) ) pstr++;
 }
 
-bool CMarkup::_ParseAttributes(LPTSTR& pstrText)
+bool CMarkup::_ParseAttributes(TCHAR*& pstrText)
 {   
    if( *pstrText == '>' ) return true;
    *pstrText++ = '\0';
@@ -378,7 +378,7 @@ bool CMarkup::_ParseAttributes(LPTSTR& pstrText)
       *pstrText++ = '\0';
       TCHAR chQuote = *pstrText++;
       if( chQuote != '\"' && chQuote != '\'' ) return _Failed(_T("Expected attribute value"), pstrText);
-      LPTSTR pstrDest = pstrText;
+      TCHAR* pstrDest = pstrText;
       if( !_ParseData(pstrText, pstrDest, chQuote) ) return false;
       if( *pstrText == '\0' ) return _Failed(_T("Error while parsing attribute string"), pstrText);
       *pstrDest = '\0';
@@ -388,7 +388,7 @@ bool CMarkup::_ParseAttributes(LPTSTR& pstrText)
    return true;
 }
 
-bool CMarkup::_ParseData(LPTSTR& pstrText, LPTSTR& pstrDest, char cEnd)
+bool CMarkup::_ParseData(TCHAR*& pstrText, TCHAR*& pstrDest, char cEnd)
 {
    while( *pstrText != '\0' && *pstrText != cEnd ) {
       if( *pstrText == '&' ) {
@@ -407,12 +407,12 @@ bool CMarkup::_ParseData(LPTSTR& pstrText, LPTSTR& pstrDest, char cEnd)
    }
    // Make sure that MapAttributes() works correctly when it parses
    // over a value that has been transformed.
-   LPTSTR pstrFill = pstrDest + 1;
+   TCHAR* pstrFill = pstrDest + 1;
    while( pstrFill < pstrText ) *pstrFill++ = ' ';
    return true;
 }
 
-void CMarkup::_ParseMetaChar(LPTSTR& pstrText, LPTSTR& pstrDest)
+void CMarkup::_ParseMetaChar(TCHAR*& pstrText, TCHAR*& pstrDest)
 {
    if( pstrText[0] == 'a' && pstrText[1] == 'm' && pstrText[2] == 'p' && pstrText[3] == ';' ) {
       *pstrDest++ = '&';
