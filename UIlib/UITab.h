@@ -7,10 +7,6 @@
 
 #include "UIlist.h"
 
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-
 class UILIB_API CTabFolderUI : public CContainerUI, public IListOwnerUI
 {
 public:

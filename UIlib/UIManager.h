@@ -3,15 +3,7 @@
 
 #pragma once
 
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-
 class CControlUI;
-
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
 
 typedef enum EVENTTYPE_UI
 {
@@ -152,9 +144,6 @@ typedef enum
 } UITYPE_COLOR;
 
 
-/////////////////////////////////////////////////////////////////////////////////////
-//
-
 // Styles for the DoPaintFrame() helper
 #define UIFRAME_ROUND        0x00000001
 #define UIFRAME_FOCUS        0x00000002
@@ -202,10 +191,6 @@ typedef enum
 #define UISTATE_READONLY     0x00000040
 #define UISTATE_CAPTURED     0x00000080
 
-
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
 
 // Structure for notifications from the system
 // to the control implementation.
@@ -267,9 +252,6 @@ public:
    virtual LRESULT MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, bool& bHandled) = 0;
 };
 
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
 
 class UILIB_API CPaintManagerUI
 {
@@ -385,9 +367,6 @@ private:
    static CStdPtrArray m_aPreMessages;
 };
 
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
 
 typedef CControlUI* (CALLBACK* FINDCONTROLPROC)(CControlUI*, void*);
 

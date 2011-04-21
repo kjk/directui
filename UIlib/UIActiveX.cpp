@@ -2,17 +2,7 @@
 #include "StdAfx.h"
 #include "UIActiveX.h"
 
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
-
 class CActiveXCtrl;
-
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
 
 class CActiveXWnd : public CWindowWnd
 {
@@ -36,11 +26,6 @@ protected:
 protected:
    CActiveXCtrl* m_pOwner;
 };
-
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
 
 class CActiveXEnum : public IEnumUnknown
 {
@@ -100,11 +85,6 @@ public:
       return E_NOTIMPL;
    }
 };
-
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
 
 class CActiveXFrameWnd : public IOleInPlaceFrame
 {
@@ -199,11 +179,6 @@ public:
       return S_OK;
    }
 };
-
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
 
 class CActiveXCtrl :
    public IOleClientSite,
@@ -742,11 +717,6 @@ HRESULT CActiveXCtrl::CreateActiveXWnd()
    return S_OK;
 }
 
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
-
 HWND CActiveXWnd::Init(CActiveXCtrl* pOwner, HWND hWndParent)
 {
    m_pOwner = pOwner;
@@ -838,11 +808,6 @@ LRESULT CActiveXWnd::OnPaint(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHan
    ::EndPaint(m_hWnd, &ps);
    return 1;
 }
-
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
 
 CActiveXUI::CActiveXUI() : m_pUnk(NULL), m_pControl(NULL), m_hwndHost(NULL), m_bCreated(false)
 {

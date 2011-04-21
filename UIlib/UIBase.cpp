@@ -7,11 +7,6 @@
    #pragma comment(lib, "shlwapi.lib")
 #endif
 
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
-
 void UILIB_API __Trace(const TCHAR* pstrFormat, ...)
 {
 #ifdef _DEBUG
@@ -86,11 +81,6 @@ const TCHAR* __TraceMsg(UINT uMsg)
    ::wsprintf(szMsg, _T("0x%04X"), uMsg);
    return szMsg;
 }
-
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
 
 CRect::CRect()
 {
@@ -167,11 +157,6 @@ void CRect::Union(CRect& rc)
    ::UnionRect(this, this, &rc);
 }
 
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
-
 CSize::CSize()
 {
    cx = cy = 0;
@@ -194,11 +179,6 @@ CSize::CSize(int _cx, int _cy)
    cx = _cx;
    cy = _cy;
 }
-
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
 
 CPoint::CPoint()
 {
@@ -223,10 +203,6 @@ CPoint::CPoint(LPARAM lParam)
    y = GET_Y_LPARAM(lParam);
 }
 
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
 
 CWindowWnd::CWindowWnd() : m_hWnd(NULL), m_OldWndProc(::DefWindowProc), m_bSubclassed(false)
 {
@@ -492,10 +468,6 @@ void CWindowWnd::OnFinalMessage(HWND /*hWnd*/)
 }
 
 
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
-
 CStdPtrArray::CStdPtrArray(int iPreallocSize) : m_ppVoid(NULL), m_nCount(0), m_nAllocated(iPreallocSize)
 {
    ASSERT(iPreallocSize>=0);
@@ -598,10 +570,6 @@ void* CStdPtrArray::operator[] (int iIndex) const
 }
 
 
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
-
 CStdValArray::CStdValArray(int iElementSize, int iPreallocSize /*= 0*/) : 
    m_pVoid(NULL), 
    m_nCount(0), 
@@ -670,10 +638,6 @@ void* CStdValArray::operator[] (int iIndex) const
 }
 
 
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
-
 CWaitCursor::CWaitCursor()
 {
    m_hOrigCursor = ::SetCursor(::LoadCursor(NULL, IDC_WAIT));
@@ -684,10 +648,6 @@ CWaitCursor::~CWaitCursor()
    ::SetCursor(m_hOrigCursor);
 }
 
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
 
 CStdString::CStdString() : m_pstr(m_szBuffer)
 {

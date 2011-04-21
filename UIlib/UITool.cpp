@@ -3,10 +3,6 @@
 #include "UIBlue.h"
 
 
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
-
 const TCHAR* CStatusbarUI::GetClass() const
 {
    return _T("StatusbarUI");
@@ -26,10 +22,6 @@ void CStatusbarUI::DoPaint(HDC hDC, const RECT& rcPaint)
    CBlueRenderEngineUI::DoPaintPrettyText(hDC, m_pManager, rcMessage, m_sText, UICOLOR_TITLE_TEXT, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE | DT_VCENTER);
 }
 
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
 
 CToolbarTitlePanelUI::CToolbarTitlePanelUI() : m_iPadding(6)
 {
@@ -60,11 +52,6 @@ void CToolbarTitlePanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
    CBlueRenderEngineUI::DoPaintPrettyText(hDC, m_pManager, rcText, m_sText, UICOLOR_TITLE_TEXT, UICOLOR__INVALID, NULL, nLinks, DT_WORDBREAK | DT_NOPREFIX);
 }
 
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
-
 CToolbarUI::CToolbarUI()
 {
    SetInset(CSize(2, 2));
@@ -87,11 +74,6 @@ void CToolbarUI::DoPaint(HDC hDC, const RECT& rcPaint)
    CContainerUI::DoPaint(hDC, rcPaint);
 }
 
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
-
 CToolButtonUI::CToolButtonUI()
 {
 }
@@ -108,11 +90,6 @@ void CToolButtonUI::DoPaint(HDC hDC, const RECT& rcPaint)
    if( !IsEnabled() ) uState |= UISTATE_DISABLED;
    CBlueRenderEngineUI::DoPaintToolbarButton(hDC, m_pManager, m_rcItem, m_sText, m_szPadding, m_uButtonState | uState);
 }
-
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
 
 const TCHAR* CToolSeparatorUI::GetClass() const
 {
@@ -131,11 +108,6 @@ void CToolSeparatorUI::DoPaint(HDC hDC, const RECT& rcPaint)
    RECT rc2 = { m_rcItem.left + 2, m_rcItem.top + 2, m_rcItem.left + 2, m_rcItem.bottom - 3 };
    CBlueRenderEngineUI::DoPaintLine(hDC, m_pManager, rc2, UICOLOR_TITLE_BORDER_LIGHT);
 }
-
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
 
 const TCHAR* CToolGripperUI::GetClass() const
 {

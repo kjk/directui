@@ -2,11 +2,6 @@
 #include "StdAfx.h"
 #include "UICombo.h"
 
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
-
 CSingleLinePickUI::CSingleLinePickUI() : m_cxWidth(0), m_nLinks(0), m_uButtonState(0)
 {
    ::ZeroMemory(&m_rcLinks, sizeof(m_rcLinks));
@@ -121,10 +116,6 @@ void CSingleLinePickUI::DoPaint(HDC hDC, const RECT& rcPaint)
    CBlueRenderEngineUI::DoPaintButton(hDC, m_pManager, m_rcButton, _T("<i 4>"), rcPadding, m_uButtonState, 0);
 }
 
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
 
 class CDropDownWnd : public CWindowWnd
 {

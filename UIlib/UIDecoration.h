@@ -6,10 +6,6 @@
 #endif // _MSC_VER > 1000
 
 
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-
 class UILIB_API CTitleShadowUI : public CControlUI
 {
 public:
@@ -18,9 +14,6 @@ public:
    void DoPaint(HDC hDC, const RECT& rcPaint);
 };
 
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
 
 class UILIB_API CListHeaderShadowUI : public CControlUI
 {
@@ -31,9 +24,6 @@ public:
 };
 
 
-/////////////////////////////////////////////////////////////////////////////////////
-//
-
 class UILIB_API CSeparatorLineUI : public CControlUI
 {
 public:
@@ -43,9 +33,6 @@ public:
 };
 
 
-/////////////////////////////////////////////////////////////////////////////////////
-//
-
 class UILIB_API CFadedLineUI : public CControlUI
 {
 public:
@@ -53,8 +40,6 @@ public:
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
 };
-
-
 
 #endif // !defined(AFX_UIDECORATION_H__20060218_5471_B259_0B2E_0080AD509054__INCLUDED_)
 

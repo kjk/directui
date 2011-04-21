@@ -3,10 +3,6 @@
 #include "UIEdit.h"
 
 
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
-
 class CSingleLineEditWnd : public CWindowWnd
 {
 public:
@@ -97,10 +93,6 @@ LRESULT CSingleLineEditWnd::OnEditChanged(UINT /*uMsg*/, WPARAM /*wParam*/, LPAR
 }
 
 
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
-
 CSingleLineEditUI::CSingleLineEditUI() : m_pWindow(NULL), m_uEditStyle(ES_AUTOHSCROLL), m_bReadOnly(false)
 {
 }
@@ -186,11 +178,6 @@ void CSingleLineEditUI::DoPaint(HDC hDC, const RECT& /*rcPaint*/)
    CBlueRenderEngineUI::DoPaintEditBox(hDC, m_pManager, m_rcItem, m_sText, uState, m_uEditStyle, false);
 }
 
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
-
 class CMultiLineEditWnd : public CWindowWnd
 {
 public:
@@ -262,10 +249,6 @@ LRESULT CMultiLineEditWnd::OnEditChanged(UINT /*uMsg*/, WPARAM /*wParam*/, LPARA
    return 0;
 }
 
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
 
 CMultiLineEditUI::CMultiLineEditUI() : m_pWindow(NULL)
 {

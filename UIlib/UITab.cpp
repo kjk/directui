@@ -3,10 +3,6 @@
 #include "UITab.h"
 
 
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
-
 CTabFolderUI::CTabFolderUI() : m_iCurSel(-1), m_pCurPage(NULL), m_aTabAreas(sizeof(RECT))
 {
    m_chShortcut = VK_NEXT;
@@ -138,10 +134,6 @@ void CTabFolderUI::SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue)
    else CContainerUI::SetAttribute(pstrName, pstrValue);
 }
 
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
 
 CTabPageUI::CTabPageUI()
 {

@@ -5,11 +5,6 @@
 #include "UILabel.h"
 #include "UIPanel.h"
 
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
-
 CListElementUI::CListElementUI() : 
    m_iIndex(-1),
    m_pOwner(NULL), 
@@ -104,10 +99,6 @@ void CListElementUI::SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue)
 }
 
 
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
-
 CListHeaderUI::CListHeaderUI()
 {
    SetInset(CSize(0, 0));
@@ -141,10 +132,6 @@ void CListHeaderUI::DoPaint(HDC hDC, const RECT& rcPaint)
    CHorizontalLayoutUI::DoPaint(hDC, rcPaint);
 }
 
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
 
 CListHeaderItemUI::CListHeaderItemUI() : m_uDragState(0)
 {
@@ -253,10 +240,6 @@ RECT CListHeaderItemUI::GetThumbRect(RECT rc) const
 }
 
 
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
-
 CListFooterUI::CListFooterUI()
 {
    CLabelPanelUI* pLabel = new CLabelPanelUI;
@@ -294,10 +277,6 @@ void CListFooterUI::DoPaint(HDC hDC, const RECT& rcPaint)
    CHorizontalLayoutUI::DoPaint(hDC, rcPaint);
 }
 
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
 
 CListUI::CListUI() : m_pCallback(NULL), m_iCurSel(-1), m_iExpandedItem(-1)
 {
@@ -592,10 +571,6 @@ void CListUI::SetTextCallback(IListCallbackUI* pCallback)
 }
 
 
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
-
 CListLabelElementUI::CListLabelElementUI() : m_cxWidth(0), m_uTextStyle(DT_VCENTER | DT_NOPREFIX | DT_END_ELLIPSIS), m_uButtonState(0)
 {
 }
@@ -700,10 +675,6 @@ void CListLabelElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uDrawStyle)
 }
 
 
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
-
 CListTextElementUI::CListTextElementUI() : m_cyItem(0), m_nLinks(0), m_pOwner(NULL)
 {
    ::ZeroMemory(&m_rcLinks, sizeof(m_rcLinks));
@@ -801,10 +772,6 @@ void CListTextElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
    CBlueRenderEngineUI::DoPaintLine(hDC, m_pManager, rcLine, UICOLOR_DIALOG_BACKGROUND);
 }
 
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
 
 CListExpandElementUI::CListExpandElementUI() : m_bExpanded(false), m_cyExpanded(0), m_pContainer(NULL)
 {

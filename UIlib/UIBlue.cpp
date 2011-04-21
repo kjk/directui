@@ -3,10 +3,6 @@
 #include "UIBlue.h"
 
 
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
-
 #ifndef BlendRGB
    #define BlendRGB(c1, c2, factor) \
       RGB( GetRValue(c1) + ((GetRValue(c2) - GetRValue(c1)) * factor / 100L), \
@@ -14,10 +10,6 @@
            GetBValue(c1) + ((GetBValue(c2) - GetBValue(c1)) * factor / 100L) )
 #endif
 
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
 
 CRenderClip::~CRenderClip()
 {
@@ -29,10 +21,6 @@ CRenderClip::~CRenderClip()
    ::DeleteObject(hRgn);
 }
 
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
 
 void CBlueRenderEngineUI::GenerateClip(HDC hDC, RECT rcItem, CRenderClip& clip)
 {

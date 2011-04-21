@@ -7,10 +7,6 @@
 
 #include "UIButton.h"
 
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-
 class UILIB_API CToolbarUI : public CHorizontalLayoutUI
 {
 public:
@@ -20,10 +16,6 @@ public:
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
 };
-
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
 
 class UILIB_API CToolbarTitlePanelUI : public CControlUI
 {
@@ -40,10 +32,6 @@ protected:
    int m_iPadding;
 };
 
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-
 class UILIB_API CToolSeparatorUI : public CControlUI
 {
 public:
@@ -52,10 +40,6 @@ public:
    void DoPaint(HDC hDC, const RECT& rcPaint);
 };
 
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-
 class UILIB_API CToolGripperUI : public CControlUI
 {
 public:
@@ -63,10 +47,6 @@ public:
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
 };
-
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
 
 class UILIB_API CToolButtonUI : public CButtonUI
 {
@@ -78,10 +58,6 @@ public:
    void DoPaint(HDC hDC, const RECT& rcPaint);
 };
 
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-
 class UILIB_API CStatusbarUI : public CContainerUI
 {
 public:
@@ -90,8 +66,6 @@ public:
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
 };
-
-
 
 
 #endif // !defined(AFX_UITOOL_H__20060218_57EB_12A7_9A10_0080AD509054__INCLUDED_)

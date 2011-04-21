@@ -5,11 +5,6 @@
 
 #include <zmouse.h>
 
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
-
 static UINT GetNameHash(const TCHAR* pstrName)
 {
    UINT i = 0;
@@ -28,10 +23,6 @@ static UINT MapKeyState()
    if( ::GetKeyState(VK_MENU) < 0 ) uState |= MK_ALT;
    return uState;
 }
-
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
 
 #define IDB_ICONS16 200
 #define IDB_ICONS24 201
@@ -62,9 +53,6 @@ typedef struct tagTIMERINFO
 } TIMERINFO;
 
 
-/////////////////////////////////////////////////////////////////////////////////////
-//
-
 CAnimationSpooler m_anim;
 HPEN m_hPens[UICOLOR__LAST] = { 0 };
 HFONT m_hFonts[UIFONT__LAST] = { 0 };
@@ -76,9 +64,6 @@ HIMAGELIST m_himgIcons16 = NULL;
 HIMAGELIST m_himgIcons24 = NULL;
 HIMAGELIST m_himgIcons32 = NULL;
 HIMAGELIST m_himgIcons50 = NULL;
-
-
-/////////////////////////////////////////////////////////////////////////////////////
 
 
 HINSTANCE CPaintManagerUI::m_hInstance = NULL;
@@ -1311,12 +1296,6 @@ CControlUI* CALLBACK CPaintManagerUI::__FindControlFromPoint(CControlUI* pThis, 
    LPPOINT pPoint = static_cast<LPPOINT>(pData);
    return ::PtInRect(&pThis->GetPos(), *pPoint) ? pThis : NULL;
 }
-
-
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
 
 CControlUI::CControlUI() : 
    m_pManager(NULL), 

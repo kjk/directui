@@ -3,10 +3,6 @@
 #include "UIPanel.h"
 
 
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
-
 CNavigatorPanelUI::CNavigatorPanelUI() : m_iCurSel(-1)
 {
 }
@@ -76,10 +72,6 @@ void CNavigatorPanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
    CVerticalLayoutUI::DoPaint(hDC, rcPaint);
 }
 
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
 
 CNavigatorButtonUI::CNavigatorButtonUI() : m_uButtonState(0)
 {
@@ -174,10 +166,6 @@ RECT CNavigatorButtonUI::GetButtonRect(RECT rc) const
 }
 
 
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
-
 CTaskPanelUI::CTaskPanelUI() : m_hFadeBitmap(NULL)
 {
    SetInset(CSize(8, 8));
@@ -270,11 +258,6 @@ void CTaskPanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
    CVerticalLayoutUI::DoPaint(hDC, rcPaint);
 }
 
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
-
 CSearchTitlePanelUI::CSearchTitlePanelUI() : m_iIconIndex(-1)
 {
    SetInset(CSize(0, 0));
@@ -321,10 +304,6 @@ void CSearchTitlePanelUI::SetAttribute(const TCHAR* pstrName, const TCHAR* pstrV
 }
 
 
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
-
 CPaddingPanelUI::CPaddingPanelUI()
 {
    m_cxyFixed.cx = m_cxyFixed.cy = 0;
@@ -369,10 +348,6 @@ void CPaddingPanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
 }
 
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
 
 CImagePanelUI::CImagePanelUI() : m_hBitmap(NULL)
 {
@@ -432,10 +407,6 @@ void CImagePanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
    CBlueRenderEngineUI::DoPaintBitmap(hDC, m_pManager, m_hBitmap, m_rcItem);
 }
 
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
 
 CTextPanelUI::CTextPanelUI() : m_nLinks(0), m_uButtonState(0), m_TextColor(UICOLOR_EDIT_TEXT_NORMAL), m_BackColor(UICOLOR__INVALID)
 {
@@ -526,11 +497,6 @@ void CTextPanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
    m_nLinks = lengthof(m_rcLinks);
    CBlueRenderEngineUI::DoPaintPrettyText(hDC, m_pManager, rcText, m_sText, m_TextColor, m_BackColor, m_rcLinks, m_nLinks, m_uTextStyle);
 }
-
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
 
 CWarningPanelUI::CWarningPanelUI() : m_BackColor(UICOLOR_STANDARD_YELLOW)
 {

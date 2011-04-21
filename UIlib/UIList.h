@@ -5,13 +5,8 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-
 class CListHeaderUI;
 class CListFooterUI;
-
 
 #define UILIST_MAX_COLUMNS 10
 
@@ -27,10 +22,6 @@ typedef struct tagTListInfoUI
    UITYPE_COLOR HotBackground;
    bool bExpandable;
 } TListInfoUI;
-
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
 
 class IListCallbackUI
 {
@@ -74,9 +65,6 @@ public:
 };
 
 
-/////////////////////////////////////////////////////////////////////////////////////
-//
-
 class UILIB_API CListElementUI : public CControlUI, public IListItemUI
 {
 public:
@@ -106,10 +94,6 @@ protected:
    IListOwnerUI* m_pOwner;
 };
 
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-
 class UILIB_API CListHeaderUI : public CHorizontalLayoutUI
 {
 public:
@@ -121,10 +105,6 @@ public:
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
 };
-
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
 
 class UILIB_API CListHeaderItemUI : public CControlUI
 {
@@ -152,10 +132,6 @@ protected:
    UINT m_uDragState;
 };
 
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-
 class UILIB_API CListFooterUI : public CHorizontalLayoutUI
 {
 public:
@@ -167,10 +143,6 @@ public:
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
 };
-
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
 
 class UILIB_API CListUI : public CVerticalLayoutUI, public IListUI
 {
@@ -220,10 +192,6 @@ protected:
    TListInfoUI m_ListInfo;
 };
 
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-
 class UILIB_API CListLabelElementUI : public CListElementUI
 {
 public:
@@ -248,10 +216,6 @@ protected:
    UINT m_uButtonState;
 };
 
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-
 class UILIB_API CListTextElementUI : public CListLabelElementUI
 {
 public:
@@ -274,10 +238,6 @@ protected:
    RECT m_rcLinks[8];
    IListUI* m_pOwner;
 };
-
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
 
 class UILIB_API CListExpandElementUI : public CListTextElementUI, public IContainerUI
 {

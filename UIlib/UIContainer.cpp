@@ -2,11 +2,6 @@
 #include "StdAfx.h"
 #include "UIContainer.h"
 
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
-
 CContainerUI::CContainerUI() : 
    m_hwndScroll(NULL), 
    m_iPadding(0),
@@ -339,10 +334,6 @@ void CContainerUI::ProcessScrollbar(RECT rc, int cyRequired)
 }
 
 
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
-
 CCanvasUI::CCanvasUI() : m_hBitmap(NULL), m_iOrientation(HTBOTTOMRIGHT)
 {
 }
@@ -412,10 +403,6 @@ void CCanvasUI::SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue)
 }
 
 
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
-
 CWindowCanvasUI::CWindowCanvasUI()
 {
    SetInset(CSize(10, 10));
@@ -427,10 +414,6 @@ const TCHAR* CWindowCanvasUI::GetClass() const
    return _T("WindowCanvasUI");
 }
 
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
 
 CControlCanvasUI::CControlCanvasUI()
 {
@@ -444,10 +427,6 @@ const TCHAR* CControlCanvasUI::GetClass() const
 }
 
 
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
-
 CWhiteCanvasUI::CWhiteCanvasUI()
 {
    SetInset(CSize(0, 0));
@@ -460,10 +439,6 @@ const TCHAR* CWhiteCanvasUI::GetClass() const
 }
 
 
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
-
 CDialogCanvasUI::CDialogCanvasUI()
 {
    SetInset(CSize(10, 10));
@@ -474,11 +449,6 @@ const TCHAR* CDialogCanvasUI::GetClass() const
 {
    return _T("DialogCanvasUI");
 }
-
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
 
 CTabFolderCanvasUI::CTabFolderCanvasUI()
 {
@@ -492,10 +462,6 @@ const TCHAR* CTabFolderCanvasUI::GetClass() const
    return _T("TabFolderCanvasUI");
 }
 
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
 
 CVerticalLayoutUI::CVerticalLayoutUI() : m_cyNeeded(0)
 {
@@ -555,10 +521,6 @@ void CVerticalLayoutUI::SetPos(RECT rc)
 }
 
 
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
-
 CHorizontalLayoutUI::CHorizontalLayoutUI()
 {
 }
@@ -609,10 +571,6 @@ void CHorizontalLayoutUI::SetPos(RECT rc)
    }
 }
 
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
 
 CTileLayoutUI::CTileLayoutUI() : m_nColumns(2), m_cyNeeded(0)
 {
@@ -683,10 +641,6 @@ void CTileLayoutUI::SetPos(RECT rc)
    ProcessScrollbar(rc, m_cyNeeded);
 }
 
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
 
 CDialogLayoutUI::CDialogLayoutUI() : m_bFirstResize(true), m_aModes(sizeof(STRETCHMODE))
 {

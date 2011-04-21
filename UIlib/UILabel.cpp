@@ -2,11 +2,6 @@
 #include "StdAfx.h"
 #include "UILabel.h"
 
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
-
 CLabelPanelUI::CLabelPanelUI() : m_cxWidth(0), m_uTextStyle(DT_VCENTER)
 {
 }
@@ -56,11 +51,6 @@ void CLabelPanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
    int nLinks = 0;
    CBlueRenderEngineUI::DoPaintPrettyText(hDC, m_pManager, rcText, m_sText, UICOLOR_EDIT_TEXT_NORMAL, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE | m_uTextStyle);
 }
-
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
 
 const TCHAR* CGreyTextHeaderUI::GetClass() const
 {

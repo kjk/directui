@@ -8,9 +8,6 @@
 #include "UILabel.h"
 
 
-/////////////////////////////////////////////////////////////////////////////////////
-//
-
 class UILIB_API CTaskPanelUI : public CVerticalLayoutUI
 {
 public:
@@ -32,10 +29,6 @@ protected:
    DWORD m_dwFadeTick;
    RECT m_rcFade;
 };
-
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
 
 class UILIB_API CNavigatorPanelUI : public CVerticalLayoutUI, public IListOwnerUI
 {
@@ -59,10 +52,6 @@ protected:
    int m_iCurSel;
 };
 
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-
 class UILIB_API CNavigatorButtonUI : public CListElementUI
 {
 public:
@@ -80,10 +69,6 @@ public:
 protected:
    UINT m_uButtonState;
 };
-
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
 
 class UILIB_API CSearchTitlePanelUI : public CHorizontalLayoutUI
 {
@@ -103,9 +88,6 @@ protected:
 };
 
 
-/////////////////////////////////////////////////////////////////////////////////////
-//
-
 class UILIB_API CPaddingPanelUI : public CControlUI
 {
 public:
@@ -124,10 +106,6 @@ public:
 protected:
    SIZE m_cxyFixed;
 };
-
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
 
 class UILIB_API CImagePanelUI : public CControlUI
 {
@@ -149,10 +127,6 @@ protected:
    HBITMAP m_hBitmap;
    SIZE m_cxyFixed;
 };
-
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
 
 class UILIB_API CTextPanelUI : public CLabelPanelUI
 {
@@ -181,9 +155,6 @@ protected:
    UITYPE_COLOR m_BackColor;
 };
 
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
 
 class UILIB_API CWarningPanelUI : public CTextPanelUI
 {

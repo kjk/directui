@@ -8,20 +8,11 @@
 #endif // _MSC_VER
 #pragma comment(lib, "d3d9.lib")
 
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
-
 #define D3DFVF_CUSTOMVERTEX (D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX1)
 
 #ifndef PI
    #define PI 3.1415926535897932384626433832795029L
 #endif
-
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
 
 CAnimJobUI::CAnimJobUI(const CAnimJobUI& src)
 {   
@@ -43,11 +34,6 @@ CAnimJobUI::CAnimJobUI(UITYPE_ANIM AnimType, DWORD dwStartTick, DWORD dwDuration
    data.plot.mFrom.zrot = zrot;
    data.plot.iInterpolate = INTERPOLATE_COS;
 }
-
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
 
 CAnimationSpooler::CAnimationSpooler() :
    m_hWnd(NULL),
@@ -270,11 +256,6 @@ void CAnimationSpooler::CancelJobs()
    Term();
 }
 
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
-
 static double LinearInterpolate(double y1, double y2, double mu)
 {
    return y1 * (1.0 - mu) + y2 * mu;
@@ -285,11 +266,6 @@ static double CosineInterpolate(double y1, double y2, double mu)
    double mu2 = (1.0 - cos(mu * PI)) / 2.0;
    return y1 * (1.0 - mu2) + y2 * mu2;
 }
-
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
 
 COLORREF CAnimationSpooler::TranslateColor(LPDIRECT3DSURFACE9 pSurface, COLORREF clrColor) const
 {

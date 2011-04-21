@@ -3,10 +3,6 @@
 #include "UIButton.h"
 
 
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
-
 CButtonUI::CButtonUI() : m_cxWidth(0), m_uButtonState(0), m_uTextStyle(DT_SINGLELINE | DT_CENTER)
 {
    m_szPadding.cx = 4;
@@ -122,11 +118,6 @@ void CButtonUI::DoPaint(HDC hDC, const RECT& rcPaint)
    CBlueRenderEngineUI::DoPaintButton(hDC, m_pManager, m_rcItem, m_sText, rcPadding, m_uButtonState | uState, m_uTextStyle);
 }
 
-
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
 
 COptionUI::COptionUI() : m_cxWidth(0), m_uButtonState(0), m_uStyle(DT_LEFT), m_bSelected(false)
 {

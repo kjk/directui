@@ -5,10 +5,6 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-
 class UILIB_API CSingleLinePickUI : public CControlUI
 {
 public:
@@ -30,10 +26,6 @@ protected:
    int m_cxWidth;
    UINT m_uButtonState;
 };
-
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
 
 class UILIB_API CDropDownUI : public CContainerUI, public IListOwnerUI
 {

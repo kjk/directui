@@ -3,10 +3,6 @@
 #include "UIDecoration.h"
 
 
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
-
 const TCHAR* CTitleShadowUI::GetClass() const
 {
    return _T("TitleShadowUI");
@@ -26,10 +22,6 @@ void CTitleShadowUI::DoPaint(HDC hDC, const RECT& /*rcPaint*/)
 }
 
 
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
-
 const TCHAR* CListHeaderShadowUI::GetClass() const
 {
    return _T("ListHeaderShadowUI");
@@ -48,10 +40,6 @@ void CListHeaderShadowUI::DoPaint(HDC hDC, const RECT& /*rcPaint*/)
    CBlueRenderEngineUI::DoPaintGradient(hDC, m_pManager, rcTop, clrBack2, clrBack1, true, 8);
 }
 
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
 
 const TCHAR* CFadedLineUI::GetClass() const
 {
@@ -73,10 +61,6 @@ void CFadedLineUI::DoPaint(HDC hDC, const RECT& /*rcPaint*/)
    CBlueRenderEngineUI::DoPaintGradient(hDC, m_pManager, rc2, clrLine, clrDialog, false, 16);
 }
 
-
-/////////////////////////////////////////////////////////////////////////////////////
-//
-//
 
 const TCHAR* CSeparatorLineUI::GetClass() const
 {
