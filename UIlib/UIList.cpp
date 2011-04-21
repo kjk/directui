@@ -927,11 +927,11 @@ void CListExpandElementUI::SetManager(CPaintManagerUI* pManager, CControlUI* pPa
    CListTextElementUI::SetManager(pManager, pParent);
 }
 
-CControlUI* CListExpandElementUI::FindControl(FINDCONTROLPROC Proc, void* pData, UINT uFlags)
+CControlUI* CListExpandElementUI::FindControl(FINDCONTROLPROC Proc, void* data, UINT uFlags)
 {
    CControlUI* pResult = NULL;
-   if( m_pContainer != NULL ) pResult = m_pContainer->FindControl(Proc, pData, uFlags);
-   if( pResult == NULL ) pResult = CListTextElementUI::FindControl(Proc, pData, uFlags);
+   if( m_pContainer != NULL ) pResult = m_pContainer->FindControl(Proc, data, uFlags);
+   if( pResult == NULL ) pResult = CListTextElementUI::FindControl(Proc, data, uFlags);
    return pResult;
 }
 

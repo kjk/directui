@@ -267,21 +267,21 @@ void CContainerUI::SetManager(CPaintManagerUI* pManager, CControlUI* pParent)
    CControlUI::SetManager(pManager, pParent);
 }
 
-CControlUI* CContainerUI::FindControl(FINDCONTROLPROC Proc, void* pData, UINT uFlags)
+CControlUI* CContainerUI::FindControl(FINDCONTROLPROC Proc, void* data, UINT uFlags)
 {
    // Check if this guy is valid
    if( (uFlags & UIFIND_VISIBLE) != 0 && !IsVisible() ) return NULL;
    if( (uFlags & UIFIND_ENABLED) != 0 && !IsEnabled() ) return NULL;
-   if( (uFlags & UIFIND_HITTEST) != 0 && !::PtInRect(&m_rcItem, *(static_cast<LPPOINT>(pData))) ) return NULL;
+   if( (uFlags & UIFIND_HITTEST) != 0 && !::PtInRect(&m_rcItem, *(static_cast<LPPOINT>(data))) ) return NULL;
    if( (uFlags & UIFIND_ME_FIRST) != 0 ) {
-      CControlUI* ctrl = CControlUI::FindControl(Proc, pData, uFlags);
+      CControlUI* ctrl = CControlUI::FindControl(Proc, data, uFlags);
       if( ctrl != NULL ) return ctrl;
    }
    for( int it = 0; it != m_items.GetSize(); it++ ) {
-      CControlUI* ctrl = static_cast<CControlUI*>(m_items[it])->FindControl(Proc, pData, uFlags);
+      CControlUI* ctrl = static_cast<CControlUI*>(m_items[it])->FindControl(Proc, data, uFlags);
       if( ctrl != NULL ) return ctrl;
    }
-   return CControlUI::FindControl(Proc, pData, uFlags);
+   return CControlUI::FindControl(Proc, data, uFlags);
 }
 
 void CContainerUI::DoPaint(HDC hDC, const RECT& rcPaint)

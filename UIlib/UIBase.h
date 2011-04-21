@@ -84,9 +84,9 @@ public:
    void Resize(int iSize);
    bool IsEmpty() const;
    int Find(void* idx) const;
-   bool Add(void* pData);
-   bool SetAt(int idx, void* pData);
-   bool InsertAt(int idx, void* pData);
+   bool Add(void* data);
+   bool SetAt(int idx, void* data);
+   bool InsertAt(int idx, void* data);
    bool Remove(int idx);
    int GetSize() const;
    void** GetData();
@@ -109,7 +109,7 @@ public:
 
    void Empty();
    bool IsEmpty() const;
-   bool Add(LPCVOID pData);
+   bool Add(LPCVOID data);
    bool Remove(int idx);
    int GetSize() const;
    void* GetData();

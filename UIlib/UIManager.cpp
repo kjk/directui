@@ -1244,16 +1244,16 @@ CControlUI* CPaintManagerUI::FindControl(POINT pt) const
    return m_pRoot->FindControl(__FindControlFromPoint, &pt, UIFIND_VISIBLE | UIFIND_HITTEST);
 }
 
-CControlUI* CALLBACK CPaintManagerUI::__FindControlFromCount(CControlUI* /*pThis*/, void* pData)
+CControlUI* CALLBACK CPaintManagerUI::__FindControlFromCount(CControlUI* /*pThis*/, void* data)
 {
-   int* pnCount = static_cast<int*>(pData);
+   int* pnCount = static_cast<int*>(data);
    (*pnCount)++;
    return NULL;  // Count all controls
 }
 
-CControlUI* CALLBACK CPaintManagerUI::__FindControlFromTab(CControlUI* pThis, void* pData)
+CControlUI* CALLBACK CPaintManagerUI::__FindControlFromTab(CControlUI* pThis, void* data)
 {
-   FINDTABINFO* pInfo = static_cast<FINDTABINFO*>(pData);
+   FINDTABINFO* pInfo = static_cast<FINDTABINFO*>(data);
    if( pInfo->pFocus == pThis ) {
       if( pInfo->bForward ) pInfo->bNextIsIt = true;
       return pInfo->bForward ? NULL : pInfo->pLast;
@@ -1265,9 +1265,9 @@ CControlUI* CALLBACK CPaintManagerUI::__FindControlFromTab(CControlUI* pThis, vo
    return NULL;  // Examine all controls
 }
 
-CControlUI* CALLBACK CPaintManagerUI::__FindControlFromNameHash(CControlUI* pThis, void* pData)
+CControlUI* CALLBACK CPaintManagerUI::__FindControlFromNameHash(CControlUI* pThis, void* data)
 {
-   CPaintManagerUI* pManager = static_cast<CPaintManagerUI*>(pData);
+   CPaintManagerUI* pManager = static_cast<CPaintManagerUI*>(data);
    // No name?
    const CStdString& sName = pThis->GetName();
    if( sName.IsEmpty() ) return NULL;
@@ -1283,17 +1283,17 @@ CControlUI* CALLBACK CPaintManagerUI::__FindControlFromNameHash(CControlUI* pThi
    return NULL; // Attempt to add all controls
 }
 
-CControlUI* CALLBACK CPaintManagerUI::__FindControlFromShortcut(CControlUI* pThis, void* pData)
+CControlUI* CALLBACK CPaintManagerUI::__FindControlFromShortcut(CControlUI* pThis, void* data)
 {
-   FINDSHORTCUT* pFS = static_cast<FINDSHORTCUT*>(pData);
+   FINDSHORTCUT* pFS = static_cast<FINDSHORTCUT*>(data);
    if( pFS->ch == toupper(pThis->GetShortcut()) ) pFS->bPickNext = true;
    if( _tcsstr(pThis->GetClass(), _T("Label")) != NULL ) return NULL;   // Labels never get focus!
    return pFS->bPickNext ? pThis : NULL;
 }
 
-CControlUI* CALLBACK CPaintManagerUI::__FindControlFromPoint(CControlUI* pThis, void* pData)
+CControlUI* CALLBACK CPaintManagerUI::__FindControlFromPoint(CControlUI* pThis, void* data)
 {
-   LPPOINT pPoint = static_cast<LPPOINT>(pData);
+   LPPOINT pPoint = static_cast<LPPOINT>(data);
    return ::PtInRect(&pThis->GetPos(), *pPoint) ? pThis : NULL;
 }
 
@@ -1438,12 +1438,12 @@ void* CControlUI::GetInterface(const TCHAR* name)
    return NULL;
 }
 
-CControlUI* CControlUI::FindControl(FINDCONTROLPROC Proc, void* pData, UINT uFlags)
+CControlUI* CControlUI::FindControl(FINDCONTROLPROC Proc, void* data, UINT uFlags)
 {
    if( (uFlags & UIFIND_VISIBLE) != 0 && !IsVisible() ) return NULL;
    if( (uFlags & UIFIND_ENABLED) != 0 && !IsEnabled() ) return NULL;
-   if( (uFlags & UIFIND_HITTEST) != 0 && !::PtInRect(&m_rcItem, * static_cast<LPPOINT>(pData)) ) return NULL;
-   return Proc(this, pData);
+   if( (uFlags & UIFIND_HITTEST) != 0 && !::PtInRect(&m_rcItem, * static_cast<LPPOINT>(data)) ) return NULL;
+   return Proc(this, data);
 }
 
 RECT CControlUI::GetPos() const

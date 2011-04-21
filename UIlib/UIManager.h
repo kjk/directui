@@ -322,11 +322,11 @@ public:
    void SetSystemSettings(const TSystemSettingsUI Config);
 
 private:
-   static CControlUI* CALLBACK __FindControlFromNameHash(CControlUI* pThis, void* pData);
-   static CControlUI* CALLBACK __FindControlFromCount(CControlUI* pThis, void* pData);
-   static CControlUI* CALLBACK __FindControlFromPoint(CControlUI* pThis, void* pData);
-   static CControlUI* CALLBACK __FindControlFromTab(CControlUI* pThis, void* pData);
-   static CControlUI* CALLBACK __FindControlFromShortcut(CControlUI* pThis, void* pData);
+   static CControlUI* CALLBACK __FindControlFromNameHash(CControlUI* pThis, void* data);
+   static CControlUI* CALLBACK __FindControlFromCount(CControlUI* pThis, void* data);
+   static CControlUI* CALLBACK __FindControlFromPoint(CControlUI* pThis, void* data);
+   static CControlUI* CALLBACK __FindControlFromTab(CControlUI* pThis, void* data);
+   static CControlUI* CALLBACK __FindControlFromShortcut(CControlUI* pThis, void* data);
 
 private:
    HWND m_hWndPaint;
@@ -404,7 +404,7 @@ public:
    virtual void SetVisible(bool bVisible = true);
    virtual void SetEnabled(bool bEnable = true);
 
-   virtual CControlUI* FindControl(FINDCONTROLPROC Proc, void* pData, UINT uFlags);
+   virtual CControlUI* FindControl(FINDCONTROLPROC Proc, void* data, UINT uFlags);
 
    virtual CPaintManagerUI* GetManager() const;
    virtual void SetManager(CPaintManagerUI* pManager, CControlUI* pParent);

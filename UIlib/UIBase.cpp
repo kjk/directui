@@ -500,7 +500,7 @@ bool CStdPtrArray::IsEmpty() const
    return m_nCount == 0;
 }
 
-bool CStdPtrArray::Add(void* pData)
+bool CStdPtrArray::Add(void* data)
 {
    if( ++m_nCount >= m_nAllocated) {
       m_nAllocated *= 2;
@@ -508,13 +508,13 @@ bool CStdPtrArray::Add(void* pData)
       m_ppVoid = static_cast<void**>(realloc(m_ppVoid, m_nAllocated * sizeof(void*)));
       if( m_ppVoid == NULL ) return false;
    }
-   m_ppVoid[m_nCount - 1] = pData;
+   m_ppVoid[m_nCount - 1] = data;
    return true;
 }
 
-bool CStdPtrArray::InsertAt(int idx, void* pData)
+bool CStdPtrArray::InsertAt(int idx, void* data)
 {
-   if( idx == m_nCount ) return Add(pData);
+   if( idx == m_nCount ) return Add(data);
    if( idx < 0 || idx > m_nCount ) return false;
    if( ++m_nCount >= m_nAllocated) {
       m_nAllocated *= 2;
@@ -523,14 +523,14 @@ bool CStdPtrArray::InsertAt(int idx, void* pData)
       if( m_ppVoid == NULL ) return false;
    }
    memmove(&m_ppVoid[idx + 1], &m_ppVoid[idx], (m_nCount - idx - 1) * sizeof(void*));
-   m_ppVoid[idx] = pData;
+   m_ppVoid[idx] = data;
    return true;
 }
 
-bool CStdPtrArray::SetAt(int idx, void* pData)
+bool CStdPtrArray::SetAt(int idx, void* data)
 {
    if( idx < 0 || idx >= m_nCount ) return false;
-   m_ppVoid[idx] = pData;
+   m_ppVoid[idx] = data;
    return true;
 }
 
@@ -541,9 +541,9 @@ bool CStdPtrArray::Remove(int idx)
    return true;
 }
 
-int CStdPtrArray::Find(void* pData) const
+int CStdPtrArray::Find(void* data) const
 {
-   for( int i = 0; i < m_nCount; i++ ) if( m_ppVoid[i] == pData ) return i;
+   for( int i = 0; i < m_nCount; i++ ) if( m_ppVoid[i] == data ) return i;
    return -1;
 }
 
@@ -596,7 +596,7 @@ bool CStdValArray::IsEmpty() const
    return m_nCount == 0;
 }
 
-bool CStdValArray::Add(LPCVOID pData)
+bool CStdValArray::Add(LPCVOID data)
 {
    if( ++m_nCount >= m_nAllocated) {
       m_nAllocated *= 2;
@@ -604,7 +604,7 @@ bool CStdValArray::Add(LPCVOID pData)
       m_pVoid = static_cast<LPBYTE>(realloc(m_pVoid, m_nAllocated * m_iElementSize));
       if( m_pVoid == NULL ) return false;
    }
-   ::CopyMemory(m_pVoid + ((m_nCount - 1) * m_iElementSize), pData, m_iElementSize);
+   ::CopyMemory(m_pVoid + ((m_nCount - 1) * m_iElementSize), data, m_iElementSize);
    return true;
 }
 

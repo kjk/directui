@@ -51,7 +51,7 @@ public:
    void SetAttribute(const TCHAR* name, const TCHAR* value);
 
    void SetManager(CPaintManagerUI* pManager, CControlUI* pParent);
-   CControlUI* FindControl(FINDCONTROLPROC Proc, void* pData, UINT uFlags);
+   CControlUI* FindControl(FINDCONTROLPROC Proc, void* data, UINT uFlags);
 
    virtual int GetScrollPos() const;
    virtual int GetScrollPage() const;

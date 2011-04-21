@@ -253,7 +253,7 @@ public:
    void DoPaint(HDC hDC, const RECT& rcPaint);
 
    void SetManager(CPaintManagerUI* pManager, CControlUI* pParent);
-   CControlUI* FindControl(FINDCONTROLPROC Proc, void* pData, UINT uFlags);
+   CControlUI* FindControl(FINDCONTROLPROC Proc, void* data, UINT uFlags);
 
    CControlUI* GetItem(int idx) const;
    int GetCount() const;
