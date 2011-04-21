@@ -249,7 +249,7 @@ void CRegistersPageWnd::OnPrepareAnimation()
 {
    CListUI* pList = static_cast<CListUI*>(m_pm.FindControl(_T("list")));
    pList->SetTextCallback(this);                                          // We want GetItemText for items
-   for( int i = 0; i < 1000; i++)  pList->Add(new CListTextElementUI);    // We want 1000 items in list
+   for (int i = 0; i < 1000; i++)  pList->Add(new CListTextElementUI);    // We want 1000 items in list
 }
 
 const TCHAR* CRegistersPageWnd::GetItemText(CControlUI* ctrl, int idx, int iSubItem)

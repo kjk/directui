@@ -122,7 +122,7 @@ SIZE CToolGripperUI::EstimateSize(SIZE /*szAvailable*/)
 void CToolGripperUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
    RECT rcLine = { m_rcItem.left + 5, m_rcItem.top + 6, m_rcItem.left + 5 + 3, m_rcItem.top + 6 };
-   for( int i = m_rcItem.top + 6; i <= m_rcItem.bottom - 6; i += 2)  {
+   for (int i = m_rcItem.top + 6; i <= m_rcItem.bottom - 6; i += 2)  {
       CBlueRenderEngineUI::DoPaintLine(hDC, m_manager, rcLine, UICOLOR_TITLE_BORDER_DARK);
       ::OffsetRect(&rcLine, 0, 2);
    }

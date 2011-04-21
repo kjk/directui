@@ -34,7 +34,7 @@ CControlUI* CDialogBuilder::_Parse(CMarkupNode* pRoot, CControlUI* pParent)
    CDialogLayoutUI* pStretched = NULL;
    IContainerUI* pContainer = NULL;
    CControlUI* pReturn = NULL;
-   for( CMarkupNode node = pRoot->GetChild() ; node.IsValid(); node = node.GetSibling())  {
+   for (CMarkupNode node = pRoot->GetChild() ; node.IsValid(); node = node.GetSibling())  {
       const TCHAR* pstrClass = node.GetName();
       SIZE_T cchLen = _tcslen(pstrClass);
       CControlUI* ctrl = NULL;
@@ -135,7 +135,7 @@ CControlUI* CDialogBuilder::_Parse(CMarkupNode* pRoot, CControlUI* pParent)
          SIZE_T cchLen = lengthof(szValue) - 1;
          // Set ordinary attributes
          int nAttributes = node.GetAttributeCount();
-         for( int i = 0; i < nAttributes; i++)  {
+         for (int i = 0; i < nAttributes; i++)  {
             ctrl->SetAttribute(node.GetAttributeName(i), node.GetAttributeValue(i));
          }
          // Very custom attributes
