@@ -285,22 +285,22 @@ public:
    const TEXTMETRIC& GetThemeFontInfo(UITYPE_FONT Index) const;
    bool GetThemeColorPair(UITYPE_COLOR Index, COLORREF& clr1, COLORREF& clr2) const;
 
-   bool AttachDialog(CControlUI* pControl);
-   bool InitControls(CControlUI* pControl, CControlUI* pParent = NULL);
-   void ReapObjects(CControlUI* pControl);
+   bool AttachDialog(CControlUI* ctrl);
+   bool InitControls(CControlUI* ctrl, CControlUI* pParent = NULL);
+   void ReapObjects(CControlUI* ctrl);
 
    CControlUI* GetFocus() const;
-   void SetFocus(CControlUI* pControl);
+   void SetFocus(CControlUI* ctrl);
 
    bool SetNextTabControl(bool bForward = true);
 
-   bool SetTimer(CControlUI* pControl, UINT nTimerID, UINT uElapse);
-   bool KillTimer(CControlUI* pControl, UINT nTimerID);
+   bool SetTimer(CControlUI* ctrl, UINT nTimerID, UINT uElapse);
+   bool KillTimer(CControlUI* ctrl, UINT nTimerID);
 
-   bool AddNotifier(INotifyUI* pControl);
-   bool RemoveNotifier(INotifyUI* pControl);   
+   bool AddNotifier(INotifyUI* ctrl);
+   bool RemoveNotifier(INotifyUI* ctrl);   
    void SendNotify(TNotifyUI& Msg);
-   void SendNotify(CControlUI* pControl, const TCHAR* pstrMessage, WPARAM wParam = 0, LPARAM lParam = 0);
+   void SendNotify(CControlUI* ctrl, const TCHAR* pstrMessage, WPARAM wParam = 0, LPARAM lParam = 0);
 
    bool AddMessageFilter(IMessageFilterUI* pFilter);
    bool RemoveMessageFilter(IMessageFilterUI* pFilter);
@@ -309,7 +309,7 @@ public:
    bool AddPostPaintBlit(const TPostPaintUI& job);
 
    CControlUI* FindControl(POINT pt) const;
-   CControlUI* FindControl(const TCHAR* pstrName);
+   CControlUI* FindControl(const TCHAR* name);
 
    static void MessageLoop();
    static bool TranslateMessage(const LPMSG pMsg);
@@ -378,8 +378,8 @@ public:
 
 public:
    virtual CStdString GetName() const;
-   virtual void SetName(const TCHAR* pstrName);
-   virtual void* GetInterface(const TCHAR* pstrName);
+   virtual void SetName(const TCHAR* name);
+   virtual void* GetInterface(const TCHAR* name);
 
    virtual bool Activate();
    virtual CControlUI* GetParent() const;
@@ -420,7 +420,7 @@ public:
    virtual void Event(TEventUI& event);
    virtual void Notify(TNotifyUI& msg);
 
-   virtual void SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue);
+   virtual void SetAttribute(const TCHAR* name, const TCHAR* value);
    CControlUI* ApplyAttributeList(const TCHAR* pstrList);
 
    virtual const TCHAR* GetClass() const = 0;

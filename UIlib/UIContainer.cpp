@@ -23,10 +23,10 @@ const TCHAR* CContainerUI::GetClass() const
    return _T("ContainerUI");
 }
 
-void* CContainerUI::GetInterface(const TCHAR* pstrName)
+void* CContainerUI::GetInterface(const TCHAR* name)
 {
-   if( _tcscmp(pstrName, _T("Container")) == 0 ) return static_cast<IContainerUI*>(this);
-   return CControlUI::GetInterface(pstrName);
+   if( _tcscmp(name, _T("Container")) == 0 ) return static_cast<IContainerUI*>(this);
+   return CControlUI::GetInterface(name);
 }
 
 CControlUI* CContainerUI::GetItem(int iIndex) const
@@ -40,19 +40,19 @@ int CContainerUI::GetCount() const
    return m_items.GetSize();
 }
 
-bool CContainerUI::Add(CControlUI* pControl)
+bool CContainerUI::Add(CControlUI* ctrl)
 {
-   if( m_pManager != NULL ) m_pManager->InitControls(pControl, this);
+   if( m_pManager != NULL ) m_pManager->InitControls(ctrl, this);
    if( m_pManager != NULL ) m_pManager->UpdateLayout();
-   return m_items.Add(pControl);
+   return m_items.Add(ctrl);
 }
 
-bool CContainerUI::Remove(CControlUI* pControl)
+bool CContainerUI::Remove(CControlUI* ctrl)
 {
    for( int it = 0; m_bAutoDestroy && it < m_items.GetSize(); it++ ) {
-      if( static_cast<CControlUI*>(m_items[it]) == pControl ) {
+      if( static_cast<CControlUI*>(m_items[it]) == ctrl ) {
          if( m_pManager != NULL ) m_pManager->UpdateLayout();
-         delete pControl;
+         delete ctrl;
          return m_items.Remove(it);
       }
    }
@@ -249,14 +249,14 @@ SIZE CContainerUI::EstimateSize(SIZE /*szAvailable*/)
    return m_cxyFixed;
 }
 
-void CContainerUI::SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue)
+void CContainerUI::SetAttribute(const TCHAR* name, const TCHAR* value)
 {
-   if( _tcscmp(pstrName, _T("inset")) == 0 ) SetInset(CSize(_ttoi(pstrValue), _ttoi(pstrValue)));
-   else if( _tcscmp(pstrName, _T("padding")) == 0 ) SetPadding(_ttoi(pstrValue));
-   else if( _tcscmp(pstrName, _T("width")) == 0 ) SetWidth(_ttoi(pstrValue));
-   else if( _tcscmp(pstrName, _T("height")) == 0 ) SetHeight(_ttoi(pstrValue));
-   else if( _tcscmp(pstrName, _T("scrollbar")) == 0 ) EnableScrollBar(_tcscmp(pstrValue, _T("true")) == 0);
-   else CControlUI::SetAttribute(pstrName, pstrValue);
+   if( _tcscmp(name, _T("inset")) == 0 ) SetInset(CSize(_ttoi(value), _ttoi(value)));
+   else if( _tcscmp(name, _T("padding")) == 0 ) SetPadding(_ttoi(value));
+   else if( _tcscmp(name, _T("width")) == 0 ) SetWidth(_ttoi(value));
+   else if( _tcscmp(name, _T("height")) == 0 ) SetHeight(_ttoi(value));
+   else if( _tcscmp(name, _T("scrollbar")) == 0 ) EnableScrollBar(_tcscmp(value, _T("true")) == 0);
+   else CControlUI::SetAttribute(name, value);
 }
 
 void CContainerUI::SetManager(CPaintManagerUI* pManager, CControlUI* pParent)
@@ -274,12 +274,12 @@ CControlUI* CContainerUI::FindControl(FINDCONTROLPROC Proc, void* pData, UINT uF
    if( (uFlags & UIFIND_ENABLED) != 0 && !IsEnabled() ) return NULL;
    if( (uFlags & UIFIND_HITTEST) != 0 && !::PtInRect(&m_rcItem, *(static_cast<LPPOINT>(pData))) ) return NULL;
    if( (uFlags & UIFIND_ME_FIRST) != 0 ) {
-      CControlUI* pControl = CControlUI::FindControl(Proc, pData, uFlags);
-      if( pControl != NULL ) return pControl;
+      CControlUI* ctrl = CControlUI::FindControl(Proc, pData, uFlags);
+      if( ctrl != NULL ) return ctrl;
    }
    for( int it = 0; it != m_items.GetSize(); it++ ) {
-      CControlUI* pControl = static_cast<CControlUI*>(m_items[it])->FindControl(Proc, pData, uFlags);
-      if( pControl != NULL ) return pControl;
+      CControlUI* ctrl = static_cast<CControlUI*>(m_items[it])->FindControl(Proc, pData, uFlags);
+      if( ctrl != NULL ) return ctrl;
    }
    return CControlUI::FindControl(Proc, pData, uFlags);
 }
@@ -293,11 +293,11 @@ void CContainerUI::DoPaint(HDC hDC, const RECT& rcPaint)
    CBlueRenderEngineUI::GenerateClip(hDC, m_rcItem, clip);
 
    for( int it = 0; it < m_items.GetSize(); it++ ) {
-      CControlUI* pControl = static_cast<CControlUI*>(m_items[it]);
-      if( !pControl->IsVisible() ) continue;
-      if( !::IntersectRect(&rcTemp, &rcPaint, &pControl->GetPos()) ) continue;
-      if( !::IntersectRect(&rcTemp, &m_rcItem, &pControl->GetPos()) ) continue;
-      pControl->DoPaint(hDC, rcPaint);
+      CControlUI* ctrl = static_cast<CControlUI*>(m_items[it]);
+      if( !ctrl->IsVisible() ) continue;
+      if( !::IntersectRect(&rcTemp, &rcPaint, &ctrl->GetPos()) ) continue;
+      if( !::IntersectRect(&rcTemp, &m_rcItem, &ctrl->GetPos()) ) continue;
+      ctrl->DoPaint(hDC, rcPaint);
    }
 }
 
@@ -396,10 +396,10 @@ void CCanvasUI::DoPaint(HDC hDC, const RECT& rcPaint)
    CContainerUI::DoPaint(hDC, rcPaint);
 }
 
-void CCanvasUI::SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue)
+void CCanvasUI::SetAttribute(const TCHAR* name, const TCHAR* value)
 {
-   if( _tcscmp(pstrName, _T("watermark")) == 0 ) SetWatermark(pstrValue);
-   else CContainerUI::SetAttribute(pstrName, pstrValue);
+   if( _tcscmp(name, _T("watermark")) == 0 ) SetWatermark(value);
+   else CContainerUI::SetAttribute(name, value);
 }
 
 
@@ -486,9 +486,9 @@ void CVerticalLayoutUI::SetPos(RECT rc)
    int nAdjustables = 0;
    int cyFixed = 0;
    for( int it1 = 0; it1 < m_items.GetSize(); it1++ ) {
-      CControlUI* pControl = static_cast<CControlUI*>(m_items[it1]);
-      if( !pControl->IsVisible() ) continue;
-      SIZE sz = pControl->EstimateSize(szAvailable);
+      CControlUI* ctrl = static_cast<CControlUI*>(m_items[it1]);
+      if( !ctrl->IsVisible() ) continue;
+      SIZE sz = ctrl->EstimateSize(szAvailable);
       if( sz.cy == 0 ) nAdjustables++;
       cyFixed += sz.cy + m_iPadding;
    }
@@ -501,9 +501,9 @@ void CVerticalLayoutUI::SetPos(RECT rc)
    int iPosY = rc.top - m_iScrollPos;
    int iAdjustable = 0;
    for( int it2 = 0; it2 < m_items.GetSize(); it2++ ) {
-      CControlUI* pControl = static_cast<CControlUI*>(m_items[it2]);
-      if( !pControl->IsVisible() ) continue;
-      SIZE sz = pControl->EstimateSize(szRemaining);
+      CControlUI* ctrl = static_cast<CControlUI*>(m_items[it2]);
+      if( !ctrl->IsVisible() ) continue;
+      SIZE sz = ctrl->EstimateSize(szRemaining);
       if( sz.cy == 0 ) {
          iAdjustable++;
          sz.cy = cyExpand;
@@ -511,7 +511,7 @@ void CVerticalLayoutUI::SetPos(RECT rc)
          if( iAdjustable == nAdjustables ) sz.cy += MAX(0, szAvailable.cy - (cyExpand * nAdjustables) - cyFixed);
       }
       RECT rcCtrl = { rc.left, iPosY, rc.right, iPosY + sz.cy };
-      pControl->SetPos(rcCtrl);
+      ctrl->SetPos(rcCtrl);
       iPosY += sz.cy + m_iPadding;
       cyNeeded += sz.cy + m_iPadding;
       szRemaining.cy -= sz.cy + m_iPadding;
@@ -543,9 +543,9 @@ void CHorizontalLayoutUI::SetPos(RECT rc)
    int nAdjustables = 0;
    int cxFixed = 0;
    for( int it1 = 0; it1 < m_items.GetSize(); it1++ ) {
-      CControlUI* pControl = static_cast<CControlUI*>(m_items[it1]);
-      if( !pControl->IsVisible() ) continue;
-      SIZE sz = pControl->EstimateSize(szAvailable);
+      CControlUI* ctrl = static_cast<CControlUI*>(m_items[it1]);
+      if( !ctrl->IsVisible() ) continue;
+      SIZE sz = ctrl->EstimateSize(szAvailable);
       if( sz.cx == 0 ) nAdjustables++;
       cxFixed += sz.cx + m_iPadding;
    }
@@ -556,16 +556,16 @@ void CHorizontalLayoutUI::SetPos(RECT rc)
    int iPosX = rc.left;
    int iAdjustable = 0;
    for( int it2 = 0; it2 < m_items.GetSize(); it2++ ) {
-      CControlUI* pControl = static_cast<CControlUI*>(m_items[it2]);
-      if( !pControl->IsVisible() ) continue;
-      SIZE sz = pControl->EstimateSize(szRemaining);
+      CControlUI* ctrl = static_cast<CControlUI*>(m_items[it2]);
+      if( !ctrl->IsVisible() ) continue;
+      SIZE sz = ctrl->EstimateSize(szRemaining);
       if( sz.cx == 0 ) {
          iAdjustable++;
          sz.cx = cxExpand;
          if( iAdjustable == nAdjustables ) sz.cx += MAX(0, szAvailable.cx - (cxExpand * nAdjustables) - cxFixed);
       }
       RECT rcCtrl = { iPosX, rc.top, iPosX + sz.cx, rc.bottom };
-      pControl->SetPos(rcCtrl);
+      ctrl->SetPos(rcCtrl);
       iPosX += sz.cx + m_iPadding;
       szRemaining.cx -= sz.cx + m_iPadding;
    }
@@ -605,8 +605,8 @@ void CTileLayoutUI::SetPos(RECT rc)
    int iCount = 0;
    POINT ptTile = { rc.left, rc.top - m_iScrollPos };
    for( int it1 = 0; it1 < m_items.GetSize(); it1++ ) {
-      CControlUI* pControl = static_cast<CControlUI*>(m_items[it1]);
-      if( !pControl->IsVisible() ) continue;
+      CControlUI* ctrl = static_cast<CControlUI*>(m_items[it1]);
+      if( !ctrl->IsVisible() ) continue;
       // Determine size
       RECT rcTile = { ptTile.x, ptTile.y, ptTile.x + cxWidth, ptTile.y };
       // Adjust with element padding
@@ -625,7 +625,7 @@ void CTileLayoutUI::SetPos(RECT rc)
       }
       // Set position
       rcTile.bottom = rcTile.top + cyHeight;
-      pControl->SetPos(rcTile);
+      ctrl->SetPos(rcTile);
       // Move along...
       if( (++iCount % m_nColumns) == 0 ) {
          ptTile.x = rc.left;
@@ -652,18 +652,18 @@ const TCHAR* CDialogLayoutUI::GetClass() const
    return _T("DialogLayoutUI");
 }
 
-void* CDialogLayoutUI::GetInterface(const TCHAR* pstrName)
+void* CDialogLayoutUI::GetInterface(const TCHAR* name)
 {
-   if( _tcscmp(pstrName, _T("DialogLayout")) == 0 ) return this;
-   return CContainerUI::GetInterface(pstrName);
+   if( _tcscmp(name, _T("DialogLayout")) == 0 ) return this;
+   return CContainerUI::GetInterface(name);
 }
 
-void CDialogLayoutUI::SetStretchMode(CControlUI* pControl, UINT uMode)
+void CDialogLayoutUI::SetStretchMode(CControlUI* ctrl, UINT uMode)
 {
    STRETCHMODE mode;
-   mode.pControl = pControl;
+   mode.ctrl = ctrl;
    mode.uMode = uMode;
-   mode.rcItem = pControl->GetPos();
+   mode.rcItem = ctrl->GetPos();
    m_aModes.Add(&mode);
 }
 
@@ -690,8 +690,8 @@ void CDialogLayoutUI::SetPos(RECT rc)
    // A "line" indicator is used to apply the same scaling to a new group of controls.
    int nCount, cxStretch, cyStretch, cxMove, cyMove;
    for( int i = 0; i < m_aModes.GetSize(); i++ ) {
-      STRETCHMODE* pItem = static_cast<STRETCHMODE*>(m_aModes[i]);
-      if( i == 0 || (pItem->uMode & UISTRETCH_NEWGROUP) != 0 ) {
+      STRETCHMODE* item = static_cast<STRETCHMODE*>(m_aModes[i]);
+      if( i == 0 || (item->uMode & UISTRETCH_NEWGROUP) != 0 ) {
          nCount = 0;
          for( int j = i + 1; j < m_aModes.GetSize(); j++ ) {
             STRETCHMODE* pNext = static_cast<STRETCHMODE*>(m_aModes[j]);
@@ -704,21 +704,21 @@ void CDialogLayoutUI::SetPos(RECT rc)
          cxMove = 0;
          cyMove = 0;
       }
-      if( (pItem->uMode & UISTRETCH_NEWLINE) != 0 ) {
+      if( (item->uMode & UISTRETCH_NEWLINE) != 0 ) {
          cxMove = 0;
          cyMove = 0;
       }
-      RECT rcPos = pItem->rcItem;
+      RECT rcPos = item->rcItem;
       ::OffsetRect(&rcPos, rc.left, rc.top - m_iScrollPos);
-      if( (pItem->uMode & UISTRETCH_MOVE_X) != 0 ) ::OffsetRect(&rcPos, cxMove, 0);
-      if( (pItem->uMode & UISTRETCH_MOVE_Y) != 0 ) ::OffsetRect(&rcPos, 0, cyMove);
-      if( (pItem->uMode & UISTRETCH_SIZE_X) != 0 ) rcPos.right += cxStretch;
-      if( (pItem->uMode & UISTRETCH_SIZE_Y) != 0 ) rcPos.bottom += cyStretch;
-      if( (pItem->uMode & (UISTRETCH_SIZE_X | UISTRETCH_SIZE_Y)) != 0 ) {
+      if( (item->uMode & UISTRETCH_MOVE_X) != 0 ) ::OffsetRect(&rcPos, cxMove, 0);
+      if( (item->uMode & UISTRETCH_MOVE_Y) != 0 ) ::OffsetRect(&rcPos, 0, cyMove);
+      if( (item->uMode & UISTRETCH_SIZE_X) != 0 ) rcPos.right += cxStretch;
+      if( (item->uMode & UISTRETCH_SIZE_Y) != 0 ) rcPos.bottom += cyStretch;
+      if( (item->uMode & (UISTRETCH_SIZE_X | UISTRETCH_SIZE_Y)) != 0 ) {
          cxMove += cxStretch;
          cyMove += cyStretch;
       }      
-      pItem->pControl->SetPos(rcPos);
+      item->ctrl->SetPos(rcPos);
    }
 }
 
@@ -729,16 +729,16 @@ void CDialogLayoutUI::RecalcArea()
    // Controls that have specific stretching needs will define them in the XML resource
    // and by calling SetStretchMode(). Other controls needs to be added as well now...
    for( int it = 0; it < m_items.GetSize(); it++ ) {         
-      CControlUI* pControl = static_cast<CControlUI*>(m_items[it]);
+      CControlUI* ctrl = static_cast<CControlUI*>(m_items[it]);
       bool bFound = false;
       for( int i = 0; !bFound && i < m_aModes.GetSize(); i++ ) {
-         if( static_cast<STRETCHMODE*>(m_aModes[i])->pControl == pControl ) bFound = true;
+         if( static_cast<STRETCHMODE*>(m_aModes[i])->ctrl == ctrl ) bFound = true;
       }
       if( !bFound ) {
          STRETCHMODE mode;
-         mode.pControl = pControl;
+         mode.ctrl = ctrl;
          mode.uMode = UISTRETCH_NEWGROUP;
-         mode.rcItem = pControl->GetPos();
+         mode.rcItem = ctrl->GetPos();
          m_aModes.Add(&mode);
       }
    }

@@ -77,14 +77,14 @@ void CButtonUI::SetWidth(int cxWidth)
    UpdateLayout();
 }
 
-void CButtonUI::SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue)
+void CButtonUI::SetAttribute(const TCHAR* name, const TCHAR* value)
 {
-   if( _tcscmp(pstrName, _T("width")) == 0 ) SetWidth(_ttoi(pstrValue));
-   else if( _tcscmp(pstrName, _T("align")) == 0 ) {
-      if( _tcsstr(pstrValue, _T("center")) != NULL ) m_uTextStyle |= DT_CENTER;
-      if( _tcsstr(pstrValue, _T("right")) != NULL ) m_uTextStyle |= DT_RIGHT;
+   if( _tcscmp(name, _T("width")) == 0 ) SetWidth(_ttoi(value));
+   else if( _tcscmp(name, _T("align")) == 0 ) {
+      if( _tcsstr(value, _T("center")) != NULL ) m_uTextStyle |= DT_CENTER;
+      if( _tcsstr(value, _T("right")) != NULL ) m_uTextStyle |= DT_RIGHT;
    }
-   else CControlUI::SetAttribute(pstrName, pstrValue);
+   else CControlUI::SetAttribute(name, value);
 }
 
 void CButtonUI::SetPadding(int cx, int cy)
@@ -187,14 +187,14 @@ void COptionUI::SetWidth(int cxWidth)
    UpdateLayout();
 }
 
-void COptionUI::SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue)
+void COptionUI::SetAttribute(const TCHAR* name, const TCHAR* value)
 {
-   if( _tcscmp(pstrName, _T("width")) == 0 ) SetWidth(_ttoi(pstrValue));
-   else if( _tcscmp(pstrName, _T("selected")) == 0 ) SetCheck(_tcscmp(pstrValue, _T("true")) == 0);
-   else if( _tcscmp(pstrName, _T("align")) == 0 ) {
-      if( _tcsstr(pstrValue, _T("right")) != NULL ) m_uStyle |= DT_RIGHT;
+   if( _tcscmp(name, _T("width")) == 0 ) SetWidth(_ttoi(value));
+   else if( _tcscmp(name, _T("selected")) == 0 ) SetCheck(_tcscmp(value, _T("true")) == 0);
+   else if( _tcscmp(name, _T("align")) == 0 ) {
+      if( _tcsstr(value, _T("right")) != NULL ) m_uStyle |= DT_RIGHT;
    }
-   else CControlUI::SetAttribute(pstrName, pstrValue);
+   else CControlUI::SetAttribute(name, value);
 }
 
 SIZE COptionUI::EstimateSize(SIZE /*szAvailable*/)

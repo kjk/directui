@@ -27,7 +27,7 @@ class IListCallbackUI
 {
 public:
    virtual const TCHAR* GetItemText(CControlUI* pList, int iItem, int iSubItem) = 0;
-   virtual int CompareItem(CControlUI* pList, CControlUI* pItem1, CControlUI* pItem2) = 0;
+   virtual int CompareItem(CControlUI* pList, CControlUI* item1, CControlUI* item2) = 0;
 };
 
 class IListOwnerUI
@@ -71,7 +71,7 @@ public:
    CListElementUI();
 
    UINT GetControlFlags() const;
-   void* GetInterface(const TCHAR* pstrName);
+   void* GetInterface(const TCHAR* name);
 
    int GetIndex() const;
    void SetIndex(int iIndex);
@@ -86,7 +86,7 @@ public:
    bool Activate();
 
    void Event(TEventUI& event);
-   void SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue);
+   void SetAttribute(const TCHAR* name, const TCHAR* value);
 
 protected:
    int m_iIndex;
@@ -100,7 +100,7 @@ public:
    CListHeaderUI();
 
    const TCHAR* GetClass() const;
-   void* GetInterface(const TCHAR* pstrName);
+   void* GetInterface(const TCHAR* name);
 
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
@@ -122,7 +122,7 @@ public:
    void DoPaint(HDC hDC, const RECT& rcPaint);
 
    void SetWidth(int cxWidth);
-   void SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue);
+   void SetAttribute(const TCHAR* name, const TCHAR* value);
 
    RECT GetThumbRect(RECT rc) const;
 
@@ -138,7 +138,7 @@ public:
    CListFooterUI();
 
    const TCHAR* GetClass() const;
-   void* GetInterface(const TCHAR* pstrName);
+   void* GetInterface(const TCHAR* name);
 
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
@@ -151,7 +151,7 @@ public:
 
    const TCHAR* GetClass() const;
    UINT GetControlFlags() const;
-   void* GetInterface(const TCHAR* pstrName);
+   void* GetInterface(const TCHAR* name);
 
    int GetCurSel() const;
    bool SelectItem(int iIndex);
@@ -163,8 +163,8 @@ public:
 
    CControlUI* GetItem(int iIndex) const;
    int GetCount() const;
-   bool Add(CControlUI* pControl);
-   bool Remove(CControlUI* pControl);
+   bool Add(CControlUI* ctrl);
+   bool Remove(CControlUI* ctrl);
    void RemoveAll();
 
    void EnsureVisible(int iIndex);
@@ -177,7 +177,7 @@ public:
 
    void SetPos(RECT rc);
    void Event(TEventUI& event);
-   void SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue);
+   void SetAttribute(const TCHAR* name, const TCHAR* value);
 
    IListCallbackUI* GetTextCallback() const;
    void SetTextCallback(IListCallbackUI* pCallback);
@@ -208,7 +208,7 @@ public:
 
    void DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle);
 
-   void SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue);
+   void SetAttribute(const TCHAR* name, const TCHAR* value);
 
 protected:
    int m_cxWidth;
@@ -257,8 +257,8 @@ public:
 
    CControlUI* GetItem(int iIndex) const;
    int GetCount() const;
-   bool Add(CControlUI* pControl);
-   bool Remove(CControlUI* pControl);
+   bool Add(CControlUI* ctrl);
+   bool Remove(CControlUI* ctrl);
    void RemoveAll();
 
    bool IsExpanded() const;

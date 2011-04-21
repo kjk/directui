@@ -227,10 +227,10 @@ const TCHAR* CDropDownUI::GetClass() const
    return _T("DropDownUI");
 }
 
-void* CDropDownUI::GetInterface(const TCHAR* pstrName)
+void* CDropDownUI::GetInterface(const TCHAR* name)
 {
-   if( _tcscmp(pstrName, _T("ListOwner")) == 0 ) return static_cast<IListOwnerUI*>(this);
-   return CContainerUI::GetInterface(pstrName);
+   if( _tcscmp(name, _T("ListOwner")) == 0 ) return static_cast<IListOwnerUI*>(this);
+   return CContainerUI::GetInterface(name);
 }
 
 UINT CDropDownUI::GetControlFlags() const
@@ -252,39 +252,39 @@ bool CDropDownUI::SelectItem(int iIndex)
 {
    if( iIndex == m_iCurSel ) return true;
    if( m_iCurSel >= 0 ) {
-      CControlUI* pControl = static_cast<CControlUI*>(m_items[m_iCurSel]);
-      IListItemUI* pListItem = static_cast<IListItemUI*>(pControl->GetInterface(_T("ListItem")));
+      CControlUI* ctrl = static_cast<CControlUI*>(m_items[m_iCurSel]);
+      IListItemUI* pListItem = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
       if( pListItem != NULL ) pListItem->Select(false);
       m_iCurSel = -1;
    }
    if( m_items.GetSize() == 0 ) return false;
    if( iIndex < 0 ) iIndex = 0;
    if( iIndex >= m_items.GetSize() ) iIndex = m_items.GetSize() - 1;
-   CControlUI* pControl = static_cast<CControlUI*>(m_items[iIndex]);
-   if( !pControl->IsVisible() ) return false;
-   if( !pControl->IsEnabled() ) return false;
-   IListItemUI* pListItem = static_cast<IListItemUI*>(pControl->GetInterface(_T("ListItem")));
+   CControlUI* ctrl = static_cast<CControlUI*>(m_items[iIndex]);
+   if( !ctrl->IsVisible() ) return false;
+   if( !ctrl->IsEnabled() ) return false;
+   IListItemUI* pListItem = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
    if( pListItem == NULL ) return false;
    m_iCurSel = iIndex;
-   pControl->SetFocus();
+   ctrl->SetFocus();
    pListItem->Select(true);
-   if( m_pManager != NULL ) m_pManager->SendNotify(pControl, _T("itemclick"));
+   if( m_pManager != NULL ) m_pManager->SendNotify(ctrl, _T("itemclick"));
    if( m_pManager != NULL ) m_pManager->SendNotify(this, _T("itemselect"));
    Invalidate();
    return true;
 }
 
-bool CDropDownUI::Add(CControlUI* pControl)
+bool CDropDownUI::Add(CControlUI* ctrl)
 {
-   IListItemUI* pListItem = static_cast<IListItemUI*>(pControl->GetInterface(_T("ListItem")));
+   IListItemUI* pListItem = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
    if( pListItem != NULL ) {
       pListItem->SetOwner(this);
       pListItem->SetIndex(m_items.GetSize());
    }
-   return CContainerUI::Add(pControl);
+   return CContainerUI::Add(ctrl);
 }
 
-bool CDropDownUI::Remove(CControlUI* pControl)
+bool CDropDownUI::Remove(CControlUI* ctrl)
 {
    ASSERT(!"Not supported");
    return false;
@@ -366,8 +366,8 @@ bool CDropDownUI::Activate()
 CStdString CDropDownUI::GetText() const
 {
    if( m_iCurSel < 0 ) return _T("");
-   CControlUI* pControl = static_cast<CControlUI*>(m_items[m_iCurSel]);
-   return pControl->GetText();
+   CControlUI* ctrl = static_cast<CControlUI*>(m_items[m_iCurSel]);
+   return ctrl->GetText();
 }
 
 SIZE CDropDownUI::GetDropDownSize() const
@@ -417,18 +417,18 @@ void CDropDownUI::DoPaint(HDC hDC, const RECT& rcPaint)
    // Paint dropdown edit box
    ::InflateRect(&rcText, -1, -1);
    if( m_iCurSel >= 0 ) {
-      CControlUI* pControl = static_cast<CControlUI*>(m_items[m_iCurSel]);
-      IListItemUI* pElement = static_cast<IListItemUI*>(pControl->GetInterface(_T("ListItem")));
+      CControlUI* ctrl = static_cast<CControlUI*>(m_items[m_iCurSel]);
+      IListItemUI* pElement = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
       if( pElement != NULL ) {
          // Render item with specific draw-style
          pElement->DrawItem(hDC, rcText, UIDRAWSTYLE_INPLACE | (m_bFocused ? UIDRAWSTYLE_FOCUS : 0));
       }
       else {
          // Allow non-listitems to render as well.
-         RECT rcOldPos = pControl->GetPos();
-         pControl->SetPos(rcText);
-         pControl->DoPaint(hDC, rcText);
-         pControl->SetPos(rcOldPos);
+         RECT rcOldPos = ctrl->GetPos();
+         ctrl->SetPos(rcText);
+         ctrl->DoPaint(hDC, rcText);
+         ctrl->SetPos(rcOldPos);
       }
    }
    else {

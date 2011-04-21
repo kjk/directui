@@ -16,7 +16,7 @@ public:
 
    void Init();
 
-   bool Add(CControlUI* pControl);
+   bool Add(CControlUI* ctrl);
 
    int GetCurSel() const;
    bool SelectItem(int iIndex);
@@ -26,7 +26,7 @@ public:
    void SetPos(RECT rc);
    void DoPaint(HDC hDC, const RECT& rcPaint);
 
-   void SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue);
+   void SetAttribute(const TCHAR* name, const TCHAR* value);
 
 protected:
    int m_iCurSel;

@@ -12,10 +12,10 @@ const TCHAR* CNavigatorPanelUI::GetClass() const
    return _T("NavigatorPanelUI");
 }
 
-void* CNavigatorPanelUI::GetInterface(const TCHAR* pstrName)
+void* CNavigatorPanelUI::GetInterface(const TCHAR* name)
 {
-   if( _tcscmp(pstrName, _T("ListOwner")) == 0 ) return static_cast<IListOwnerUI*>(this);
-   return CVerticalLayoutUI::GetInterface(pstrName);
+   if( _tcscmp(name, _T("ListOwner")) == 0 ) return static_cast<IListOwnerUI*>(this);
+   return CVerticalLayoutUI::GetInterface(name);
 }
 
 int CNavigatorPanelUI::GetCurSel() const
@@ -32,31 +32,31 @@ bool CNavigatorPanelUI::SelectItem(int iIndex)
 {
    if( iIndex == m_iCurSel ) return true;
    if( m_iCurSel >= 0 ) {
-      CControlUI* pControl = GetItem(m_iCurSel);
-      IListItemUI* pListItem = static_cast<IListItemUI*>(pControl->GetInterface(_T("ListItem")));
+      CControlUI* ctrl = GetItem(m_iCurSel);
+      IListItemUI* pListItem = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
       if( pListItem != NULL ) pListItem->Select(false);
    }
    m_iCurSel = iIndex;
    if( m_iCurSel >= 0 ) {
-      CControlUI* pControl = GetItem(m_iCurSel);
-      IListItemUI* pListItem = static_cast<IListItemUI*>(pControl->GetInterface(_T("ListItem")));
+      CControlUI* ctrl = GetItem(m_iCurSel);
+      IListItemUI* pListItem = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
       if( pListItem == NULL ) return false;
       pListItem->Select(true);
-      if( m_pManager != NULL ) m_pManager->SendNotify(pControl, _T("itemclick"));
+      if( m_pManager != NULL ) m_pManager->SendNotify(ctrl, _T("itemclick"));
    }
    if( m_pManager != NULL ) m_pManager->SendNotify(this, _T("itemselect"));
    Invalidate();
    return true;
 }
 
-bool CNavigatorPanelUI::Add(CControlUI* pControl)
+bool CNavigatorPanelUI::Add(CControlUI* ctrl)
 {
-   IListItemUI* pListItem = static_cast<IListItemUI*>(pControl->GetInterface(_T("ListItem")));
+   IListItemUI* pListItem = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
    if( pListItem != NULL ) {
       pListItem->SetOwner(this);
       pListItem->SetIndex(m_items.GetSize());
    }
-   return CContainerUI::Add(pControl);
+   return CContainerUI::Add(ctrl);
 }
 
 SIZE CNavigatorPanelUI::EstimateSize(SIZE szAvailable)
@@ -297,10 +297,10 @@ void CSearchTitlePanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
    CHorizontalLayoutUI::DoPaint(hDC, rcPaint);
 }
 
-void CSearchTitlePanelUI::SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue)
+void CSearchTitlePanelUI::SetAttribute(const TCHAR* name, const TCHAR* value)
 {
-   if( _tcscmp(pstrName, _T("image")) == 0 ) SetImage(_ttoi(pstrValue));
-   else CHorizontalLayoutUI::SetAttribute(pstrName, pstrValue);
+   if( _tcscmp(name, _T("image")) == 0 ) SetImage(_ttoi(value));
+   else CHorizontalLayoutUI::SetAttribute(name, value);
 }
 
 
@@ -327,11 +327,11 @@ void CPaddingPanelUI::SetHeight(int cyHeight)
    UpdateLayout();
 }
 
-void CPaddingPanelUI::SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue)
+void CPaddingPanelUI::SetAttribute(const TCHAR* name, const TCHAR* value)
 {
-   if( _tcscmp(pstrName, _T("width")) == 0 ) SetWidth(_ttoi(pstrValue));
-   else if( _tcscmp(pstrName, _T("height")) == 0 ) SetHeight(_ttoi(pstrValue));
-   else CControlUI::SetAttribute(pstrName, pstrValue);
+   if( _tcscmp(name, _T("width")) == 0 ) SetWidth(_ttoi(value));
+   else if( _tcscmp(name, _T("height")) == 0 ) SetHeight(_ttoi(value));
+   else CControlUI::SetAttribute(name, value);
 }
 
 const TCHAR* CPaddingPanelUI::GetClass() const
@@ -384,12 +384,12 @@ void CImagePanelUI::SetHeight(int cyHeight)
    UpdateLayout();
 }
 
-void CImagePanelUI::SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue)
+void CImagePanelUI::SetAttribute(const TCHAR* name, const TCHAR* value)
 {
-   if( _tcscmp(pstrName, _T("width")) == 0 ) SetWidth(_ttoi(pstrValue));
-   else if( _tcscmp(pstrName, _T("height")) == 0 ) SetHeight(_ttoi(pstrValue));
-   else if( _tcscmp(pstrName, _T("image")) == 0 ) SetImage(pstrValue);
-   else CControlUI::SetAttribute(pstrName, pstrValue);
+   if( _tcscmp(name, _T("width")) == 0 ) SetWidth(_ttoi(value));
+   else if( _tcscmp(name, _T("height")) == 0 ) SetHeight(_ttoi(value));
+   else if( _tcscmp(name, _T("image")) == 0 ) SetImage(value);
+   else CControlUI::SetAttribute(name, value);
 }
 
 const TCHAR* CImagePanelUI::GetClass() const
@@ -476,11 +476,11 @@ void CTextPanelUI::Event(TEventUI& event)
    CLabelPanelUI::Event(event);
 }
 
-void CTextPanelUI::SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue)
+void CTextPanelUI::SetAttribute(const TCHAR* name, const TCHAR* value)
 {
-   if( _tcscmp(pstrName, _T("textColor")) == 0 ) SetTextColor((UITYPE_COLOR)_ttoi(pstrValue));
-   else if( _tcscmp(pstrName, _T("backColor")) == 0 ) SetBkColor((UITYPE_COLOR)_ttoi(pstrValue));
-   else CLabelPanelUI::SetAttribute(pstrName, pstrValue);
+   if( _tcscmp(name, _T("textColor")) == 0 ) SetTextColor((UITYPE_COLOR)_ttoi(value));
+   else if( _tcscmp(name, _T("backColor")) == 0 ) SetBkColor((UITYPE_COLOR)_ttoi(value));
+   else CLabelPanelUI::SetAttribute(name, value);
 }
 
 SIZE CTextPanelUI::EstimateSize(SIZE szAvailable)
@@ -522,13 +522,13 @@ void CWarningPanelUI::SetWarningType(UINT uType)
    }
 }
 
-void CWarningPanelUI::SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue)
+void CWarningPanelUI::SetAttribute(const TCHAR* name, const TCHAR* value)
 {
-   if( _tcscmp(pstrName, _T("type")) == 0 ) {
-      if( _tcscmp(pstrValue, _T("error")) == 0 ) SetWarningType(MB_ICONERROR);
-      if( _tcscmp(pstrValue, _T("warning")) == 0 ) SetWarningType(MB_ICONWARNING);
+   if( _tcscmp(name, _T("type")) == 0 ) {
+      if( _tcscmp(value, _T("error")) == 0 ) SetWarningType(MB_ICONERROR);
+      if( _tcscmp(value, _T("warning")) == 0 ) SetWarningType(MB_ICONWARNING);
    }
-   else CTextPanelUI::SetAttribute(pstrName, pstrValue);
+   else CTextPanelUI::SetAttribute(name, value);
 }
 
 SIZE CWarningPanelUI::EstimateSize(SIZE szAvailable)

@@ -252,7 +252,7 @@ void CRegistersPageWnd::OnPrepareAnimation()
    for( int i = 0; i < 1000; i++ ) pList->Add(new CListTextElementUI);    // We want 1000 items in list
 }
 
-const TCHAR* CRegistersPageWnd::GetItemText(CControlUI* pControl, int iIndex, int iSubItem)
+const TCHAR* CRegistersPageWnd::GetItemText(CControlUI* ctrl, int iIndex, int iSubItem)
 {
    if( iIndex == 0 && iSubItem == 0 ) return _T("<i 3>Item1");
    if( iIndex == 1 && iSubItem == 0 ) return _T("<i 3>Item2");
@@ -265,7 +265,7 @@ const TCHAR* CRegistersPageWnd::GetItemText(CControlUI* pControl, int iIndex, in
    return sTemp;
 }
 
-int CRegistersPageWnd::CompareItem(CControlUI* pList, CControlUI* pItem1, CControlUI* pItem2)
+int CRegistersPageWnd::CompareItem(CControlUI* pList, CControlUI* item1, CControlUI* item2)
 {
    return 0;
 }
@@ -340,7 +340,7 @@ void CSystemsPageWnd::Notify(TNotifyUI& msg)
    CStandardPageWnd::Notify(msg);
 }
 
-const TCHAR* CSystemsPageWnd::GetItemText(CControlUI* pControl, int iIndex, int iSubItem)
+const TCHAR* CSystemsPageWnd::GetItemText(CControlUI* ctrl, int iIndex, int iSubItem)
 {
    if( iIndex == 0 && iSubItem == 1 ) return _T("Expanding Item #1");
    if( iIndex == 1 && iSubItem == 1 ) return _T("Expanding Item #2");
@@ -354,7 +354,7 @@ const TCHAR* CSystemsPageWnd::GetItemText(CControlUI* pControl, int iIndex, int 
    return _T("");
 }
 
-int CSystemsPageWnd::CompareItem(CControlUI* pList, CControlUI* pItem1, CControlUI* pItem2)
+int CSystemsPageWnd::CompareItem(CControlUI* pList, CControlUI* item1, CControlUI* item2)
 {
    return 0;
 }
@@ -365,18 +365,18 @@ void CSystemsPageWnd::OnPrepareAnimation()
    pList->SetTextCallback(this);  // List will call our GetItemText()
 }
 
-void CSystemsPageWnd::OnExpandItem(CControlUI* pControl)
+void CSystemsPageWnd::OnExpandItem(CControlUI* ctrl)
 {
-   CListExpandElementUI* pItem = static_cast<CListExpandElementUI*>(pControl);
+   CListExpandElementUI* item = static_cast<CListExpandElementUI*>(ctrl);
    // Add slowly...
    CTextPanelUI* pText = new CTextPanelUI();
    CStdString sText;
-   sText.Format(_T("<b>Episode:</b> Gyldendal #%p"), pControl);
+   sText.Format(_T("<b>Episode:</b> Gyldendal #%p"), ctrl);
    pText->SetText(sText);
-   pItem->Add(pText);
+   item->Add(pText);
    // Add quickly...
-   pItem->Add((new CTextPanelUI())->ApplyAttributeList(_T("text=\"<b>Navn:</b> Anders And\"")));
-   pItem->Add((new CTextPanelUI())->ApplyAttributeList(_T("text=\"<b>Tidspunkt:</b> <i 3>Juleaften\"")));
+   item->Add((new CTextPanelUI())->ApplyAttributeList(_T("text=\"<b>Navn:</b> Anders And\"")));
+   item->Add((new CTextPanelUI())->ApplyAttributeList(_T("text=\"<b>Tidspunkt:</b> <i 3>Juleaften\"")));
 }
 
 

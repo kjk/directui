@@ -5,11 +5,11 @@
 
 #include <zmouse.h>
 
-static UINT GetNameHash(const TCHAR* pstrName)
+static UINT GetNameHash(const TCHAR* name)
 {
    UINT i = 0;
-   SIZE_T len = _tcslen(pstrName);
-   while( len-- > 0 ) i = (i << 5) + i + pstrName[len];
+   SIZE_T len = _tcslen(name);
+   while( len-- > 0 ) i = (i << 5) + i + name[len];
    return i;
 }
 
@@ -313,18 +313,18 @@ bool CPaintManagerUI::PreMessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam,
          // If there are controls named "ok" or "cancel" they
          // will be activated on keypress.
          if( wParam == VK_RETURN ) {
-            CControlUI* pControl = FindControl(_T("ok"));
-            if( pControl != NULL && m_pFocus != pControl ) {
+            CControlUI* ctrl = FindControl(_T("ok"));
+            if( ctrl != NULL && m_pFocus != ctrl ) {
                if( m_pFocus == NULL || (m_pFocus->GetControlFlags() & UIFLAG_WANTRETURN) == 0 ) {
-                  pControl->Activate();
+                  ctrl->Activate();
                   return true;
                }
             }
          }
          if( wParam == VK_ESCAPE ) {
-            CControlUI* pControl = FindControl(_T("cancel"));
-            if( pControl != NULL ) {
-               pControl->Activate();
+            CControlUI* ctrl = FindControl(_T("cancel"));
+            if( ctrl != NULL ) {
+               ctrl->Activate();
                return true;
             }
          }
@@ -335,10 +335,10 @@ bool CPaintManagerUI::PreMessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam,
          // Handle ALT-shortcut key-combinations
          FINDSHORTCUT fs = { 0 };
          fs.ch = toupper(wParam);
-         CControlUI* pControl = m_pRoot->FindControl(__FindControlFromShortcut, &fs, UIFIND_VISIBLE | UIFIND_ENABLED | UIFIND_ME_FIRST);
-         if( pControl != NULL ) {
-            pControl->SetFocus();
-            pControl->Activate();
+         CControlUI* ctrl = m_pRoot->FindControl(__FindControlFromShortcut, &fs, UIFIND_VISIBLE | UIFIND_ENABLED | UIFIND_ME_FIRST);
+         if( ctrl != NULL ) {
+            ctrl->SetFocus();
+            ctrl->Activate();
             return true;
          }
       }
@@ -699,11 +699,11 @@ bool CPaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LR
          ::SetFocus(m_hWndPaint);
          POINT pt = { GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam) };
          m_ptLastMousePos = pt;
-         CControlUI* pControl = FindControl(pt);
-         if( pControl == NULL ) break;
-         if( pControl->GetManager() != this ) break;
-         m_pEventClick = pControl;
-         pControl->SetFocus();
+         CControlUI* ctrl = FindControl(pt);
+         if( ctrl == NULL ) break;
+         if( ctrl->GetManager() != this ) break;
+         m_pEventClick = ctrl;
+         ctrl->SetFocus();
          TEventUI event = { 0 };
          event.Type = UIEVENT_BUTTONDOWN;
          event.wParam = wParam;
@@ -711,7 +711,7 @@ bool CPaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LR
          event.ptMouse = pt;
          event.wKeyState = wParam;
          event.dwTimestamp = ::GetTickCount();
-         pControl->Event(event);
+         ctrl->Event(event);
          // No need to burden user with 3D animations
          m_anim.CancelJobs();
          // We always capture the mouse
@@ -739,16 +739,16 @@ bool CPaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LR
       {
          POINT pt = { GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam) };
          m_ptLastMousePos = pt;
-         CControlUI* pControl = FindControl(pt);
-         if( pControl == NULL ) break;
-         if( pControl->GetManager() != this ) break;
+         CControlUI* ctrl = FindControl(pt);
+         if( ctrl == NULL ) break;
+         if( ctrl->GetManager() != this ) break;
          TEventUI event = { 0 };
          event.Type = UIEVENT_DBLCLICK;
          event.ptMouse = pt;
          event.wKeyState = wParam;
          event.dwTimestamp = ::GetTickCount();
-         pControl->Event(event);
-         m_pEventClick = pControl;
+         ctrl->Event(event);
+         m_pEventClick = ctrl;
          // We always capture the mouse
          ::SetCapture(m_hWndPaint);
       }
@@ -796,9 +796,9 @@ bool CPaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LR
          POINT pt = { 0 };
          ::GetCursorPos(&pt);
          ::ScreenToClient(m_hWndPaint, &pt);
-         CControlUI* pControl = FindControl(pt);
-         if( pControl == NULL ) break;
-         if( (pControl->GetControlFlags() & UIFLAG_SETCURSOR) == 0 ) break;
+         CControlUI* ctrl = FindControl(pt);
+         if( ctrl == NULL ) break;
+         if( (ctrl->GetControlFlags() & UIFLAG_SETCURSOR) == 0 ) break;
          TEventUI event = { 0 };
          event.Type = UIEVENT_SETCURSOR;
          event.wParam = wParam;
@@ -806,7 +806,7 @@ bool CPaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LR
          event.ptMouse = pt;
          event.wKeyState = MapKeyState();
          event.dwTimestamp = ::GetTickCount();
-         pControl->Event(event);
+         ctrl->Event(event);
       }
       return true;
    case WM_CTLCOLOREDIT:
@@ -895,7 +895,7 @@ void CPaintManagerUI::Invalidate(RECT rcItem)
    ::InvalidateRect(m_hWndPaint, &rcItem, FALSE);
 }
 
-bool CPaintManagerUI::AttachDialog(CControlUI* pControl)
+bool CPaintManagerUI::AttachDialog(CControlUI* ctrl)
 {
    ASSERT(::IsWindow(m_hWndPaint));
    // Reset any previous attachment
@@ -912,31 +912,31 @@ bool CPaintManagerUI::AttachDialog(CControlUI* pControl)
       ::PostMessage(m_hWndPaint, WM_APP + 1, 0, 0L);
    }
    // Set the dialog root element
-   m_pRoot = pControl;
+   m_pRoot = ctrl;
    // Go ahead...
    m_bResizeNeeded = true;
    m_bFirstLayout = true;
    m_bFocusNeeded = true;
    // Initiate all control
-   return InitControls(pControl);
+   return InitControls(ctrl);
 }
 
-bool CPaintManagerUI::InitControls(CControlUI* pControl, CControlUI* pParent /*= NULL*/)
+bool CPaintManagerUI::InitControls(CControlUI* ctrl, CControlUI* pParent /*= NULL*/)
 {
-   ASSERT(pControl);
-   if( pControl == NULL ) return false;
-   pControl->SetManager(this, pParent != NULL ? pParent : pControl->GetParent());
+   ASSERT(ctrl);
+   if( ctrl == NULL ) return false;
+   ctrl->SetManager(this, pParent != NULL ? pParent : ctrl->GetParent());
    // We're usually initializing the control after adding some more of them to the tree,
    // and thus this would be a good time to request the name-map rebuilt.
    m_aNameHash.Empty();
    return true;
 }
 
-void CPaintManagerUI::ReapObjects(CControlUI* pControl)
+void CPaintManagerUI::ReapObjects(CControlUI* ctrl)
 {
-   if( pControl == m_pEventKey ) m_pEventKey = NULL;
-   if( pControl == m_pEventHover ) m_pEventHover = NULL;
-   if( pControl == m_pEventClick ) m_pEventClick = NULL;
+   if( ctrl == m_pEventKey ) m_pEventKey = NULL;
+   if( ctrl == m_pEventHover ) m_pEventHover = NULL;
+   if( ctrl == m_pEventClick ) m_pEventClick = NULL;
    // TODO: Do something with name-hash-map
    //m_aNameHash.Empty();
 }
@@ -989,60 +989,60 @@ CControlUI* CPaintManagerUI::GetFocus() const
    return m_pFocus;
 }
 
-void CPaintManagerUI::SetFocus(CControlUI* pControl)
+void CPaintManagerUI::SetFocus(CControlUI* ctrl)
 {
    // Paint manager window has focus?
    if( ::GetFocus() != m_hWndPaint ) ::SetFocus(m_hWndPaint);
    // Already has focus?
-   if( pControl == m_pFocus ) return;
+   if( ctrl == m_pFocus ) return;
    // Remove focus from old control
    if( m_pFocus != NULL ) 
    {
       TEventUI event = { 0 };
       event.Type = UIEVENT_KILLFOCUS;
-      event.pSender = pControl;
+      event.pSender = ctrl;
       event.dwTimestamp = ::GetTickCount();
       m_pFocus->Event(event);
       SendNotify(m_pFocus, _T("killfocus"));
       m_pFocus = NULL;
    }
    // Set focus to new control
-   if( pControl != NULL 
-       && pControl->GetManager() == this 
-       && pControl->IsVisible() 
-       && pControl->IsEnabled() ) 
+   if( ctrl != NULL 
+       && ctrl->GetManager() == this 
+       && ctrl->IsVisible() 
+       && ctrl->IsEnabled() ) 
    {
-      m_pFocus = pControl;
+      m_pFocus = ctrl;
       TEventUI event = { 0 };
       event.Type = UIEVENT_SETFOCUS;
-      event.pSender = pControl;
+      event.pSender = ctrl;
       event.dwTimestamp = ::GetTickCount();
       m_pFocus->Event(event);
       SendNotify(m_pFocus, _T("setfocus"));
    }
 }
 
-bool CPaintManagerUI::SetTimer(CControlUI* pControl, UINT nTimerID, UINT uElapse)
+bool CPaintManagerUI::SetTimer(CControlUI* ctrl, UINT nTimerID, UINT uElapse)
 {
-   ASSERT(pControl!=NULL);
+   ASSERT(ctrl!=NULL);
    ASSERT(uElapse>0);
    m_uTimerID = (++m_uTimerID) % 0xFF;
    if( !::SetTimer(m_hWndPaint, m_uTimerID, uElapse, NULL) ) return FALSE;
    TIMERINFO* pTimer = new TIMERINFO;
    if( pTimer == NULL ) return FALSE;
    pTimer->hWnd = m_hWndPaint;
-   pTimer->pSender = pControl;
+   pTimer->pSender = ctrl;
    pTimer->nLocalID = nTimerID;
    pTimer->uWinTimer = m_uTimerID;
    return m_aTimers.Add(pTimer);
 }
 
-bool CPaintManagerUI::KillTimer(CControlUI* pControl, UINT nTimerID)
+bool CPaintManagerUI::KillTimer(CControlUI* ctrl, UINT nTimerID)
 {
-   ASSERT(pControl!=NULL);
+   ASSERT(ctrl!=NULL);
    for( int i = 0; i< m_aTimers.GetSize(); i++ ) {
       TIMERINFO* pTimer = static_cast<TIMERINFO*>(m_aTimers[i]);
-      if( pTimer->pSender == pControl
+      if( pTimer->pSender == ctrl
           && pTimer->hWnd == m_hWndPaint
           && pTimer->nLocalID == nTimerID )
       {
@@ -1067,20 +1067,20 @@ bool CPaintManagerUI::SetNextTabControl(bool bForward)
    FINDTABINFO info1 = { 0 };
    info1.pFocus = m_pFocus;
    info1.bForward = bForward;
-   CControlUI* pControl = m_pRoot->FindControl(__FindControlFromTab, &info1, UIFIND_VISIBLE | UIFIND_ENABLED | UIFIND_ME_FIRST);
-   if( pControl == NULL ) {  
+   CControlUI* ctrl = m_pRoot->FindControl(__FindControlFromTab, &info1, UIFIND_VISIBLE | UIFIND_ENABLED | UIFIND_ME_FIRST);
+   if( ctrl == NULL ) {  
       if( bForward ) {
          // Wrap around
          FINDTABINFO info2 = { 0 };
          info2.pFocus = bForward ? NULL : info1.pLast;
          info2.bForward = bForward;
-         pControl = m_pRoot->FindControl(__FindControlFromTab, &info2, UIFIND_VISIBLE | UIFIND_ENABLED | UIFIND_ME_FIRST);
+         ctrl = m_pRoot->FindControl(__FindControlFromTab, &info2, UIFIND_VISIBLE | UIFIND_ENABLED | UIFIND_ME_FIRST);
       }
       else {
-         pControl = info1.pLast;
+         ctrl = info1.pLast;
       }
    }
-   if( pControl != NULL ) SetFocus(pControl);
+   if( ctrl != NULL ) SetFocus(ctrl);
    m_bFocusNeeded = false;
    return true;
 }
@@ -1132,10 +1132,10 @@ bool CPaintManagerUI::RemoveMessageFilter(IMessageFilterUI* pFilter)
    return false;
 }
 
-void CPaintManagerUI::SendNotify(CControlUI* pControl, const TCHAR* pstrMessage, WPARAM wParam /*= 0*/, LPARAM lParam /*= 0*/)
+void CPaintManagerUI::SendNotify(CControlUI* ctrl, const TCHAR* pstrMessage, WPARAM wParam /*= 0*/, LPARAM lParam /*= 0*/)
 {
    TNotifyUI Msg;
-   Msg.pSender = pControl;
+   Msg.pSender = ctrl;
    Msg.sType = pstrMessage;
    Msg.wParam = 0;
    Msg.lParam = 0;
@@ -1216,7 +1216,7 @@ bool CPaintManagerUI::GetThemeColorPair(UITYPE_COLOR Index, COLORREF& clr1, COLO
    return true;
 }
 
-CControlUI* CPaintManagerUI::FindControl(const TCHAR* pstrName)
+CControlUI* CPaintManagerUI::FindControl(const TCHAR* name)
 {
    ASSERT(m_pRoot);
    // First time here? Build hash array...
@@ -1229,9 +1229,9 @@ CControlUI* CPaintManagerUI::FindControl(const TCHAR* pstrName)
    // Find name in the hash array
    int nCount = 0;
    int nSize = m_aNameHash.GetSize();
-   int iNameHash = (int) (GetNameHash(pstrName) % nSize);
+   int iNameHash = (int) (GetNameHash(name) % nSize);
    while( m_aNameHash[iNameHash] != NULL ) {
-      if( static_cast<CControlUI*>(m_aNameHash[iNameHash])->GetName() == pstrName ) return static_cast<CControlUI*>(m_aNameHash[iNameHash]);
+      if( static_cast<CControlUI*>(m_aNameHash[iNameHash])->GetName() == name ) return static_cast<CControlUI*>(m_aNameHash[iNameHash]);
       iNameHash = (iNameHash + 1) % nSize;
       if( ++nCount >= nSize ) break;
    }
@@ -1427,14 +1427,14 @@ CStdString CControlUI::GetName() const
    return m_sName;
 }
 
-void CControlUI::SetName(const TCHAR* pstrName)
+void CControlUI::SetName(const TCHAR* name)
 {
-   m_sName = pstrName;
+   m_sName = name;
 }
 
-void* CControlUI::GetInterface(const TCHAR* pstrName)
+void* CControlUI::GetInterface(const TCHAR* name)
 {
-   if( _tcscmp(pstrName, _T("Control")) == 0 ) return this;
+   if( _tcscmp(name, _T("Control")) == 0 ) return this;
    return NULL;
 }
 
@@ -1501,23 +1501,23 @@ void CControlUI::Notify(TNotifyUI& /*msg*/)
 {
 }
 
-void CControlUI::SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue)
+void CControlUI::SetAttribute(const TCHAR* name, const TCHAR* value)
 {
-   if( _tcscmp(pstrName, _T("pos")) == 0 ) {
+   if( _tcscmp(name, _T("pos")) == 0 ) {
       RECT rcPos = { 0 };
       TCHAR* pstr = NULL;
-      rcPos.left = _tcstol(pstrValue, &pstr, 10);  ASSERT(pstr);    
+      rcPos.left = _tcstol(value, &pstr, 10);  ASSERT(pstr);    
       rcPos.top = _tcstol(pstr + 1, &pstr, 10);    ASSERT(pstr);    
       rcPos.right = _tcstol(pstr + 1, &pstr, 10);  ASSERT(pstr);    
       rcPos.bottom = _tcstol(pstr + 1, &pstr, 10); ASSERT(pstr);    
       SetPos(rcPos);
    }
-   else if( _tcscmp(pstrName, _T("name")) == 0 ) SetName(pstrValue);
-   else if( _tcscmp(pstrName, _T("text")) == 0 ) SetText(pstrValue);
-   else if( _tcscmp(pstrName, _T("tooltip")) == 0 ) SetToolTip(pstrValue);
-   else if( _tcscmp(pstrName, _T("enabled")) == 0 ) SetEnabled(_tcscmp(pstrValue, _T("true")) == 0);
-   else if( _tcscmp(pstrName, _T("visible")) == 0 ) SetVisible(_tcscmp(pstrValue, _T("true")) == 0);
-   else if( _tcscmp(pstrName, _T("shortcut")) == 0 ) SetShortcut(pstrValue[0]);
+   else if( _tcscmp(name, _T("name")) == 0 ) SetName(value);
+   else if( _tcscmp(name, _T("text")) == 0 ) SetText(value);
+   else if( _tcscmp(name, _T("tooltip")) == 0 ) SetToolTip(value);
+   else if( _tcscmp(name, _T("enabled")) == 0 ) SetEnabled(_tcscmp(value, _T("true")) == 0);
+   else if( _tcscmp(name, _T("visible")) == 0 ) SetVisible(_tcscmp(value, _T("true")) == 0);
+   else if( _tcscmp(name, _T("shortcut")) == 0 ) SetShortcut(value[0]);
 }
 
 CControlUI* CControlUI::ApplyAttributeList(const TCHAR* pstrList)

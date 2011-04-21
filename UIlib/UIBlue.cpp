@@ -774,7 +774,7 @@ void CBlueRenderEngineUI::DoAnimateWindow(HWND hWnd, UINT uStyle, DWORD dwTime /
    if( pfnAnimateWindow != NULL ) pfnAnimateWindow(hWnd, dwTime, dwFlags);
 }
 
-HBITMAP CBlueRenderEngineUI::GenerateAlphaBitmap(CPaintManagerUI* pManager, CControlUI* pControl, RECT rc, UITYPE_COLOR Background)
+HBITMAP CBlueRenderEngineUI::GenerateAlphaBitmap(CPaintManagerUI* pManager, CControlUI* ctrl, RECT rc, UITYPE_COLOR Background)
 {
    typedef BOOL (WINAPI *LPALPHABLEND)(HDC, int, int, int, int,HDC, int, int, int, int, BLENDFUNCTION);
    static FARPROC lpAlphaBlend = ::GetProcAddress(::GetModuleHandle("msimg32.dll"), "AlphaBlend");
@@ -789,7 +789,7 @@ HBITMAP CBlueRenderEngineUI::GenerateAlphaBitmap(CPaintManagerUI* pManager, CCon
    ASSERT(hPaintBitmap);
    HBITMAP hOldPaintBitmap = (HBITMAP) ::SelectObject(hPaintDC, hPaintBitmap);
    DoFillRect(hPaintDC, pManager, rc, Background);
-   pControl->DoPaint(hPaintDC, rc);
+   ctrl->DoPaint(hPaintDC, rc);
 
    // Create a new 32bpp bitmap with room for an alpha channel
    BITMAPINFO bmi = { 0 };

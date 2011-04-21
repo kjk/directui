@@ -33,7 +33,7 @@ public:
    CDropDownUI();
 
    const TCHAR* GetClass() const;
-   void* GetInterface(const TCHAR* pstrName);
+   void* GetInterface(const TCHAR* name);
    
    void Init();
    UINT GetControlFlags() const;
@@ -46,8 +46,8 @@ public:
    int GetCurSel() const;  
    bool SelectItem(int iIndex);
 
-   bool Add(CControlUI* pControl);
-   bool Remove(CControlUI* pControl);
+   bool Add(CControlUI* ctrl);
+   bool Remove(CControlUI* ctrl);
    void RemoveAll();
 
    bool Activate();

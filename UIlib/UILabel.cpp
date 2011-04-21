@@ -30,14 +30,14 @@ void CLabelPanelUI::SetTextStyle(UINT uStyle)
    Invalidate();
 }
 
-void CLabelPanelUI::SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue)
+void CLabelPanelUI::SetAttribute(const TCHAR* name, const TCHAR* value)
 {
-   if( _tcscmp(pstrName, _T("align")) == 0 ) {
-      if( _tcsstr(pstrValue, _T("center")) != NULL ) m_uTextStyle |= DT_CENTER;
-      if( _tcsstr(pstrValue, _T("right")) != NULL ) m_uTextStyle |= DT_RIGHT;
+   if( _tcscmp(name, _T("align")) == 0 ) {
+      if( _tcsstr(value, _T("center")) != NULL ) m_uTextStyle |= DT_CENTER;
+      if( _tcsstr(value, _T("right")) != NULL ) m_uTextStyle |= DT_RIGHT;
    }
-   else if( _tcscmp(pstrName, _T("width")) == 0 ) SetWidth(_ttoi(pstrValue));
-   else CControlUI::SetAttribute(pstrName, pstrValue);
+   else if( _tcscmp(name, _T("width")) == 0 ) SetWidth(_ttoi(value));
+   else CControlUI::SetAttribute(name, value);
 }
 
 SIZE CLabelPanelUI::EstimateSize(SIZE /*szAvailable*/)

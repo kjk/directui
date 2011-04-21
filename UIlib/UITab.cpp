@@ -18,10 +18,10 @@ void CTabFolderUI::Init()
    if( m_iCurSel == -1 ) SelectItem(0);
 }
 
-bool CTabFolderUI::Add(CControlUI* pControl)
+bool CTabFolderUI::Add(CControlUI* ctrl)
 {
-   pControl->SetVisible(false);
-   return CContainerUI::Add(pControl);
+   ctrl->SetVisible(false);
+   return CContainerUI::Add(ctrl);
 }
 
 int CTabFolderUI::GetCurSel() const
@@ -128,10 +128,10 @@ void CTabFolderUI::DoPaint(HDC hDC, const RECT& rcPaint)
    if( m_pCurPage != NULL ) m_pCurPage->DoPaint(hDC, rcPaint);
 }
 
-void CTabFolderUI::SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue)
+void CTabFolderUI::SetAttribute(const TCHAR* name, const TCHAR* value)
 {
-   if( _tcscmp(pstrName, _T("select")) == 0 ) SelectItem(_ttoi(pstrValue));
-   else CContainerUI::SetAttribute(pstrName, pstrValue);
+   if( _tcscmp(name, _T("select")) == 0 ) SelectItem(_ttoi(value));
+   else CContainerUI::SetAttribute(name, value);
 }
 
 

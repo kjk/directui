@@ -26,7 +26,7 @@ public:
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
 
-   void SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue);
+   void SetAttribute(const TCHAR* name, const TCHAR* value);
 
    LRESULT MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, bool& bHandled);
 
@@ -38,7 +38,7 @@ protected:
    CLSID m_clsid;
    bool m_bCreated;
    IOleObject* m_pUnk;
-   CActiveXCtrl* m_pControl;
+   CActiveXCtrl* m_ctrl;
    HWND m_hwndHost;
    SIZE m_szFixed;
 };

@@ -11,8 +11,8 @@ class IContainerUI
 public:
    virtual CControlUI* GetItem(int iIndex) const = 0;
    virtual int GetCount() const = 0;
-   virtual bool Add(CControlUI* pControl) = 0;
-   virtual bool Remove(CControlUI* pControl) = 0;
+   virtual bool Add(CControlUI* ctrl) = 0;
+   virtual bool Remove(CControlUI* ctrl) = 0;
    virtual void RemoveAll() = 0;
 };
 
@@ -24,12 +24,12 @@ public:
 
 public:
    const TCHAR* GetClass() const;
-   LPVOID GetInterface(const TCHAR* pstrName);
+   LPVOID GetInterface(const TCHAR* name);
 
    CControlUI* GetItem(int iIndex) const;
    int GetCount() const;
-   bool Add(CControlUI* pControl);
-   bool Remove(CControlUI* pControl);
+   bool Add(CControlUI* ctrl);
+   bool Remove(CControlUI* ctrl);
    void RemoveAll();
 
    void Event(TEventUI& event);
@@ -48,7 +48,7 @@ public:
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
 
-   void SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue);
+   void SetAttribute(const TCHAR* name, const TCHAR* value);
 
    void SetManager(CPaintManagerUI* pManager, CControlUI* pParent);
    CControlUI* FindControl(FINDCONTROLPROC Proc, void* pData, UINT uFlags);
@@ -86,7 +86,7 @@ public:
 
    void DoPaint(HDC hDC, const RECT& rcPaint);
 
-   void SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue);
+   void SetAttribute(const TCHAR* name, const TCHAR* value);
 
 protected:
    COLORREF m_clrBack;
@@ -182,9 +182,9 @@ public:
    CDialogLayoutUI();
 
    const TCHAR* GetClass() const;
-   void* GetInterface(const TCHAR* pstrName);
+   void* GetInterface(const TCHAR* name);
 
-   void SetStretchMode(CControlUI* pControl, UINT uMode);
+   void SetStretchMode(CControlUI* ctrl, UINT uMode);
 
    void SetPos(RECT rc);
    SIZE EstimateSize(SIZE szAvailable);
@@ -195,7 +195,7 @@ protected:
 protected:  
    typedef struct 
    {
-      CControlUI* pControl;
+      CControlUI* ctrl;
       UINT uMode;
       RECT rcItem;
    } STRETCHMODE;

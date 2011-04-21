@@ -71,7 +71,7 @@ public:
    CMarkupNode GetParent();
    CMarkupNode GetSibling();
    CMarkupNode GetChild();
-   CMarkupNode GetChild(const TCHAR* pstrName);
+   CMarkupNode GetChild(const TCHAR* name);
 
    bool HasSiblings() const;
    bool HasChildren() const;
@@ -79,13 +79,13 @@ public:
    const TCHAR* GetValue() const;
 
    bool HasAttributes();
-   bool HasAttribute(const TCHAR* pstrName);
+   bool HasAttribute(const TCHAR* name);
    int GetAttributeCount();
    const TCHAR* GetAttributeName(int iIndex);
    const TCHAR* GetAttributeValue(int iIndex);
-   const TCHAR* GetAttributeValue(const TCHAR* pstrName);
-   bool GetAttributeValue(int iIndex, TCHAR* pstrValue, SIZE_T cchMax);
-   bool GetAttributeValue(const TCHAR* pstrName, TCHAR* pstrValue, SIZE_T cchMax);
+   const TCHAR* GetAttributeValue(const TCHAR* name);
+   bool GetAttributeValue(int iIndex, TCHAR* value, SIZE_T cchMax);
+   bool GetAttributeValue(const TCHAR* name, TCHAR* value, SIZE_T cchMax);
 
 private:
    void _MapAttributes();

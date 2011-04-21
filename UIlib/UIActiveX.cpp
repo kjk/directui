@@ -809,7 +809,7 @@ LRESULT CActiveXWnd::OnPaint(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHan
    return 1;
 }
 
-CActiveXUI::CActiveXUI() : m_pUnk(NULL), m_pControl(NULL), m_hwndHost(NULL), m_bCreated(false)
+CActiveXUI::CActiveXUI() : m_pUnk(NULL), m_ctrl(NULL), m_hwndHost(NULL), m_bCreated(false)
 {
    m_szFixed.cx = m_szFixed.cy = 0;
 }
@@ -849,7 +849,7 @@ void CActiveXUI::SetPos(RECT rc)
    if( !m_bCreated ) DelayedControlCreation();
 
    if( m_pUnk == NULL ) return;
-   if( m_pControl == NULL ) return;
+   if( m_ctrl == NULL ) return;
 
    m_rcItem = rc;
 
@@ -862,47 +862,47 @@ void CActiveXUI::SetPos(RECT rc)
    if( m_pUnk != NULL ) {
       m_pUnk->SetExtent(DVASPECT_CONTENT, &hmSize);
    }
-   if( m_pControl->m_pInPlaceObject != NULL ) {
+   if( m_ctrl->m_pInPlaceObject != NULL ) {
       CRect rcItem = m_rcItem;
-      if( !m_pControl->m_bWindowless ) rcItem.ResetOffset();
-      m_pControl->m_pInPlaceObject->SetObjectRects(&rcItem, &rcItem);
+      if( !m_ctrl->m_bWindowless ) rcItem.ResetOffset();
+      m_ctrl->m_pInPlaceObject->SetObjectRects(&rcItem, &rcItem);
    }
-   if( !m_pControl->m_bWindowless ) {
-      ASSERT(m_pControl->m_pWindow);
-      ::MoveWindow(*m_pControl->m_pWindow, m_rcItem.left, m_rcItem.top, m_rcItem.right - m_rcItem.left, m_rcItem.bottom - m_rcItem.top, TRUE);
+   if( !m_ctrl->m_bWindowless ) {
+      ASSERT(m_ctrl->m_pWindow);
+      ::MoveWindow(*m_ctrl->m_pWindow, m_rcItem.left, m_rcItem.top, m_rcItem.right - m_rcItem.left, m_rcItem.bottom - m_rcItem.top, TRUE);
    }
 }
 
 void CActiveXUI::DoPaint(HDC hDC, const RECT& /*rcPaint*/)
 {
-   if( m_pControl != NULL && m_pControl->m_bWindowless && m_pControl->m_pViewObject != NULL )
+   if( m_ctrl != NULL && m_ctrl->m_bWindowless && m_ctrl->m_pViewObject != NULL )
    {
-      m_pControl->m_pViewObject->Draw(DVASPECT_CONTENT, -1, NULL, NULL, NULL, hDC, (RECTL*) &m_rcItem, (RECTL*) &m_rcItem, NULL, NULL); 
+      m_ctrl->m_pViewObject->Draw(DVASPECT_CONTENT, -1, NULL, NULL, NULL, hDC, (RECTL*) &m_rcItem, (RECTL*) &m_rcItem, NULL, NULL); 
    }
 }
 
-void CActiveXUI::SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue)
+void CActiveXUI::SetAttribute(const TCHAR* name, const TCHAR* value)
 {
-   if( _tcscmp(pstrName, _T("clsid")) == 0 ) CreateControl(pstrValue);
-   else if( _tcscmp(pstrName, _T("width")) == 0 ) SetWidth(_ttoi(pstrValue));
-   else if( _tcscmp(pstrName, _T("height")) == 0 ) SetHeight(_ttoi(pstrValue));
-   else CControlUI::SetAttribute(pstrName, pstrValue);
+   if( _tcscmp(name, _T("clsid")) == 0 ) CreateControl(value);
+   else if( _tcscmp(name, _T("width")) == 0 ) SetWidth(_ttoi(value));
+   else if( _tcscmp(name, _T("height")) == 0 ) SetHeight(_ttoi(value));
+   else CControlUI::SetAttribute(name, value);
 }
 
 LRESULT CActiveXUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, bool& bHandled)
 {
-   if( m_pControl == NULL ) return 0;
-   ASSERT(m_pControl->m_bWindowless);
-   if( !m_pControl->m_bInPlaceActive ) return 0;
-   if( m_pControl->m_pInPlaceObject == NULL ) return 0;
+   if( m_ctrl == NULL ) return 0;
+   ASSERT(m_ctrl->m_bWindowless);
+   if( !m_ctrl->m_bInPlaceActive ) return 0;
+   if( m_ctrl->m_pInPlaceObject == NULL ) return 0;
    bool bWasHandled = true;
    if( (uMsg >= WM_MOUSEFIRST && uMsg <= WM_MOUSELAST) || uMsg == WM_SETCURSOR )
    {
       // Mouse message only go when captured or inside rect
-      DWORD dwHitResult = m_pControl->m_bCaptured ? HITRESULT_HIT : HITRESULT_OUTSIDE;
-      if( dwHitResult == HITRESULT_OUTSIDE && m_pControl->m_pViewObject != NULL ) {
+      DWORD dwHitResult = m_ctrl->m_bCaptured ? HITRESULT_HIT : HITRESULT_OUTSIDE;
+      if( dwHitResult == HITRESULT_OUTSIDE && m_ctrl->m_pViewObject != NULL ) {
          IViewObjectEx* pViewEx = NULL;
-         m_pControl->m_pViewObject->QueryInterface(IID_IViewObjectEx, (LPVOID*) &pViewEx);
+         m_ctrl->m_pViewObject->QueryInterface(IID_IViewObjectEx, (LPVOID*) &pViewEx);
          if( pViewEx != NULL ) {
             POINT ptMouse = { GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam) };
             pViewEx->QueryHitPoint(DVASPECT_CONTENT, &m_rcItem, ptMouse, 0, &dwHitResult);
@@ -915,7 +915,7 @@ LRESULT CActiveXUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, bool
    else if( uMsg >= WM_KEYFIRST && uMsg <= WM_KEYLAST )
    {
       // Keyboard messages just go when we have focus
-      if( !m_pControl->m_bFocused ) return 0;
+      if( !m_ctrl->m_bFocused ) return 0;
    }
    else
    {
@@ -929,7 +929,7 @@ LRESULT CActiveXUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, bool
       }
    }
    LRESULT lResult = 0;
-   HRESULT Hr = m_pControl->m_pInPlaceObject->OnWindowMessage(uMsg, wParam, lParam, &lResult);
+   HRESULT Hr = m_ctrl->m_pInPlaceObject->OnWindowMessage(uMsg, wParam, lParam, &lResult);
    if( Hr == S_OK ) bHandled = bWasHandled;
    return lResult;
 }
@@ -985,10 +985,10 @@ void CActiveXUI::ReleaseControl()
       m_pUnk->Release(); 
       m_pUnk = NULL;
    }
-   if( m_pControl != NULL ) {
-      m_pControl->m_pOwner = NULL;
-      m_pControl->Release();
-      m_pControl = NULL;
+   if( m_ctrl != NULL ) {
+      m_ctrl->m_pOwner = NULL;
+      m_ctrl->Release();
+      m_ctrl = NULL;
    }
    m_pManager->RemoveMessageFilter(this);
 }
@@ -1006,13 +1006,13 @@ bool CActiveXUI::DelayedControlCreation()
    pOleControl->Release();
    if( m_pUnk == NULL ) return false;
    // Create the host too
-   m_pControl = new CActiveXCtrl();
-   m_pControl->m_pOwner = this;
+   m_ctrl = new CActiveXCtrl();
+   m_ctrl->m_pOwner = this;
    // More control creation stuff
    DWORD dwMiscStatus = 0;
    m_pUnk->GetMiscStatus(DVASPECT_CONTENT, &dwMiscStatus);
    IOleClientSite* pOleClientSite = NULL;
-   m_pControl->QueryInterface(IID_IOleClientSite, (LPVOID*) &pOleClientSite);
+   m_ctrl->QueryInterface(IID_IOleClientSite, (LPVOID*) &pOleClientSite);
    CSafeRelease<IOleClientSite> RefOleClientSite = pOleClientSite;
    // Initialize control
    if( (dwMiscStatus & OLEMISC_SETCLIENTSITEFIRST) != 0 ) m_pUnk->SetClientSite(pOleClientSite);
@@ -1025,9 +1025,9 @@ bool CActiveXUI::DelayedControlCreation()
    if( FAILED(Hr) ) return false;
    if( (dwMiscStatus & OLEMISC_SETCLIENTSITEFIRST) == 0 ) m_pUnk->SetClientSite(pOleClientSite);
    // Grab the view...
-   Hr = m_pUnk->QueryInterface(IID_IViewObjectEx, (LPVOID*) &m_pControl->m_pViewObject);
-   if( FAILED(Hr) ) Hr = m_pUnk->QueryInterface(IID_IViewObject2, (LPVOID*) &m_pControl->m_pViewObject);
-   if( FAILED(Hr) ) Hr = m_pUnk->QueryInterface(IID_IViewObject, (LPVOID*) &m_pControl->m_pViewObject);
+   Hr = m_pUnk->QueryInterface(IID_IViewObjectEx, (LPVOID*) &m_ctrl->m_pViewObject);
+   if( FAILED(Hr) ) Hr = m_pUnk->QueryInterface(IID_IViewObject2, (LPVOID*) &m_ctrl->m_pViewObject);
+   if( FAILED(Hr) ) Hr = m_pUnk->QueryInterface(IID_IViewObject, (LPVOID*) &m_ctrl->m_pViewObject);
    // Activate and done...
    m_pUnk->SetHostNames(OLESTR("UIActiveX"), NULL);
    if( (dwMiscStatus & OLEMISC_INVISIBLEATRUNTIME) == 0 ) {
@@ -1037,7 +1037,7 @@ bool CActiveXUI::DelayedControlCreation()
    IObjectWithSite* pSite = NULL;
    m_pUnk->QueryInterface(IID_IObjectWithSite, (LPVOID*) &pSite);
    if( pSite != NULL ) {
-      pSite->SetSite(static_cast<IOleClientSite*>(m_pControl));
+      pSite->SetSite(static_cast<IOleClientSite*>(m_ctrl));
       pSite->Release();
    }
    return SUCCEEDED(Hr);

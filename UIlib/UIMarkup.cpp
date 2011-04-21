@@ -37,12 +37,12 @@ CMarkupNode CMarkupNode::GetChild()
    return CMarkupNode(m_pOwner, iPos);
 }
 
-CMarkupNode CMarkupNode::GetChild(const TCHAR* pstrName)
+CMarkupNode CMarkupNode::GetChild(const TCHAR* name)
 {
    if( m_pOwner == NULL ) return CMarkupNode();
    ULONG iPos = m_pOwner->m_pElements[m_iPos].iChild;
    while( iPos != 0 ) {
-      if( _tcscmp(m_pOwner->m_pstrXML + m_pOwner->m_pElements[iPos].iStart, pstrName) == 0 ) {
+      if( _tcscmp(m_pOwner->m_pstrXML + m_pOwner->m_pElements[iPos].iStart, name) == 0 ) {
          return CMarkupNode(m_pOwner, iPos);
       }
       iPos = m_pOwner->m_pElements[iPos].iNext;
@@ -97,32 +97,32 @@ const TCHAR* CMarkupNode::GetAttributeValue(int iIndex)
    return m_pOwner->m_pstrXML + m_aAttributes[iIndex].iValue;
 }
 
-const TCHAR* CMarkupNode::GetAttributeValue(const TCHAR* pstrName)
+const TCHAR* CMarkupNode::GetAttributeValue(const TCHAR* name)
 {
    if( m_pOwner == NULL ) return NULL;
    if( m_nAttributes == 0 ) _MapAttributes();
    for( int i = 0; i < m_nAttributes; i++ ) {
-      if( _tcscmp(m_pOwner->m_pstrXML + m_aAttributes[i].iName, pstrName) == 0 ) return m_pOwner->m_pstrXML + m_aAttributes[i].iValue;
+      if( _tcscmp(m_pOwner->m_pstrXML + m_aAttributes[i].iName, name) == 0 ) return m_pOwner->m_pstrXML + m_aAttributes[i].iValue;
    }
    return _T("");
 }
 
-bool CMarkupNode::GetAttributeValue(int iIndex, TCHAR* pstrValue, SIZE_T cchMax)
+bool CMarkupNode::GetAttributeValue(int iIndex, TCHAR* value, SIZE_T cchMax)
 {
    if( m_pOwner == NULL ) return false;
    if( m_nAttributes == 0 ) _MapAttributes();
    if( iIndex < 0 || iIndex >= m_nAttributes ) return false;
-   _tcsncpy(pstrValue, m_pOwner->m_pstrXML + m_aAttributes[iIndex].iValue, cchMax);
+   _tcsncpy(value, m_pOwner->m_pstrXML + m_aAttributes[iIndex].iValue, cchMax);
    return true;
 }
 
-bool CMarkupNode::GetAttributeValue(const TCHAR* pstrName, TCHAR* pstrValue, SIZE_T cchMax)
+bool CMarkupNode::GetAttributeValue(const TCHAR* name, TCHAR* value, SIZE_T cchMax)
 {
    if( m_pOwner == NULL ) return false;
    if( m_nAttributes == 0 ) _MapAttributes();
    for( int i = 0; i < m_nAttributes; i++ ) {
-      if( _tcscmp(m_pOwner->m_pstrXML + m_aAttributes[i].iName, pstrName) == 0 ) {
-         _tcsncpy(pstrValue, m_pOwner->m_pstrXML + m_aAttributes[i].iValue, cchMax);
+      if( _tcscmp(m_pOwner->m_pstrXML + m_aAttributes[i].iName, name) == 0 ) {
+         _tcsncpy(value, m_pOwner->m_pstrXML + m_aAttributes[i].iValue, cchMax);
          return true;
       }
    }
@@ -143,12 +143,12 @@ bool CMarkupNode::HasAttributes()
    return m_nAttributes > 0;
 }
 
-bool CMarkupNode::HasAttribute(const TCHAR* pstrName)
+bool CMarkupNode::HasAttribute(const TCHAR* name)
 {
    if( m_pOwner == NULL ) return false;
    if( m_nAttributes == 0 ) _MapAttributes();
    for( int i = 0; i < m_nAttributes; i++ ) {
-      if( _tcscmp(m_pOwner->m_pstrXML + m_aAttributes[i].iName, pstrName) == 0 ) return true;
+      if( _tcscmp(m_pOwner->m_pstrXML + m_aAttributes[i].iName, name) == 0 ) return true;
    }
    return false;
 }
@@ -294,9 +294,9 @@ bool CMarkup::_Parse(TCHAR*& pstrText, ULONG iParent)
       else if( iParent > 0 ) m_pElements[iParent].iChild = iPos;
       iPrevious = iPos;
       // Parse name
-      const TCHAR* pstrName = pstrText;
+      const TCHAR* name = pstrText;
       _SkipIdentifier(pstrText);
-      TCHAR* pstrNameEnd = pstrText;
+      TCHAR* nameEnd = pstrText;
       if( *pstrText == '\0' ) return _Failed(_T("Error parsing element name"), pstrText);
       // Parse attributes
       if( !_ParseAttributes(pstrText) ) return false;
@@ -326,13 +326,13 @@ bool CMarkup::_Parse(TCHAR*& pstrText, ULONG iParent)
             *pstrDest = '\0';
             *pstrText = '\0';
             pstrText += 2;
-            SIZE_T cchName = pstrNameEnd - pstrName;
-            if( _tcsncmp(pstrText, pstrName, cchName) != 0 ) return _Failed(_T("Unmatched closing tag"), pstrText);
+            SIZE_T cchName = nameEnd - name;
+            if( _tcsncmp(pstrText, name, cchName) != 0 ) return _Failed(_T("Unmatched closing tag"), pstrText);
             if( pstrText[cchName] != '>' ) return _Failed(_T("Unmatched closing tag"), pstrText);
             pstrText += cchName + 1;
          }
       }
-      *pstrNameEnd = '\0';
+      *nameEnd = '\0';
       _SkipWhitespace(pstrText);
    }
 }

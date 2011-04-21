@@ -36,9 +36,9 @@ public:
    CNavigatorPanelUI();
 
    const TCHAR* GetClass() const;   
-   void* GetInterface(const TCHAR* pstrName);
+   void* GetInterface(const TCHAR* name);
 
-   bool Add(CControlUI* pControl);
+   bool Add(CControlUI* ctrl);
 
    int GetCurSel() const;
    bool SelectItem(int iIndex);
@@ -81,7 +81,7 @@ public:
 
    void SetPos(RECT rc);
    void DoPaint(HDC hDC, const RECT& rcPaint);
-   void SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue);
+   void SetAttribute(const TCHAR* name, const TCHAR* value);
 
 protected:
    int m_iIconIndex;
@@ -101,7 +101,7 @@ public:
 
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
-   void SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue);
+   void SetAttribute(const TCHAR* name, const TCHAR* value);
 
 protected:
    SIZE m_cxyFixed;
@@ -121,7 +121,7 @@ public:
 
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
-   void SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue);
+   void SetAttribute(const TCHAR* name, const TCHAR* value);
 
 protected:
    HBITMAP m_hBitmap;
@@ -145,7 +145,7 @@ public:
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
 
-   void SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue);
+   void SetAttribute(const TCHAR* name, const TCHAR* value);
 
 protected:
    int m_nLinks;
@@ -167,7 +167,7 @@ public:
 
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);  
-   void SetAttribute(const TCHAR* pstrName, const TCHAR* pstrValue);
+   void SetAttribute(const TCHAR* name, const TCHAR* value);
 
 protected:
    UITYPE_COLOR m_BackColor;
