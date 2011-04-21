@@ -43,7 +43,7 @@ public:
    CNavigatorPanelUI();
 
    LPCTSTR GetClass() const;   
-   LPVOID GetInterface(LPCTSTR pstrName);
+   void* GetInterface(LPCTSTR pstrName);
 
    bool Add(CControlUI* pControl);
 

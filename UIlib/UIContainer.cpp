@@ -28,7 +28,7 @@ LPCTSTR CContainerUI::GetClass() const
    return _T("ContainerUI");
 }
 
-LPVOID CContainerUI::GetInterface(LPCTSTR pstrName)
+void* CContainerUI::GetInterface(LPCTSTR pstrName)
 {
    if( _tcscmp(pstrName, _T("Container")) == 0 ) return static_cast<IContainerUI*>(this);
    return CControlUI::GetInterface(pstrName);
@@ -272,7 +272,7 @@ void CContainerUI::SetManager(CPaintManagerUI* pManager, CControlUI* pParent)
    CControlUI::SetManager(pManager, pParent);
 }
 
-CControlUI* CContainerUI::FindControl(FINDCONTROLPROC Proc, LPVOID pData, UINT uFlags)
+CControlUI* CContainerUI::FindControl(FINDCONTROLPROC Proc, void* pData, UINT uFlags)
 {
    // Check if this guy is valid
    if( (uFlags & UIFIND_VISIBLE) != 0 && !IsVisible() ) return NULL;
@@ -698,7 +698,7 @@ LPCTSTR CDialogLayoutUI::GetClass() const
    return _T("DialogLayoutUI");
 }
 
-LPVOID CDialogLayoutUI::GetInterface(LPCTSTR pstrName)
+void* CDialogLayoutUI::GetInterface(LPCTSTR pstrName)
 {
    if( _tcscmp(pstrName, _T("DialogLayout")) == 0 ) return this;
    return CContainerUI::GetInterface(pstrName);

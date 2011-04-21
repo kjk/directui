@@ -41,7 +41,7 @@ public:
    CDropDownUI();
 
    LPCTSTR GetClass() const;
-   LPVOID GetInterface(LPCTSTR pstrName);
+   void* GetInterface(LPCTSTR pstrName);
    
    void Init();
    UINT GetControlFlags() const;

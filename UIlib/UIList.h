@@ -83,7 +83,7 @@ public:
    CListElementUI();
 
    UINT GetControlFlags() const;
-   LPVOID GetInterface(LPCTSTR pstrName);
+   void* GetInterface(LPCTSTR pstrName);
 
    int GetIndex() const;
    void SetIndex(int iIndex);
@@ -116,7 +116,7 @@ public:
    CListHeaderUI();
 
    LPCTSTR GetClass() const;
-   LPVOID GetInterface(LPCTSTR pstrName);
+   void* GetInterface(LPCTSTR pstrName);
 
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
@@ -162,7 +162,7 @@ public:
    CListFooterUI();
 
    LPCTSTR GetClass() const;
-   LPVOID GetInterface(LPCTSTR pstrName);
+   void* GetInterface(LPCTSTR pstrName);
 
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
@@ -179,7 +179,7 @@ public:
 
    LPCTSTR GetClass() const;
    UINT GetControlFlags() const;
-   LPVOID GetInterface(LPCTSTR pstrName);
+   void* GetInterface(LPCTSTR pstrName);
 
    int GetCurSel() const;
    bool SelectItem(int iIndex);
@@ -293,7 +293,7 @@ public:
    void DoPaint(HDC hDC, const RECT& rcPaint);
 
    void SetManager(CPaintManagerUI* pManager, CControlUI* pParent);
-   CControlUI* FindControl(FINDCONTROLPROC Proc, LPVOID pData, UINT uFlags);
+   CControlUI* FindControl(FINDCONTROLPROC Proc, void* pData, UINT uFlags);
 
    CControlUI* GetItem(int iIndex) const;
    int GetCount() const;

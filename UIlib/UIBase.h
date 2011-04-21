@@ -102,19 +102,19 @@ public:
    void Empty();
    void Resize(int iSize);
    bool IsEmpty() const;
-   int Find(LPVOID iIndex) const;
-   bool Add(LPVOID pData);
-   bool SetAt(int iIndex, LPVOID pData);
-   bool InsertAt(int iIndex, LPVOID pData);
+   int Find(void* iIndex) const;
+   bool Add(void* pData);
+   bool SetAt(int iIndex, void* pData);
+   bool InsertAt(int iIndex, void* pData);
    bool Remove(int iIndex);
    int GetSize() const;
-   LPVOID* GetData();
+   void** GetData();
 
-   LPVOID GetAt(int iIndex) const;
-   LPVOID operator[] (int nIndex) const;
+   void* GetAt(int iIndex) const;
+   void* operator[] (int nIndex) const;
 
 protected:
-   LPVOID* m_ppVoid;
+   void** m_ppVoid;
    int m_nCount;
    int m_nAllocated;
 };
@@ -134,10 +134,10 @@ public:
    bool Add(LPCVOID pData);
    bool Remove(int iIndex);
    int GetSize() const;
-   LPVOID GetData();
+   void* GetData();
 
-   LPVOID GetAt(int iIndex) const;
-   LPVOID operator[] (int nIndex) const;
+   void* GetAt(int iIndex) const;
+   void* operator[] (int nIndex) const;
 
 protected:
    LPBYTE m_pVoid;

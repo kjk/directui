@@ -23,7 +23,7 @@
 #include "UIlib.h"
 
 
-BOOL APIENTRY DllMain(HANDLE hModule, DWORD  dwReason, LPVOID /*lpReserved*/)
+BOOL APIENTRY DllMain(HANDLE hModule, DWORD  dwReason, void* /*lpReserved*/)
 {
    switch( dwReason ) {
    case DLL_PROCESS_ATTACH:

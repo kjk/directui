@@ -340,11 +340,11 @@ public:
    void SetSystemSettings(const TSystemSettingsUI Config);
 
 private:
-   static CControlUI* CALLBACK __FindControlFromNameHash(CControlUI* pThis, LPVOID pData);
-   static CControlUI* CALLBACK __FindControlFromCount(CControlUI* pThis, LPVOID pData);
-   static CControlUI* CALLBACK __FindControlFromPoint(CControlUI* pThis, LPVOID pData);
-   static CControlUI* CALLBACK __FindControlFromTab(CControlUI* pThis, LPVOID pData);
-   static CControlUI* CALLBACK __FindControlFromShortcut(CControlUI* pThis, LPVOID pData);
+   static CControlUI* CALLBACK __FindControlFromNameHash(CControlUI* pThis, void* pData);
+   static CControlUI* CALLBACK __FindControlFromCount(CControlUI* pThis, void* pData);
+   static CControlUI* CALLBACK __FindControlFromPoint(CControlUI* pThis, void* pData);
+   static CControlUI* CALLBACK __FindControlFromTab(CControlUI* pThis, void* pData);
+   static CControlUI* CALLBACK __FindControlFromShortcut(CControlUI* pThis, void* pData);
 
 private:
    HWND m_hWndPaint;
@@ -389,7 +389,7 @@ private:
 /////////////////////////////////////////////////////////////////////////////////////
 //
 
-typedef CControlUI* (CALLBACK* FINDCONTROLPROC)(CControlUI*, LPVOID);
+typedef CControlUI* (CALLBACK* FINDCONTROLPROC)(CControlUI*, void*);
 
 class UILIB_API CControlUI : public INotifyUI
 {
@@ -400,7 +400,7 @@ public:
 public:
    virtual CStdString GetName() const;
    virtual void SetName(LPCTSTR pstrName);
-   virtual LPVOID GetInterface(LPCTSTR pstrName);
+   virtual void* GetInterface(LPCTSTR pstrName);
 
    virtual bool Activate();
    virtual CControlUI* GetParent() const;
@@ -425,7 +425,7 @@ public:
    virtual void SetVisible(bool bVisible = true);
    virtual void SetEnabled(bool bEnable = true);
 
-   virtual CControlUI* FindControl(FINDCONTROLPROC Proc, LPVOID pData, UINT uFlags);
+   virtual CControlUI* FindControl(FINDCONTROLPROC Proc, void* pData, UINT uFlags);
 
    virtual CPaintManagerUI* GetManager() const;
    virtual void SetManager(CPaintManagerUI* pManager, CControlUI* pParent);

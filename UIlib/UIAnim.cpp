@@ -462,7 +462,7 @@ bool CAnimationSpooler::RenderJob_Flat(const CAnimJobUI* pJob, LPDIRECT3DSURFACE
    for( int iBuffer = pJob->iBufferStart; iBuffer < pJob->iBufferEnd; iBuffer++ ) {
       // Lock the vertex buffer and apply transformation
       LPDIRECT3DVERTEXBUFFER9 pVBuffer = m_p3DVertices[iBuffer];
-      LPVOID pVertices = NULL;
+      void* pVertices = NULL;
       Hr = pVBuffer->Lock(0, sizeof(CUSTOMFAN), &pVertices, 0);
       if( FAILED(Hr) ) return false;
       CUSTOMFAN verts;

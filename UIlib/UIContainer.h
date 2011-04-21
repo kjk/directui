@@ -58,7 +58,7 @@ public:
    void SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue);
 
    void SetManager(CPaintManagerUI* pManager, CControlUI* pParent);
-   CControlUI* FindControl(FINDCONTROLPROC Proc, LPVOID pData, UINT uFlags);
+   CControlUI* FindControl(FINDCONTROLPROC Proc, void* pData, UINT uFlags);
 
    virtual int GetScrollPos() const;
    virtual int GetScrollPage() const;
@@ -220,7 +220,7 @@ public:
    CDialogLayoutUI();
 
    LPCTSTR GetClass() const;
-   LPVOID GetInterface(LPCTSTR pstrName);
+   void* GetInterface(LPCTSTR pstrName);
 
    void SetStretchMode(CControlUI* pControl, UINT uMode);
 

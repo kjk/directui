@@ -22,7 +22,7 @@ UINT CListElementUI::GetControlFlags() const
    return UIFLAG_WANTRETURN;
 }
 
-LPVOID CListElementUI::GetInterface(LPCTSTR pstrName)
+void* CListElementUI::GetInterface(LPCTSTR pstrName)
 {
    if( _tcscmp(pstrName, _T("ListItem")) == 0 ) return static_cast<IListItemUI*>(this);
    return CControlUI::GetInterface(pstrName);
@@ -118,7 +118,7 @@ LPCTSTR CListHeaderUI::GetClass() const
    return _T("ListHeaderUI");
 }
 
-LPVOID CListHeaderUI::GetInterface(LPCTSTR pstrName)
+void* CListHeaderUI::GetInterface(LPCTSTR pstrName)
 {
    if( _tcscmp(pstrName, _T("ListHeader")) == 0 ) return this;
    return CHorizontalLayoutUI::GetInterface(pstrName);
@@ -270,7 +270,7 @@ LPCTSTR CListFooterUI::GetClass() const
    return _T("ListFooterUI");
 }
 
-LPVOID CListFooterUI::GetInterface(LPCTSTR pstrName)
+void* CListFooterUI::GetInterface(LPCTSTR pstrName)
 {
    if( _tcscmp(pstrName, _T("ListFooter")) == 0 ) return this;
    return CHorizontalLayoutUI::GetInterface(pstrName);
@@ -330,7 +330,7 @@ UINT CListUI::GetControlFlags() const
    return UIFLAG_TABSTOP;
 }
 
-LPVOID CListUI::GetInterface(LPCTSTR pstrName)
+void* CListUI::GetInterface(LPCTSTR pstrName)
 {
    if( _tcscmp(pstrName, _T("List")) == 0 ) return static_cast<IListUI*>(this);
    if( _tcscmp(pstrName, _T("ListOwner")) == 0 ) return static_cast<IListOwnerUI*>(this);
@@ -960,7 +960,7 @@ void CListExpandElementUI::SetManager(CPaintManagerUI* pManager, CControlUI* pPa
    CListTextElementUI::SetManager(pManager, pParent);
 }
 
-CControlUI* CListExpandElementUI::FindControl(FINDCONTROLPROC Proc, LPVOID pData, UINT uFlags)
+CControlUI* CListExpandElementUI::FindControl(FINDCONTROLPROC Proc, void* pData, UINT uFlags)
 {
    CControlUI* pResult = NULL;
    if( m_pContainer != NULL ) pResult = m_pContainer->FindControl(Proc, pData, uFlags);

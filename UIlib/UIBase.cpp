@@ -499,7 +499,7 @@ void CWindowWnd::OnFinalMessage(HWND /*hWnd*/)
 CStdPtrArray::CStdPtrArray(int iPreallocSize) : m_ppVoid(NULL), m_nCount(0), m_nAllocated(iPreallocSize)
 {
    ASSERT(iPreallocSize>=0);
-   if( iPreallocSize > 0 ) m_ppVoid = static_cast<LPVOID*>(malloc(iPreallocSize * sizeof(LPVOID)));
+   if( iPreallocSize > 0 ) m_ppVoid = static_cast<void**>(malloc(iPreallocSize * sizeof(void*)));
 }
 
 CStdPtrArray::~CStdPtrArray()
@@ -517,7 +517,7 @@ void CStdPtrArray::Empty()
 void CStdPtrArray::Resize(int iSize)
 {
    Empty();
-   m_ppVoid = static_cast<LPVOID*>(malloc(iSize * sizeof(LPVOID)));
+   m_ppVoid = static_cast<void**>(malloc(iSize * sizeof(void*)));
    ::ZeroMemory(m_ppVoid, iSize * sizeof(LPVOID));
    m_nAllocated = iSize;
    m_nCount = iSize;
@@ -528,34 +528,34 @@ bool CStdPtrArray::IsEmpty() const
    return m_nCount == 0;
 }
 
-bool CStdPtrArray::Add(LPVOID pData)
+bool CStdPtrArray::Add(void* pData)
 {
    if( ++m_nCount >= m_nAllocated) {
       m_nAllocated *= 2;
       if( m_nAllocated == 0 ) m_nAllocated = 11;
-      m_ppVoid = static_cast<LPVOID*>(realloc(m_ppVoid, m_nAllocated * sizeof(LPVOID)));
+      m_ppVoid = static_cast<void**>(realloc(m_ppVoid, m_nAllocated * sizeof(void*)));
       if( m_ppVoid == NULL ) return false;
    }
    m_ppVoid[m_nCount - 1] = pData;
    return true;
 }
 
-bool CStdPtrArray::InsertAt(int iIndex, LPVOID pData)
+bool CStdPtrArray::InsertAt(int iIndex, void* pData)
 {
    if( iIndex == m_nCount ) return Add(pData);
    if( iIndex < 0 || iIndex > m_nCount ) return false;
    if( ++m_nCount >= m_nAllocated) {
       m_nAllocated *= 2;
       if( m_nAllocated == 0 ) m_nAllocated = 11;
-      m_ppVoid = static_cast<LPVOID*>(realloc(m_ppVoid, m_nAllocated * sizeof(LPVOID)));
+      m_ppVoid = static_cast<void**>(realloc(m_ppVoid, m_nAllocated * sizeof(void*)));
       if( m_ppVoid == NULL ) return false;
    }
-   memmove(&m_ppVoid[iIndex + 1], &m_ppVoid[iIndex], (m_nCount - iIndex - 1) * sizeof(LPVOID));
+   memmove(&m_ppVoid[iIndex + 1], &m_ppVoid[iIndex], (m_nCount - iIndex - 1) * sizeof(void*));
    m_ppVoid[iIndex] = pData;
    return true;
 }
 
-bool CStdPtrArray::SetAt(int iIndex, LPVOID pData)
+bool CStdPtrArray::SetAt(int iIndex, void* pData)
 {
    if( iIndex < 0 || iIndex >= m_nCount ) return false;
    m_ppVoid[iIndex] = pData;
@@ -565,11 +565,11 @@ bool CStdPtrArray::SetAt(int iIndex, LPVOID pData)
 bool CStdPtrArray::Remove(int iIndex)
 {
    if( iIndex < 0 || iIndex >= m_nCount ) return false;
-   if( iIndex < --m_nCount ) ::CopyMemory(m_ppVoid + iIndex, m_ppVoid + iIndex + 1, (m_nCount - iIndex) * sizeof(LPVOID));
+   if( iIndex < --m_nCount ) ::CopyMemory(m_ppVoid + iIndex, m_ppVoid + iIndex + 1, (m_nCount - iIndex) * sizeof(void*));
    return true;
 }
 
-int CStdPtrArray::Find(LPVOID pData) const
+int CStdPtrArray::Find(void* pData) const
 {
    for( int i = 0; i < m_nCount; i++ ) if( m_ppVoid[i] == pData ) return i;
    return -1;
@@ -580,18 +580,18 @@ int CStdPtrArray::GetSize() const
    return m_nCount;
 }
 
-LPVOID* CStdPtrArray::GetData()
+void** CStdPtrArray::GetData()
 {
    return m_ppVoid;
 }
 
-LPVOID CStdPtrArray::GetAt(int iIndex) const
+void* CStdPtrArray::GetAt(int iIndex) const
 {
    if( iIndex < 0 || iIndex >= m_nCount ) return NULL;
    return m_ppVoid[iIndex];
 }
 
-LPVOID CStdPtrArray::operator[] (int iIndex) const
+void* CStdPtrArray::operator[] (int iIndex) const
 {
    ASSERT(iIndex>=0 && iIndex<m_nCount);
    return m_ppVoid[iIndex];
@@ -652,18 +652,18 @@ int CStdValArray::GetSize() const
    return m_nCount;
 }
 
-LPVOID CStdValArray::GetData()
+void* CStdValArray::GetData()
 {
-   return static_cast<LPVOID>(m_pVoid);
+   return static_cast<void*>(m_pVoid);
 }
 
-LPVOID CStdValArray::GetAt(int iIndex) const
+void* CStdValArray::GetAt(int iIndex) const
 {
    if( iIndex < 0 || iIndex >= m_nCount ) return NULL;
    return m_pVoid + (iIndex * m_iElementSize);
 }
 
-LPVOID CStdValArray::operator[] (int iIndex) const
+void* CStdValArray::operator[] (int iIndex) const
 {
    ASSERT(iIndex>=0 && iIndex<m_nCount);
    return m_pVoid + (iIndex * m_iElementSize);

@@ -236,7 +236,7 @@ LPCTSTR CDropDownUI::GetClass() const
    return _T("DropDownUI");
 }
 
-LPVOID CDropDownUI::GetInterface(LPCTSTR pstrName)
+void* CDropDownUI::GetInterface(LPCTSTR pstrName)
 {
    if( _tcscmp(pstrName, _T("ListOwner")) == 0 ) return static_cast<IListOwnerUI*>(this);
    return CContainerUI::GetInterface(pstrName);

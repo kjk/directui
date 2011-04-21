@@ -16,7 +16,7 @@ LPCTSTR CNavigatorPanelUI::GetClass() const
    return _T("NavigatorPanelUI");
 }
 
-LPVOID CNavigatorPanelUI::GetInterface(LPCTSTR pstrName)
+void* CNavigatorPanelUI::GetInterface(LPCTSTR pstrName)
 {
    if( _tcscmp(pstrName, _T("ListOwner")) == 0 ) return static_cast<IListOwnerUI*>(this);
    return CVerticalLayoutUI::GetInterface(pstrName);
