@@ -16,7 +16,7 @@ public:
 
    bool Activate();
 
-   void SetText(const TCHAR* pstrText);
+   void SetText(const TCHAR* txt);
 
    void SetWidth(int cxWidth);
    void SetPadding(int cx, int cy);

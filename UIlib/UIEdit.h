@@ -18,7 +18,7 @@ public:
    const TCHAR* GetClass() const;
    UINT GetControlFlags() const;
 
-   void SetText(const TCHAR* pstrText);
+   void SetText(const TCHAR* txt);
 
    void SetEditStyle(UINT uStyle);
    void SetReadOnly(bool bReadOnly);
@@ -53,7 +53,7 @@ public:
    void Init();
    
    CStdString GetText() const;
-   void SetText(const TCHAR* pstrText);
+   void SetText(const TCHAR* txt);
 
    void SetEnabled(bool bEnabled);
    void SetVisible(bool bVisible);

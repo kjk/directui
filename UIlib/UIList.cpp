@@ -142,9 +142,9 @@ const TCHAR* CListHeaderItemUI::GetClass() const
    return _T("ListHeaderItemUI");
 }
 
-void CListHeaderItemUI::SetText(const TCHAR* pstrText)
+void CListHeaderItemUI::SetText(const TCHAR* txt)
 {
-   m_sText = pstrText;
+   m_sText = txt;
    UpdateLayout();
 }
 
@@ -718,10 +718,10 @@ SIZE CListTextElementUI::EstimateSize(SIZE szAvailable)
    // We calculate the item height only once, because it will not wrap on the
    // line anyway when the screen is resized.
    if (m_cyItem == 0)  {
-      const TCHAR* pstrText = _T("XXX");
+      const TCHAR* txt = _T("XXX");
       RECT rcText = { 0, 0, 9999, 9999 };
       int nLinks = 0;
-      CBlueRenderEngineUI::DoPaintPrettyText(m_manager->GetPaintDC(), m_manager, rcText, pstrText, UICOLOR__INVALID, UICOLOR__INVALID, NULL, nLinks, DT_CALCRECT | m_uTextStyle);
+      CBlueRenderEngineUI::DoPaintPrettyText(m_manager->GetPaintDC(), m_manager, rcText, txt, UICOLOR__INVALID, UICOLOR__INVALID, NULL, nLinks, DT_CALCRECT | m_uTextStyle);
       m_cyItem = rcText.bottom - rcText.top;
    }
    return CSize(m_cxWidth, m_cyItem + 9);
@@ -763,9 +763,9 @@ void CListTextElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
    {
       // Paint text
       RECT rcItem = { pInfo->rcColumn[i].left, m_rcItem.top, pInfo->rcColumn[i].right, m_rcItem.bottom - 1 };
-      const TCHAR* pstrText = pCallback->GetItemText(this, m_idx, i);
+      const TCHAR* txt = pCallback->GetItemText(this, m_idx, i);
       ::InflateRect(&rcItem, -4, 0);
-      CBlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcItem, pstrText, iTextColor, UICOLOR__INVALID, m_rcLinks, nLinks, DT_SINGLELINE | m_uTextStyle);
+      CBlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcItem, txt, iTextColor, UICOLOR__INVALID, m_rcLinks, nLinks, DT_SINGLELINE | m_uTextStyle);
       if (nLinks > 0)  m_nLinks = nLinks, nLinks = 0; else nLinks = lengthof(m_rcLinks);
    }
    RECT rcLine = { m_rcItem.left, m_rcItem.bottom - 1, m_rcItem.right, m_rcItem.bottom - 1 };
@@ -847,10 +847,10 @@ SIZE CListExpandElementUI::EstimateSize(SIZE szAvailable)
    // We calculate the item height only once, because it will not wrap on the
    // line anyway when the screen is resized.
    if (m_cyItem == 0)  {
-      const TCHAR* pstrText = _T("XXX");
+      const TCHAR* txt = _T("XXX");
       RECT rcText = { 0, 0, 9999, 9999 };
       int nLinks = 0;
-      CBlueRenderEngineUI::DoPaintPrettyText(m_manager->GetPaintDC(), m_manager, rcText, pstrText, UICOLOR__INVALID, UICOLOR__INVALID, NULL, nLinks, DT_CALCRECT | m_uTextStyle);
+      CBlueRenderEngineUI::DoPaintPrettyText(m_manager->GetPaintDC(), m_manager, rcText, txt, UICOLOR__INVALID, UICOLOR__INVALID, NULL, nLinks, DT_CALCRECT | m_uTextStyle);
       m_cyItem = (rcText.bottom - rcText.top) + 8;
    }
    int cyItem = m_cyItem;
@@ -968,16 +968,16 @@ void CListExpandElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
    {
       // Paint text
       RECT rcItem = { pInfo->rcColumn[i].left, m_rcItem.top, pInfo->rcColumn[i].right, m_rcItem.top + m_cyItem };
-      const TCHAR* pstrText = pCallback->GetItemText(this, m_idx, i);
+      const TCHAR* txt = pCallback->GetItemText(this, m_idx, i);
       // If list control is expandable then we'll automaticially draw
       // the expander-box at the first column.
       if (i == 0 && pInfo->bExpandable)  {
          sColText = (m_bExpanded ? _T("<i 14> ") : _T("<i 13> "));
-         sColText += pstrText;
-         pstrText = sColText;
+         sColText += txt;
+         txt = sColText;
       }
       ::InflateRect(&rcItem, -4, 0);
-      CBlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcItem, pstrText, iTextColor, UICOLOR__INVALID, m_rcLinks, nLinks, DT_SINGLELINE | m_uTextStyle);
+      CBlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcItem, txt, iTextColor, UICOLOR__INVALID, m_rcLinks, nLinks, DT_SINGLELINE | m_uTextStyle);
       if (nLinks > 0)  m_nLinks = nLinks, nLinks = 0; else nLinks = lengthof(m_rcLinks);
    }
    RECT rcLine = { m_rcItem.left, m_rcItem.bottom - 1, m_rcItem.right, m_rcItem.bottom - 1 };

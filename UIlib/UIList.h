@@ -114,7 +114,7 @@ public:
    const TCHAR* GetClass() const;
    UINT GetControlFlags() const;
    
-   void SetText(const TCHAR* pstrText);
+   void SetText(const TCHAR* txt);
 
    void Event(TEventUI& event);
 

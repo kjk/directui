@@ -45,15 +45,15 @@ private:
 
 private:
    bool _Parse();
-   bool _Parse(TCHAR*& pstrText, ULONG iParent);
+   bool _Parse(TCHAR*& txt, ULONG iParent);
    XMLELEMENT* _ReserveElement();
    inline void _SkipWhitespace(TCHAR*& pstr) const;
    inline void _SkipWhitespace(const TCHAR*& pstr) const;
    inline void _SkipIdentifier(TCHAR*& pstr) const;
    inline void _SkipIdentifier(const TCHAR*& pstr) const;
-   bool _ParseData(TCHAR*& pstrText, TCHAR*& pstrData, char cEnd);
-   void _ParseMetaChar(TCHAR*& pstrText, TCHAR*& pstrDest);
-   bool _ParseAttributes(TCHAR*& pstrText);
+   bool _ParseData(TCHAR*& txt, TCHAR*& pstrData, char cEnd);
+   void _ParseMetaChar(TCHAR*& txt, TCHAR*& pstrDest);
+   bool _ParseAttributes(TCHAR*& txt);
    bool _Failed(const TCHAR* pstrError, const TCHAR* pstrLocation = NULL);
 };
 

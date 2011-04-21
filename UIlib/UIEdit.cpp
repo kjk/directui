@@ -140,9 +140,9 @@ void CSingleLineEditUI::Event(TEventUI& event)
    CControlUI::Event(event);
 }
 
-void CSingleLineEditUI::SetText(const TCHAR* pstrText)
+void CSingleLineEditUI::SetText(const TCHAR* txt)
 {
-   m_sText = pstrText;
+   m_sText = txt;
    if (m_manager != NULL)  m_manager->SendNotify(this, _T("changed"));
    Invalidate();
 }
@@ -276,10 +276,10 @@ UINT CMultiLineEditUI::GetControlFlags() const
    return UIFLAG_TABSTOP;
 }
 
-void CMultiLineEditUI::SetText(const TCHAR* pstrText)
+void CMultiLineEditUI::SetText(const TCHAR* txt)
 {
-   m_sText = pstrText;
-   if (m_pWindow != NULL)  SetWindowText(*m_pWindow, pstrText);
+   m_sText = txt;
+   if (m_pWindow != NULL)  SetWindowText(*m_pWindow, txt);
    if (m_manager != NULL)  m_manager->SendNotify(this, _T("changed"));
    Invalidate();
 }

@@ -753,14 +753,14 @@ const TCHAR* CStdString::GetData()
    return m_pstr;
 }
 
-TCHAR CStdString::GetAt(int nIndex) const
+TCHAR CStdString::GetAt(int idx) const
 {
-   return m_pstr[nIndex];
+   return m_pstr[idx];
 }
 
-TCHAR CStdString::operator[] (int nIndex) const
+TCHAR CStdString::operator[] (int idx) const
 { 
-   return m_pstr[nIndex];
+   return m_pstr[idx];
 }   
 
 const CStdString& CStdString::operator=(const CStdString& src)
@@ -838,10 +838,10 @@ bool CStdString::operator <  (const TCHAR* str) const { return (Compare(str) <  
 bool CStdString::operator >= (const TCHAR* str) const { return (Compare(str) >= 0); };
 bool CStdString::operator >  (const TCHAR* str) const { return (Compare(str) >  0); };
 
-void CStdString::SetAt(int nIndex, TCHAR ch)
+void CStdString::SetAt(int idx, TCHAR ch)
 {
-   ASSERT(nIndex>=0 && nIndex<GetLength());
-   m_pstr[nIndex] = ch;
+   ASSERT(idx>=0 && idx<GetLength());
+   m_pstr[idx] = ch;
 }
 
 int CStdString::Compare(const TCHAR* lpsz) const 

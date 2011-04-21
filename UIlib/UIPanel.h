@@ -84,7 +84,7 @@ public:
    void SetAttribute(const TCHAR* name, const TCHAR* value);
 
 protected:
-   int m_iIconIndex;
+   int m_iconIdx;
 };
 
 

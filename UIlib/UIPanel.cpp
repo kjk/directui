@@ -258,7 +258,7 @@ void CTaskPanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
    CVerticalLayoutUI::DoPaint(hDC, rcPaint);
 }
 
-CSearchTitlePanelUI::CSearchTitlePanelUI() : m_iIconIndex(-1)
+CSearchTitlePanelUI::CSearchTitlePanelUI() : m_iconIdx(-1)
 {
    SetInset(CSize(0, 0));
 }
@@ -270,7 +270,7 @@ const TCHAR* CSearchTitlePanelUI::GetClass() const
 
 void CSearchTitlePanelUI::SetImage(int idx)
 {
-   m_iIconIndex = idx;
+   m_iconIdx = idx;
 }
 
 void CSearchTitlePanelUI::SetPos(RECT rc)
@@ -289,8 +289,8 @@ void CSearchTitlePanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
    if (::IntersectRect(&rcTemp, &rcPaint, &rcArc))  {
       CBlueRenderEngineUI::DoPaintArcCaption(hDC, m_manager, rcArc, _T(""), 0);
    }
-   if (m_iIconIndex >= 0)  {
-      HICON hIcon = m_manager->GetThemeIcon(m_iIconIndex, 50);
+   if (m_iconIdx >= 0)  {
+      HICON hIcon = m_manager->GetThemeIcon(m_iconIdx, 50);
       ::DrawIconEx(hDC, m_rcItem.left + 5, m_rcItem.top, hIcon, 50, 50, 0, NULL, DI_NORMAL);
       ::DestroyIcon(hIcon);
    }

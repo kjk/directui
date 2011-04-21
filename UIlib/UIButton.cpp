@@ -57,11 +57,11 @@ void CButtonUI::Event(TEventUI& event)
    CControlUI::Event(event);
 }
 
-void CButtonUI::SetText(const TCHAR* pstrText)
+void CButtonUI::SetText(const TCHAR* txt)
 {
-   CControlUI::SetText(pstrText);
+   CControlUI::SetText(txt);
    // Automatic assignment of keyboard shortcut
-   if (_tcschr(pstrText, '&') != NULL)  m_chShortcut = *(_tcschr(pstrText, '&') + 1);
+   if (_tcschr(txt, '&') != NULL)  m_chShortcut = *(_tcschr(txt, '&') + 1);
 }
 
 bool CButtonUI::Activate()

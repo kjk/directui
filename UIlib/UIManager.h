@@ -385,10 +385,10 @@ public:
    virtual CControlUI* GetParent() const;
 
    virtual CStdString GetText() const;
-   virtual void SetText(const TCHAR* pstrText);
+   virtual void SetText(const TCHAR* txt);
 
    virtual CStdString GetToolTip() const;
-   virtual void SetToolTip(const TCHAR* pstrText);
+   virtual void SetToolTip(const TCHAR* txt);
 
    virtual TCHAR GetShortcut() const;
    virtual void SetShortcut(TCHAR ch);

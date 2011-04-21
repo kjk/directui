@@ -92,7 +92,7 @@ public:
    void** GetData();
 
    void* GetAt(int idx) const;
-   void* operator[] (int nIndex) const;
+   void* operator[] (int idx) const;
 
 protected:
    void** m_ppVoid;
@@ -115,7 +115,7 @@ public:
    void* GetData();
 
    void* GetAt(int idx) const;
-   void* operator[] (int nIndex) const;
+   void* operator[] (int idx) const;
 
 protected:
    LPBYTE m_pVoid;
@@ -192,15 +192,15 @@ public:
    void Empty();
    int GetLength() const;
    bool IsEmpty() const;
-   TCHAR GetAt(int nIndex) const;
+   TCHAR GetAt(int idx) const;
    void Append(const TCHAR* pstr);
-   void Assign(const TCHAR* pstr, int nLength = -1);
+   void Assign(const TCHAR* pstr, int len = -1);
    const TCHAR* GetData();
    
-   void SetAt(int nIndex, TCHAR ch);
+   void SetAt(int idx, TCHAR ch);
    operator LPCTSTR() const;
 
-   TCHAR operator[] (int nIndex) const;
+   TCHAR operator[] (int idx) const;
    const CStdString& operator=(const CStdString& src);
    const CStdString& operator=(const TCHAR ch);
    const CStdString& operator=(const TCHAR* pstr);
@@ -226,9 +226,9 @@ public:
    void MakeUpper();
    void MakeLower();
 
-   CStdString Left(int nLength) const;
-   CStdString Mid(int pos, int nLength = -1) const;
-   CStdString Right(int nLength) const;
+   CStdString Left(int len) const;
+   CStdString Mid(int pos, int len = -1) const;
+   CStdString Right(int len) const;
 
    int Find(TCHAR ch, int pos = 0) const;
    int Find(const TCHAR* pstr, int pos = 0) const;

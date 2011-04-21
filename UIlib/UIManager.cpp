@@ -1379,9 +1379,9 @@ CStdString CControlUI::GetText() const
    return m_sText;
 }
 
-void CControlUI::SetText(const TCHAR* pstrText)
+void CControlUI::SetText(const TCHAR* txt)
 {
-   m_sText = pstrText;
+   m_sText = txt;
    Invalidate();
 }
 
@@ -1395,9 +1395,9 @@ void CControlUI::SetTag(UINT_PTR pTag)
    m_pTag = pTag;
 }
 
-void CControlUI::SetToolTip(const TCHAR* pstrText)
+void CControlUI::SetToolTip(const TCHAR* txt)
 {
-   m_sToolTip = pstrText;
+   m_sToolTip = txt;
 }
 
 CStdString CControlUI::GetToolTip() const

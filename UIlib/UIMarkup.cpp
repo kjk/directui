@@ -267,73 +267,73 @@ bool CMarkup::_Parse()
    return _Parse(pstrXML, 0);
 }
 
-bool CMarkup::_Parse(TCHAR*& pstrText, ULONG iParent)
+bool CMarkup::_Parse(TCHAR*& txt, ULONG iParent)
 {
    ULONG iPrevious = 0;
    for( ; ;)  
    {
-      if (*pstrText == '\0' && iParent <= 1)  return true;
-      if (*pstrText != '<')  return _Failed(_T("Expected start tag"), pstrText);
-      if (pstrText[1] == '/')  return true;
-      *pstrText++ = '\0';
+      if (*txt == '\0' && iParent <= 1)  return true;
+      if (*txt != '<')  return _Failed(_T("Expected start tag"), txt);
+      if (txt[1] == '/')  return true;
+      *txt++ = '\0';
       // Skip comment or processing directive
-      if (*pstrText == '!' || *pstrText == '?')  {
-         TCHAR chEnd = *pstrText == '!' ? '-' : '?';
-         while (*pstrText != '\0' && !(*pstrText == chEnd && *(pstrText + 1) == '>'))  pstrText = ::CharNext(pstrText);
-         if (*pstrText != '\0')  pstrText += 2;
-         _SkipWhitespace(pstrText);
+      if (*txt == '!' || *txt == '?')  {
+         TCHAR chEnd = *txt == '!' ? '-' : '?';
+         while (*txt != '\0' && !(*txt == chEnd && *(txt + 1) == '>'))  txt = ::CharNext(txt);
+         if (*txt != '\0')  txt += 2;
+         _SkipWhitespace(txt);
          continue;
       }
       // Fill out element structure
       XMLELEMENT* pEl = _ReserveElement();
       ULONG pos = pEl - m_pElements;
-      pEl->iStart = pstrText - m_pstrXML;
+      pEl->iStart = txt - m_pstrXML;
       pEl->iParent = iParent;
       pEl->iNext = pEl->iChild = 0;
       if (iPrevious != 0)  m_pElements[iPrevious].iNext = pos;
       else if (iParent > 0)  m_pElements[iParent].iChild = pos;
       iPrevious = pos;
       // Parse name
-      const TCHAR* name = pstrText;
-      _SkipIdentifier(pstrText);
-      TCHAR* nameEnd = pstrText;
-      if (*pstrText == '\0')  return _Failed(_T("Error parsing element name"), pstrText);
+      const TCHAR* name = txt;
+      _SkipIdentifier(txt);
+      TCHAR* nameEnd = txt;
+      if (*txt == '\0')  return _Failed(_T("Error parsing element name"), txt);
       // Parse attributes
-      if (!_ParseAttributes(pstrText))  return false;
-      _SkipWhitespace(pstrText);
-      if (pstrText[0] == '/' && pstrText[1] == '>') 
+      if (!_ParseAttributes(txt))  return false;
+      _SkipWhitespace(txt);
+      if (txt[0] == '/' && txt[1] == '>') 
       {
-         pEl->iData = pstrText - m_pstrXML;
-         *pstrText = '\0';
-         pstrText += 2;
+         pEl->iData = txt - m_pstrXML;
+         *txt = '\0';
+         txt += 2;
       }
       else
       {
-         if (*pstrText != '>')  return _Failed(_T("Expected start-tag closing"), pstrText);
+         if (*txt != '>')  return _Failed(_T("Expected start-tag closing"), txt);
          // Parse node data
-         pEl->iData = ++pstrText - m_pstrXML;
-         TCHAR* pstrDest = pstrText;
-         if (!_ParseData(pstrText, pstrDest, '<'))  return false;
+         pEl->iData = ++txt - m_pstrXML;
+         TCHAR* pstrDest = txt;
+         if (!_ParseData(txt, pstrDest, '<'))  return false;
          // Determine type of next element
-         if (*pstrText == '\0' && iParent <= 1)  return true;
-         if (*pstrText != '<')  return _Failed(_T("Expected end-tag start"), pstrText);
-         if (pstrText[0] == '<' && pstrText[1] != '/')  
+         if (*txt == '\0' && iParent <= 1)  return true;
+         if (*txt != '<')  return _Failed(_T("Expected end-tag start"), txt);
+         if (txt[0] == '<' && txt[1] != '/')  
          {
-            if (!_Parse(pstrText, pos))  return false;
+            if (!_Parse(txt, pos))  return false;
          }
-         if (pstrText[0] == '<' && pstrText[1] == '/')  
+         if (txt[0] == '<' && txt[1] == '/')  
          {
             *pstrDest = '\0';
-            *pstrText = '\0';
-            pstrText += 2;
+            *txt = '\0';
+            txt += 2;
             SIZE_T cchName = nameEnd - name;
-            if (_tcsncmp(pstrText, name, cchName) != 0)  return _Failed(_T("Unmatched closing tag"), pstrText);
-            if (pstrText[cchName] != '>')  return _Failed(_T("Unmatched closing tag"), pstrText);
-            pstrText += cchName + 1;
+            if (_tcsncmp(txt, name, cchName) != 0)  return _Failed(_T("Unmatched closing tag"), txt);
+            if (txt[cchName] != '>')  return _Failed(_T("Unmatched closing tag"), txt);
+            txt += cchName + 1;
          }
       }
       *nameEnd = '\0';
-      _SkipWhitespace(pstrText);
+      _SkipWhitespace(txt);
    }
 }
 
@@ -367,72 +367,72 @@ void CMarkup::_SkipIdentifier(TCHAR*& pstr) const
    while (*pstr != '\0' && (*pstr == '_' || *pstr == ':' || _istalnum(*pstr)))  pstr++;
 }
 
-bool CMarkup::_ParseAttributes(TCHAR*& pstrText)
+bool CMarkup::_ParseAttributes(TCHAR*& txt)
 {   
-   if (*pstrText == '>')  return true;
-   *pstrText++ = '\0';
-   _SkipWhitespace(pstrText);
-   while (*pstrText != '\0' && *pstrText != '>' && *pstrText != '/')  {
-      _SkipIdentifier(pstrText);
-      if (*pstrText != '=')  return _Failed(_T("Error while parsing attributes"), pstrText);
-      *pstrText++ = '\0';
-      TCHAR chQuote = *pstrText++;
-      if (chQuote != '\"' && chQuote != '\'')  return _Failed(_T("Expected attribute value"), pstrText);
-      TCHAR* pstrDest = pstrText;
-      if (!_ParseData(pstrText, pstrDest, chQuote))  return false;
-      if (*pstrText == '\0')  return _Failed(_T("Error while parsing attribute string"), pstrText);
+   if (*txt == '>')  return true;
+   *txt++ = '\0';
+   _SkipWhitespace(txt);
+   while (*txt != '\0' && *txt != '>' && *txt != '/')  {
+      _SkipIdentifier(txt);
+      if (*txt != '=')  return _Failed(_T("Error while parsing attributes"), txt);
+      *txt++ = '\0';
+      TCHAR chQuote = *txt++;
+      if (chQuote != '\"' && chQuote != '\'')  return _Failed(_T("Expected attribute value"), txt);
+      TCHAR* pstrDest = txt;
+      if (!_ParseData(txt, pstrDest, chQuote))  return false;
+      if (*txt == '\0')  return _Failed(_T("Error while parsing attribute string"), txt);
       *pstrDest = '\0';
-      *pstrText++ = '\0';
-      _SkipWhitespace(pstrText);
+      *txt++ = '\0';
+      _SkipWhitespace(txt);
    }
    return true;
 }
 
-bool CMarkup::_ParseData(TCHAR*& pstrText, TCHAR*& pstrDest, char cEnd)
+bool CMarkup::_ParseData(TCHAR*& txt, TCHAR*& pstrDest, char cEnd)
 {
-   while (*pstrText != '\0' && *pstrText != cEnd)  {
-      if (*pstrText == '&')  {
-         _ParseMetaChar(++pstrText, pstrDest);
+   while (*txt != '\0' && *txt != cEnd)  {
+      if (*txt == '&')  {
+         _ParseMetaChar(++txt, pstrDest);
       }
-      if (*pstrText == ' ')  {
-         *pstrDest++ = *pstrText++;
-         if (!m_bPreserveWhitespace)  _SkipWhitespace(pstrText);
+      if (*txt == ' ')  {
+         *pstrDest++ = *txt++;
+         if (!m_bPreserveWhitespace)  _SkipWhitespace(txt);
       }
       else {
-         *pstrDest++ = *pstrText++;
+         *pstrDest++ = *txt++;
 #ifdef _MBCS
-         if (::IsDBCSLeadByte(*(pstrText - 1)))  *pstrDest++ = *pstrText++;
+         if (::IsDBCSLeadByte(*(txt - 1)))  *pstrDest++ = *txt++;
 #endif // _MBCS
       }
    }
    // Make sure that MapAttributes() works correctly when it parses
    // over a value that has been transformed.
    TCHAR* pstrFill = pstrDest + 1;
-   while (pstrFill < pstrText)  *pstrFill++ = ' ';
+   while (pstrFill < txt)  *pstrFill++ = ' ';
    return true;
 }
 
-void CMarkup::_ParseMetaChar(TCHAR*& pstrText, TCHAR*& pstrDest)
+void CMarkup::_ParseMetaChar(TCHAR*& txt, TCHAR*& pstrDest)
 {
-   if (pstrText[0] == 'a' && pstrText[1] == 'm' && pstrText[2] == 'p' && pstrText[3] == ';')  {
+   if (txt[0] == 'a' && txt[1] == 'm' && txt[2] == 'p' && txt[3] == ';')  {
       *pstrDest++ = '&';
-      pstrText += 4;
+      txt += 4;
    }
-   else if (pstrText[0] == 'l' && pstrText[1] == 't' && pstrText[2] == ';')  {
+   else if (txt[0] == 'l' && txt[1] == 't' && txt[2] == ';')  {
       *pstrDest++ = '<';
-      pstrText += 3;
+      txt += 3;
    }
-   else if (pstrText[0] == 'g' && pstrText[1] == 't' && pstrText[2] == ';')  {
+   else if (txt[0] == 'g' && txt[1] == 't' && txt[2] == ';')  {
       *pstrDest++ = '>';
-      pstrText += 3;
+      txt += 3;
    }
-   else if (pstrText[0] == 'q' && pstrText[1] == 'u' && pstrText[2] == 'o' && pstrText[3] == 't' && pstrText[4] == ';')  {
+   else if (txt[0] == 'q' && txt[1] == 'u' && txt[2] == 'o' && txt[3] == 't' && txt[4] == ';')  {
       *pstrDest++ = '\"';
-      pstrText += 5;
+      txt += 5;
    }
-   else if (pstrText[0] == 'a' && pstrText[1] == 'p' && pstrText[2] == 'o' && pstrText[3] == 's' && pstrText[4] == ';')  {
+   else if (txt[0] == 'a' && txt[1] == 'p' && txt[2] == 'o' && txt[3] == 's' && txt[4] == ';')  {
       *pstrDest++ = '\'';
-      pstrText += 5;
+      txt += 5;
    }
    else {
       *pstrDest++ = '&';

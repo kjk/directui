@@ -11,11 +11,11 @@ const TCHAR* CLabelPanelUI::GetClass() const
    return _T("LabelPanelUI");
 }
 
-void CLabelPanelUI::SetText(const TCHAR* pstrText)
+void CLabelPanelUI::SetText(const TCHAR* txt)
 {
    // Automatic assignment of keyboard shortcut
-   if (_tcschr(pstrText, '&') != NULL)  m_chShortcut = *(_tcschr(pstrText, '&') + 1);
-   CControlUI::SetText(pstrText);
+   if (_tcschr(txt, '&') != NULL)  m_chShortcut = *(_tcschr(txt, '&') + 1);
+   CControlUI::SetText(txt);
 }
 
 void CLabelPanelUI::SetWidth(int cx)
