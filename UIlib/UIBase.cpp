@@ -871,39 +871,39 @@ CStdString CStdString::Left(int iLength) const
    return CStdString(m_pstr, iLength);
 }
 
-CStdString CStdString::Mid(int iPos, int iLength) const
+CStdString CStdString::Mid(int pos, int iLength) const
 {
-   if( iLength < 0 ) iLength = GetLength() - iPos;
-   if( iPos + iLength > GetLength() ) iLength = GetLength() - iPos;
+   if( iLength < 0 ) iLength = GetLength() - pos;
+   if( pos + iLength > GetLength() ) iLength = GetLength() - pos;
    if( iLength <= 0 ) return CStdString();
-   return CStdString(m_pstr + iPos, iLength);
+   return CStdString(m_pstr + pos, iLength);
 }
 
 CStdString CStdString::Right(int iLength) const
 {
-   int iPos = GetLength() - iLength;
-   if( iPos < 0 ) {
-      iPos = 0;
+   int pos = GetLength() - iLength;
+   if( pos < 0 ) {
+      pos = 0;
       iLength = GetLength();
    }
-   return CStdString(m_pstr + iPos, iLength);
+   return CStdString(m_pstr + pos, iLength);
 }
 
-int CStdString::Find(TCHAR ch, int iPos /*= 0*/) const
+int CStdString::Find(TCHAR ch, int pos /*= 0*/) const
 {
-   ASSERT(iPos>=0 && iPos<=GetLength());
-   if( iPos != 0 && (iPos < 0 || iPos >= GetLength()) ) return -1;
-   const TCHAR* p = _tcschr(m_pstr + iPos, ch);
+   ASSERT(pos>=0 && pos<=GetLength());
+   if( pos != 0 && (pos < 0 || pos >= GetLength()) ) return -1;
+   const TCHAR* p = _tcschr(m_pstr + pos, ch);
    if( p == NULL ) return -1;
    return p - m_pstr;
 }
 
-int CStdString::Find(const TCHAR* pstrSub, int iPos /*= 0*/) const
+int CStdString::Find(const TCHAR* pstrSub, int pos /*= 0*/) const
 {
    ASSERT(!::IsBadStringPtr(pstrSub,-1));
-   ASSERT(iPos>=0 && iPos<=GetLength());
-   if( iPos != 0 && (iPos < 0 || iPos > GetLength()) ) return -1;
-   const TCHAR* p = _tcsstr(m_pstr + iPos, pstrSub);
+   ASSERT(pos>=0 && pos<=GetLength());
+   if( pos != 0 && (pos < 0 || pos > GetLength()) ) return -1;
+   const TCHAR* p = _tcsstr(m_pstr + pos, pstrSub);
    if( p == NULL ) return -1;
    return p - m_pstr;
 }
@@ -919,16 +919,16 @@ int CStdString::Replace(const TCHAR* pstrFrom, const TCHAR* pstrTo)
 {
    CStdString sTemp;
    int nCount = 0;
-   int iPos = Find(pstrFrom);
-   if( iPos < 0 ) return 0;
+   int pos = Find(pstrFrom);
+   if( pos < 0 ) return 0;
    int cchFrom = (int) _tcslen(pstrFrom);
    int cchTo = (int) _tcslen(pstrTo);
-   while( iPos >= 0 ) {
-      sTemp = Left(iPos);
+   while( pos >= 0 ) {
+      sTemp = Left(pos);
       sTemp += pstrTo;
-      sTemp += Mid(iPos + cchFrom);
+      sTemp += Mid(pos + cchFrom);
       Assign(sTemp);
-      iPos = Find(pstrFrom, iPos + cchTo);
+      pos = Find(pstrFrom, pos + cchTo);
       nCount++;
    }
    return nCount;
@@ -952,16 +952,16 @@ int CStdString::Format(const TCHAR* pstrFormat, ...)
 void CStdString::ProcessResourceTokens()
 {
    // Replace string-tokens: %{nnn}  where nnn is a resource string identifier
-   int iPos = Find('%');
-   while( iPos >= 0 ) {
-      if( GetAt(iPos + 1) == '{' ) {
-         int iEndPos = iPos + 2;
+   int pos = Find('%');
+   while( pos >= 0 ) {
+      if( GetAt(pos + 1) == '{' ) {
+         int iEndPos = pos + 2;
          while( isdigit(GetAt(iEndPos)) ) iEndPos++;
          if( GetAt(iEndPos) == '}' ) {
-            CStdString sTemp = CStdString::RES((UINT)_ttoi(m_pstr + iPos + 2));
-            Replace(Mid(iPos, iEndPos - iPos + 1), sTemp);
+            CStdString sTemp = CStdString::RES((UINT)_ttoi(m_pstr + pos + 2));
+            Replace(Mid(pos, iEndPos - pos + 1), sTemp);
          }
       }
-      iPos = Find('%', iPos + 1);
+      pos = Find('%', pos + 1);
    }
 }

@@ -227,11 +227,11 @@ public:
    void MakeLower();
 
    CStdString Left(int nLength) const;
-   CStdString Mid(int iPos, int nLength = -1) const;
+   CStdString Mid(int pos, int nLength = -1) const;
    CStdString Right(int nLength) const;
 
-   int Find(TCHAR ch, int iPos = 0) const;
-   int Find(const TCHAR* pstr, int iPos = 0) const;
+   int Find(TCHAR ch, int pos = 0) const;
+   int Find(const TCHAR* pstr, int pos = 0) const;
    int ReverseFind(TCHAR ch) const;
    int Replace(const TCHAR* pstrFrom, const TCHAR* pstrTo);
    

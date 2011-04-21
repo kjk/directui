@@ -7,7 +7,7 @@
 
 CListElementUI::CListElementUI() : 
    m_idx(-1),
-   m_pOwner(NULL), 
+   m_owner(NULL), 
    m_bSelected(false)
 {
 }
@@ -23,9 +23,9 @@ void* CListElementUI::GetInterface(const TCHAR* name)
    return CControlUI::GetInterface(name);
 }
 
-void CListElementUI::SetOwner(CControlUI* pOwner)
+void CListElementUI::SetOwner(CControlUI* owner)
 {
-   m_pOwner = static_cast<IListOwnerUI*>(pOwner->GetInterface(_T("ListOwner")));
+   m_owner = static_cast<IListOwnerUI*>(owner->GetInterface(_T("ListOwner")));
 }
 
 int CListElementUI::GetIndex() const
@@ -41,7 +41,7 @@ void CListElementUI::SetIndex(int idx)
 bool CListElementUI::Activate()
 {
    if( !CControlUI::Activate() ) return false;
-   if( m_pManager != NULL ) m_pManager->SendNotify(this, _T("itemactivate"));
+   if( m_manager != NULL ) m_manager->SendNotify(this, _T("itemactivate"));
    return true;
 }
 
@@ -55,7 +55,7 @@ bool CListElementUI::Select(bool bSelect)
    if( !IsEnabled() ) return false;
    if( bSelect == m_bSelected ) return true;
    m_bSelected = bSelect;
-   if( bSelect && m_pOwner != NULL ) m_pOwner->SelectItem(m_idx);
+   if( bSelect && m_owner != NULL ) m_owner->SelectItem(m_idx);
    Invalidate();
    return true;
 }
@@ -89,7 +89,7 @@ void CListElementUI::Event(TEventUI& event)
    // An important twist: The list-item will send the event not to its immediate
    // parent but to the "attached" list. A list may actually embed several components
    // in its path to the item, but key-presses etc. needs to go to the actual list.
-   if( m_pOwner != NULL ) m_pOwner->Event(event); else CControlUI::Event(event);
+   if( m_owner != NULL ) m_owner->Event(event); else CControlUI::Event(event);
 }
 
 void CListElementUI::SetAttribute(const TCHAR* name, const TCHAR* value)
@@ -117,17 +117,17 @@ void* CListHeaderUI::GetInterface(const TCHAR* name)
 
 SIZE CListHeaderUI::EstimateSize(SIZE /*szAvailable*/)
 {
-   return CSize(0, 6 + m_pManager->GetThemeFontInfo(UIFONT_NORMAL).tmHeight);
+   return CSize(0, 6 + m_manager->GetThemeFontInfo(UIFONT_NORMAL).tmHeight);
 }
 
 void CListHeaderUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
    // Draw background
    COLORREF clrBack1, clrBack2;
-   m_pManager->GetThemeColorPair(UICOLOR_HEADER_BACKGROUND, clrBack1, clrBack2);
-   CBlueRenderEngineUI::DoPaintFrame(hDC, m_pManager, m_rcItem, UICOLOR_HEADER_BORDER, UICOLOR_HEADER_BORDER, UICOLOR_HEADER_BACKGROUND, 0);
+   m_manager->GetThemeColorPair(UICOLOR_HEADER_BACKGROUND, clrBack1, clrBack2);
+   CBlueRenderEngineUI::DoPaintFrame(hDC, m_manager, m_rcItem, UICOLOR_HEADER_BORDER, UICOLOR_HEADER_BORDER, UICOLOR_HEADER_BACKGROUND, 0);
    RECT rcBottom = { m_rcItem.left + 1, m_rcItem.bottom - 3, m_rcItem.right - 1, m_rcItem.bottom };
-   CBlueRenderEngineUI::DoPaintGradient(hDC, m_pManager, rcBottom, clrBack1, clrBack2, true, 4);
+   CBlueRenderEngineUI::DoPaintGradient(hDC, m_manager, rcBottom, clrBack1, clrBack2, true, 4);
    // Draw headers too...
    CHorizontalLayoutUI::DoPaint(hDC, rcPaint);
 }
@@ -173,18 +173,18 @@ void CListHeaderItemUI::Event(TEventUI& event)
       if( ::PtInRect(&rcSeparator, event.ptMouse) ) {
          m_uDragState |= UISTATE_CAPTURED;
          ptLastMouse = event.ptMouse;
-         m_pManager->SendNotify(this, _T("headerdragging"));
+         m_manager->SendNotify(this, _T("headerdragging"));
       }
       else {
-         m_pManager->SendNotify(this, _T("headerclick"));
+         m_manager->SendNotify(this, _T("headerclick"));
       }
    }
    if( event.Type == UIEVENT_BUTTONUP )
    {
       if( (m_uDragState & UISTATE_CAPTURED) != 0 ) {
          m_uDragState &= ~UISTATE_CAPTURED;
-         m_pManager->SendNotify(this, _T("headerdragged"));
-         m_pManager->UpdateLayout();
+         m_manager->SendNotify(this, _T("headerdragged"));
+         m_manager->UpdateLayout();
       }
    }
    if( event.Type == UIEVENT_MOUSEMOVE )
@@ -214,7 +214,7 @@ void CListHeaderItemUI::Event(TEventUI& event)
 
 SIZE CListHeaderItemUI::EstimateSize(SIZE /*szAvailable*/)
 {
-   return CSize(m_cxWidth, 14 + m_pManager->GetThemeFontInfo(UIFONT_NORMAL).tmHeight);
+   return CSize(m_cxWidth, 14 + m_manager->GetThemeFontInfo(UIFONT_NORMAL).tmHeight);
 }
 
 void CListHeaderItemUI::DoPaint(HDC hDC, const RECT& rcPaint)
@@ -224,14 +224,14 @@ void CListHeaderItemUI::DoPaint(HDC hDC, const RECT& rcPaint)
    rcMessage.left += 6;
    rcMessage.bottom -= 1;
    int nLinks = 0;
-   CBlueRenderEngineUI::DoPaintPrettyText(hDC, m_pManager, rcMessage, m_sText, UICOLOR_HEADER_TEXT, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE | DT_VCENTER);
+   CBlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcMessage, m_sText, UICOLOR_HEADER_TEXT, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE | DT_VCENTER);
    // Draw gripper
    POINT ptTemp = { 0 };
    RECT rcThumb = GetThumbRect(m_rcItem);
    RECT rc1 = { rcThumb.left + 2, rcThumb.top + 4, rcThumb.left + 2, rcThumb.bottom - 1 };
-   CBlueRenderEngineUI::DoPaintLine(hDC, m_pManager, rc1, UICOLOR_HEADER_SEPARATOR);
+   CBlueRenderEngineUI::DoPaintLine(hDC, m_manager, rc1, UICOLOR_HEADER_SEPARATOR);
    RECT rc2 = { rcThumb.left + 3, rcThumb.top + 4, rcThumb.left + 3, rcThumb.bottom - 1 };
-   CBlueRenderEngineUI::DoPaintLine(hDC, m_pManager, rc2, UICOLOR_STANDARD_WHITE);
+   CBlueRenderEngineUI::DoPaintLine(hDC, m_manager, rc2, UICOLOR_STANDARD_WHITE);
 }
 
 RECT CListHeaderItemUI::GetThumbRect(RECT rc) const
@@ -261,18 +261,18 @@ void* CListFooterUI::GetInterface(const TCHAR* name)
 
 SIZE CListFooterUI::EstimateSize(SIZE /*szAvailable*/)
 {
-   return CSize(0, 8 + m_pManager->GetThemeFontInfo(UIFONT_NORMAL).tmHeight);
+   return CSize(0, 8 + m_manager->GetThemeFontInfo(UIFONT_NORMAL).tmHeight);
 }
 
 void CListFooterUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
    COLORREF clrBack1, clrBack2;
-   m_pManager->GetThemeColorPair(UICOLOR_HEADER_BACKGROUND, clrBack1, clrBack2);
-   CBlueRenderEngineUI::DoPaintFrame(hDC, m_pManager, m_rcItem, UICOLOR_HEADER_BORDER, UICOLOR_HEADER_BORDER, UICOLOR_HEADER_BACKGROUND, 0);
+   m_manager->GetThemeColorPair(UICOLOR_HEADER_BACKGROUND, clrBack1, clrBack2);
+   CBlueRenderEngineUI::DoPaintFrame(hDC, m_manager, m_rcItem, UICOLOR_HEADER_BORDER, UICOLOR_HEADER_BORDER, UICOLOR_HEADER_BACKGROUND, 0);
    RECT rcTop = { m_rcItem.left + 1, m_rcItem.top, m_rcItem.right - 1, m_rcItem.top + 1 };
-   CBlueRenderEngineUI::DoPaintGradient(hDC, m_pManager, rcTop, clrBack2, clrBack1, true, 2);
+   CBlueRenderEngineUI::DoPaintGradient(hDC, m_manager, rcTop, clrBack2, clrBack1, true, 2);
    RECT rcBottom = { m_rcItem.left + 1, m_rcItem.bottom - 3, m_rcItem.right - 1, m_rcItem.bottom };
-   CBlueRenderEngineUI::DoPaintGradient(hDC, m_pManager, rcBottom, clrBack1, clrBack2, true, 4);
+   CBlueRenderEngineUI::DoPaintGradient(hDC, m_manager, rcBottom, clrBack1, clrBack2, true, 4);
    // Paint items as well...
    CHorizontalLayoutUI::DoPaint(hDC, rcPaint);
 }
@@ -483,9 +483,9 @@ bool CListUI::SelectItem(int idx)
       return false;
    }
    ctrl->SetFocus();
-   if( m_pManager != NULL ) {
-      m_pManager->SendNotify(ctrl, _T("itemclick"));
-      m_pManager->SendNotify(this, _T("itemselect"));
+   if( m_manager != NULL ) {
+      m_manager->SendNotify(ctrl, _T("itemclick"));
+      m_manager->SendNotify(this, _T("itemselect"));
    }
    Invalidate();
    return true;
@@ -538,7 +538,7 @@ void CListUI::EnsureVisible(int idx)
    if( m_iCurSel < 0 ) return;
    RECT rcItem = m_pList->GetItem(idx)->GetPos();
    RECT rcList = m_pList->GetPos();
-   int iPos = m_pList->GetScrollPos();
+   int pos = m_pList->GetScrollPos();
    if( rcItem.top >= rcList.top && rcItem.bottom < rcList.bottom ) return;
    int dx = 0;
    if( rcItem.top < rcList.top ) dx = rcItem.top - rcList.top;
@@ -628,7 +628,7 @@ void CListLabelElementUI::SetAttribute(const TCHAR* name, const TCHAR* value)
 
 SIZE CListLabelElementUI::EstimateSize(SIZE /*szAvailable*/)
 {
-   return CSize(m_cxWidth, m_pManager->GetThemeFontInfo(UIFONT_NORMAL).tmHeight + 8);
+   return CSize(m_cxWidth, m_manager->GetThemeFontInfo(UIFONT_NORMAL).tmHeight + 8);
 }
 
 void CListLabelElementUI::DoPaint(HDC hDC, const RECT& rcPaint)
@@ -665,17 +665,17 @@ void CListLabelElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uDrawStyle)
    // Paint background (because we're vertically centering the text area
    // so it cannot paint the entire item rectangle)
    if( iBackColor != UICOLOR__INVALID ) {
-      CBlueRenderEngineUI::DoFillRect(hDC, m_pManager, rcItem, iBackColor);
+      CBlueRenderEngineUI::DoFillRect(hDC, m_manager, rcItem, iBackColor);
    }
    // Paint text
    RECT rcText = rcItem;
    ::InflateRect(&rcText, -4, 0);
    int nLinks = 0;
-   CBlueRenderEngineUI::DoPaintPrettyText(hDC, m_pManager, rcText, m_sText, iTextColor, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE | m_uTextStyle);
+   CBlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcText, m_sText, iTextColor, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE | m_uTextStyle);
 }
 
 
-CListTextElementUI::CListTextElementUI() : m_cyItem(0), m_nLinks(0), m_pOwner(NULL)
+CListTextElementUI::CListTextElementUI() : m_cyItem(0), m_nLinks(0), m_owner(NULL)
 {
    ::ZeroMemory(&m_rcLinks, sizeof(m_rcLinks));
 }
@@ -690,10 +690,10 @@ UINT CListTextElementUI::GetControlFlags() const
    return UIFLAG_WANTRETURN | (m_nLinks > 0 ? UIFLAG_SETCURSOR : 0);
 }
 
-void CListTextElementUI::SetOwner(CControlUI* pOwner)
+void CListTextElementUI::SetOwner(CControlUI* owner)
 {
-   CListElementUI::SetOwner(pOwner);
-   m_pOwner = static_cast<IListUI*>(pOwner->GetInterface("List"));
+   CListElementUI::SetOwner(owner);
+   m_owner = static_cast<IListUI*>(owner->GetInterface("List"));
 }
 
 void CListTextElementUI::Event(TEventUI& event)
@@ -714,14 +714,14 @@ void CListTextElementUI::Event(TEventUI& event)
 
 SIZE CListTextElementUI::EstimateSize(SIZE szAvailable)
 {
-   if( m_pOwner == NULL ) return CSize();
+   if( m_owner == NULL ) return CSize();
    // We calculate the item height only once, because it will not wrap on the
    // line anyway when the screen is resized.
    if( m_cyItem == 0 ) {
       const TCHAR* pstrText = _T("XXX");
       RECT rcText = { 0, 0, 9999, 9999 };
       int nLinks = 0;
-      CBlueRenderEngineUI::DoPaintPrettyText(m_pManager->GetPaintDC(), m_pManager, rcText, pstrText, UICOLOR__INVALID, UICOLOR__INVALID, NULL, nLinks, DT_CALCRECT | m_uTextStyle);
+      CBlueRenderEngineUI::DoPaintPrettyText(m_manager->GetPaintDC(), m_manager, rcText, pstrText, UICOLOR__INVALID, UICOLOR__INVALID, NULL, nLinks, DT_CALCRECT | m_uTextStyle);
       m_cyItem = rcText.bottom - rcText.top;
    }
    return CSize(m_cxWidth, m_cyItem + 9);
@@ -734,9 +734,9 @@ void CListTextElementUI::DoPaint(HDC hDC, const RECT& rcPaint)
 
 void CListTextElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
 {
-   ASSERT(m_pOwner);
-   if( m_pOwner == NULL ) return;
-   const TListInfoUI* pInfo = m_pOwner->GetListInfo();
+   ASSERT(m_owner);
+   if( m_owner == NULL ) return;
+   const TListInfoUI* pInfo = m_owner->GetListInfo();
    UITYPE_COLOR iTextColor = pInfo->Text;
    UITYPE_COLOR iBackColor = pInfo->Background;
    if( (m_uButtonState & UISTATE_HOT) != 0 ) {
@@ -752,9 +752,9 @@ void CListTextElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
       iBackColor = UICOLOR_CONTROL_BACKGROUND_DISABLED;
    }
    if( iBackColor != UICOLOR__INVALID ) {
-      CBlueRenderEngineUI::DoFillRect(hDC, m_pManager, m_rcItem, iBackColor);
+      CBlueRenderEngineUI::DoFillRect(hDC, m_manager, m_rcItem, iBackColor);
    }
-   IListCallbackUI* pCallback = m_pOwner->GetTextCallback();
+   IListCallbackUI* pCallback = m_owner->GetTextCallback();
    ASSERT(pCallback);
    if( pCallback == NULL ) return;
    m_nLinks = 0;
@@ -765,11 +765,11 @@ void CListTextElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
       RECT rcItem = { pInfo->rcColumn[i].left, m_rcItem.top, pInfo->rcColumn[i].right, m_rcItem.bottom - 1 };
       const TCHAR* pstrText = pCallback->GetItemText(this, m_idx, i);
       ::InflateRect(&rcItem, -4, 0);
-      CBlueRenderEngineUI::DoPaintPrettyText(hDC, m_pManager, rcItem, pstrText, iTextColor, UICOLOR__INVALID, m_rcLinks, nLinks, DT_SINGLELINE | m_uTextStyle);
+      CBlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcItem, pstrText, iTextColor, UICOLOR__INVALID, m_rcLinks, nLinks, DT_SINGLELINE | m_uTextStyle);
       if( nLinks > 0 ) m_nLinks = nLinks, nLinks = 0; else nLinks = lengthof(m_rcLinks);
    }
    RECT rcLine = { m_rcItem.left, m_rcItem.bottom - 1, m_rcItem.right, m_rcItem.bottom - 1 };
-   CBlueRenderEngineUI::DoPaintLine(hDC, m_pManager, rcLine, UICOLOR_DIALOG_BACKGROUND);
+   CBlueRenderEngineUI::DoPaintLine(hDC, m_manager, rcLine, UICOLOR_DIALOG_BACKGROUND);
 }
 
 
@@ -789,11 +789,11 @@ const TCHAR* CListExpandElementUI::GetClass() const
 
 bool CListExpandElementUI::Expand(bool bExpand)
 {
-   ASSERT(m_pOwner);
-   if( m_pOwner == NULL ) return false;  
+   ASSERT(m_owner);
+   if( m_owner == NULL ) return false;  
    if( bExpand == m_bExpanded ) return true;
    m_bExpanded = bExpand;
-   if( !m_pOwner->ExpandItem(m_idx, bExpand) ) return false;
+   if( !m_owner->ExpandItem(m_idx, bExpand) ) return false;
    // We need to manage the "expanding items", which are actually embedded controls
    // that we selectively display or not.
    if( bExpand ) 
@@ -802,12 +802,12 @@ bool CListExpandElementUI::Expand(bool bExpand)
       CTileLayoutUI* pTile = new CTileLayoutUI;
       pTile->SetPadding(4);
       m_pContainer = pTile;
-      if( m_pManager != NULL ) m_pManager->SendNotify(this, _T("itemexpand"));
-      m_pManager->InitControls(m_pContainer, this);
+      if( m_manager != NULL ) m_manager->SendNotify(this, _T("itemexpand"));
+      m_manager->InitControls(m_pContainer, this);
    }
    else
    {
-      if( m_pManager != NULL ) m_pManager->SendNotify(this, _T("itemcollapse"));
+      if( m_manager != NULL ) m_manager->SendNotify(this, _T("itemcollapse"));
    }
    m_cyExpanded = 0;
    return true;
@@ -822,8 +822,8 @@ void CListExpandElementUI::Event(TEventUI& event)
 {
    if( event.Type == UIEVENT_BUTTONUP )
    {
-      if( m_pOwner == NULL ) return;
-      const TListInfoUI* pInfo = m_pOwner->GetListInfo();
+      if( m_owner == NULL ) return;
+      const TListInfoUI* pInfo = m_owner->GetListInfo();
       RECT rcExpander = { m_rcItem.left, m_rcItem.top, m_rcItem.left + 20, m_rcItem.bottom };;
       if( pInfo->bExpandable && ::PtInRect(&rcExpander, event.ptMouse) ) Expand(!m_bExpanded);
    }
@@ -843,14 +843,14 @@ void CListExpandElementUI::Event(TEventUI& event)
 
 SIZE CListExpandElementUI::EstimateSize(SIZE szAvailable)
 {
-   if( m_pOwner == NULL ) return CSize();
+   if( m_owner == NULL ) return CSize();
    // We calculate the item height only once, because it will not wrap on the
    // line anyway when the screen is resized.
    if( m_cyItem == 0 ) {
       const TCHAR* pstrText = _T("XXX");
       RECT rcText = { 0, 0, 9999, 9999 };
       int nLinks = 0;
-      CBlueRenderEngineUI::DoPaintPrettyText(m_pManager->GetPaintDC(), m_pManager, rcText, pstrText, UICOLOR__INVALID, UICOLOR__INVALID, NULL, nLinks, DT_CALCRECT | m_uTextStyle);
+      CBlueRenderEngineUI::DoPaintPrettyText(m_manager->GetPaintDC(), m_manager, rcText, pstrText, UICOLOR__INVALID, UICOLOR__INVALID, NULL, nLinks, DT_CALCRECT | m_uTextStyle);
       m_cyItem = (rcText.bottom - rcText.top) + 8;
    }
    int cyItem = m_cyItem;
@@ -911,20 +911,20 @@ void CListExpandElementUI::DoPaint(HDC hDC, const RECT& rcPaint)
       // Paint gradient box for the items
       RECT rcFrame = m_pContainer->GetPos();
       COLORREF clr1, clr2;
-      m_pManager->GetThemeColorPair(UICOLOR_CONTROL_BACKGROUND_EXPANDED, clr1, clr2);
-      CBlueRenderEngineUI::DoPaintGradient(hDC, m_pManager, rcFrame, clr1, clr2, true, 64);
-      CBlueRenderEngineUI::DoPaintRectangle(hDC, m_pManager, rcFrame, UICOLOR_HEADER_BORDER, UICOLOR__INVALID);
+      m_manager->GetThemeColorPair(UICOLOR_CONTROL_BACKGROUND_EXPANDED, clr1, clr2);
+      CBlueRenderEngineUI::DoPaintGradient(hDC, m_manager, rcFrame, clr1, clr2, true, 64);
+      CBlueRenderEngineUI::DoPaintRectangle(hDC, m_manager, rcFrame, UICOLOR_HEADER_BORDER, UICOLOR__INVALID);
       RECT rcLine = { m_rcItem.left, rcFrame.top, m_rcItem.right, rcFrame.top };
-      CBlueRenderEngineUI::DoPaintLine(hDC, m_pManager, rcLine, UICOLOR_STANDARD_BLACK);
+      CBlueRenderEngineUI::DoPaintLine(hDC, m_manager, rcLine, UICOLOR_STANDARD_BLACK);
       // We'll draw the items then...
       m_pContainer->DoPaint(hDC, rcPaint);
    }
 }
 
-void CListExpandElementUI::SetManager(CPaintManagerUI* pManager, CControlUI* pParent)
+void CListExpandElementUI::SetManager(CPaintManagerUI* manager, CControlUI* pParent)
 {
-   if( m_pContainer != NULL ) m_pContainer->SetManager(pManager, pParent);
-   CListTextElementUI::SetManager(pManager, pParent);
+   if( m_pContainer != NULL ) m_pContainer->SetManager(manager, pParent);
+   CListTextElementUI::SetManager(manager, pParent);
 }
 
 CControlUI* CListExpandElementUI::FindControl(FINDCONTROLPROC Proc, void* data, UINT uFlags)
@@ -937,9 +937,9 @@ CControlUI* CListExpandElementUI::FindControl(FINDCONTROLPROC Proc, void* data, 
 
 void CListExpandElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
 {
-   ASSERT(m_pOwner);
-   if( m_pOwner == NULL ) return;
-   const TListInfoUI* pInfo = m_pOwner->GetListInfo();
+   ASSERT(m_owner);
+   if( m_owner == NULL ) return;
+   const TListInfoUI* pInfo = m_owner->GetListInfo();
    UITYPE_COLOR iTextColor = pInfo->Text;
    UITYPE_COLOR iBackColor = pInfo->Background;
    if( (m_uButtonState & UISTATE_HOT) != 0 ) {
@@ -956,9 +956,9 @@ void CListExpandElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
    }
    if( iBackColor != UICOLOR__INVALID ) {
       RECT rcItem = { m_rcItem.left, m_rcItem.top, m_rcItem.right, m_rcItem.top + m_cyItem };
-      CBlueRenderEngineUI::DoFillRect(hDC, m_pManager, rcItem, iBackColor);
+      CBlueRenderEngineUI::DoFillRect(hDC, m_manager, rcItem, iBackColor);
    }
-   IListCallbackUI* pCallback = m_pOwner->GetTextCallback();
+   IListCallbackUI* pCallback = m_owner->GetTextCallback();
    ASSERT(pCallback);
    if( pCallback == NULL ) return;
    m_nLinks = 0;
@@ -977,9 +977,9 @@ void CListExpandElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
          pstrText = sColText;
       }
       ::InflateRect(&rcItem, -4, 0);
-      CBlueRenderEngineUI::DoPaintPrettyText(hDC, m_pManager, rcItem, pstrText, iTextColor, UICOLOR__INVALID, m_rcLinks, nLinks, DT_SINGLELINE | m_uTextStyle);
+      CBlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcItem, pstrText, iTextColor, UICOLOR__INVALID, m_rcLinks, nLinks, DT_SINGLELINE | m_uTextStyle);
       if( nLinks > 0 ) m_nLinks = nLinks, nLinks = 0; else nLinks = lengthof(m_rcLinks);
    }
    RECT rcLine = { m_rcItem.left, m_rcItem.bottom - 1, m_rcItem.right, m_rcItem.bottom - 1 };
-   CBlueRenderEngineUI::DoPaintLine(hDC, m_pManager, rcLine, UICOLOR_DIALOG_BACKGROUND);
+   CBlueRenderEngineUI::DoPaintLine(hDC, m_manager, rcLine, UICOLOR_DIALOG_BACKGROUND);
 }

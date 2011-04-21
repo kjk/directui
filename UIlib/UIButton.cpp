@@ -67,7 +67,7 @@ void CButtonUI::SetText(const TCHAR* pstrText)
 bool CButtonUI::Activate()
 {
    if( !CControlUI::Activate() ) return false;
-   if( m_pManager != NULL ) m_pManager->SendNotify(this, _T("click"));
+   if( m_manager != NULL ) m_manager->SendNotify(this, _T("click"));
    return true;
 }
 
@@ -96,11 +96,11 @@ void CButtonUI::SetPadding(int cx, int cy)
 
 SIZE CButtonUI::EstimateSize(SIZE /*szAvailable*/)
 {
-   SIZE sz = { m_cxWidth, 12 + m_pManager->GetThemeFontInfo(UIFONT_NORMAL).tmHeight };
-   if( m_cxWidth == 0 && m_pManager != NULL ) {
+   SIZE sz = { m_cxWidth, 12 + m_manager->GetThemeFontInfo(UIFONT_NORMAL).tmHeight };
+   if( m_cxWidth == 0 && m_manager != NULL ) {
       RECT rcText = { 0, 0, 9999, 20 };
       int nLinks = 0;
-      CBlueRenderEngineUI::DoPaintPrettyText(m_pManager->GetPaintDC(), m_pManager, rcText, m_sText, UICOLOR_STANDARD_BLACK, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE | DT_CALCRECT);
+      CBlueRenderEngineUI::DoPaintPrettyText(m_manager->GetPaintDC(), m_manager, rcText, m_sText, UICOLOR_STANDARD_BLACK, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE | DT_CALCRECT);
       sz.cx = rcText.right - rcText.left;
    }
    sz.cx += m_szPadding.cx * 2;
@@ -115,7 +115,7 @@ void CButtonUI::DoPaint(HDC hDC, const RECT& rcPaint)
    if( IsFocused() ) uState |= UISTATE_FOCUSED;
    if( !IsEnabled() ) uState |= UISTATE_DISABLED;
    RECT rcPadding = { m_szPadding.cx, m_szPadding.cy, m_szPadding.cx, m_szPadding.cy };
-   CBlueRenderEngineUI::DoPaintButton(hDC, m_pManager, m_rcItem, m_sText, rcPadding, m_uButtonState | uState, m_uTextStyle);
+   CBlueRenderEngineUI::DoPaintButton(hDC, m_manager, m_rcItem, m_sText, rcPadding, m_uButtonState | uState, m_uTextStyle);
 }
 
 
@@ -170,7 +170,7 @@ void COptionUI::SetCheck(bool bSelected)
 {
    if( m_bSelected == bSelected ) return;
    m_bSelected = bSelected;
-   if( m_pManager != NULL ) m_pManager->SendNotify(this, _T("changed"));
+   if( m_manager != NULL ) m_manager->SendNotify(this, _T("changed"));
    Invalidate();
 }
 
@@ -199,7 +199,7 @@ void COptionUI::SetAttribute(const TCHAR* name, const TCHAR* value)
 
 SIZE COptionUI::EstimateSize(SIZE /*szAvailable*/)
 {
-   return CSize(m_cxWidth, 18 + m_pManager->GetThemeFontInfo(UIFONT_NORMAL).tmHeight);
+   return CSize(m_cxWidth, 18 + m_manager->GetThemeFontInfo(UIFONT_NORMAL).tmHeight);
 }
 
 void COptionUI::DoPaint(HDC hDC, const RECT& rcPaint)
@@ -209,6 +209,6 @@ void COptionUI::DoPaint(HDC hDC, const RECT& rcPaint)
    if( m_bSelected ) uState |= UISTATE_CHECKED;
    if( IsFocused() ) uState |= UISTATE_FOCUSED;
    if( !IsEnabled() ) uState |= UISTATE_DISABLED;
-   CBlueRenderEngineUI::DoPaintOptionBox(hDC, m_pManager, m_rcItem, m_sText, m_uButtonState | uState, m_uStyle);
+   CBlueRenderEngineUI::DoPaintOptionBox(hDC, m_manager, m_rcItem, m_sText, m_uButtonState | uState, m_uStyle);
 }
 

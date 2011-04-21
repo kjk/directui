@@ -56,7 +56,7 @@ class IListItemUI
 public:
    virtual int GetIndex() const = 0;
    virtual void SetIndex(int idx) = 0;
-   virtual void SetOwner(CControlUI* pOwner) = 0;
+   virtual void SetOwner(CControlUI* owner) = 0;
    virtual bool IsSelected() const = 0;
    virtual bool Select(bool bSelect = true) = 0;
    virtual bool IsExpanded() const = 0;
@@ -76,7 +76,7 @@ public:
    int GetIndex() const;
    void SetIndex(int idx);
 
-   void SetOwner(CControlUI* pOwner);
+   void SetOwner(CControlUI* owner);
 
    bool IsSelected() const;
    bool Select(bool bSelect = true);
@@ -91,7 +91,7 @@ public:
 protected:
    int m_idx;
    bool m_bSelected;
-   IListOwnerUI* m_pOwner;
+   IListOwnerUI* m_owner;
 };
 
 class UILIB_API CListHeaderUI : public CHorizontalLayoutUI
@@ -224,7 +224,7 @@ public:
    const TCHAR* GetClass() const;
    UINT GetControlFlags() const;
 
-   void SetOwner(CControlUI* pOwner);
+   void SetOwner(CControlUI* owner);
 
    void Event(TEventUI& event);
    SIZE EstimateSize(SIZE szAvailable);
@@ -236,7 +236,7 @@ protected:
    int m_cyItem;
    int m_nLinks;
    RECT m_rcLinks[8];
-   IListUI* m_pOwner;
+   IListUI* m_owner;
 };
 
 class UILIB_API CListExpandElementUI : public CListTextElementUI, public IContainerUI
@@ -252,7 +252,7 @@ public:
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
 
-   void SetManager(CPaintManagerUI* pManager, CControlUI* pParent);
+   void SetManager(CPaintManagerUI* manager, CControlUI* pParent);
    CControlUI* FindControl(FINDCONTROLPROC Proc, void* data, UINT uFlags);
 
    CControlUI* GetItem(int idx) const;

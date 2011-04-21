@@ -10,16 +10,16 @@ const TCHAR* CStatusbarUI::GetClass() const
 
 SIZE CStatusbarUI::EstimateSize(SIZE /*szAvailable*/)
 {
-   return CSize(0, 10 + m_pManager->GetThemeFontInfo(UIFONT_CAPTION).tmHeight);
+   return CSize(0, 10 + m_manager->GetThemeFontInfo(UIFONT_CAPTION).tmHeight);
 }
 
 void CStatusbarUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
-   CBlueRenderEngineUI::DoPaintPanel(hDC, m_pManager, m_rcItem);
+   CBlueRenderEngineUI::DoPaintPanel(hDC, m_manager, m_rcItem);
    RECT rcMessage = m_rcItem;
    ::InflateRect(&rcMessage, -8, -2);
    int nLinks = 0;
-   CBlueRenderEngineUI::DoPaintPrettyText(hDC, m_pManager, rcMessage, m_sText, UICOLOR_TITLE_TEXT, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE | DT_VCENTER);
+   CBlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcMessage, m_sText, UICOLOR_TITLE_TEXT, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE | DT_VCENTER);
 }
 
 
@@ -38,18 +38,18 @@ SIZE CToolbarTitlePanelUI::EstimateSize(SIZE szAvailable)
    RECT rcText = { 0, 0, szAvailable.cx, szAvailable.cy };
    ::InflateRect(&rcText, -m_iPadding, -m_iPadding);
    int nLinks = 0;
-   CBlueRenderEngineUI::DoPaintPrettyText(m_pManager->GetPaintDC(), m_pManager, rcText, m_sText, UICOLOR_EDIT_TEXT_NORMAL, UICOLOR__INVALID, NULL, nLinks, DT_WORDBREAK | DT_CALCRECT);
+   CBlueRenderEngineUI::DoPaintPrettyText(m_manager->GetPaintDC(), m_manager, rcText, m_sText, UICOLOR_EDIT_TEXT_NORMAL, UICOLOR__INVALID, NULL, nLinks, DT_WORDBREAK | DT_CALCRECT);
    sz.cy = (rcText.bottom - rcText.top) + (m_iPadding * 2);
    return sz;
 }
 
 void CToolbarTitlePanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
-   CBlueRenderEngineUI::DoPaintPanel(hDC, m_pManager, m_rcItem);
+   CBlueRenderEngineUI::DoPaintPanel(hDC, m_manager, m_rcItem);
    RECT rcText = m_rcItem;
    ::InflateRect(&rcText, -m_iPadding, -m_iPadding);
    int nLinks = 0;
-   CBlueRenderEngineUI::DoPaintPrettyText(hDC, m_pManager, rcText, m_sText, UICOLOR_TITLE_TEXT, UICOLOR__INVALID, NULL, nLinks, DT_WORDBREAK | DT_NOPREFIX);
+   CBlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcText, m_sText, UICOLOR_TITLE_TEXT, UICOLOR__INVALID, NULL, nLinks, DT_WORDBREAK | DT_NOPREFIX);
 }
 
 CToolbarUI::CToolbarUI()
@@ -65,12 +65,12 @@ const TCHAR* CToolbarUI::GetClass() const
 
 SIZE CToolbarUI::EstimateSize(SIZE /*szAvailable*/)
 {
-   return CSize(0, 10 + m_pManager->GetThemeFontInfo(UIFONT_CAPTION).tmHeight);
+   return CSize(0, 10 + m_manager->GetThemeFontInfo(UIFONT_CAPTION).tmHeight);
 }
 
 void CToolbarUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
-   CBlueRenderEngineUI::DoPaintPanel(hDC, m_pManager, m_rcItem);
+   CBlueRenderEngineUI::DoPaintPanel(hDC, m_manager, m_rcItem);
    CContainerUI::DoPaint(hDC, rcPaint);
 }
 
@@ -88,7 +88,7 @@ void CToolButtonUI::DoPaint(HDC hDC, const RECT& rcPaint)
    UINT uState = 0;
    if( IsFocused() ) uState |= UISTATE_FOCUSED;
    if( !IsEnabled() ) uState |= UISTATE_DISABLED;
-   CBlueRenderEngineUI::DoPaintToolbarButton(hDC, m_pManager, m_rcItem, m_sText, m_szPadding, m_uButtonState | uState);
+   CBlueRenderEngineUI::DoPaintToolbarButton(hDC, m_manager, m_rcItem, m_sText, m_szPadding, m_uButtonState | uState);
 }
 
 const TCHAR* CToolSeparatorUI::GetClass() const
@@ -104,9 +104,9 @@ SIZE CToolSeparatorUI::EstimateSize(SIZE /*szAvailable*/)
 void CToolSeparatorUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
    RECT rc1 = { m_rcItem.left + 1, m_rcItem.top + 2, m_rcItem.left + 1, m_rcItem.bottom - 3 };
-   CBlueRenderEngineUI::DoPaintLine(hDC, m_pManager, rc1, UICOLOR_TITLE_BORDER_DARK);
+   CBlueRenderEngineUI::DoPaintLine(hDC, m_manager, rc1, UICOLOR_TITLE_BORDER_DARK);
    RECT rc2 = { m_rcItem.left + 2, m_rcItem.top + 2, m_rcItem.left + 2, m_rcItem.bottom - 3 };
-   CBlueRenderEngineUI::DoPaintLine(hDC, m_pManager, rc2, UICOLOR_TITLE_BORDER_LIGHT);
+   CBlueRenderEngineUI::DoPaintLine(hDC, m_manager, rc2, UICOLOR_TITLE_BORDER_LIGHT);
 }
 
 const TCHAR* CToolGripperUI::GetClass() const
@@ -123,7 +123,7 @@ void CToolGripperUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
    RECT rcLine = { m_rcItem.left + 5, m_rcItem.top + 6, m_rcItem.left + 5 + 3, m_rcItem.top + 6 };
    for( int i = m_rcItem.top + 6; i <= m_rcItem.bottom - 6; i += 2 ) {
-      CBlueRenderEngineUI::DoPaintLine(hDC, m_pManager, rcLine, UICOLOR_TITLE_BORDER_DARK);
+      CBlueRenderEngineUI::DoPaintLine(hDC, m_manager, rcLine, UICOLOR_TITLE_BORDER_DARK);
       ::OffsetRect(&rcLine, 0, 2);
    }
 }

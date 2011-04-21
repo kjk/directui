@@ -42,14 +42,14 @@ void CLabelPanelUI::SetAttribute(const TCHAR* name, const TCHAR* value)
 
 SIZE CLabelPanelUI::EstimateSize(SIZE /*szAvailable*/)
 {
-   return CSize(m_cxWidth, m_pManager->GetThemeFontInfo(UIFONT_NORMAL).tmHeight + 4);
+   return CSize(m_cxWidth, m_manager->GetThemeFontInfo(UIFONT_NORMAL).tmHeight + 4);
 }
 
 void CLabelPanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
    RECT rcText = m_rcItem;
    int nLinks = 0;
-   CBlueRenderEngineUI::DoPaintPrettyText(hDC, m_pManager, rcText, m_sText, UICOLOR_EDIT_TEXT_NORMAL, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE | m_uTextStyle);
+   CBlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcText, m_sText, UICOLOR_EDIT_TEXT_NORMAL, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE | m_uTextStyle);
 }
 
 const TCHAR* CGreyTextHeaderUI::GetClass() const
@@ -59,14 +59,14 @@ const TCHAR* CGreyTextHeaderUI::GetClass() const
 
 SIZE CGreyTextHeaderUI::EstimateSize(SIZE /*szAvailable*/)
 {
-   return CSize(0, 12 + m_pManager->GetThemeFontInfo(UIFONT_BOLD).tmHeight + 12);
+   return CSize(0, 12 + m_manager->GetThemeFontInfo(UIFONT_BOLD).tmHeight + 12);
 }
 
 void CGreyTextHeaderUI::DoPaint(HDC hDC, const RECT& /*rcPaint*/)
 {
-   COLORREF clrDarkText = m_pManager->GetThemeColor(UICOLOR_DIALOG_TEXT_DARK);
+   COLORREF clrDarkText = m_manager->GetThemeColor(UICOLOR_DIALOG_TEXT_DARK);
    RECT rcLine = { m_rcItem.left, m_rcItem.bottom - 6, m_rcItem.right, m_rcItem.bottom - 5 };
-   CBlueRenderEngineUI::DoFillRect(hDC, m_pManager, rcLine, UICOLOR_DIALOG_TEXT_DARK);
-   CBlueRenderEngineUI::DoPaintQuickText(hDC, m_pManager, m_rcItem, m_sText, UICOLOR_DIALOG_TEXT_DARK, UIFONT_BOLD, DT_SINGLELINE);
+   CBlueRenderEngineUI::DoFillRect(hDC, m_manager, rcLine, UICOLOR_DIALOG_TEXT_DARK);
+   CBlueRenderEngineUI::DoPaintQuickText(hDC, m_manager, m_rcItem, m_sText, UICOLOR_DIALOG_TEXT_DARK, UIFONT_BOLD, DT_SINGLELINE);
 }
 

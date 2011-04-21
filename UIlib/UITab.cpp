@@ -38,13 +38,13 @@ bool CTabFolderUI::SelectItem(int idx)
    if( m_pCurPage != NULL ) m_pCurPage->SetVisible(false);
    m_iCurSel = idx;
    m_pCurPage = static_cast<CControlUI*>(m_items[idx]);
-   if( m_pManager != NULL ) m_pManager->SendNotify(this, _T("itemselect"));
+   if( m_manager != NULL ) m_manager->SendNotify(this, _T("itemselect"));
    m_pCurPage->SetVisible(true);
    // Need to re-think the layout
-   if( m_pManager != NULL ) m_pManager->UpdateLayout();
+   if( m_manager != NULL ) m_manager->UpdateLayout();
    // Set focus on page
    m_pCurPage->SetFocus();
-   if( m_pManager != NULL ) m_pManager->SetNextTabControl();
+   if( m_manager != NULL ) m_manager->SetNextTabControl();
    return true;
 }
 
@@ -77,7 +77,7 @@ void CTabFolderUI::SetPos(RECT rc)
 {
    CControlUI::SetPos(rc);
    // Determine size of embedded page and place it there
-   int cyFont = m_pManager->GetThemeFontInfo(UIFONT_BOLD).tmHeight;
+   int cyFont = m_manager->GetThemeFontInfo(UIFONT_BOLD).tmHeight;
    ::SetRect(&m_rcClient, rc.left + m_rcInset.left, rc.top + m_rcInset.top + cyFont + 8, rc.right - m_rcInset.right, rc.bottom - m_rcInset.bottom);
    m_rcPage = m_rcClient;
    ::InflateRect(&m_rcPage, -8, -8);
@@ -93,10 +93,10 @@ void CTabFolderUI::DoPaint(HDC hDC, const RECT& rcPaint)
       // Fill client area background
       RECT rcFill = { 0 };
       ::IntersectRect(&rcFill, &rcPaint, &m_rcClient);
-      CBlueRenderEngineUI::DoFillRect(hDC, m_pManager, rcFill, UICOLOR_TAB_BACKGROUND_NORMAL);
+      CBlueRenderEngineUI::DoFillRect(hDC, m_manager, rcFill, UICOLOR_TAB_BACKGROUND_NORMAL);
 
       // Frame around client area
-      CBlueRenderEngineUI::DoPaintRectangle(hDC, m_pManager, m_rcClient, UICOLOR_TAB_BORDER, UICOLOR__INVALID);
+      CBlueRenderEngineUI::DoPaintRectangle(hDC, m_manager, m_rcClient, UICOLOR_TAB_BORDER, UICOLOR__INVALID);
 
       // Paint tab strip
       RECT rcTabs = m_rcItem;
@@ -107,19 +107,19 @@ void CTabFolderUI::DoPaint(HDC hDC, const RECT& rcPaint)
       RECT rcTemp = { 0 };
       if( ::IntersectRect(&rcTemp, &rcPaint, &rcTabs) ) 
       {
-         int iPosX = 1;
+         int posX = 1;
          m_aTabAreas.Empty();
          for( int i = 0; i < GetCount(); i++ ) 
          {
             const CControlUI* pPage = GetItem(i);
             const CStdString& strText = pPage->GetText();
-            RECT rcTab = { rcTabs.left + iPosX, rcTabs.top, rcTabs.right, m_rcClient.top };
+            RECT rcTab = { rcTabs.left + posX, rcTabs.top, rcTabs.right, m_rcClient.top };
             UINT uState = 0;
             if( IsFocused() ) uState |= UISTATE_FOCUSED;
             if( !IsEnabled() ) uState |= UISTATE_DISABLED;
             if( m_iCurSel == i ) uState = UISTATE_PUSHED;
-            CBlueRenderEngineUI::DoPaintTabFolder(hDC, m_pManager, rcTab, strText, uState);
-            iPosX += (rcTab.right - rcTab.left) + 2;
+            CBlueRenderEngineUI::DoPaintTabFolder(hDC, m_manager, rcTab, strText, uState);
+            posX += (rcTab.right - rcTab.left) + 2;
             m_aTabAreas.Add(&rcTab);
          }
       }

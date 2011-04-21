@@ -50,13 +50,13 @@ public:
 
    void SetAttribute(const TCHAR* name, const TCHAR* value);
 
-   void SetManager(CPaintManagerUI* pManager, CControlUI* pParent);
+   void SetManager(CPaintManagerUI* manager, CControlUI* pParent);
    CControlUI* FindControl(FINDCONTROLPROC Proc, void* data, UINT uFlags);
 
    virtual int GetScrollPos() const;
    virtual int GetScrollPage() const;
    virtual SIZE GetScrollRange() const;
-   virtual void SetScrollPos(int iPos);
+   virtual void SetScrollPos(int pos);
    virtual void EnableScrollBar(bool bEnable = true);
 
 protected:

@@ -1267,19 +1267,19 @@ CControlUI* CALLBACK CPaintManagerUI::__FindControlFromTab(CControlUI* pThis, vo
 
 CControlUI* CALLBACK CPaintManagerUI::__FindControlFromNameHash(CControlUI* pThis, void* data)
 {
-   CPaintManagerUI* pManager = static_cast<CPaintManagerUI*>(data);
+   CPaintManagerUI* manager = static_cast<CPaintManagerUI*>(data);
    // No name?
    const CStdString& sName = pThis->GetName();
    if( sName.IsEmpty() ) return NULL;
    // Add this control to the hash list
    int nCount = 0;
-   int nSize = pManager->m_aNameHash.GetSize();
+   int nSize = manager->m_aNameHash.GetSize();
    int iNameHash = (int) (GetNameHash(sName) % nSize);
-   while( pManager->m_aNameHash[iNameHash] != NULL ) {
+   while( manager->m_aNameHash[iNameHash] != NULL ) {
       iNameHash = (iNameHash + 1) % nSize;
       if( ++nCount == nSize ) return NULL;
    }
-   pManager->m_aNameHash.SetAt(iNameHash, pThis);
+   manager->m_aNameHash.SetAt(iNameHash, pThis);
    return NULL; // Attempt to add all controls
 }
 
@@ -1298,7 +1298,7 @@ CControlUI* CALLBACK CPaintManagerUI::__FindControlFromPoint(CControlUI* pThis, 
 }
 
 CControlUI::CControlUI() : 
-   m_pManager(NULL), 
+   m_manager(NULL), 
    m_pParent(NULL), 
    m_pTag(NULL),
    m_chShortcut('\0'),
@@ -1311,7 +1311,7 @@ CControlUI::CControlUI() :
 
 CControlUI::~CControlUI()
 {
-   if( m_pManager != NULL ) m_pManager->ReapObjects(this);
+   if( m_manager != NULL ) m_manager->ReapObjects(this);
 }
 
 bool CControlUI::IsVisible() const
@@ -1338,7 +1338,7 @@ void CControlUI::SetVisible(bool bVisible)
 {
    if( m_bVisible == bVisible ) return;
    m_bVisible = bVisible;
-   if( m_pManager != NULL ) m_pManager->UpdateLayout();
+   if( m_manager != NULL ) m_manager->UpdateLayout();
 }
 
 void CControlUI::SetEnabled(bool bEnabled)
@@ -1361,7 +1361,7 @@ CControlUI* CControlUI::GetParent() const
 
 void CControlUI::SetFocus()
 {
-   if( m_pManager != NULL ) m_pManager->SetFocus(this);
+   if( m_manager != NULL ) m_manager->SetFocus(this);
 }
 
 void CControlUI::SetShortcut(TCHAR ch)
@@ -1411,13 +1411,13 @@ void CControlUI::Init()
 
 CPaintManagerUI* CControlUI::GetManager() const
 {
-   return m_pManager;
+   return m_manager;
 }
 
-void CControlUI::SetManager(CPaintManagerUI* pManager, CControlUI* pParent)
+void CControlUI::SetManager(CPaintManagerUI* manager, CControlUI* pParent)
 {
-   bool bInit = m_pManager == NULL;
-   m_pManager = pManager;
+   bool bInit = m_manager == NULL;
+   m_manager = manager;
    m_pParent = pParent;
    if( bInit ) Init();
 }
@@ -1462,12 +1462,12 @@ void CControlUI::SetPos(RECT rc)
 
 void CControlUI::Invalidate()
 {
-   if( m_pManager != NULL ) m_pManager->Invalidate(m_rcItem);
+   if( m_manager != NULL ) m_manager->Invalidate(m_rcItem);
 }
 
 void CControlUI::UpdateLayout()
 {
-   if( m_pManager != NULL ) m_pManager->UpdateLayout();
+   if( m_manager != NULL ) m_manager->UpdateLayout();
 }
 
 void CControlUI::Event(TEventUI& event)
@@ -1491,7 +1491,7 @@ void CControlUI::Event(TEventUI& event)
    }
    if( event.Type == UIEVENT_TIMER )
    {
-      m_pManager->SendNotify(this, _T("timer"), event.wParam, event.lParam);
+      m_manager->SendNotify(this, _T("timer"), event.wParam, event.lParam);
       return;
    }
    if( m_pParent != NULL ) m_pParent->Event(event);

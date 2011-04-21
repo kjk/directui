@@ -407,7 +407,7 @@ public:
    virtual CControlUI* FindControl(FINDCONTROLPROC Proc, void* data, UINT uFlags);
 
    virtual CPaintManagerUI* GetManager() const;
-   virtual void SetManager(CPaintManagerUI* pManager, CControlUI* pParent);
+   virtual void SetManager(CPaintManagerUI* manager, CControlUI* pParent);
 
    virtual RECT GetPos() const;
    virtual void SetPos(RECT rc);
@@ -428,7 +428,7 @@ public:
    virtual void DoPaint(HDC hDC, const RECT& rcPaint) = 0;
 
 protected:
-   CPaintManagerUI* m_pManager;
+   CPaintManagerUI* m_manager;
    CControlUI* m_pParent;
    TCHAR m_chShortcut;
    CStdString m_sName;

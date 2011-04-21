@@ -16,26 +16,26 @@ public:
 class UILIB_API CBlueRenderEngineUI
 {
 public:
-   static void DoFillRect(HDC hDC, CPaintManagerUI* pManager, RECT rc, UITYPE_COLOR Color);
-   static void DoFillRect(HDC hDC, CPaintManagerUI* pManager, RECT rc, COLORREF clrFill);
-   static void DoPaintLine(HDC hDC, CPaintManagerUI* pManager, RECT rc, UITYPE_COLOR Color);
-   static void DoPaintRectangle(HDC hDC, CPaintManagerUI* pManager, RECT rcItem, UITYPE_COLOR Border, UITYPE_COLOR Fill);
-   static void DoPaintPanel(HDC hDC, CPaintManagerUI* pManager, RECT rc);
-   static void DoPaintFrame(HDC hDC, CPaintManagerUI* pManager, RECT rc, UITYPE_COLOR Light, UITYPE_COLOR Dark, UITYPE_COLOR Background = UICOLOR__INVALID, UINT uStyle = 0);
-   static void DoPaintBitmap(HDC hDC, CPaintManagerUI* pManager, HBITMAP hBmp, RECT rcBitmap);
-   static void DoPaintArcCaption(HDC hDC, CPaintManagerUI* pManager, RECT rc, const TCHAR* pstrText, UINT uStyle);
-   static void DoPaintButton(HDC hDC, CPaintManagerUI* pManager, RECT rc, const TCHAR* pstrText, RECT rcPadding, UINT uState, UINT uDrawStyle);
-   static void DoPaintEditBox(HDC hDC, CPaintManagerUI* pManager, RECT rcItem, const TCHAR* pstrText, UINT uState, UINT uDrawStyle, bool bPaintFrameOnly);
-   static void DoPaintOptionBox(HDC hDC, CPaintManagerUI* pManager, RECT rcItem, const TCHAR* pstrText, UINT uState, UINT uStyle);
-   static void DoPaintTabFolder(HDC hDC, CPaintManagerUI* pManager, RECT& rc, const TCHAR* pstrText, UINT uState);
-   static void DoPaintToolbarButton(HDC hDC, CPaintManagerUI* pManager, RECT rc, const TCHAR* pstrText, SIZE szPadding, UINT uState);
-   static void DoPaintQuickText(HDC hDC, CPaintManagerUI* pManager, RECT& rc, LPCSTR pstrText, UITYPE_COLOR iTextColor, UITYPE_FONT iFont, UINT uStyle);
-   static void DoPaintPrettyText(HDC hDC, CPaintManagerUI* pManager, RECT& rc, const TCHAR* pstrText, UITYPE_COLOR iTextColor, UITYPE_COLOR iBackColor, RECT* pLinks, int& nLinkRects, UINT uStyle);
-   static void DoPaintGradient(HDC hDC, CPaintManagerUI* pManager, RECT rc, COLORREF clrFirst, COLORREF clrSecond, bool bVertical, int nSteps);
-   static void DoPaintAlphaBitmap(HDC hDC, CPaintManagerUI* pManager, HBITMAP hBitmap, RECT rc, BYTE iAlpha);
+   static void DoFillRect(HDC hDC, CPaintManagerUI* manager, RECT rc, UITYPE_COLOR Color);
+   static void DoFillRect(HDC hDC, CPaintManagerUI* manager, RECT rc, COLORREF clrFill);
+   static void DoPaintLine(HDC hDC, CPaintManagerUI* manager, RECT rc, UITYPE_COLOR Color);
+   static void DoPaintRectangle(HDC hDC, CPaintManagerUI* manager, RECT rcItem, UITYPE_COLOR Border, UITYPE_COLOR Fill);
+   static void DoPaintPanel(HDC hDC, CPaintManagerUI* manager, RECT rc);
+   static void DoPaintFrame(HDC hDC, CPaintManagerUI* manager, RECT rc, UITYPE_COLOR Light, UITYPE_COLOR Dark, UITYPE_COLOR Background = UICOLOR__INVALID, UINT uStyle = 0);
+   static void DoPaintBitmap(HDC hDC, CPaintManagerUI* manager, HBITMAP hBmp, RECT rcBitmap);
+   static void DoPaintArcCaption(HDC hDC, CPaintManagerUI* manager, RECT rc, const TCHAR* pstrText, UINT uStyle);
+   static void DoPaintButton(HDC hDC, CPaintManagerUI* manager, RECT rc, const TCHAR* pstrText, RECT rcPadding, UINT uState, UINT uDrawStyle);
+   static void DoPaintEditBox(HDC hDC, CPaintManagerUI* manager, RECT rcItem, const TCHAR* pstrText, UINT uState, UINT uDrawStyle, bool bPaintFrameOnly);
+   static void DoPaintOptionBox(HDC hDC, CPaintManagerUI* manager, RECT rcItem, const TCHAR* pstrText, UINT uState, UINT uStyle);
+   static void DoPaintTabFolder(HDC hDC, CPaintManagerUI* manager, RECT& rc, const TCHAR* pstrText, UINT uState);
+   static void DoPaintToolbarButton(HDC hDC, CPaintManagerUI* manager, RECT rc, const TCHAR* pstrText, SIZE szPadding, UINT uState);
+   static void DoPaintQuickText(HDC hDC, CPaintManagerUI* manager, RECT& rc, LPCSTR pstrText, UITYPE_COLOR iTextColor, UITYPE_FONT iFont, UINT uStyle);
+   static void DoPaintPrettyText(HDC hDC, CPaintManagerUI* manager, RECT& rc, const TCHAR* pstrText, UITYPE_COLOR iTextColor, UITYPE_COLOR iBackColor, RECT* pLinks, int& nLinkRects, UINT uStyle);
+   static void DoPaintGradient(HDC hDC, CPaintManagerUI* manager, RECT rc, COLORREF clrFirst, COLORREF clrSecond, bool bVertical, int nSteps);
+   static void DoPaintAlphaBitmap(HDC hDC, CPaintManagerUI* manager, HBITMAP hBitmap, RECT rc, BYTE iAlpha);
    static void DoAnimateWindow(HWND hWnd, UINT uStyle, DWORD dwTime = 200);
    static void GenerateClip(HDC hDC, RECT rcItem, CRenderClip& clip);
-   static HBITMAP GenerateAlphaBitmap(CPaintManagerUI* pManager, CControlUI* ctrl, RECT rc, UITYPE_COLOR Background);
+   static HBITMAP GenerateAlphaBitmap(CPaintManagerUI* manager, CControlUI* ctrl, RECT rc, UITYPE_COLOR Background);
 };
 
 

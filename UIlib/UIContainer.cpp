@@ -42,8 +42,8 @@ int CContainerUI::GetCount() const
 
 bool CContainerUI::Add(CControlUI* ctrl)
 {
-   if( m_pManager != NULL ) m_pManager->InitControls(ctrl, this);
-   if( m_pManager != NULL ) m_pManager->UpdateLayout();
+   if( m_manager != NULL ) m_manager->InitControls(ctrl, this);
+   if( m_manager != NULL ) m_manager->UpdateLayout();
    return m_items.Add(ctrl);
 }
 
@@ -51,7 +51,7 @@ bool CContainerUI::Remove(CControlUI* ctrl)
 {
    for( int it = 0; m_bAutoDestroy && it < m_items.GetSize(); it++ ) {
       if( static_cast<CControlUI*>(m_items[it]) == ctrl ) {
-         if( m_pManager != NULL ) m_pManager->UpdateLayout();
+         if( m_manager != NULL ) m_manager->UpdateLayout();
          delete ctrl;
          return m_items.Remove(it);
       }
@@ -64,7 +64,7 @@ void CContainerUI::RemoveAll()
    for( int it = 0; m_bAutoDestroy && it < m_items.GetSize(); it++ ) delete static_cast<CControlUI*>(m_items[it]);
    m_items.Empty();
    m_iScrollPos = 0;
-   if( m_pManager != NULL ) m_pManager->UpdateLayout();
+   if( m_manager != NULL ) m_manager->UpdateLayout();
 }
 
 void CContainerUI::SetAutoDestroy(bool bAuto)
@@ -259,12 +259,12 @@ void CContainerUI::SetAttribute(const TCHAR* name, const TCHAR* value)
    else CControlUI::SetAttribute(name, value);
 }
 
-void CContainerUI::SetManager(CPaintManagerUI* pManager, CControlUI* pParent)
+void CContainerUI::SetManager(CPaintManagerUI* manager, CControlUI* pParent)
 {
    for( int it = 0; it < m_items.GetSize(); it++ ) {
-      static_cast<CControlUI*>(m_items[it])->SetManager(pManager, this);
+      static_cast<CControlUI*>(m_items[it])->SetManager(manager, this);
    }
-   CControlUI::SetManager(pManager, pParent);
+   CControlUI::SetManager(manager, pParent);
 }
 
 CControlUI* CContainerUI::FindControl(FINDCONTROLPROC Proc, void* data, UINT uFlags)
@@ -305,7 +305,7 @@ void CContainerUI::ProcessScrollbar(RECT rc, int cyRequired)
 {
    // Need the scrollbar control, but it's been created already?
    if( cyRequired > rc.bottom - rc.top && m_hwndScroll == NULL && m_bAllowScrollbars ) {
-      m_hwndScroll = ::CreateWindowEx(0, WC_SCROLLBAR, NULL, WS_CHILD | SBS_VERT, 0, 0, 0, 0, m_pManager->GetPaintWindow(), NULL, m_pManager->GetResourceInstance(), NULL);
+      m_hwndScroll = ::CreateWindowEx(0, WC_SCROLLBAR, NULL, WS_CHILD | SBS_VERT, 0, 0, 0, 0, m_manager->GetPaintWindow(), NULL, m_manager->GetResourceInstance(), NULL);
       ASSERT(::IsWindow(m_hwndScroll));
       ::SetProp(m_hwndScroll, "WndX", static_cast<HANDLE>(this));
       ::SetScrollPos(m_hwndScroll, SB_CTL, 0, TRUE);
@@ -316,7 +316,7 @@ void CContainerUI::ProcessScrollbar(RECT rc, int cyRequired)
    // No scrollbar required
    if( m_hwndScroll == NULL ) return;
    // Move it into place
-   int cxScroll = m_pManager->GetSystemMetrics().cxvscroll;
+   int cxScroll = m_manager->GetSystemMetrics().cxvscroll;
    ::MoveWindow(m_hwndScroll, rc.right, rc.top, cxScroll, rc.bottom - rc.top, TRUE);
    // Scroll not needed anymore?
    int cyScroll = cyRequired - (rc.bottom - rc.top);
@@ -356,7 +356,7 @@ bool CCanvasUI::SetWatermark(UINT iBitmapRes, int iOrientation)
 bool CCanvasUI::SetWatermark(const TCHAR* pstrBitmap, int iOrientation)
 {
    if( m_hBitmap != NULL ) ::DeleteObject(m_hBitmap);
-   m_hBitmap = (HBITMAP) ::LoadImage(m_pManager->GetResourceInstance(), pstrBitmap, IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION);
+   m_hBitmap = (HBITMAP) ::LoadImage(m_manager->GetResourceInstance(), pstrBitmap, IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION);
    ASSERT(m_hBitmap!=NULL);
    if( m_hBitmap == NULL ) return false;
    ::GetObject(m_hBitmap, sizeof(BITMAP), &m_BitmapInfo);
@@ -370,7 +370,7 @@ void CCanvasUI::DoPaint(HDC hDC, const RECT& rcPaint)
    // Fill background
    RECT rcFill = { 0 };
    if( ::IntersectRect(&rcFill, &rcPaint, &m_rcItem) ) {
-      CBlueRenderEngineUI::DoFillRect(hDC, m_pManager, rcFill, m_clrBack);
+      CBlueRenderEngineUI::DoFillRect(hDC, m_manager, rcFill, m_clrBack);
    }
    // Paint watermark bitmap
    if( m_hBitmap != NULL ) {
@@ -390,7 +390,7 @@ void CCanvasUI::DoPaint(HDC hDC, const RECT& rcPaint)
       if( ::IntersectRect(&rcTemp, &rcPaint, &rcBitmap) ) {
          CRenderClip clip;
          CBlueRenderEngineUI::GenerateClip(hDC, m_rcItem, clip);
-         CBlueRenderEngineUI::DoPaintBitmap(hDC, m_pManager, m_hBitmap, rcBitmap);
+         CBlueRenderEngineUI::DoPaintBitmap(hDC, m_manager, m_hBitmap, rcBitmap);
       }
    }
    CContainerUI::DoPaint(hDC, rcPaint);
@@ -406,7 +406,7 @@ void CCanvasUI::SetAttribute(const TCHAR* name, const TCHAR* value)
 CWindowCanvasUI::CWindowCanvasUI()
 {
    SetInset(CSize(10, 10));
-   m_clrBack = m_pManager->GetThemeColor(UICOLOR_WINDOW_BACKGROUND);
+   m_clrBack = m_manager->GetThemeColor(UICOLOR_WINDOW_BACKGROUND);
 }
 
 const TCHAR* CWindowCanvasUI::GetClass() const
@@ -418,7 +418,7 @@ const TCHAR* CWindowCanvasUI::GetClass() const
 CControlCanvasUI::CControlCanvasUI()
 {
    SetInset(CSize(0, 0));
-   m_clrBack = m_pManager->GetThemeColor(UICOLOR_CONTROL_BACKGROUND_NORMAL);
+   m_clrBack = m_manager->GetThemeColor(UICOLOR_CONTROL_BACKGROUND_NORMAL);
 }
 
 const TCHAR* CControlCanvasUI::GetClass() const
@@ -430,7 +430,7 @@ const TCHAR* CControlCanvasUI::GetClass() const
 CWhiteCanvasUI::CWhiteCanvasUI()
 {
    SetInset(CSize(0, 0));
-   m_clrBack = m_pManager->GetThemeColor(UICOLOR_STANDARD_WHITE);
+   m_clrBack = m_manager->GetThemeColor(UICOLOR_STANDARD_WHITE);
 }
 
 const TCHAR* CWhiteCanvasUI::GetClass() const
@@ -442,7 +442,7 @@ const TCHAR* CWhiteCanvasUI::GetClass() const
 CDialogCanvasUI::CDialogCanvasUI()
 {
    SetInset(CSize(10, 10));
-   m_clrBack = m_pManager->GetThemeColor(UICOLOR_DIALOG_BACKGROUND);
+   m_clrBack = m_manager->GetThemeColor(UICOLOR_DIALOG_BACKGROUND);
 }
 
 const TCHAR* CDialogCanvasUI::GetClass() const
@@ -454,7 +454,7 @@ CTabFolderCanvasUI::CTabFolderCanvasUI()
 {
    SetInset(CSize(0, 0));
    COLORREF clrColor1;
-   m_pManager->GetThemeColorPair(UICOLOR_TAB_FOLDER_NORMAL, clrColor1, m_clrBack);
+   m_manager->GetThemeColorPair(UICOLOR_TAB_FOLDER_NORMAL, clrColor1, m_clrBack);
 }
 
 const TCHAR* CTabFolderCanvasUI::GetClass() const
@@ -480,7 +480,7 @@ void CVerticalLayoutUI::SetPos(RECT rc)
    rc.top += m_rcInset.top;
    rc.right -= m_rcInset.right;
    rc.bottom -= m_rcInset.bottom;
-   if( m_hwndScroll != NULL ) rc.right -= m_pManager->GetSystemMetrics().cxvscroll;
+   if( m_hwndScroll != NULL ) rc.right -= m_manager->GetSystemMetrics().cxvscroll;
    // Determine the minimum size
    SIZE szAvailable = { rc.right - rc.left, rc.bottom - rc.top };
    int nAdjustables = 0;
@@ -498,7 +498,7 @@ void CVerticalLayoutUI::SetPos(RECT rc)
    if( nAdjustables > 0 ) cyExpand = MAX(0, (szAvailable.cy - cyFixed) / nAdjustables);
    // Position the elements
    SIZE szRemaining = szAvailable;
-   int iPosY = rc.top - m_iScrollPos;
+   int posY = rc.top - m_iScrollPos;
    int iAdjustable = 0;
    for( int it2 = 0; it2 < m_items.GetSize(); it2++ ) {
       CControlUI* ctrl = static_cast<CControlUI*>(m_items[it2]);
@@ -510,9 +510,9 @@ void CVerticalLayoutUI::SetPos(RECT rc)
          // Distribute remaining to last element (usually round-off left-overs)
          if( iAdjustable == nAdjustables ) sz.cy += MAX(0, szAvailable.cy - (cyExpand * nAdjustables) - cyFixed);
       }
-      RECT rcCtrl = { rc.left, iPosY, rc.right, iPosY + sz.cy };
+      RECT rcCtrl = { rc.left, posY, rc.right, posY + sz.cy };
       ctrl->SetPos(rcCtrl);
-      iPosY += sz.cy + m_iPadding;
+      posY += sz.cy + m_iPadding;
       cyNeeded += sz.cy + m_iPadding;
       szRemaining.cy -= sz.cy + m_iPadding;
    }
@@ -553,7 +553,7 @@ void CHorizontalLayoutUI::SetPos(RECT rc)
    if( nAdjustables > 0 ) cxExpand = MAX(0, (szAvailable.cx - cxFixed) / nAdjustables);
    // Position the elements
    SIZE szRemaining = szAvailable;
-   int iPosX = rc.left;
+   int posX = rc.left;
    int iAdjustable = 0;
    for( int it2 = 0; it2 < m_items.GetSize(); it2++ ) {
       CControlUI* ctrl = static_cast<CControlUI*>(m_items[it2]);
@@ -564,9 +564,9 @@ void CHorizontalLayoutUI::SetPos(RECT rc)
          sz.cx = cxExpand;
          if( iAdjustable == nAdjustables ) sz.cx += MAX(0, szAvailable.cx - (cxExpand * nAdjustables) - cxFixed);
       }
-      RECT rcCtrl = { iPosX, rc.top, iPosX + sz.cx, rc.bottom };
+      RECT rcCtrl = { posX, rc.top, posX + sz.cx, rc.bottom };
       ctrl->SetPos(rcCtrl);
-      iPosX += sz.cx + m_iPadding;
+      posX += sz.cx + m_iPadding;
       szRemaining.cx -= sz.cx + m_iPadding;
    }
 }
@@ -598,7 +598,7 @@ void CTileLayoutUI::SetPos(RECT rc)
    rc.top += m_rcInset.top;
    rc.right -= m_rcInset.right;
    rc.bottom -= m_rcInset.bottom;
-   if( m_hwndScroll != NULL ) rc.right -= m_pManager->GetSystemMetrics().cxvscroll;
+   if( m_hwndScroll != NULL ) rc.right -= m_manager->GetSystemMetrics().cxvscroll;
    // Position the elements
    int cxWidth = (rc.right - rc.left) / m_nColumns;
    int cyHeight = 0;
@@ -679,7 +679,7 @@ void CDialogLayoutUI::SetPos(RECT rc)
    RecalcArea();
    // Do Scrollbar
    ProcessScrollbar(rc, m_rcDialog.bottom - m_rcDialog.top);
-   if( m_hwndScroll != NULL ) rc.right -= m_pManager->GetSystemMetrics().cxvscroll;
+   if( m_hwndScroll != NULL ) rc.right -= m_manager->GetSystemMetrics().cxvscroll;
    // Determine how "scaled" the dialog is compared to the original size
    int cxDiff = (rc.right - rc.left) - (m_rcDialog.right - m_rcDialog.left);
    int cyDiff = (rc.bottom - rc.top) - (m_rcDialog.bottom - m_rcDialog.top);

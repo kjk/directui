@@ -8,7 +8,7 @@ class CSingleLineEditWnd : public CWindowWnd
 public:
    CSingleLineEditWnd();
 
-   void Init(CSingleLineEditUI* pOwner);
+   void Init(CSingleLineEditUI* owner);
 
    const TCHAR* GetWindowClassName() const;
    const TCHAR* GetSuperClassName() const;
@@ -19,29 +19,29 @@ public:
    LRESULT OnEditChanged(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
 protected:
-   CSingleLineEditUI* m_pOwner;
+   CSingleLineEditUI* m_owner;
 };
 
 
-CSingleLineEditWnd::CSingleLineEditWnd() : m_pOwner(NULL)
+CSingleLineEditWnd::CSingleLineEditWnd() : m_owner(NULL)
 {
 }
 
-void CSingleLineEditWnd::Init(CSingleLineEditUI* pOwner)
+void CSingleLineEditWnd::Init(CSingleLineEditUI* owner)
 {
-   CRect rcPos = pOwner->GetPos();
+   CRect rcPos = owner->GetPos();
    rcPos.Deflate(1, 3);
-   Create(pOwner->GetManager()->GetPaintWindow(), NULL, WS_CHILD | pOwner->m_uEditStyle, 0, rcPos);
-   SetWindowFont(m_hWnd, pOwner->GetManager()->GetThemeFont(UIFONT_NORMAL), TRUE);
-   Edit_SetText(m_hWnd, pOwner->GetText());
+   Create(owner->GetManager()->GetPaintWindow(), NULL, WS_CHILD | owner->m_uEditStyle, 0, rcPos);
+   SetWindowFont(m_hWnd, owner->GetManager()->GetThemeFont(UIFONT_NORMAL), TRUE);
+   Edit_SetText(m_hWnd, owner->GetText());
    Edit_SetModify(m_hWnd, FALSE);
    SendMessage(EM_SETMARGINS, EC_LEFTMARGIN | EC_RIGHTMARGIN, MAKELPARAM(2, 2));
    Edit_SetSel(m_hWnd, 0, -1);
-   Edit_Enable(m_hWnd, pOwner->IsEnabled() == true);
-   Edit_SetReadOnly(m_hWnd, pOwner->IsReadOnly() == true);
+   Edit_Enable(m_hWnd, owner->IsEnabled() == true);
+   Edit_SetReadOnly(m_hWnd, owner->IsReadOnly() == true);
    ::ShowWindow(m_hWnd, SW_SHOWNOACTIVATE);
    ::SetFocus(m_hWnd);
-   m_pOwner = pOwner;
+   m_owner = owner;
 }
 
 const TCHAR* CSingleLineEditWnd::GetWindowClassName() const
@@ -57,7 +57,7 @@ const TCHAR* CSingleLineEditWnd::GetSuperClassName() const
 void CSingleLineEditWnd::OnFinalMessage(HWND /*hWnd*/)
 {
    // Clear reference and die
-   m_pOwner->m_pWindow = NULL;
+   m_owner->m_pWindow = NULL;
    delete this;
 }
 
@@ -81,14 +81,14 @@ LRESULT CSingleLineEditWnd::OnKillFocus(UINT uMsg, WPARAM wParam, LPARAM lParam,
 
 LRESULT CSingleLineEditWnd::OnEditChanged(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
-   if( m_pOwner == NULL ) return 0;
+   if( m_owner == NULL ) return 0;
    // Copy text back
    int cchLen = ::GetWindowTextLength(m_hWnd) + 1;
    TCHAR* pstr = static_cast<TCHAR*>(_alloca(cchLen * sizeof(TCHAR)));
    ASSERT(pstr);
    if( pstr == NULL ) return 0;
    ::GetWindowText(m_hWnd, pstr, cchLen);
-   m_pOwner->SetText(pstr);
+   m_owner->SetText(pstr);
    return 0;
 }
 
@@ -118,7 +118,7 @@ void CSingleLineEditUI::Event(TEventUI& event)
    }
    if( event.Type == UIEVENT_WINDOWSIZE )
    {
-      if( m_pWindow != NULL ) m_pManager->SetFocus(NULL);
+      if( m_pWindow != NULL ) m_manager->SetFocus(NULL);
    }
    if( event.Type == UIEVENT_SETFOCUS ) 
    {
@@ -143,7 +143,7 @@ void CSingleLineEditUI::Event(TEventUI& event)
 void CSingleLineEditUI::SetText(const TCHAR* pstrText)
 {
    m_sText = pstrText;
-   if( m_pManager != NULL ) m_pManager->SendNotify(this, _T("changed"));
+   if( m_manager != NULL ) m_manager->SendNotify(this, _T("changed"));
    Invalidate();
 }
 
@@ -166,7 +166,7 @@ void CSingleLineEditUI::SetEditStyle(UINT uStyle)
 
 SIZE CSingleLineEditUI::EstimateSize(SIZE /*szAvailable*/)
 {
-   return CSize(0, 12 + m_pManager->GetThemeFontInfo(UIFONT_NORMAL).tmHeight);
+   return CSize(0, 12 + m_manager->GetThemeFontInfo(UIFONT_NORMAL).tmHeight);
 }
 
 void CSingleLineEditUI::DoPaint(HDC hDC, const RECT& /*rcPaint*/)
@@ -175,13 +175,13 @@ void CSingleLineEditUI::DoPaint(HDC hDC, const RECT& /*rcPaint*/)
    if( IsFocused() ) uState |= UISTATE_FOCUSED;
    if( IsReadOnly() ) uState |= UISTATE_READONLY;
    if( !IsEnabled() ) uState |= UISTATE_DISABLED;
-   CBlueRenderEngineUI::DoPaintEditBox(hDC, m_pManager, m_rcItem, m_sText, uState, m_uEditStyle, false);
+   CBlueRenderEngineUI::DoPaintEditBox(hDC, m_manager, m_rcItem, m_sText, uState, m_uEditStyle, false);
 }
 
 class CMultiLineEditWnd : public CWindowWnd
 {
 public:
-   void Init(CMultiLineEditUI* pOwner);
+   void Init(CMultiLineEditUI* owner);
 
    const TCHAR* GetWindowClassName() const;
    const TCHAR* GetSuperClassName() const;
@@ -191,23 +191,23 @@ public:
    LRESULT OnEditChanged(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
 protected:
-   CMultiLineEditUI* m_pOwner;
+   CMultiLineEditUI* m_owner;
 };
 
 
-void CMultiLineEditWnd::Init(CMultiLineEditUI* pOwner)
+void CMultiLineEditWnd::Init(CMultiLineEditUI* owner)
 {
-   RECT rcPos = pOwner->GetPos();
+   RECT rcPos = owner->GetPos();
    ::InflateRect(&rcPos, -1, -3);
-   Create(pOwner->m_pManager->GetPaintWindow(), NULL, WS_CHILD | WS_CLIPCHILDREN | WS_CLIPSIBLINGS | WS_VSCROLL | ES_MULTILINE | ES_AUTOVSCROLL, 0, rcPos);
-   SetWindowFont(m_hWnd, pOwner->m_pManager->GetThemeFont(UIFONT_NORMAL), TRUE);
-   Edit_SetText(m_hWnd, pOwner->m_sText);
+   Create(owner->m_manager->GetPaintWindow(), NULL, WS_CHILD | WS_CLIPCHILDREN | WS_CLIPSIBLINGS | WS_VSCROLL | ES_MULTILINE | ES_AUTOVSCROLL, 0, rcPos);
+   SetWindowFont(m_hWnd, owner->m_manager->GetThemeFont(UIFONT_NORMAL), TRUE);
+   Edit_SetText(m_hWnd, owner->m_sText);
    Edit_SetModify(m_hWnd, FALSE);
    SendMessage(EM_SETMARGINS, EC_LEFTMARGIN | EC_RIGHTMARGIN, MAKELPARAM(2, 2));
-   Edit_SetReadOnly(m_hWnd, pOwner->IsReadOnly() == true);
-   Edit_Enable(m_hWnd, pOwner->IsEnabled() == true);
-   if( pOwner->IsVisible() ) ::ShowWindow(m_hWnd, SW_SHOWNOACTIVATE);
-   m_pOwner = pOwner;
+   Edit_SetReadOnly(m_hWnd, owner->IsReadOnly() == true);
+   Edit_Enable(m_hWnd, owner->IsEnabled() == true);
+   if( owner->IsVisible() ) ::ShowWindow(m_hWnd, SW_SHOWNOACTIVATE);
+   m_owner = owner;
 }
 
 const TCHAR* CMultiLineEditWnd::GetWindowClassName() const
@@ -222,7 +222,7 @@ const TCHAR* CMultiLineEditWnd::GetSuperClassName() const
 
 void CMultiLineEditWnd::OnFinalMessage(HWND /*hWnd*/)
 {
-   m_pOwner->m_pWindow = NULL;
+   m_owner->m_pWindow = NULL;
    delete this;
 }
 
@@ -238,14 +238,14 @@ LRESULT CMultiLineEditWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam
 
 LRESULT CMultiLineEditWnd::OnEditChanged(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
-   if( m_pOwner == NULL ) return 0;
+   if( m_owner == NULL ) return 0;
    // Copy text back
    int cchLen = ::GetWindowTextLength(m_hWnd) + 1;
    TCHAR* pstr = static_cast<TCHAR*>(_alloca(cchLen * sizeof(TCHAR)));
    ASSERT(pstr);
    ::GetWindowText(m_hWnd, pstr, cchLen);
-   m_pOwner->m_sText = pstr;
-   m_pOwner->GetManager()->SendNotify(m_pOwner, _T("changed"));
+   m_owner->m_sText = pstr;
+   m_owner->GetManager()->SendNotify(m_owner, _T("changed"));
    return 0;
 }
 
@@ -280,7 +280,7 @@ void CMultiLineEditUI::SetText(const TCHAR* pstrText)
 {
    m_sText = pstrText;
    if( m_pWindow != NULL ) SetWindowText(*m_pWindow, pstrText);
-   if( m_pManager != NULL ) m_pManager->SendNotify(this, _T("changed"));
+   if( m_manager != NULL ) m_manager->SendNotify(this, _T("changed"));
    Invalidate();
 }
 
@@ -343,7 +343,7 @@ void CMultiLineEditUI::Event(TEventUI& event)
 {
    if( event.Type == UIEVENT_WINDOWSIZE )
    {
-      if( m_pWindow != NULL ) m_pManager->SetFocus(NULL);
+      if( m_pWindow != NULL ) m_manager->SetFocus(NULL);
    }
    if( event.Type == UIEVENT_SETFOCUS ) 
    {
@@ -358,6 +358,6 @@ void CMultiLineEditUI::DoPaint(HDC hDC, const RECT& /*rcPaint*/)
    if( IsFocused() ) uState |= UISTATE_FOCUSED;
    if( IsReadOnly() ) uState |= UISTATE_READONLY;
    if( !IsEnabled() ) uState |= UISTATE_DISABLED;
-   CBlueRenderEngineUI::DoPaintEditBox(hDC, m_pManager, m_rcItem, _T(""), uState, 0, true);
+   CBlueRenderEngineUI::DoPaintEditBox(hDC, m_manager, m_rcItem, _T(""), uState, 0, true);
 }
 

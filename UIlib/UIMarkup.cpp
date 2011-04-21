@@ -6,123 +6,123 @@
 #endif
 
 
-CMarkupNode::CMarkupNode() : m_pOwner(NULL)
+CMarkupNode::CMarkupNode() : m_owner(NULL)
 {
 }
 
-CMarkupNode::CMarkupNode(CMarkup* pOwner, int iPos) : m_pOwner(pOwner), m_iPos(iPos), m_nAttributes(0)
+CMarkupNode::CMarkupNode(CMarkup* owner, int pos) : m_owner(owner), m_pos(pos), m_nAttributes(0)
 {
 }
 
 CMarkupNode CMarkupNode::GetSibling()
 {
-   if( m_pOwner == NULL ) return CMarkupNode();
-   ULONG iPos = m_pOwner->m_pElements[m_iPos].iNext;
-   if( iPos == 0 ) return CMarkupNode();
-   return CMarkupNode(m_pOwner, iPos);
+   if( m_owner == NULL ) return CMarkupNode();
+   ULONG pos = m_owner->m_pElements[m_pos].iNext;
+   if( pos == 0 ) return CMarkupNode();
+   return CMarkupNode(m_owner, pos);
 }
 
 bool CMarkupNode::HasSiblings() const
 {
-   if( m_pOwner == NULL ) return false;
-   ULONG iPos = m_pOwner->m_pElements[m_iPos].iNext;
-   return iPos > 0;
+   if( m_owner == NULL ) return false;
+   ULONG pos = m_owner->m_pElements[m_pos].iNext;
+   return pos > 0;
 }
 
 CMarkupNode CMarkupNode::GetChild()
 {
-   if( m_pOwner == NULL ) return CMarkupNode();
-   ULONG iPos = m_pOwner->m_pElements[m_iPos].iChild;
-   if( iPos == 0 ) return CMarkupNode();
-   return CMarkupNode(m_pOwner, iPos);
+   if( m_owner == NULL ) return CMarkupNode();
+   ULONG pos = m_owner->m_pElements[m_pos].iChild;
+   if( pos == 0 ) return CMarkupNode();
+   return CMarkupNode(m_owner, pos);
 }
 
 CMarkupNode CMarkupNode::GetChild(const TCHAR* name)
 {
-   if( m_pOwner == NULL ) return CMarkupNode();
-   ULONG iPos = m_pOwner->m_pElements[m_iPos].iChild;
-   while( iPos != 0 ) {
-      if( _tcscmp(m_pOwner->m_pstrXML + m_pOwner->m_pElements[iPos].iStart, name) == 0 ) {
-         return CMarkupNode(m_pOwner, iPos);
+   if( m_owner == NULL ) return CMarkupNode();
+   ULONG pos = m_owner->m_pElements[m_pos].iChild;
+   while( pos != 0 ) {
+      if( _tcscmp(m_owner->m_pstrXML + m_owner->m_pElements[pos].iStart, name) == 0 ) {
+         return CMarkupNode(m_owner, pos);
       }
-      iPos = m_pOwner->m_pElements[iPos].iNext;
+      pos = m_owner->m_pElements[pos].iNext;
    }
    return CMarkupNode();
 }
 
 bool CMarkupNode::HasChildren() const
 {
-   if( m_pOwner == NULL ) return false;
-   return m_pOwner->m_pElements[m_iPos].iChild != 0;
+   if( m_owner == NULL ) return false;
+   return m_owner->m_pElements[m_pos].iChild != 0;
 }
 
 CMarkupNode CMarkupNode::GetParent()
 {
-   if( m_pOwner == NULL ) return CMarkupNode();
-   ULONG iPos = m_pOwner->m_pElements[m_iPos].iParent;
-   if( iPos == 0 ) return CMarkupNode();
-   return CMarkupNode(m_pOwner, iPos);
+   if( m_owner == NULL ) return CMarkupNode();
+   ULONG pos = m_owner->m_pElements[m_pos].iParent;
+   if( pos == 0 ) return CMarkupNode();
+   return CMarkupNode(m_owner, pos);
 }
 
 bool CMarkupNode::IsValid() const
 {
-   return m_pOwner != NULL;
+   return m_owner != NULL;
 }
 
 const TCHAR* CMarkupNode::GetName() const
 {
-   if( m_pOwner == NULL ) return NULL;
-   return m_pOwner->m_pstrXML + m_pOwner->m_pElements[m_iPos].iStart;
+   if( m_owner == NULL ) return NULL;
+   return m_owner->m_pstrXML + m_owner->m_pElements[m_pos].iStart;
 }
 
 const TCHAR* CMarkupNode::GetValue() const
 {
-   if( m_pOwner == NULL ) return NULL;
-   return m_pOwner->m_pstrXML + m_pOwner->m_pElements[m_iPos].iData;
+   if( m_owner == NULL ) return NULL;
+   return m_owner->m_pstrXML + m_owner->m_pElements[m_pos].iData;
 }
 
 const TCHAR* CMarkupNode::GetAttributeName(int idx)
 {
-   if( m_pOwner == NULL ) return NULL;
+   if( m_owner == NULL ) return NULL;
    if( m_nAttributes == 0 ) _MapAttributes();
    if( idx < 0 || idx >= m_nAttributes ) return _T("");
-   return m_pOwner->m_pstrXML + m_aAttributes[idx].iName;
+   return m_owner->m_pstrXML + m_aAttributes[idx].iName;
 }
 
 const TCHAR* CMarkupNode::GetAttributeValue(int idx)
 {
-   if( m_pOwner == NULL ) return NULL;
+   if( m_owner == NULL ) return NULL;
    if( m_nAttributes == 0 ) _MapAttributes();
    if( idx < 0 || idx >= m_nAttributes ) return _T("");
-   return m_pOwner->m_pstrXML + m_aAttributes[idx].iValue;
+   return m_owner->m_pstrXML + m_aAttributes[idx].iValue;
 }
 
 const TCHAR* CMarkupNode::GetAttributeValue(const TCHAR* name)
 {
-   if( m_pOwner == NULL ) return NULL;
+   if( m_owner == NULL ) return NULL;
    if( m_nAttributes == 0 ) _MapAttributes();
    for( int i = 0; i < m_nAttributes; i++ ) {
-      if( _tcscmp(m_pOwner->m_pstrXML + m_aAttributes[i].iName, name) == 0 ) return m_pOwner->m_pstrXML + m_aAttributes[i].iValue;
+      if( _tcscmp(m_owner->m_pstrXML + m_aAttributes[i].iName, name) == 0 ) return m_owner->m_pstrXML + m_aAttributes[i].iValue;
    }
    return _T("");
 }
 
 bool CMarkupNode::GetAttributeValue(int idx, TCHAR* value, SIZE_T cchMax)
 {
-   if( m_pOwner == NULL ) return false;
+   if( m_owner == NULL ) return false;
    if( m_nAttributes == 0 ) _MapAttributes();
    if( idx < 0 || idx >= m_nAttributes ) return false;
-   _tcsncpy(value, m_pOwner->m_pstrXML + m_aAttributes[idx].iValue, cchMax);
+   _tcsncpy(value, m_owner->m_pstrXML + m_aAttributes[idx].iValue, cchMax);
    return true;
 }
 
 bool CMarkupNode::GetAttributeValue(const TCHAR* name, TCHAR* value, SIZE_T cchMax)
 {
-   if( m_pOwner == NULL ) return false;
+   if( m_owner == NULL ) return false;
    if( m_nAttributes == 0 ) _MapAttributes();
    for( int i = 0; i < m_nAttributes; i++ ) {
-      if( _tcscmp(m_pOwner->m_pstrXML + m_aAttributes[i].iName, name) == 0 ) {
-         _tcsncpy(value, m_pOwner->m_pstrXML + m_aAttributes[i].iValue, cchMax);
+      if( _tcscmp(m_owner->m_pstrXML + m_aAttributes[i].iName, name) == 0 ) {
+         _tcsncpy(value, m_owner->m_pstrXML + m_aAttributes[i].iValue, cchMax);
          return true;
       }
    }
@@ -131,24 +131,24 @@ bool CMarkupNode::GetAttributeValue(const TCHAR* name, TCHAR* value, SIZE_T cchM
 
 int CMarkupNode::GetAttributeCount()
 {
-   if( m_pOwner == NULL ) return 0;
+   if( m_owner == NULL ) return 0;
    if( m_nAttributes == 0 ) _MapAttributes();
    return m_nAttributes;
 }
 
 bool CMarkupNode::HasAttributes()
 {
-   if( m_pOwner == NULL ) return false;
+   if( m_owner == NULL ) return false;
    if( m_nAttributes == 0 ) _MapAttributes();
    return m_nAttributes > 0;
 }
 
 bool CMarkupNode::HasAttribute(const TCHAR* name)
 {
-   if( m_pOwner == NULL ) return false;
+   if( m_owner == NULL ) return false;
    if( m_nAttributes == 0 ) _MapAttributes();
    for( int i = 0; i < m_nAttributes; i++ ) {
-      if( _tcscmp(m_pOwner->m_pstrXML + m_aAttributes[i].iName, name) == 0 ) return true;
+      if( _tcscmp(m_owner->m_pstrXML + m_aAttributes[i].iName, name) == 0 ) return true;
    }
    return false;
 }
@@ -156,15 +156,15 @@ bool CMarkupNode::HasAttribute(const TCHAR* name)
 void CMarkupNode::_MapAttributes()
 {
    m_nAttributes = 0;
-   const TCHAR* pstr = m_pOwner->m_pstrXML + m_pOwner->m_pElements[m_iPos].iStart;
-   const TCHAR* pstrEnd = m_pOwner->m_pstrXML + m_pOwner->m_pElements[m_iPos].iData;
+   const TCHAR* pstr = m_owner->m_pstrXML + m_owner->m_pElements[m_pos].iStart;
+   const TCHAR* pstrEnd = m_owner->m_pstrXML + m_owner->m_pElements[m_pos].iData;
    pstr += _tcslen(pstr) + 1;
    while( pstr < pstrEnd ) {
-      m_pOwner->_SkipWhitespace(pstr);
-      m_aAttributes[m_nAttributes].iName = pstr - m_pOwner->m_pstrXML;
+      m_owner->_SkipWhitespace(pstr);
+      m_aAttributes[m_nAttributes].iName = pstr - m_owner->m_pstrXML;
       pstr += _tcslen(pstr) + 1;
       if( *pstr++ != '\"' && *pstr++ != '\'' ) return;
-      m_aAttributes[m_nAttributes++].iValue = pstr - m_pOwner->m_pstrXML;
+      m_aAttributes[m_nAttributes++].iValue = pstr - m_owner->m_pstrXML;
       if( m_nAttributes >= MAX_XML_ATTRIBUTES ) return;
       pstr += _tcslen(pstr) + 1;
    }
@@ -286,13 +286,13 @@ bool CMarkup::_Parse(TCHAR*& pstrText, ULONG iParent)
       }
       // Fill out element structure
       XMLELEMENT* pEl = _ReserveElement();
-      ULONG iPos = pEl - m_pElements;
+      ULONG pos = pEl - m_pElements;
       pEl->iStart = pstrText - m_pstrXML;
       pEl->iParent = iParent;
       pEl->iNext = pEl->iChild = 0;
-      if( iPrevious != 0 ) m_pElements[iPrevious].iNext = iPos;
-      else if( iParent > 0 ) m_pElements[iParent].iChild = iPos;
-      iPrevious = iPos;
+      if( iPrevious != 0 ) m_pElements[iPrevious].iNext = pos;
+      else if( iParent > 0 ) m_pElements[iParent].iChild = pos;
+      iPrevious = pos;
       // Parse name
       const TCHAR* name = pstrText;
       _SkipIdentifier(pstrText);
@@ -319,7 +319,7 @@ bool CMarkup::_Parse(TCHAR*& pstrText, ULONG iParent)
          if( *pstrText != '<' ) return _Failed(_T("Expected end-tag start"), pstrText);
          if( pstrText[0] == '<' && pstrText[1] != '/' ) 
          {
-            if( !_Parse(pstrText, iPos) ) return false;
+            if( !_Parse(pstrText, pos) ) return false;
          }
          if( pstrText[0] == '<' && pstrText[1] == '/' ) 
          {

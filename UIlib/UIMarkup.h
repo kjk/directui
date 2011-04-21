@@ -63,7 +63,7 @@ class UILIB_API CMarkupNode
 friend CMarkup;
 private:
    CMarkupNode();
-   CMarkupNode(CMarkup* pOwner, int iPos);
+   CMarkupNode(CMarkup* owner, int pos);
 
 public:
    bool IsValid() const;
@@ -98,10 +98,10 @@ private:
       ULONG iValue;
    } XMLATTRIBUTE;
 
-   int m_iPos;
+   int m_pos;
    int m_nAttributes;
    XMLATTRIBUTE m_aAttributes[MAX_XML_ATTRIBUTES];
-   CMarkup* m_pOwner;
+   CMarkup* m_owner;
 };
 
 
