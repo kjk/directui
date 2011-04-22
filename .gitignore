@@ -1,10 +1,5 @@
 *.user
 *.ncb
 *.suo
-App/Debug/
-App/Release/
-App/Temp/
-UIlib/Debug/
-UIlib/Release/
-UIlib/Temp/
-bin/
+dbg/
+rel/

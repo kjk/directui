@@ -114,8 +114,8 @@ $(O): force
 $(TA_RES): App\DirectUI.rc
 	rc /r /fo$(TA_RES) App\DirectUI.rc
 
-$(TA_MANIFEST): src\MusicaFantastica.manifest.rc
-	rc /r /fo$(MF_MANIFEST) src\MusicaFantastica.manifest.rc
+$(TA_MANIFEST): App\App.manifest.rc
+	rc /r /fo$(TA_MANIFEST)  App\App.manifest.rc
 
 $(TA_APP): $(TA_OBJS)
 	$(LD) $(LDFLAGS) $** $(LIBS) /PDB:$*.pdb /OUT:$@ 
