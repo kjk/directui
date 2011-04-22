@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 #include "resource.h"
-
+#include "UIlib.h"
 #include "Views.h"
 
 class FrameWindowWnd : public WindowWnd, public INotifyUI
@@ -16,15 +16,17 @@ public:
 
    void Notify(TNotifyUI& msg)
    {
-      if (msg.sType == _T("click") || msg.sType == _T("link"))  _CreatePage(msg.pSender->GetName());
-      if (msg.sType == _T("itemactivate"))  _CreatePage(_T("page_search"));
+      if (msg.sType == _T("click") || msg.sType == _T("link"))
+         _CreatePage(msg.pSender->GetName().GetData());
+      if (msg.sType == _T("itemactivate"))
+         _CreatePage("page_search");
    }
 
    LRESULT HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
    {
       if (uMsg == WM_CREATE)  {
          SetIcon(IDR_MAINFRAME);
-         _CreatePage(_T("page_start"));
+         _CreatePage("page_start");
       }
       if (uMsg == WM_DESTROY)  {
          ::PostQuitMessage(0L);
@@ -50,19 +52,19 @@ public:
       return WindowWnd::HandleMessage(uMsg, wParam, lParam);
    }
 
-   void _CreatePage(StdString sName)
+   void _CreatePage(const char* sName)
    {
       StandardPageWnd* win = NULL;
-      if (sName == "page_start")  win = new StartPageWnd;
-      if (sName == "page_configure")  win = new ConfigurePageWnd;
-      if (sName == "page_reports")  win = new ReportsPageWnd;
-      if (sName == "page_systems")  win = new SystemsPageWnd;
-      if (sName == "page_registers")  win = new RegistersPageWnd;
-      if (sName == "link_start")  win = new StartPageWnd;
-      if (sName == "link_configure")  win = new ConfigurePageWnd;
-      if (sName == "link_reports")  win = new ReportsPageWnd;
-      if (sName == "link_systems")  win = new SystemsPageWnd;
-      if (sName == "link_registers")  win = new RegistersPageWnd;
+      if (str::Eq(sName, "page_start"))      win = new StartPageWnd;
+      if (str::Eq(sName, "page_configure"))  win = new ConfigurePageWnd;
+      if (str::Eq(sName, "page_reports"))    win = new ReportsPageWnd;
+      if (str::Eq(sName, "page_systems"))    win = new SystemsPageWnd;
+      if (str::Eq(sName, "page_registers"))  win = new RegistersPageWnd;
+      if (str::Eq(sName, "link_start"))      win = new StartPageWnd;
+      if (str::Eq(sName, "link_configure"))  win = new ConfigurePageWnd;
+      if (str::Eq(sName, "link_reports"))    win = new ReportsPageWnd;
+      if (str::Eq(sName, "link_systems"))    win = new SystemsPageWnd;
+      if (str::Eq(sName, "link_registers"))  win = new RegistersPageWnd;
       if (win != NULL)  {
          if (m_hWndClient != NULL)  ::PostMessage(m_hWndClient, WM_CLOSE, 0, 0L);
          win->m_pm.AddNotifier(this);
@@ -70,8 +72,8 @@ public:
          PostMessage(WM_SIZE);
          return;
       }
-      if (sName == "page_search")  win = new SearchPageWnd;
-      if (sName == "page_edit")  win = new EditPageWnd;
+      if (str::Eq(sName, "page_search"))  win = new SearchPageWnd;
+      if (str::Eq(sName, "page_edit"))    win = new EditPageWnd;
       if (win != NULL)  {
          win->Create(m_hWnd, NULL, UI_WNDSTYLE_FRAME, UI_WNDSTYLE_EX_FRAME);
          return;

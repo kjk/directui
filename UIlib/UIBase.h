@@ -29,6 +29,27 @@ class PaintManagerUI;
 void UILIB_API __Trace(const char* fmt, ...);
 const char* __TraceMsg(UINT uMsg);
 
+inline void *memdup(void *data, size_t len)
+{
+    void *dup = malloc(len);
+    if (dup)
+        memcpy(dup, data, len);
+    return dup;
+}
+
+namespace str {
+
+inline size_t Len(const char *s) { return strlen(s); }
+inline bool Eq(const char *s1, const char *s2) { return 0 == strcmp(s1, s2); }
+inline const char * Find(const char *s, const char *find) {
+    return strstr(s, find);
+}
+inline bool EqN(const char *s1, const char *s2, size_t len) {
+    return 0 == strncmp(s1, s2, len);
+}
+
+}
+
 class UILIB_API CRect : public tagRECT
 {
 public:
