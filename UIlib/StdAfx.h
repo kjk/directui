@@ -14,7 +14,7 @@
 
 #include <olectl.h>
 
-#define lengthof(x) (sizeof(x)/sizeof(*x))
+#define dimof(x) (sizeof(x)/sizeof(*x))
 #define MAX max
 #define MIN min
 #define CLAMP(x,a,b) (MIN(b,MAX(a,x)))

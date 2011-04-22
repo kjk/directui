@@ -445,7 +445,7 @@ bool MarkupParser::_Failed(const TCHAR* pstrError, const TCHAR* pstrLocation)
    //TRACE("XML Error: %s", pstrError);
    //TRACE(pstrLocation);
    _tcsncpy(m_errorMsg, pstrError, (sizeof(m_errorMsg) / sizeof(m_errorMsg[0])) - 1);
-   _tcsncpy(m_errorXml, pstrLocation != NULL ? pstrLocation : _T(""), lengthof(m_errorXml) - 1);
+   _tcsncpy(m_errorXml, pstrLocation != NULL ? pstrLocation : _T(""), dimof(m_errorXml) - 1);
    return false; // Always return 'false'
 }
 

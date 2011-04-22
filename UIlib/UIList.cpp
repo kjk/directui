@@ -758,7 +758,7 @@ void ListTextElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
    ASSERT(pCallback);
    if (pCallback == NULL)  return;
    m_nLinks = 0;
-   int nLinks = lengthof(m_rcLinks);
+   int nLinks = dimof(m_rcLinks);
    for (int i = 0; i < pInfo->nColumns; i++) 
    {
       // Paint text
@@ -766,7 +766,7 @@ void ListTextElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
       const TCHAR* txt = pCallback->GetItemText(this, m_idx, i);
       ::InflateRect(&rcItem, -4, 0);
       BlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcItem, txt, iTextColor, UICOLOR__INVALID, m_rcLinks, nLinks, DT_SINGLELINE | m_uTextStyle);
-      if (nLinks > 0)  m_nLinks = nLinks, nLinks = 0; else nLinks = lengthof(m_rcLinks);
+      if (nLinks > 0)  m_nLinks = nLinks, nLinks = 0; else nLinks = dimof(m_rcLinks);
    }
    RECT rcLine = { m_rcItem.left, m_rcItem.bottom - 1, m_rcItem.right, m_rcItem.bottom - 1 };
    BlueRenderEngineUI::DoPaintLine(hDC, m_manager, rcLine, UICOLOR_DIALOG_BACKGROUND);
@@ -963,7 +963,7 @@ void ListExpandElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
    if (pCallback == NULL)  return;
    m_nLinks = 0;
    StdString sColText;
-   int nLinks = lengthof(m_rcLinks);
+   int nLinks = dimof(m_rcLinks);
    for (int i = 0; i < pInfo->nColumns; i++) 
    {
       // Paint text
@@ -978,7 +978,7 @@ void ListExpandElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
       }
       ::InflateRect(&rcItem, -4, 0);
       BlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcItem, txt, iTextColor, UICOLOR__INVALID, m_rcLinks, nLinks, DT_SINGLELINE | m_uTextStyle);
-      if (nLinks > 0)  m_nLinks = nLinks, nLinks = 0; else nLinks = lengthof(m_rcLinks);
+      if (nLinks > 0)  m_nLinks = nLinks, nLinks = 0; else nLinks = dimof(m_rcLinks);
    }
    RECT rcLine = { m_rcItem.left, m_rcItem.bottom - 1, m_rcItem.right, m_rcItem.bottom - 1 };
    BlueRenderEngineUI::DoPaintLine(hDC, m_manager, rcLine, UICOLOR_DIALOG_BACKGROUND);

@@ -949,9 +949,9 @@ bool ActiveXUI::CreateControl(const TCHAR* pstrCLSID)
    CLSID clsid = { 0 };
    OLECHAR szCLSID[100] = { 0 };
 #ifndef _UNICODE
-   ::MultiByteToWideChar(::GetACP(), 0, pstrCLSID, -1, szCLSID, lengthof(szCLSID) - 1);
+   ::MultiByteToWideChar(::GetACP(), 0, pstrCLSID, -1, szCLSID, dimof(szCLSID) - 1);
 #else
-   _tcsncpy(szCLSID, pstrCLSID, lengthof(szCLSID) - 1);
+   _tcsncpy(szCLSID, pstrCLSID, dimof(szCLSID) - 1);
 #endif
    if (pstrCLSID[0] == '{')  ::CLSIDFromString(szCLSID, &clsid);
    else ::CLSIDFromProgID(szCLSID, &clsid);

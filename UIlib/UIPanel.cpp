@@ -494,7 +494,7 @@ SIZE TextPanelUI::EstimateSize(SIZE szAvailable)
 void TextPanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
    RECT rcText = m_rcItem;
-   m_nLinks = lengthof(m_rcLinks);
+   m_nLinks = dimof(m_rcLinks);
    BlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcText, m_txt, m_TextColor, m_BackColor, m_rcLinks, m_nLinks, m_uTextStyle);
 }
 
@@ -547,6 +547,6 @@ void WarningPanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
    BlueRenderEngineUI::DoPaintFrame(hDC, m_manager, rcSign, UICOLOR_STANDARD_GREY, UICOLOR_STANDARD_GREY, m_BackColor);
    RECT rcText = rcSign;
    ::InflateRect(&rcText, -6, -4);
-   m_nLinks = lengthof(m_rcLinks);
+   m_nLinks = dimof(m_rcLinks);
    BlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcText, m_txt, UICOLOR_BUTTON_TEXT_NORMAL, UICOLOR__INVALID, m_rcLinks, m_nLinks, DT_WORDBREAK);
 }

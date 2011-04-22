@@ -83,7 +83,7 @@ SIZE SingleLinePickUI::EstimateSize(SIZE /*szAvailable*/)
       sz.cx = m_cxWidth;
       RECT rcText = m_rcItem;
       ::InflateRect(&rcText, -4, -2);
-      m_nLinks = lengthof(m_rcLinks);
+      m_nLinks = dimof(m_rcLinks);
       BlueRenderEngineUI::DoPaintPrettyText(m_manager->GetPaintDC(), m_manager, rcText, m_txt, UICOLOR_EDIT_TEXT_NORMAL, UICOLOR__INVALID, m_rcLinks, m_nLinks, DT_SINGLELINE | DT_CALCRECT);
       sz.cy = rcText.bottom - rcText.top;
    }
@@ -110,7 +110,7 @@ void SingleLinePickUI::DoPaint(HDC hDC, const RECT& rcPaint)
    }
    BlueRenderEngineUI::DoPaintFrame(hDC, m_manager, rcText, iBorderColor, iBorderColor, iBackColor);
    ::InflateRect(&rcText, -4, -2);
-   m_nLinks = lengthof(m_rcLinks);
+   m_nLinks = dimof(m_rcLinks);
    BlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcText, m_txt, iTextColor, UICOLOR__INVALID, m_rcLinks, m_nLinks, DT_SINGLELINE);
    RECT rcPadding = { 0 };
    BlueRenderEngineUI::DoPaintButton(hDC, m_manager, m_rcButton, _T("<i 4>"), rcPadding, m_uButtonState, 0);

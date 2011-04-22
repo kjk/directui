@@ -13,7 +13,7 @@ void UILIB_API __Trace(const char* fmt, ...)
    char buf[300] = { 0 };
    va_list args;
    va_start(args, fmt);
-   ::vsnprintf(buf, lengthof(buf) - 2, fmt, args);
+   ::vsnprintf(buf, dimof(buf) - 2, fmt, args);
    va_end(args);
    ::OutputDebugStringA(buf);
    ::OutputDebugStringA("\n");
@@ -679,7 +679,7 @@ StdString::~StdString()
 StdString StdString::RES(UINT nRes)
 {
    TCHAR szBuffer[256];
-   int cchLen = ::LoadString(PaintManagerUI::GetLanguageInstance(), nRes, szBuffer, lengthof(szBuffer) - 1);
+   int cchLen = ::LoadString(PaintManagerUI::GetLanguageInstance(), nRes, szBuffer, dimof(szBuffer) - 1);
    ASSERT(cchLen>0);
    szBuffer[cchLen] = '\0';
    return szBuffer;
