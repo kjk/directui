@@ -510,7 +510,7 @@ bool PaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRE
                // Draw alpha bitmaps on top?
                for (int i = 0; i < m_aPostPaint.GetSize(); i++)  {
                   TPostPaintUI* pBlit = static_cast<TPostPaintUI*>(m_aPostPaint[i]);
-                  CBlueRenderEngineUI::DoPaintAlphaBitmap(m_hDcOffscreen, this, pBlit->hBitmap, pBlit->rc, pBlit->iAlpha);
+                  BlueRenderEngineUI::DoPaintAlphaBitmap(m_hDcOffscreen, this, pBlit->hBitmap, pBlit->rc, pBlit->iAlpha);
                }
                m_aPostPaint.Empty();
                // Blit offscreen bitmap back to display

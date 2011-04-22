@@ -13,7 +13,7 @@ public:
    HRGN hOldRgn;
 };
 
-class UILIB_API CBlueRenderEngineUI
+class UILIB_API BlueRenderEngineUI
 {
 public:
    static void DoFillRect(HDC hDC, PaintManagerUI* manager, RECT rc, UITYPE_COLOR Color);

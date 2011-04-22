@@ -15,11 +15,11 @@ SIZE StatusbarUI::EstimateSize(SIZE /*szAvailable*/)
 
 void StatusbarUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
-   CBlueRenderEngineUI::DoPaintPanel(hDC, m_manager, m_rcItem);
+   BlueRenderEngineUI::DoPaintPanel(hDC, m_manager, m_rcItem);
    RECT rcMessage = m_rcItem;
    ::InflateRect(&rcMessage, -8, -2);
    int nLinks = 0;
-   CBlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcMessage, m_txt, UICOLOR_TITLE_TEXT, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE | DT_VCENTER);
+   BlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcMessage, m_txt, UICOLOR_TITLE_TEXT, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE | DT_VCENTER);
 }
 
 
@@ -38,18 +38,18 @@ SIZE ToolbarTitlePanelUI::EstimateSize(SIZE szAvailable)
    RECT rcText = { 0, 0, szAvailable.cx, szAvailable.cy };
    ::InflateRect(&rcText, -m_iPadding, -m_iPadding);
    int nLinks = 0;
-   CBlueRenderEngineUI::DoPaintPrettyText(m_manager->GetPaintDC(), m_manager, rcText, m_txt, UICOLOR_EDIT_TEXT_NORMAL, UICOLOR__INVALID, NULL, nLinks, DT_WORDBREAK | DT_CALCRECT);
+   BlueRenderEngineUI::DoPaintPrettyText(m_manager->GetPaintDC(), m_manager, rcText, m_txt, UICOLOR_EDIT_TEXT_NORMAL, UICOLOR__INVALID, NULL, nLinks, DT_WORDBREAK | DT_CALCRECT);
    sz.cy = (rcText.bottom - rcText.top) + (m_iPadding * 2);
    return sz;
 }
 
 void ToolbarTitlePanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
-   CBlueRenderEngineUI::DoPaintPanel(hDC, m_manager, m_rcItem);
+   BlueRenderEngineUI::DoPaintPanel(hDC, m_manager, m_rcItem);
    RECT rcText = m_rcItem;
    ::InflateRect(&rcText, -m_iPadding, -m_iPadding);
    int nLinks = 0;
-   CBlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcText, m_txt, UICOLOR_TITLE_TEXT, UICOLOR__INVALID, NULL, nLinks, DT_WORDBREAK | DT_NOPREFIX);
+   BlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcText, m_txt, UICOLOR_TITLE_TEXT, UICOLOR__INVALID, NULL, nLinks, DT_WORDBREAK | DT_NOPREFIX);
 }
 
 ToolbarUI::ToolbarUI()
@@ -70,7 +70,7 @@ SIZE ToolbarUI::EstimateSize(SIZE /*szAvailable*/)
 
 void ToolbarUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
-   CBlueRenderEngineUI::DoPaintPanel(hDC, m_manager, m_rcItem);
+   BlueRenderEngineUI::DoPaintPanel(hDC, m_manager, m_rcItem);
    ContainerUI::DoPaint(hDC, rcPaint);
 }
 
@@ -88,7 +88,7 @@ void ToolButtonUI::DoPaint(HDC hDC, const RECT& rcPaint)
    UINT uState = 0;
    if (IsFocused())  uState |= UISTATE_FOCUSED;
    if (!IsEnabled())  uState |= UISTATE_DISABLED;
-   CBlueRenderEngineUI::DoPaintToolbarButton(hDC, m_manager, m_rcItem, m_txt, m_szPadding, m_uButtonState | uState);
+   BlueRenderEngineUI::DoPaintToolbarButton(hDC, m_manager, m_rcItem, m_txt, m_szPadding, m_uButtonState | uState);
 }
 
 const TCHAR* ToolSeparatorUI::GetClass() const
@@ -104,9 +104,9 @@ SIZE ToolSeparatorUI::EstimateSize(SIZE /*szAvailable*/)
 void ToolSeparatorUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
    RECT rc1 = { m_rcItem.left + 1, m_rcItem.top + 2, m_rcItem.left + 1, m_rcItem.bottom - 3 };
-   CBlueRenderEngineUI::DoPaintLine(hDC, m_manager, rc1, UICOLOR_TITLE_BORDER_DARK);
+   BlueRenderEngineUI::DoPaintLine(hDC, m_manager, rc1, UICOLOR_TITLE_BORDER_DARK);
    RECT rc2 = { m_rcItem.left + 2, m_rcItem.top + 2, m_rcItem.left + 2, m_rcItem.bottom - 3 };
-   CBlueRenderEngineUI::DoPaintLine(hDC, m_manager, rc2, UICOLOR_TITLE_BORDER_LIGHT);
+   BlueRenderEngineUI::DoPaintLine(hDC, m_manager, rc2, UICOLOR_TITLE_BORDER_LIGHT);
 }
 
 const TCHAR* ToolGripperUI::GetClass() const
@@ -123,7 +123,7 @@ void ToolGripperUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
    RECT rcLine = { m_rcItem.left + 5, m_rcItem.top + 6, m_rcItem.left + 5 + 3, m_rcItem.top + 6 };
    for (int i = m_rcItem.top + 6; i <= m_rcItem.bottom - 6; i += 2)  {
-      CBlueRenderEngineUI::DoPaintLine(hDC, m_manager, rcLine, UICOLOR_TITLE_BORDER_DARK);
+      BlueRenderEngineUI::DoPaintLine(hDC, m_manager, rcLine, UICOLOR_TITLE_BORDER_DARK);
       ::OffsetRect(&rcLine, 0, 2);
    }
 }

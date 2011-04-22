@@ -49,7 +49,7 @@ void LabelPanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
    RECT rcText = m_rcItem;
    int nLinks = 0;
-   CBlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcText, m_txt, UICOLOR_EDIT_TEXT_NORMAL, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE | m_uTextStyle);
+   BlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcText, m_txt, UICOLOR_EDIT_TEXT_NORMAL, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE | m_uTextStyle);
 }
 
 const TCHAR* GreyTextHeaderUI::GetClass() const
@@ -66,7 +66,7 @@ void GreyTextHeaderUI::DoPaint(HDC hDC, const RECT& /*rcPaint*/)
 {
    COLORREF clrDarkText = m_manager->GetThemeColor(UICOLOR_DIALOG_TEXT_DARK);
    RECT rcLine = { m_rcItem.left, m_rcItem.bottom - 6, m_rcItem.right, m_rcItem.bottom - 5 };
-   CBlueRenderEngineUI::DoFillRect(hDC, m_manager, rcLine, UICOLOR_DIALOG_TEXT_DARK);
-   CBlueRenderEngineUI::DoPaintQuickText(hDC, m_manager, m_rcItem, m_txt, UICOLOR_DIALOG_TEXT_DARK, UIFONT_BOLD, DT_SINGLELINE);
+   BlueRenderEngineUI::DoFillRect(hDC, m_manager, rcLine, UICOLOR_DIALOG_TEXT_DARK);
+   BlueRenderEngineUI::DoPaintQuickText(hDC, m_manager, m_rcItem, m_txt, UICOLOR_DIALOG_TEXT_DARK, UIFONT_BOLD, DT_SINGLELINE);
 }
 

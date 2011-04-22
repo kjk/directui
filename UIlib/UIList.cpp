@@ -125,9 +125,9 @@ void ListHeaderUI::DoPaint(HDC hDC, const RECT& rcPaint)
    // Draw background
    COLORREF clrBack1, clrBack2;
    m_manager->GetThemeColorPair(UICOLOR_HEADER_BACKGROUND, clrBack1, clrBack2);
-   CBlueRenderEngineUI::DoPaintFrame(hDC, m_manager, m_rcItem, UICOLOR_HEADER_BORDER, UICOLOR_HEADER_BORDER, UICOLOR_HEADER_BACKGROUND, 0);
+   BlueRenderEngineUI::DoPaintFrame(hDC, m_manager, m_rcItem, UICOLOR_HEADER_BORDER, UICOLOR_HEADER_BORDER, UICOLOR_HEADER_BACKGROUND, 0);
    RECT rcBottom = { m_rcItem.left + 1, m_rcItem.bottom - 3, m_rcItem.right - 1, m_rcItem.bottom };
-   CBlueRenderEngineUI::DoPaintGradient(hDC, m_manager, rcBottom, clrBack1, clrBack2, true, 4);
+   BlueRenderEngineUI::DoPaintGradient(hDC, m_manager, rcBottom, clrBack1, clrBack2, true, 4);
    // Draw headers too...
    HorizontalLayoutUI::DoPaint(hDC, rcPaint);
 }
@@ -224,14 +224,14 @@ void ListHeaderItemUI::DoPaint(HDC hDC, const RECT& rcPaint)
    rcMessage.left += 6;
    rcMessage.bottom -= 1;
    int nLinks = 0;
-   CBlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcMessage, m_txt, UICOLOR_HEADER_TEXT, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE | DT_VCENTER);
+   BlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcMessage, m_txt, UICOLOR_HEADER_TEXT, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE | DT_VCENTER);
    // Draw gripper
    POINT ptTemp = { 0 };
    RECT rcThumb = GetThumbRect(m_rcItem);
    RECT rc1 = { rcThumb.left + 2, rcThumb.top + 4, rcThumb.left + 2, rcThumb.bottom - 1 };
-   CBlueRenderEngineUI::DoPaintLine(hDC, m_manager, rc1, UICOLOR_HEADER_SEPARATOR);
+   BlueRenderEngineUI::DoPaintLine(hDC, m_manager, rc1, UICOLOR_HEADER_SEPARATOR);
    RECT rc2 = { rcThumb.left + 3, rcThumb.top + 4, rcThumb.left + 3, rcThumb.bottom - 1 };
-   CBlueRenderEngineUI::DoPaintLine(hDC, m_manager, rc2, UICOLOR_STANDARD_WHITE);
+   BlueRenderEngineUI::DoPaintLine(hDC, m_manager, rc2, UICOLOR_STANDARD_WHITE);
 }
 
 RECT ListHeaderItemUI::GetThumbRect(RECT rc) const
@@ -268,11 +268,11 @@ void ListFooterUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
    COLORREF clrBack1, clrBack2;
    m_manager->GetThemeColorPair(UICOLOR_HEADER_BACKGROUND, clrBack1, clrBack2);
-   CBlueRenderEngineUI::DoPaintFrame(hDC, m_manager, m_rcItem, UICOLOR_HEADER_BORDER, UICOLOR_HEADER_BORDER, UICOLOR_HEADER_BACKGROUND, 0);
+   BlueRenderEngineUI::DoPaintFrame(hDC, m_manager, m_rcItem, UICOLOR_HEADER_BORDER, UICOLOR_HEADER_BORDER, UICOLOR_HEADER_BACKGROUND, 0);
    RECT rcTop = { m_rcItem.left + 1, m_rcItem.top, m_rcItem.right - 1, m_rcItem.top + 1 };
-   CBlueRenderEngineUI::DoPaintGradient(hDC, m_manager, rcTop, clrBack2, clrBack1, true, 2);
+   BlueRenderEngineUI::DoPaintGradient(hDC, m_manager, rcTop, clrBack2, clrBack1, true, 2);
    RECT rcBottom = { m_rcItem.left + 1, m_rcItem.bottom - 3, m_rcItem.right - 1, m_rcItem.bottom };
-   CBlueRenderEngineUI::DoPaintGradient(hDC, m_manager, rcBottom, clrBack1, clrBack2, true, 4);
+   BlueRenderEngineUI::DoPaintGradient(hDC, m_manager, rcBottom, clrBack1, clrBack2, true, 4);
    // Paint items as well...
    HorizontalLayoutUI::DoPaint(hDC, rcPaint);
 }
@@ -665,13 +665,13 @@ void ListLabelElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uDrawStyle)
    // Paint background (because we're vertically centering the text area
    // so it cannot paint the entire item rectangle)
    if (iBackColor != UICOLOR__INVALID)  {
-      CBlueRenderEngineUI::DoFillRect(hDC, m_manager, rcItem, iBackColor);
+      BlueRenderEngineUI::DoFillRect(hDC, m_manager, rcItem, iBackColor);
    }
    // Paint text
    RECT rcText = rcItem;
    ::InflateRect(&rcText, -4, 0);
    int nLinks = 0;
-   CBlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcText, m_txt, iTextColor, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE | m_uTextStyle);
+   BlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcText, m_txt, iTextColor, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE | m_uTextStyle);
 }
 
 
@@ -721,7 +721,7 @@ SIZE ListTextElementUI::EstimateSize(SIZE szAvailable)
       const TCHAR* txt = _T("XXX");
       RECT rcText = { 0, 0, 9999, 9999 };
       int nLinks = 0;
-      CBlueRenderEngineUI::DoPaintPrettyText(m_manager->GetPaintDC(), m_manager, rcText, txt, UICOLOR__INVALID, UICOLOR__INVALID, NULL, nLinks, DT_CALCRECT | m_uTextStyle);
+      BlueRenderEngineUI::DoPaintPrettyText(m_manager->GetPaintDC(), m_manager, rcText, txt, UICOLOR__INVALID, UICOLOR__INVALID, NULL, nLinks, DT_CALCRECT | m_uTextStyle);
       m_cyItem = rcText.bottom - rcText.top;
    }
    return CSize(m_cxWidth, m_cyItem + 9);
@@ -752,7 +752,7 @@ void ListTextElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
       iBackColor = UICOLOR_CONTROL_BACKGROUND_DISABLED;
    }
    if (iBackColor != UICOLOR__INVALID)  {
-      CBlueRenderEngineUI::DoFillRect(hDC, m_manager, m_rcItem, iBackColor);
+      BlueRenderEngineUI::DoFillRect(hDC, m_manager, m_rcItem, iBackColor);
    }
    IListCallbackUI* pCallback = m_owner->GetTextCallback();
    ASSERT(pCallback);
@@ -765,11 +765,11 @@ void ListTextElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
       RECT rcItem = { pInfo->rcColumn[i].left, m_rcItem.top, pInfo->rcColumn[i].right, m_rcItem.bottom - 1 };
       const TCHAR* txt = pCallback->GetItemText(this, m_idx, i);
       ::InflateRect(&rcItem, -4, 0);
-      CBlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcItem, txt, iTextColor, UICOLOR__INVALID, m_rcLinks, nLinks, DT_SINGLELINE | m_uTextStyle);
+      BlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcItem, txt, iTextColor, UICOLOR__INVALID, m_rcLinks, nLinks, DT_SINGLELINE | m_uTextStyle);
       if (nLinks > 0)  m_nLinks = nLinks, nLinks = 0; else nLinks = lengthof(m_rcLinks);
    }
    RECT rcLine = { m_rcItem.left, m_rcItem.bottom - 1, m_rcItem.right, m_rcItem.bottom - 1 };
-   CBlueRenderEngineUI::DoPaintLine(hDC, m_manager, rcLine, UICOLOR_DIALOG_BACKGROUND);
+   BlueRenderEngineUI::DoPaintLine(hDC, m_manager, rcLine, UICOLOR_DIALOG_BACKGROUND);
 }
 
 
@@ -850,7 +850,7 @@ SIZE ListExpandElementUI::EstimateSize(SIZE szAvailable)
       const TCHAR* txt = _T("XXX");
       RECT rcText = { 0, 0, 9999, 9999 };
       int nLinks = 0;
-      CBlueRenderEngineUI::DoPaintPrettyText(m_manager->GetPaintDC(), m_manager, rcText, txt, UICOLOR__INVALID, UICOLOR__INVALID, NULL, nLinks, DT_CALCRECT | m_uTextStyle);
+      BlueRenderEngineUI::DoPaintPrettyText(m_manager->GetPaintDC(), m_manager, rcText, txt, UICOLOR__INVALID, UICOLOR__INVALID, NULL, nLinks, DT_CALCRECT | m_uTextStyle);
       m_cyItem = (rcText.bottom - rcText.top) + 8;
    }
    int cyItem = m_cyItem;
@@ -912,10 +912,10 @@ void ListExpandElementUI::DoPaint(HDC hDC, const RECT& rcPaint)
       RECT rcFrame = m_pContainer->GetPos();
       COLORREF clr1, clr2;
       m_manager->GetThemeColorPair(UICOLOR_CONTROL_BACKGROUND_EXPANDED, clr1, clr2);
-      CBlueRenderEngineUI::DoPaintGradient(hDC, m_manager, rcFrame, clr1, clr2, true, 64);
-      CBlueRenderEngineUI::DoPaintRectangle(hDC, m_manager, rcFrame, UICOLOR_HEADER_BORDER, UICOLOR__INVALID);
+      BlueRenderEngineUI::DoPaintGradient(hDC, m_manager, rcFrame, clr1, clr2, true, 64);
+      BlueRenderEngineUI::DoPaintRectangle(hDC, m_manager, rcFrame, UICOLOR_HEADER_BORDER, UICOLOR__INVALID);
       RECT rcLine = { m_rcItem.left, rcFrame.top, m_rcItem.right, rcFrame.top };
-      CBlueRenderEngineUI::DoPaintLine(hDC, m_manager, rcLine, UICOLOR_STANDARD_BLACK);
+      BlueRenderEngineUI::DoPaintLine(hDC, m_manager, rcLine, UICOLOR_STANDARD_BLACK);
       // We'll draw the items then...
       m_pContainer->DoPaint(hDC, rcPaint);
    }
@@ -956,7 +956,7 @@ void ListExpandElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
    }
    if (iBackColor != UICOLOR__INVALID)  {
       RECT rcItem = { m_rcItem.left, m_rcItem.top, m_rcItem.right, m_rcItem.top + m_cyItem };
-      CBlueRenderEngineUI::DoFillRect(hDC, m_manager, rcItem, iBackColor);
+      BlueRenderEngineUI::DoFillRect(hDC, m_manager, rcItem, iBackColor);
    }
    IListCallbackUI* pCallback = m_owner->GetTextCallback();
    ASSERT(pCallback);
@@ -977,9 +977,9 @@ void ListExpandElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
          txt = sColText;
       }
       ::InflateRect(&rcItem, -4, 0);
-      CBlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcItem, txt, iTextColor, UICOLOR__INVALID, m_rcLinks, nLinks, DT_SINGLELINE | m_uTextStyle);
+      BlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcItem, txt, iTextColor, UICOLOR__INVALID, m_rcLinks, nLinks, DT_SINGLELINE | m_uTextStyle);
       if (nLinks > 0)  m_nLinks = nLinks, nLinks = 0; else nLinks = lengthof(m_rcLinks);
    }
    RECT rcLine = { m_rcItem.left, m_rcItem.bottom - 1, m_rcItem.right, m_rcItem.bottom - 1 };
-   CBlueRenderEngineUI::DoPaintLine(hDC, m_manager, rcLine, UICOLOR_DIALOG_BACKGROUND);
+   BlueRenderEngineUI::DoPaintLine(hDC, m_manager, rcLine, UICOLOR_DIALOG_BACKGROUND);
 }

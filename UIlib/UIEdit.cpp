@@ -175,7 +175,7 @@ void SingleLineEditUI::DoPaint(HDC hDC, const RECT& /*rcPaint*/)
    if (IsFocused())  uState |= UISTATE_FOCUSED;
    if (IsReadOnly())  uState |= UISTATE_READONLY;
    if (!IsEnabled())  uState |= UISTATE_DISABLED;
-   CBlueRenderEngineUI::DoPaintEditBox(hDC, m_manager, m_rcItem, m_txt, uState, m_uEditStyle, false);
+   BlueRenderEngineUI::DoPaintEditBox(hDC, m_manager, m_rcItem, m_txt, uState, m_uEditStyle, false);
 }
 
 class MultiLineEditWnd : public WindowWnd
@@ -358,6 +358,6 @@ void MultiLineEditUI::DoPaint(HDC hDC, const RECT& /*rcPaint*/)
    if (IsFocused())  uState |= UISTATE_FOCUSED;
    if (IsReadOnly())  uState |= UISTATE_READONLY;
    if (!IsEnabled())  uState |= UISTATE_DISABLED;
-   CBlueRenderEngineUI::DoPaintEditBox(hDC, m_manager, m_rcItem, _T(""), uState, 0, true);
+   BlueRenderEngineUI::DoPaintEditBox(hDC, m_manager, m_rcItem, _T(""), uState, 0, true);
 }
 

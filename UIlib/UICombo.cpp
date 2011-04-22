@@ -84,7 +84,7 @@ SIZE SingleLinePickUI::EstimateSize(SIZE /*szAvailable*/)
       RECT rcText = m_rcItem;
       ::InflateRect(&rcText, -4, -2);
       m_nLinks = lengthof(m_rcLinks);
-      CBlueRenderEngineUI::DoPaintPrettyText(m_manager->GetPaintDC(), m_manager, rcText, m_txt, UICOLOR_EDIT_TEXT_NORMAL, UICOLOR__INVALID, m_rcLinks, m_nLinks, DT_SINGLELINE | DT_CALCRECT);
+      BlueRenderEngineUI::DoPaintPrettyText(m_manager->GetPaintDC(), m_manager, rcText, m_txt, UICOLOR_EDIT_TEXT_NORMAL, UICOLOR__INVALID, m_rcLinks, m_nLinks, DT_SINGLELINE | DT_CALCRECT);
       sz.cy = rcText.bottom - rcText.top;
    }
    return sz;
@@ -108,12 +108,12 @@ void SingleLinePickUI::DoPaint(HDC hDC, const RECT& rcPaint)
       iBorderColor = UICOLOR_CONTROL_BORDER_DISABLED;
       iBackColor = UICOLOR__INVALID;
    }
-   CBlueRenderEngineUI::DoPaintFrame(hDC, m_manager, rcText, iBorderColor, iBorderColor, iBackColor);
+   BlueRenderEngineUI::DoPaintFrame(hDC, m_manager, rcText, iBorderColor, iBorderColor, iBackColor);
    ::InflateRect(&rcText, -4, -2);
    m_nLinks = lengthof(m_rcLinks);
-   CBlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcText, m_txt, iTextColor, UICOLOR__INVALID, m_rcLinks, m_nLinks, DT_SINGLELINE);
+   BlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcText, m_txt, iTextColor, UICOLOR__INVALID, m_rcLinks, m_nLinks, DT_SINGLELINE);
    RECT rcPadding = { 0 };
-   CBlueRenderEngineUI::DoPaintButton(hDC, m_manager, m_rcButton, _T("<i 4>"), rcPadding, m_uButtonState, 0);
+   BlueRenderEngineUI::DoPaintButton(hDC, m_manager, m_rcButton, _T("<i 4>"), rcPadding, m_uButtonState, 0);
 }
 
 
@@ -409,10 +409,10 @@ void DropDownUI::DoPaint(HDC hDC, const RECT& rcPaint)
    ::SetRect(&m_rcButton, m_rcItem.right - cy, m_rcItem.top, m_rcItem.right, m_rcItem.bottom);
    RECT rcText = { m_rcItem.left, m_rcItem.top, m_rcButton.left + 1, m_rcItem.bottom };
    if (!IsEnabled())  {
-      CBlueRenderEngineUI::DoPaintFrame(hDC, m_manager, rcText, UICOLOR_CONTROL_BORDER_DISABLED, UICOLOR__INVALID, UICOLOR__INVALID);
+      BlueRenderEngineUI::DoPaintFrame(hDC, m_manager, rcText, UICOLOR_CONTROL_BORDER_DISABLED, UICOLOR__INVALID, UICOLOR__INVALID);
    }
    else {
-      CBlueRenderEngineUI::DoPaintFrame(hDC, m_manager, rcText, UICOLOR_CONTROL_BORDER_NORMAL, UICOLOR_CONTROL_BORDER_NORMAL, UICOLOR__INVALID);
+      BlueRenderEngineUI::DoPaintFrame(hDC, m_manager, rcText, UICOLOR_CONTROL_BORDER_NORMAL, UICOLOR_CONTROL_BORDER_NORMAL, UICOLOR__INVALID);
    }
    // Paint dropdown edit box
    ::InflateRect(&rcText, -1, -1);
@@ -432,10 +432,10 @@ void DropDownUI::DoPaint(HDC hDC, const RECT& rcPaint)
       }
    }
    else {
-      CBlueRenderEngineUI::DoFillRect(hDC, m_manager, rcText, UICOLOR_CONTROL_BACKGROUND_NORMAL);
+      BlueRenderEngineUI::DoFillRect(hDC, m_manager, rcText, UICOLOR_CONTROL_BACKGROUND_NORMAL);
    }
    // Paint dropdown button
    RECT rcPadding = { 0 };
-   CBlueRenderEngineUI::DoPaintButton(hDC, m_manager, m_rcButton, _T("<i 6>"), rcPadding, m_uButtonState, 0);
+   BlueRenderEngineUI::DoPaintButton(hDC, m_manager, m_rcButton, _T("<i 6>"), rcPadding, m_uButtonState, 0);
 }
 

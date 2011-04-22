@@ -22,7 +22,7 @@ CRenderClip::~CRenderClip()
 }
 
 
-void CBlueRenderEngineUI::GenerateClip(HDC hDC, RECT rcItem, CRenderClip& clip)
+void BlueRenderEngineUI::GenerateClip(HDC hDC, RECT rcItem, CRenderClip& clip)
 {
    RECT rcClip = { 0 };
    ::GetClipBox(hDC, &rcClip);
@@ -33,19 +33,19 @@ void CBlueRenderEngineUI::GenerateClip(HDC hDC, RECT rcItem, CRenderClip& clip)
    clip.rcItem = rcItem;
 }
 
-void CBlueRenderEngineUI::DoFillRect(HDC hDC, PaintManagerUI* manager, RECT rcItem, UITYPE_COLOR Color)
+void BlueRenderEngineUI::DoFillRect(HDC hDC, PaintManagerUI* manager, RECT rcItem, UITYPE_COLOR Color)
 {
    DoFillRect(hDC, manager, rcItem, manager->GetThemeColor(Color));
 }
 
-void CBlueRenderEngineUI::DoFillRect(HDC hDC, PaintManagerUI* manager, RECT rcItem, COLORREF clrFill)
+void BlueRenderEngineUI::DoFillRect(HDC hDC, PaintManagerUI* manager, RECT rcItem, COLORREF clrFill)
 {
    ASSERT(::GetObjectType(hDC)==OBJ_DC || ::GetObjectType(hDC)==OBJ_MEMDC);
    ::SetBkColor(hDC, clrFill);
    ::ExtTextOut(hDC, 0, 0, ETO_OPAQUE, &rcItem, NULL, 0, NULL);
 }
 
-void CBlueRenderEngineUI::DoPaintLine(HDC hDC, PaintManagerUI* manager, RECT rcItem, UITYPE_COLOR Color)
+void BlueRenderEngineUI::DoPaintLine(HDC hDC, PaintManagerUI* manager, RECT rcItem, UITYPE_COLOR Color)
 {
    ASSERT(::GetObjectType(hDC)==OBJ_DC || ::GetObjectType(hDC)==OBJ_MEMDC);
    POINT ptTemp = { 0 };
@@ -54,7 +54,7 @@ void CBlueRenderEngineUI::DoPaintLine(HDC hDC, PaintManagerUI* manager, RECT rcI
    ::LineTo(hDC, rcItem.right, rcItem.bottom);
 }
 
-void CBlueRenderEngineUI::DoPaintRectangle(HDC hDC, PaintManagerUI* manager, RECT rcItem, UITYPE_COLOR Border, UITYPE_COLOR Fill)
+void BlueRenderEngineUI::DoPaintRectangle(HDC hDC, PaintManagerUI* manager, RECT rcItem, UITYPE_COLOR Border, UITYPE_COLOR Fill)
 {
    ASSERT(::GetObjectType(hDC)==OBJ_DC || ::GetObjectType(hDC)==OBJ_MEMDC);
    ::SelectObject(hDC, manager->GetThemePen(Border));
@@ -62,12 +62,12 @@ void CBlueRenderEngineUI::DoPaintRectangle(HDC hDC, PaintManagerUI* manager, REC
    ::Rectangle(hDC, rcItem.left, rcItem.top, rcItem.right, rcItem.bottom);
 }
 
-void CBlueRenderEngineUI::DoPaintPanel(HDC hDC, PaintManagerUI* manager, RECT rcItem)
+void BlueRenderEngineUI::DoPaintPanel(HDC hDC, PaintManagerUI* manager, RECT rcItem)
 {
    DoPaintFrame(hDC, manager, rcItem, UICOLOR_TITLE_BORDER_LIGHT, UICOLOR_TITLE_BORDER_DARK, UICOLOR_TITLE_BACKGROUND);
 }
 
-void CBlueRenderEngineUI::DoPaintFrame(HDC hDC, PaintManagerUI* manager, RECT rcItem, UITYPE_COLOR Light, UITYPE_COLOR Dark, UITYPE_COLOR Background, UINT uStyle)
+void BlueRenderEngineUI::DoPaintFrame(HDC hDC, PaintManagerUI* manager, RECT rcItem, UITYPE_COLOR Light, UITYPE_COLOR Dark, UITYPE_COLOR Background, UINT uStyle)
 {
    if (Background != UICOLOR__INVALID)  {
       DoFillRect(hDC, manager, rcItem, Background);
@@ -112,7 +112,7 @@ void CBlueRenderEngineUI::DoPaintFrame(HDC hDC, PaintManagerUI* manager, RECT rc
    }
 }
 
-void CBlueRenderEngineUI::DoPaintBitmap(HDC hDC, PaintManagerUI* manager, HBITMAP hBmp, RECT rcBitmap)
+void BlueRenderEngineUI::DoPaintBitmap(HDC hDC, PaintManagerUI* manager, HBITMAP hBmp, RECT rcBitmap)
 {
    ASSERT(::GetObjectType(hBmp)==OBJ_BITMAP);
    ASSERT(::GetObjectType(hDC)==OBJ_DC || ::GetObjectType(hDC)==OBJ_MEMDC);
@@ -123,7 +123,7 @@ void CBlueRenderEngineUI::DoPaintBitmap(HDC hDC, PaintManagerUI* manager, HBITMA
    ::SelectObject(hdcBmp, hOldBitmap);
 }
 
-void CBlueRenderEngineUI::DoPaintArcCaption(HDC hDC, PaintManagerUI* manager, RECT rc, const TCHAR* txt, UINT uStyle)
+void BlueRenderEngineUI::DoPaintArcCaption(HDC hDC, PaintManagerUI* manager, RECT rc, const TCHAR* txt, UINT uStyle)
 {
    CRenderClip clip;
    GenerateClip(hDC, rc, clip);
@@ -151,12 +151,12 @@ void CBlueRenderEngineUI::DoPaintArcCaption(HDC hDC, PaintManagerUI* manager, RE
    }
 }
 
-void CBlueRenderEngineUI::DoPaintButton(HDC hDC, PaintManagerUI* manager, RECT rc, const TCHAR* txt, RECT rcPadding, UINT uState, UINT uStyle)
+void BlueRenderEngineUI::DoPaintButton(HDC hDC, PaintManagerUI* manager, RECT rc, const TCHAR* txt, RECT rcPadding, UINT uState, UINT uStyle)
 {
    ASSERT(::GetObjectType(hDC)==OBJ_DC || ::GetObjectType(hDC)==OBJ_MEMDC);
    // Draw focus rectangle
    if (((uState & UISTATE_FOCUSED) != 0) && manager->GetSystemSettings().bShowKeyboardCues)  {
-      CBlueRenderEngineUI::DoPaintFrame(hDC, manager, rc, UICOLOR_BUTTON_BORDER_FOCUS, UICOLOR_BUTTON_BORDER_FOCUS, UICOLOR__INVALID, UIFRAME_ROUND);
+      BlueRenderEngineUI::DoPaintFrame(hDC, manager, rc, UICOLOR_BUTTON_BORDER_FOCUS, UICOLOR_BUTTON_BORDER_FOCUS, UICOLOR__INVALID, UIFRAME_ROUND);
       ::InflateRect(&rc, -1, -1);
    }
    // Draw frame and body
@@ -210,7 +210,7 @@ void CBlueRenderEngineUI::DoPaintButton(HDC hDC, PaintManagerUI* manager, RECT r
    DoPaintPrettyText(hDC, manager, rcText, txt, clrText, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE | uStyle);
 }
 
-void CBlueRenderEngineUI::DoPaintEditBox(HDC hDC, PaintManagerUI* manager, RECT rcItem, const TCHAR* txt, UINT uState, UINT uDrawStyle, bool bPaintFrameOnly)
+void BlueRenderEngineUI::DoPaintEditBox(HDC hDC, PaintManagerUI* manager, RECT rcItem, const TCHAR* txt, UINT uState, UINT uDrawStyle, bool bPaintFrameOnly)
 {
    ASSERT(::GetObjectType(hDC)==OBJ_DC || ::GetObjectType(hDC)==OBJ_MEMDC);
    if ((uState & UISTATE_DISABLED) != 0)  {
@@ -235,7 +235,7 @@ void CBlueRenderEngineUI::DoPaintEditBox(HDC hDC, PaintManagerUI* manager, RECT 
    ::DrawText(hDC, txt, -1, &rcEdit, DT_SINGLELINE | DT_VCENTER | DT_NOPREFIX | DT_EDITCONTROL | uDrawStyle);
 }
 
-void CBlueRenderEngineUI::DoPaintOptionBox(HDC hDC, PaintManagerUI* manager, RECT rcItem, const TCHAR* txt, UINT uState, UINT uStyle)
+void BlueRenderEngineUI::DoPaintOptionBox(HDC hDC, PaintManagerUI* manager, RECT rcItem, const TCHAR* txt, UINT uState, UINT uStyle)
 {
    ASSERT(::GetObjectType(hDC)==OBJ_DC || ::GetObjectType(hDC)==OBJ_MEMDC);
    // Determine placement of elements
@@ -259,20 +259,20 @@ void CBlueRenderEngineUI::DoPaintOptionBox(HDC hDC, PaintManagerUI* manager, REC
    // Paint text
    UITYPE_COLOR iTextColor = ((uState & UISTATE_DISABLED) != 0) ? UICOLOR_EDIT_TEXT_DISABLED : UICOLOR_EDIT_TEXT_NORMAL;
    int nLinks = 0;
-   CBlueRenderEngineUI::DoPaintPrettyText(hDC, manager, rcText, txt, iTextColor, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE);
+   BlueRenderEngineUI::DoPaintPrettyText(hDC, manager, rcText, txt, iTextColor, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE);
    // Paint focus rectangle
    if (((uState & UISTATE_FOCUSED) != 0) && manager->GetSystemSettings().bShowKeyboardCues)  {
       RECT rcFocus = { 0, 0, 9999, 9999 };;
       int nLinks = 0;
-      CBlueRenderEngineUI::DoPaintPrettyText(hDC, manager, rcFocus, txt, iTextColor, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE | DT_CALCRECT);
+      BlueRenderEngineUI::DoPaintPrettyText(hDC, manager, rcFocus, txt, iTextColor, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE | DT_CALCRECT);
       rcText.right = rcText.left + (rcFocus.right - rcFocus.left);
       rcText.bottom = rcText.top + (rcFocus.bottom - rcFocus.top);
       ::InflateRect(&rcText, 2, 0);
-      CBlueRenderEngineUI::DoPaintFrame(hDC, manager, rcText, UICOLOR_STANDARD_BLACK, UICOLOR_STANDARD_BLACK, UICOLOR__INVALID, UIFRAME_FOCUS);
+      BlueRenderEngineUI::DoPaintFrame(hDC, manager, rcText, UICOLOR_STANDARD_BLACK, UICOLOR_STANDARD_BLACK, UICOLOR__INVALID, UIFRAME_FOCUS);
    }
 }
 
-void CBlueRenderEngineUI::DoPaintTabFolder(HDC hDC, PaintManagerUI* manager, RECT& rcItem, const TCHAR* txt, UINT uState)
+void BlueRenderEngineUI::DoPaintTabFolder(HDC hDC, PaintManagerUI* manager, RECT& rcItem, const TCHAR* txt, UINT uState)
 {
    ASSERT(::GetObjectType(hDC)==OBJ_DC || ::GetObjectType(hDC)==OBJ_MEMDC);
    ::SetBkMode(hDC, TRANSPARENT);
@@ -331,7 +331,7 @@ void CBlueRenderEngineUI::DoPaintTabFolder(HDC hDC, PaintManagerUI* manager, REC
    rcItem = rcTab;
 }
 
-void CBlueRenderEngineUI::DoPaintToolbarButton(HDC hDC, PaintManagerUI* manager, RECT rc, const TCHAR* txt, SIZE szPadding, UINT uState)
+void BlueRenderEngineUI::DoPaintToolbarButton(HDC hDC, PaintManagerUI* manager, RECT rc, const TCHAR* txt, SIZE szPadding, UINT uState)
 {
    ASSERT(::GetObjectType(hDC)==OBJ_DC || ::GetObjectType(hDC)==OBJ_MEMDC);
    if ((uState & UISTATE_PUSHED) != 0)  {
@@ -351,7 +351,7 @@ void CBlueRenderEngineUI::DoPaintToolbarButton(HDC hDC, PaintManagerUI* manager,
    DoPaintPrettyText(hDC, manager, rcText, txt, UICOLOR_TITLE_TEXT, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE | DT_LEFT | DT_VCENTER);
 }
 
-void CBlueRenderEngineUI::DoPaintQuickText(HDC hDC, PaintManagerUI* manager, RECT& rc, LPCSTR txt, UITYPE_COLOR iTextColor, UITYPE_FONT iFont, UINT uStyle)
+void BlueRenderEngineUI::DoPaintQuickText(HDC hDC, PaintManagerUI* manager, RECT& rc, LPCSTR txt, UITYPE_COLOR iTextColor, UITYPE_FONT iFont, UINT uStyle)
 {
    ASSERT(::GetObjectType(hDC)==OBJ_DC || ::GetObjectType(hDC)==OBJ_MEMDC);
    ::SetBkMode(hDC, TRANSPARENT);
@@ -360,7 +360,7 @@ void CBlueRenderEngineUI::DoPaintQuickText(HDC hDC, PaintManagerUI* manager, REC
    ::DrawText(hDC, txt, -1, &rc, DT_SINGLELINE);
 }
 
-void CBlueRenderEngineUI::DoPaintPrettyText(HDC hDC, PaintManagerUI* manager, RECT& rc, const TCHAR* txt, UITYPE_COLOR iTextColor, UITYPE_COLOR iBackColor, RECT* prcLinks, int& nLinkRects, UINT uStyle)
+void BlueRenderEngineUI::DoPaintPrettyText(HDC hDC, PaintManagerUI* manager, RECT& rc, const TCHAR* txt, UITYPE_COLOR iTextColor, UITYPE_COLOR iBackColor, RECT* prcLinks, int& nLinkRects, UINT uStyle)
 {
    ASSERT(::GetObjectType(hDC)==OBJ_DC || ::GetObjectType(hDC)==OBJ_MEMDC);
 
@@ -688,7 +688,7 @@ void CBlueRenderEngineUI::DoPaintPrettyText(HDC hDC, PaintManagerUI* manager, RE
    ::SelectObject(hDC, hOldFont);
 }
 
-void CBlueRenderEngineUI::DoPaintGradient(HDC hDC, PaintManagerUI* manager, RECT rc, COLORREF clrFirst, COLORREF clrSecond, bool bVertical, int nSteps)
+void BlueRenderEngineUI::DoPaintGradient(HDC hDC, PaintManagerUI* manager, RECT rc, COLORREF clrFirst, COLORREF clrSecond, bool bVertical, int nSteps)
 {
    typedef BOOL (WINAPI *PGradientFill)(HDC, PTRIVERTEX, ULONG, PVOID, ULONG, ULONG);
    static PGradientFill lpGradientFill = (PGradientFill) ::GetProcAddress(::GetModuleHandle("msimg32.dll"), "GradientFill");
@@ -737,7 +737,7 @@ void CBlueRenderEngineUI::DoPaintGradient(HDC hDC, PaintManagerUI* manager, RECT
    }
 }
 
-void CBlueRenderEngineUI::DoPaintAlphaBitmap(HDC hDC, PaintManagerUI* manager, HBITMAP hBitmap, RECT rc, BYTE iAlpha)
+void BlueRenderEngineUI::DoPaintAlphaBitmap(HDC hDC, PaintManagerUI* manager, HBITMAP hBitmap, RECT rc, BYTE iAlpha)
 {
    // Alpha blitting is only supported of the msimg32.dll library is located on the machine.
    typedef BOOL (WINAPI *LPALPHABLEND)(HDC, int, int, int, int,HDC, int, int, int, int, BLENDFUNCTION);
@@ -759,7 +759,7 @@ void CBlueRenderEngineUI::DoPaintAlphaBitmap(HDC hDC, PaintManagerUI* manager, H
    ::DeleteDC(hCloneDC);
 }
 
-void CBlueRenderEngineUI::DoAnimateWindow(HWND hWnd, UINT uStyle, DWORD dwTime /*= 200*/)
+void BlueRenderEngineUI::DoAnimateWindow(HWND hWnd, UINT uStyle, DWORD dwTime /*= 200*/)
 {
    typedef BOOL (CALLBACK* PFNANIMATEWINDOW)(HWND, DWORD, DWORD);
 #ifndef AW_HIDE
@@ -774,7 +774,7 @@ void CBlueRenderEngineUI::DoAnimateWindow(HWND hWnd, UINT uStyle, DWORD dwTime /
    if (pfnAnimateWindow != NULL)  pfnAnimateWindow(hWnd, dwTime, dwFlags);
 }
 
-HBITMAP CBlueRenderEngineUI::GenerateAlphaBitmap(PaintManagerUI* manager, ControlUI* ctrl, RECT rc, UITYPE_COLOR Background)
+HBITMAP BlueRenderEngineUI::GenerateAlphaBitmap(PaintManagerUI* manager, ControlUI* ctrl, RECT rc, UITYPE_COLOR Background)
 {
    typedef BOOL (WINAPI *LPALPHABLEND)(HDC, int, int, int, int,HDC, int, int, int, int, BLENDFUNCTION);
    static FARPROC lpAlphaBlend = ::GetProcAddress(::GetModuleHandle("msimg32.dll"), "AlphaBlend");

@@ -5,7 +5,7 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-class CStandardPageWnd : public WindowWnd, public INotifyUI
+class StandardPageWnd : public WindowWnd, public INotifyUI
 {
 public:
    UINT GetClassStyle() const;
@@ -21,7 +21,7 @@ public:
    PaintManagerUI m_pm;
 };
 
-class CStartPageWnd : public CStandardPageWnd
+class StartPageWnd : public StandardPageWnd
 {
 public:
    const TCHAR* GetWindowClassName() const;
@@ -30,7 +30,7 @@ public:
    void Init();
 };
 
-class CConfigurePageWnd : public CStandardPageWnd
+class ConfigurePageWnd : public StandardPageWnd
 {
 public:
    const TCHAR* GetWindowClassName() const;
@@ -38,7 +38,7 @@ public:
    void OnPrepareAnimation();
 };
 
-class CRegistersPageWnd : public CStandardPageWnd, public IListCallbackUI
+class RegistersPageWnd : public StandardPageWnd, public IListCallbackUI
 {
 public:
    const TCHAR* GetWindowClassName() const;
@@ -49,7 +49,7 @@ public:
    int CompareItem(ControlUI* pList, ControlUI* item1, ControlUI* item2);
 };
 
-class CReportsPageWnd : public CStandardPageWnd
+class ReportsPageWnd : public StandardPageWnd
 {
 public:
    const TCHAR* GetWindowClassName() const;
@@ -57,7 +57,7 @@ public:
    void OnPrepareAnimation();
 };
 
-class CSystemsPageWnd : public CStandardPageWnd, public IListCallbackUI
+class SystemsPageWnd : public StandardPageWnd, public IListCallbackUI
 {
 public:
    const TCHAR* GetWindowClassName() const;
@@ -70,7 +70,7 @@ public:
    int CompareItem(ControlUI* pList, ControlUI* item1, ControlUI* item2);
 };
 
-class CSearchPageWnd : public CStandardPageWnd
+class SearchPageWnd : public StandardPageWnd
 {
 public:
    const TCHAR* GetWindowClassName() const;
@@ -79,7 +79,7 @@ public:
    void Init();
 };
 
-class CEditPageWnd : public CStandardPageWnd
+class EditPageWnd : public StandardPageWnd
 {
 public:
    const TCHAR* GetWindowClassName() const;
@@ -89,7 +89,7 @@ public:
    void Init();
 };
 
-class CPopupWnd : public CStandardPageWnd
+class PopupWnd : public StandardPageWnd
 {
 public:
    UINT GetClassStyle() const;

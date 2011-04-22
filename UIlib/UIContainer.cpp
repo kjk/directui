@@ -290,7 +290,7 @@ void ContainerUI::DoPaint(HDC hDC, const RECT& rcPaint)
    if (!::IntersectRect(&rcTemp, &rcPaint, &m_rcItem))  return;
 
    CRenderClip clip;
-   CBlueRenderEngineUI::GenerateClip(hDC, m_rcItem, clip);
+   BlueRenderEngineUI::GenerateClip(hDC, m_rcItem, clip);
 
    for (int it = 0; it < m_items.GetSize(); it++)  {
       ControlUI* ctrl = static_cast<ControlUI*>(m_items[it]);
@@ -370,7 +370,7 @@ void CanvasUI::DoPaint(HDC hDC, const RECT& rcPaint)
    // Fill background
    RECT rcFill = { 0 };
    if (::IntersectRect(&rcFill, &rcPaint, &m_rcItem))  {
-      CBlueRenderEngineUI::DoFillRect(hDC, m_manager, rcFill, m_clrBack);
+      BlueRenderEngineUI::DoFillRect(hDC, m_manager, rcFill, m_clrBack);
    }
    // Paint watermark bitmap
    if (m_hBitmap != NULL)  {
@@ -389,8 +389,8 @@ void CanvasUI::DoPaint(HDC hDC, const RECT& rcPaint)
       RECT rcTemp = { 0 };
       if (::IntersectRect(&rcTemp, &rcPaint, &rcBitmap))  {
          CRenderClip clip;
-         CBlueRenderEngineUI::GenerateClip(hDC, m_rcItem, clip);
-         CBlueRenderEngineUI::DoPaintBitmap(hDC, m_manager, m_hBitmap, rcBitmap);
+         BlueRenderEngineUI::GenerateClip(hDC, m_rcItem, clip);
+         BlueRenderEngineUI::DoPaintBitmap(hDC, m_manager, m_hBitmap, rcBitmap);
       }
    }
    ContainerUI::DoPaint(hDC, rcPaint);

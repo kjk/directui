@@ -88,15 +88,15 @@ void TabFolderUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
    {
       CRenderClip clip;
-      CBlueRenderEngineUI::GenerateClip(hDC, rcPaint, clip);
+      BlueRenderEngineUI::GenerateClip(hDC, rcPaint, clip);
 
       // Fill client area background
       RECT rcFill = { 0 };
       ::IntersectRect(&rcFill, &rcPaint, &m_rcClient);
-      CBlueRenderEngineUI::DoFillRect(hDC, m_manager, rcFill, UICOLOR_TAB_BACKGROUND_NORMAL);
+      BlueRenderEngineUI::DoFillRect(hDC, m_manager, rcFill, UICOLOR_TAB_BACKGROUND_NORMAL);
 
       // Frame around client area
-      CBlueRenderEngineUI::DoPaintRectangle(hDC, m_manager, m_rcClient, UICOLOR_TAB_BORDER, UICOLOR__INVALID);
+      BlueRenderEngineUI::DoPaintRectangle(hDC, m_manager, m_rcClient, UICOLOR_TAB_BORDER, UICOLOR__INVALID);
 
       // Paint tab strip
       RECT rcTabs = m_rcItem;
@@ -118,7 +118,7 @@ void TabFolderUI::DoPaint(HDC hDC, const RECT& rcPaint)
             if (IsFocused())  uState |= UISTATE_FOCUSED;
             if (!IsEnabled())  uState |= UISTATE_DISABLED;
             if (m_curSel == i)  uState = UISTATE_PUSHED;
-            CBlueRenderEngineUI::DoPaintTabFolder(hDC, m_manager, rcTab, txt, uState);
+            BlueRenderEngineUI::DoPaintTabFolder(hDC, m_manager, rcTab, txt, uState);
             posX += (rcTab.right - rcTab.left) + 2;
             m_tabAreas.Add(&rcTab);
          }

@@ -68,7 +68,7 @@ void NavigatorPanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
    COLORREF clrFirst, clrSecond;
    m_manager->GetThemeColorPair(UICOLOR_NAVIGATOR_BACKGROUND, clrFirst, clrSecond);
-   CBlueRenderEngineUI::DoPaintGradient(hDC, m_manager, m_rcItem, clrFirst, clrSecond, false, 64);
+   BlueRenderEngineUI::DoPaintGradient(hDC, m_manager, m_rcItem, clrFirst, clrSecond, false, 64);
    VerticalLayoutUI::DoPaint(hDC, rcPaint);
 }
 
@@ -130,13 +130,13 @@ void NavigatorButtonUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
    RECT rcButton = GetButtonRect(m_rcItem);
 
    if ((m_uButtonState & UISTATE_PUSHED) != 0)  {
-      CBlueRenderEngineUI::DoFillRect(hDC, m_manager, rcButton, UICOLOR_NAVIGATOR_BUTTON_PUSHED);
+      BlueRenderEngineUI::DoFillRect(hDC, m_manager, rcButton, UICOLOR_NAVIGATOR_BUTTON_PUSHED);
    }
    else if (m_bSelected)  {
-      CBlueRenderEngineUI::DoFillRect(hDC, m_manager, rcButton, UICOLOR_NAVIGATOR_BUTTON_SELECTED);
+      BlueRenderEngineUI::DoFillRect(hDC, m_manager, rcButton, UICOLOR_NAVIGATOR_BUTTON_SELECTED);
    }
    else if ((m_uButtonState & UISTATE_PUSHED) != 0)  {
-      CBlueRenderEngineUI::DoFillRect(hDC, m_manager, rcButton, UICOLOR_NAVIGATOR_BUTTON_HOVER);
+      BlueRenderEngineUI::DoFillRect(hDC, m_manager, rcButton, UICOLOR_NAVIGATOR_BUTTON_HOVER);
    }
    ::SelectObject(hDC, m_manager->GetThemePen(m_bSelected ? UICOLOR_NAVIGATOR_BORDER_SELECTED : UICOLOR_NAVIGATOR_BORDER_NORMAL));
    POINT ptTemp = { 0 };
@@ -156,7 +156,7 @@ void NavigatorButtonUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
       rcText.top += 2;
    }
    int nLinks = 0;
-   CBlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcText, m_txt, iTextColor, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE | DT_VCENTER);
+   BlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcText, m_txt, iTextColor, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE | DT_VCENTER);
 }
 
 RECT NavigatorButtonUI::GetButtonRect(RECT rc) const
@@ -194,7 +194,7 @@ SIZE TaskPanelUI::EstimateSize(SIZE szAvailable)
       // Only do this when the control's size suddenly go below the threshold.
       if (m_rcItem.right - m_rcItem.left > 1 && m_hFadeBitmap == NULL)  {
          if (m_hFadeBitmap != NULL)  ::DeleteObject(m_hFadeBitmap);
-         m_hFadeBitmap = CBlueRenderEngineUI::GenerateAlphaBitmap(m_manager, this, m_rcItem, UICOLOR_DIALOG_BACKGROUND);
+         m_hFadeBitmap = BlueRenderEngineUI::GenerateAlphaBitmap(m_manager, this, m_rcItem, UICOLOR_DIALOG_BACKGROUND);
          // If we successfully created the 32bpp bitmap we'll set off the
          // timer so we can get animating...
          if (m_hFadeBitmap != NULL)  m_manager->SetTimer(this, FADE_TIMERID, 50U);
@@ -247,13 +247,13 @@ void TaskPanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
    // Paint caption
    int cyFont = m_manager->GetThemeFontInfo(UIFONT_NORMAL).tmHeight;
    RECT rcArc = { m_rcItem.left, m_rcItem.top, m_rcItem.right, m_rcItem.top + cyFont + 6 };
-   CBlueRenderEngineUI::DoPaintArcCaption(hDC, m_manager, rcArc, m_txt, UIARC_GRIPPER);
+   BlueRenderEngineUI::DoPaintArcCaption(hDC, m_manager, rcArc, m_txt, UIARC_GRIPPER);
    // Paint background
    RECT rcClient = { m_rcItem.left, rcArc.bottom, m_rcItem.right, m_rcItem.bottom };
    COLORREF clrFirst, clrSecond;
    m_manager->GetThemeColorPair(UICOLOR_TASK_BACKGROUND, clrFirst, clrSecond);
-   CBlueRenderEngineUI::DoPaintGradient(hDC, m_manager, rcClient, clrFirst, clrSecond, false, 128);
-   CBlueRenderEngineUI::DoPaintFrame(hDC, m_manager, rcClient, UICOLOR_TASK_CAPTION, UICOLOR_TASK_CAPTION, UICOLOR__INVALID, 0);
+   BlueRenderEngineUI::DoPaintGradient(hDC, m_manager, rcClient, clrFirst, clrSecond, false, 128);
+   BlueRenderEngineUI::DoPaintFrame(hDC, m_manager, rcClient, UICOLOR_TASK_CAPTION, UICOLOR_TASK_CAPTION, UICOLOR__INVALID, 0);
    // Paint elements
    VerticalLayoutUI::DoPaint(hDC, rcPaint);
 }
@@ -283,11 +283,11 @@ void SearchTitlePanelUI::SetPos(RECT rc)
 void SearchTitlePanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
    RECT rcFrame = { m_rcItem.left, m_rcItem.top + 34, m_rcItem.right, m_rcItem.bottom };
-   CBlueRenderEngineUI::DoPaintFrame(hDC, m_manager, rcFrame, UICOLOR_HEADER_SEPARATOR, UICOLOR_HEADER_SEPARATOR, UICOLOR_HEADER_BACKGROUND);
+   BlueRenderEngineUI::DoPaintFrame(hDC, m_manager, rcFrame, UICOLOR_HEADER_SEPARATOR, UICOLOR_HEADER_SEPARATOR, UICOLOR_HEADER_BACKGROUND);
    RECT rcArc = { m_rcItem.left, m_rcItem.top + 14, m_rcItem.right, m_rcItem.top + 34 };
    RECT rcTemp = { 0 };
    if (::IntersectRect(&rcTemp, &rcPaint, &rcArc))  {
-      CBlueRenderEngineUI::DoPaintArcCaption(hDC, m_manager, rcArc, _T(""), 0);
+      BlueRenderEngineUI::DoPaintArcCaption(hDC, m_manager, rcArc, _T(""), 0);
    }
    if (m_iconIdx >= 0)  {
       HICON hIcon = m_manager->GetThemeIcon(m_iconIdx, 50);
@@ -404,7 +404,7 @@ SIZE ImagePanelUI::EstimateSize(SIZE szAvailable)
 
 void ImagePanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
-   CBlueRenderEngineUI::DoPaintBitmap(hDC, m_manager, m_hBitmap, m_rcItem);
+   BlueRenderEngineUI::DoPaintBitmap(hDC, m_manager, m_hBitmap, m_rcItem);
 }
 
 
@@ -487,7 +487,7 @@ SIZE TextPanelUI::EstimateSize(SIZE szAvailable)
 {
    RECT rcText = { 0, 0, MAX(szAvailable.cx, m_cxWidth), 9999 };
    m_nLinks = 0;
-   CBlueRenderEngineUI::DoPaintPrettyText(m_manager->GetPaintDC(), m_manager, rcText, m_txt, UICOLOR_EDIT_TEXT_NORMAL, UICOLOR__INVALID, NULL, m_nLinks, DT_CALCRECT | m_uTextStyle);
+   BlueRenderEngineUI::DoPaintPrettyText(m_manager->GetPaintDC(), m_manager, rcText, m_txt, UICOLOR_EDIT_TEXT_NORMAL, UICOLOR__INVALID, NULL, m_nLinks, DT_CALCRECT | m_uTextStyle);
    return CSize(rcText.right - rcText.left, rcText.bottom - rcText.left);
 }
 
@@ -495,7 +495,7 @@ void TextPanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
    RECT rcText = m_rcItem;
    m_nLinks = lengthof(m_rcLinks);
-   CBlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcText, m_txt, m_TextColor, m_BackColor, m_rcLinks, m_nLinks, m_uTextStyle);
+   BlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcText, m_txt, m_TextColor, m_BackColor, m_rcLinks, m_nLinks, m_uTextStyle);
 }
 
 WarningPanelUI::WarningPanelUI() : m_BackColor(UICOLOR_STANDARD_YELLOW)
@@ -536,7 +536,7 @@ SIZE WarningPanelUI::EstimateSize(SIZE szAvailable)
    RECT rcText = { 0, 0, szAvailable.cx, szAvailable.cy };
    ::InflateRect(&rcText, -6, -4);
    int nLinks = 0;
-   CBlueRenderEngineUI::DoPaintPrettyText(m_manager->GetPaintDC(), m_manager, rcText, m_txt, UICOLOR_EDIT_TEXT_NORMAL, UICOLOR__INVALID, NULL, nLinks, DT_WORDBREAK | DT_CALCRECT);
+   BlueRenderEngineUI::DoPaintPrettyText(m_manager->GetPaintDC(), m_manager, rcText, m_txt, UICOLOR_EDIT_TEXT_NORMAL, UICOLOR__INVALID, NULL, nLinks, DT_WORDBREAK | DT_CALCRECT);
    return CSize(0, (rcText.bottom - rcText.top) + 16);
 }
 
@@ -544,9 +544,9 @@ void WarningPanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
    RECT rcSign = m_rcItem;
    rcSign.bottom -= 8;
-   CBlueRenderEngineUI::DoPaintFrame(hDC, m_manager, rcSign, UICOLOR_STANDARD_GREY, UICOLOR_STANDARD_GREY, m_BackColor);
+   BlueRenderEngineUI::DoPaintFrame(hDC, m_manager, rcSign, UICOLOR_STANDARD_GREY, UICOLOR_STANDARD_GREY, m_BackColor);
    RECT rcText = rcSign;
    ::InflateRect(&rcText, -6, -4);
    m_nLinks = lengthof(m_rcLinks);
-   CBlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcText, m_txt, UICOLOR_BUTTON_TEXT_NORMAL, UICOLOR__INVALID, m_rcLinks, m_nLinks, DT_WORDBREAK);
+   BlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcText, m_txt, UICOLOR_BUTTON_TEXT_NORMAL, UICOLOR__INVALID, m_rcLinks, m_nLinks, DT_WORDBREAK);
 }

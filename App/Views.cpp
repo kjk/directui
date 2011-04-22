@@ -11,17 +11,17 @@
 ////////////////////////////////////////////////////////////////////////
 //
 
-UINT CStandardPageWnd::GetClassStyle() const 
+UINT StandardPageWnd::GetClassStyle() const 
 { 
    return UI_CLASSSTYLE_CHILD; 
 }
 
-void CStandardPageWnd::OnFinalMessage(HWND /*hWnd*/) 
+void StandardPageWnd::OnFinalMessage(HWND /*hWnd*/) 
 { 
    delete this; 
 }
 
-LRESULT CStandardPageWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
+LRESULT StandardPageWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
    if (uMsg == WM_CREATE)  {     
       m_pm.Init(m_hWnd);
@@ -38,15 +38,15 @@ LRESULT CStandardPageWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
    return WindowWnd::HandleMessage(uMsg, wParam, lParam);
 }
 
-void CStandardPageWnd::Init()
+void StandardPageWnd::Init()
 {
 }
 
-void CStandardPageWnd::OnPrepareAnimation()
+void StandardPageWnd::OnPrepareAnimation()
 {
 }
 
-void CStandardPageWnd::Notify(TNotifyUI& msg)
+void StandardPageWnd::Notify(TNotifyUI& msg)
 {
    if (msg.sType == _T("windowinit"))  OnPrepareAnimation();
 }
@@ -55,12 +55,12 @@ void CStandardPageWnd::Notify(TNotifyUI& msg)
 ////////////////////////////////////////////////////////////////////////
 //
 
-const TCHAR* CStartPageWnd::GetWindowClassName() const 
+const TCHAR* StartPageWnd::GetWindowClassName() const 
 { 
    return _T("UIStart"); 
 }
 
-const TCHAR* CStartPageWnd::GetDialogResource() const 
+const TCHAR* StartPageWnd::GetDialogResource() const 
 { 
    return "<Dialog>"
       "<HorizontalLayout>"
@@ -100,7 +100,7 @@ const TCHAR* CStartPageWnd::GetDialogResource() const
       "</Dialog>";     
 }
 
-void CStartPageWnd::OnPrepareAnimation()
+void StartPageWnd::OnPrepareAnimation()
 {
    COLORREF clrBack = m_pm.GetThemeColor(UICOLOR_WINDOW_BACKGROUND);
    RECT rcCtrl = m_pm.FindControl(_T("link_registers"))->GetPos();
@@ -113,7 +113,7 @@ void CStartPageWnd::OnPrepareAnimation()
    m_pm.AddAnimJob(AnimJobUI(UIANIMTYPE_FLAT, 250, 350, clrBack, clrBack, CRect(rcCtrl.left, rcCtrl.top, rcCtrl.left + 50, rcCtrl.top + 50), 40, 0, 4, 255, 0.3f));
 }
 
-void CStartPageWnd::Init()
+void StartPageWnd::Init()
 {
 }
 
@@ -121,12 +121,12 @@ void CStartPageWnd::Init()
 ////////////////////////////////////////////////////////////////////////
 //
 
-const TCHAR* CConfigurePageWnd::GetWindowClassName() const 
+const TCHAR* ConfigurePageWnd::GetWindowClassName() const 
 { 
    return _T("UIConfigure"); 
 }
 
-const TCHAR* CConfigurePageWnd::GetDialogResource() const 
+const TCHAR* ConfigurePageWnd::GetDialogResource() const 
 { 
    return "<Dialog>"
       "<HorizontalLayout>"
@@ -183,7 +183,7 @@ const TCHAR* CConfigurePageWnd::GetDialogResource() const
       "</Dialog>";
 }
 
-void CConfigurePageWnd::OnPrepareAnimation()
+void ConfigurePageWnd::OnPrepareAnimation()
 {
    COLORREF clrBack = m_pm.GetThemeColor(UICOLOR_TITLE_BACKGROUND);
    const RECT rcCtrl = m_pm.FindControl(_T("titlepanel"))->GetPos();
@@ -194,12 +194,12 @@ void CConfigurePageWnd::OnPrepareAnimation()
 ////////////////////////////////////////////////////////////////////////
 //
 
-const TCHAR* CRegistersPageWnd::GetWindowClassName() const 
+const TCHAR* RegistersPageWnd::GetWindowClassName() const 
 { 
    return _T("UIRegisters"); 
 }
 
-const TCHAR* CRegistersPageWnd::GetDialogResource() const 
+const TCHAR* RegistersPageWnd::GetDialogResource() const 
 { 
    return "<Dialog>"
       "<HorizontalLayout>"
@@ -245,14 +245,14 @@ const TCHAR* CRegistersPageWnd::GetDialogResource() const
     "</Dialog>";
 }
 
-void CRegistersPageWnd::OnPrepareAnimation()
+void RegistersPageWnd::OnPrepareAnimation()
 {
    ListUI* pList = static_cast<ListUI*>(m_pm.FindControl(_T("list")));
    pList->SetTextCallback(this);                                          // We want GetItemText for items
    for (int i = 0; i < 1000; i++)  pList->Add(new ListTextElementUI);    // We want 1000 items in list
 }
 
-const TCHAR* CRegistersPageWnd::GetItemText(ControlUI* ctrl, int idx, int iSubItem)
+const TCHAR* RegistersPageWnd::GetItemText(ControlUI* ctrl, int idx, int iSubItem)
 {
    if (idx == 0 && iSubItem == 0)  return _T("<i 3>Item1");
    if (idx == 1 && iSubItem == 0)  return _T("<i 3>Item2");
@@ -265,7 +265,7 @@ const TCHAR* CRegistersPageWnd::GetItemText(ControlUI* ctrl, int idx, int iSubIt
    return sTemp;
 }
 
-int CRegistersPageWnd::CompareItem(ControlUI* pList, ControlUI* item1, ControlUI* item2)
+int RegistersPageWnd::CompareItem(ControlUI* pList, ControlUI* item1, ControlUI* item2)
 {
    return 0;
 }
@@ -274,12 +274,12 @@ int CRegistersPageWnd::CompareItem(ControlUI* pList, ControlUI* item1, ControlUI
 ////////////////////////////////////////////////////////////////////////
 //
 
-const TCHAR* CSystemsPageWnd::GetWindowClassName() const 
+const TCHAR* SystemsPageWnd::GetWindowClassName() const 
 { 
    return _T("UISystems"); 
 }
 
-const TCHAR* CSystemsPageWnd::GetDialogResource() const 
+const TCHAR* SystemsPageWnd::GetDialogResource() const 
 { 
    return "<Dialog>"
       "<HorizontalLayout>"
@@ -334,13 +334,13 @@ const TCHAR* CSystemsPageWnd::GetDialogResource() const
     "</Dialog>";
 }
 
-void CSystemsPageWnd::Notify(TNotifyUI& msg)
+void SystemsPageWnd::Notify(TNotifyUI& msg)
 {
    if (msg.sType == _T("itemexpand"))  OnExpandItem(msg.pSender);
-   CStandardPageWnd::Notify(msg);
+   StandardPageWnd::Notify(msg);
 }
 
-const TCHAR* CSystemsPageWnd::GetItemText(ControlUI* ctrl, int idx, int iSubItem)
+const TCHAR* SystemsPageWnd::GetItemText(ControlUI* ctrl, int idx, int iSubItem)
 {
    if (idx == 0 && iSubItem == 1)  return _T("Expanding Item #1");
    if (idx == 1 && iSubItem == 1)  return _T("Expanding Item #2");
@@ -354,18 +354,18 @@ const TCHAR* CSystemsPageWnd::GetItemText(ControlUI* ctrl, int idx, int iSubItem
    return _T("");
 }
 
-int CSystemsPageWnd::CompareItem(ControlUI* pList, ControlUI* item1, ControlUI* item2)
+int SystemsPageWnd::CompareItem(ControlUI* pList, ControlUI* item1, ControlUI* item2)
 {
    return 0;
 }
 
-void CSystemsPageWnd::OnPrepareAnimation()
+void SystemsPageWnd::OnPrepareAnimation()
 {
    ListUI* pList = static_cast<ListUI*>(m_pm.FindControl(_T("list")));
    pList->SetTextCallback(this);  // List will call our GetItemText()
 }
 
-void CSystemsPageWnd::OnExpandItem(ControlUI* ctrl)
+void SystemsPageWnd::OnExpandItem(ControlUI* ctrl)
 {
    ListExpandElementUI* item = static_cast<ListExpandElementUI*>(ctrl);
    // Add slowly...
@@ -383,12 +383,12 @@ void CSystemsPageWnd::OnExpandItem(ControlUI* ctrl)
 ////////////////////////////////////////////////////////////////////////
 //
 
-const TCHAR* CReportsPageWnd::GetWindowClassName() const 
+const TCHAR* ReportsPageWnd::GetWindowClassName() const 
 { 
    return _T("UIReports"); 
 }
 
-const TCHAR* CReportsPageWnd::GetDialogResource() const 
+const TCHAR* ReportsPageWnd::GetDialogResource() const 
 { 
    return "<Dialog>"
       "<HorizontalLayout>"
@@ -424,7 +424,7 @@ const TCHAR* CReportsPageWnd::GetDialogResource() const
       "</Dialog>";
 }
 
-void CReportsPageWnd::OnPrepareAnimation()
+void ReportsPageWnd::OnPrepareAnimation()
 {
    const RECT rcCtrl = m_pm.FindControl(_T("titlepanel"))->GetPos();
    m_pm.AddAnimJob(AnimJobUI(UIANIMTYPE_FLAT, 0, 300, CLR_INVALID, CLR_INVALID, rcCtrl, 0, 0, -2, -200, 0.0f));
@@ -434,30 +434,30 @@ void CReportsPageWnd::OnPrepareAnimation()
 ////////////////////////////////////////////////////////////////////////
 //
 
-const TCHAR* CSearchPageWnd::GetWindowClassName() const 
+const TCHAR* SearchPageWnd::GetWindowClassName() const 
 { 
    return _T("UISearch"); 
 }
 
-void CSearchPageWnd::Init()
+void SearchPageWnd::Init()
 {
    m_pm.SetMinMaxInfo(640,480);
 }
 
-void CSearchPageWnd::Notify(TNotifyUI& msg)
+void SearchPageWnd::Notify(TNotifyUI& msg)
 {
    if (msg.sType == _T("click"))  
    {
       if (msg.pSender->GetName() == _T("ok"))  {
-         CStandardPageWnd* win = new CEditPageWnd;
+         StandardPageWnd* win = new EditPageWnd;
          win->Create(m_hWnd, NULL, UI_WNDSTYLE_FRAME, 0L);
       }
       if (msg.pSender->GetName() == _T("cancel"))  Close();
    }
-   CStandardPageWnd::Notify(msg);
+   StandardPageWnd::Notify(msg);
 }
 
-const TCHAR* CSearchPageWnd::GetDialogResource() const 
+const TCHAR* SearchPageWnd::GetDialogResource() const 
 { 
    return "<Dialog caption=\"Search Page\" >"
       "<VerticalLayout>"
@@ -501,29 +501,29 @@ const TCHAR* CSearchPageWnd::GetDialogResource() const
 ////////////////////////////////////////////////////////////////////////
 //
 
-const TCHAR* CEditPageWnd::GetWindowClassName() const 
+const TCHAR* EditPageWnd::GetWindowClassName() const 
 { 
    return _T("UIEdit"); 
 }
 
-void CEditPageWnd::Init()
+void EditPageWnd::Init()
 {
    ResizeClient(640, 480);
    m_pm.SetMinMaxInfo(640,480);
 }
 
-void CEditPageWnd::Notify(TNotifyUI& msg)
+void EditPageWnd::Notify(TNotifyUI& msg)
 {
    if (msg.sType == _T("click") && msg.pSender->GetName() == _T("cancel"))  Close();
    if (msg.sType == _T("link") && msg.pSender->GetName() == _T("warning"))  {
-      CPopupWnd* pPopup = new CPopupWnd;
+      PopupWnd* pPopup = new PopupWnd;
       pPopup->Create(m_hWnd, _T(""), UI_WNDSTYLE_DIALOG, UI_WNDSTYLE_EX_DIALOG, 0, 0, 0, 0, NULL);
       pPopup->ShowModal();
    }
-   CStandardPageWnd::Notify(msg);
+   StandardPageWnd::Notify(msg);
 }
 
-const TCHAR* CEditPageWnd::GetDialogResource() const 
+const TCHAR* EditPageWnd::GetDialogResource() const 
 { 
    return "<Dialog caption=\"Rediger Person\" >"
       "<VerticalLayout>"
@@ -595,7 +595,7 @@ const TCHAR* CEditPageWnd::GetDialogResource() const
       "</Dialog>";
 }
    
-void CEditPageWnd::OnPrepareAnimation()
+void EditPageWnd::OnPrepareAnimation()
 {
    const RECT rcCtrl = m_pm.FindControl(_T("warning"))->GetPos();
    m_pm.AddAnimJob(AnimJobUI(UIANIMTYPE_FLAT, 0, 300, CLR_INVALID, CLR_INVALID, rcCtrl, 0, 0, -2, -200, 0.0f));
@@ -605,29 +605,29 @@ void CEditPageWnd::OnPrepareAnimation()
 ////////////////////////////////////////////////////////////////////////
 //
 
-UINT CPopupWnd::GetClassStyle() const
+UINT PopupWnd::GetClassStyle() const
 {
    return UI_CLASSSTYLE_DIALOG;
 }
 
-const TCHAR* CPopupWnd::GetWindowClassName() const 
+const TCHAR* PopupWnd::GetWindowClassName() const 
 { 
    return _T("UIPopup"); 
 }
 
-void CPopupWnd::Init()
+void PopupWnd::Init()
 {
    ResizeClient(440, 210);
    CenterWindow();
 }
 
-void CPopupWnd::Notify(TNotifyUI& msg)
+void PopupWnd::Notify(TNotifyUI& msg)
 {
    if (msg.sType == _T("click"))  Close();
-   CStandardPageWnd::Notify(msg);
+   StandardPageWnd::Notify(msg);
 }
 
-const TCHAR* CPopupWnd::GetDialogResource() const 
+const TCHAR* PopupWnd::GetDialogResource() const 
 { 
    return "<Dialog>"
       "<VerticalLayout>"

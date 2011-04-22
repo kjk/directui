@@ -100,7 +100,7 @@ SIZE ButtonUI::EstimateSize(SIZE /*szAvailable*/)
    if (m_cxWidth == 0 && m_manager != NULL)  {
       RECT rcText = { 0, 0, 9999, 20 };
       int nLinks = 0;
-      CBlueRenderEngineUI::DoPaintPrettyText(m_manager->GetPaintDC(), m_manager, rcText, m_txt, UICOLOR_STANDARD_BLACK, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE | DT_CALCRECT);
+      BlueRenderEngineUI::DoPaintPrettyText(m_manager->GetPaintDC(), m_manager, rcText, m_txt, UICOLOR_STANDARD_BLACK, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE | DT_CALCRECT);
       sz.cx = rcText.right - rcText.left;
    }
    sz.cx += m_szPadding.cx * 2;
@@ -115,7 +115,7 @@ void ButtonUI::DoPaint(HDC hDC, const RECT& rcPaint)
    if (IsFocused())  uState |= UISTATE_FOCUSED;
    if (!IsEnabled())  uState |= UISTATE_DISABLED;
    RECT rcPadding = { m_szPadding.cx, m_szPadding.cy, m_szPadding.cx, m_szPadding.cy };
-   CBlueRenderEngineUI::DoPaintButton(hDC, m_manager, m_rcItem, m_txt, rcPadding, m_uButtonState | uState, m_uTextStyle);
+   BlueRenderEngineUI::DoPaintButton(hDC, m_manager, m_rcItem, m_txt, rcPadding, m_uButtonState | uState, m_uTextStyle);
 }
 
 
@@ -209,6 +209,6 @@ void OptionUI::DoPaint(HDC hDC, const RECT& rcPaint)
    if (m_bSelected)  uState |= UISTATE_CHECKED;
    if (IsFocused())  uState |= UISTATE_FOCUSED;
    if (!IsEnabled())  uState |= UISTATE_DISABLED;
-   CBlueRenderEngineUI::DoPaintOptionBox(hDC, m_manager, m_rcItem, m_txt, m_uButtonState | uState, m_uStyle);
+   BlueRenderEngineUI::DoPaintOptionBox(hDC, m_manager, m_rcItem, m_txt, m_uButtonState | uState, m_uStyle);
 }
 

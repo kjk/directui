@@ -6,11 +6,10 @@
 
 #include "Views.h"
 
-
-class CFrameWindowWnd : public WindowWnd, public INotifyUI
+class FrameWindowWnd : public WindowWnd, public INotifyUI
 {
 public:
-   CFrameWindowWnd() : m_hWndClient(NULL) { };
+   FrameWindowWnd() : m_hWndClient(NULL) { };
    const TCHAR* GetWindowClassName() const { return _T("UIMainFrame"); };
    UINT GetClassStyle() const { return UI_CLASSSTYLE_FRAME; };
    void OnFinalMessage(HWND /*hWnd*/) { delete this; };
@@ -53,17 +52,17 @@ public:
 
    void _CreatePage(CStdString sName)
    {
-      CStandardPageWnd* win = NULL;
-      if (sName == "page_start")  win = new CStartPageWnd;
-      if (sName == "page_configure")  win = new CConfigurePageWnd;
-      if (sName == "page_reports")  win = new CReportsPageWnd;
-      if (sName == "page_systems")  win = new CSystemsPageWnd;
-      if (sName == "page_registers")  win = new CRegistersPageWnd;
-      if (sName == "link_start")  win = new CStartPageWnd;
-      if (sName == "link_configure")  win = new CConfigurePageWnd;
-      if (sName == "link_reports")  win = new CReportsPageWnd;
-      if (sName == "link_systems")  win = new CSystemsPageWnd;
-      if (sName == "link_registers")  win = new CRegistersPageWnd;
+      StandardPageWnd* win = NULL;
+      if (sName == "page_start")  win = new StartPageWnd;
+      if (sName == "page_configure")  win = new ConfigurePageWnd;
+      if (sName == "page_reports")  win = new ReportsPageWnd;
+      if (sName == "page_systems")  win = new SystemsPageWnd;
+      if (sName == "page_registers")  win = new RegistersPageWnd;
+      if (sName == "link_start")  win = new StartPageWnd;
+      if (sName == "link_configure")  win = new ConfigurePageWnd;
+      if (sName == "link_reports")  win = new ReportsPageWnd;
+      if (sName == "link_systems")  win = new SystemsPageWnd;
+      if (sName == "link_registers")  win = new RegistersPageWnd;
       if (win != NULL)  {
          if (m_hWndClient != NULL)  ::PostMessage(m_hWndClient, WM_CLOSE, 0, 0L);
          win->m_pm.AddNotifier(this);
@@ -71,8 +70,8 @@ public:
          PostMessage(WM_SIZE);
          return;
       }
-      if (sName == "page_search")  win = new CSearchPageWnd;
-      if (sName == "page_edit")  win = new CEditPageWnd;
+      if (sName == "page_search")  win = new SearchPageWnd;
+      if (sName == "page_edit")  win = new EditPageWnd;
       if (win != NULL)  {
          win->Create(m_hWnd, NULL, UI_WNDSTYLE_FRAME, UI_WNDSTYLE_EX_FRAME);
          return;
@@ -93,7 +92,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*l
 
    if (::LoadLibrary("d3d9.dll") == NULL)  ::MessageBox(NULL, "Denne applikation vises bedst med DirectX 9 installeret!", "Test", MB_ICONINFORMATION);
 
-   CFrameWindowWnd* pFrame = new CFrameWindowWnd();
+   FrameWindowWnd* pFrame = new FrameWindowWnd();
    if (pFrame == NULL)  return 0;
    pFrame->Create(NULL, "Test", UI_WNDSTYLE_FRAME, WS_EX_WINDOWEDGE);
 
