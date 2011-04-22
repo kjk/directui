@@ -99,28 +99,28 @@ void ListElementUI::SetAttribute(const TCHAR* name, const TCHAR* value)
 }
 
 
-CListHeaderUI::CListHeaderUI()
+ListHeaderUI::ListHeaderUI()
 {
    SetInset(CSize(0, 0));
 }
 
-const TCHAR* CListHeaderUI::GetClass() const
+const TCHAR* ListHeaderUI::GetClass() const
 {
    return _T("ListHeaderUI");
 }
 
-void* CListHeaderUI::GetInterface(const TCHAR* name)
+void* ListHeaderUI::GetInterface(const TCHAR* name)
 {
    if (_tcscmp(name, _T("ListHeader")) == 0)  return this;
    return HorizontalLayoutUI::GetInterface(name);
 }
 
-SIZE CListHeaderUI::EstimateSize(SIZE /*szAvailable*/)
+SIZE ListHeaderUI::EstimateSize(SIZE /*szAvailable*/)
 {
    return CSize(0, 6 + m_manager->GetThemeFontInfo(UIFONT_NORMAL).tmHeight);
 }
 
-void CListHeaderUI::DoPaint(HDC hDC, const RECT& rcPaint)
+void ListHeaderUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
    // Draw background
    COLORREF clrBack1, clrBack2;
@@ -240,7 +240,7 @@ RECT CListHeaderItemUI::GetThumbRect(RECT rc) const
 }
 
 
-CListFooterUI::CListFooterUI()
+ListFooterUI::ListFooterUI()
 {
    CLabelPanelUI* pLabel = new CLabelPanelUI;
    Add(pLabel);
@@ -248,23 +248,23 @@ CListFooterUI::CListFooterUI()
    Add(pPadding);
 }
 
-const TCHAR* CListFooterUI::GetClass() const
+const TCHAR* ListFooterUI::GetClass() const
 {
    return _T("ListFooterUI");
 }
 
-void* CListFooterUI::GetInterface(const TCHAR* name)
+void* ListFooterUI::GetInterface(const TCHAR* name)
 {
    if (_tcscmp(name, _T("ListFooter")) == 0)  return this;
    return HorizontalLayoutUI::GetInterface(name);
 }
 
-SIZE CListFooterUI::EstimateSize(SIZE /*szAvailable*/)
+SIZE ListFooterUI::EstimateSize(SIZE /*szAvailable*/)
 {
    return CSize(0, 8 + m_manager->GetThemeFontInfo(UIFONT_NORMAL).tmHeight);
 }
 
-void CListFooterUI::DoPaint(HDC hDC, const RECT& rcPaint)
+void ListFooterUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
    COLORREF clrBack1, clrBack2;
    m_manager->GetThemeColorPair(UICOLOR_HEADER_BACKGROUND, clrBack1, clrBack2);
@@ -281,8 +281,8 @@ void CListFooterUI::DoPaint(HDC hDC, const RECT& rcPaint)
 ListUI::ListUI() : m_pCallback(NULL), m_curSel(-1), m_iExpandedItem(-1)
 {
    m_pList = new VerticalLayoutUI;
-   m_pHeader = new CListHeaderUI;
-   m_pFooter = new CListFooterUI;
+   m_pHeader = new ListHeaderUI;
+   m_pFooter = new ListFooterUI;
 
    CWhiteCanvasUI* pWhite = new CWhiteCanvasUI;
    pWhite->Add(m_pList);
@@ -438,12 +438,12 @@ void ListUI::Event(TEventUI& event)
    ControlUI::Event(event);
 }
 
-CListHeaderUI* ListUI::GetHeader() const
+ListHeaderUI* ListUI::GetHeader() const
 {
    return m_pHeader;
 }
 
-CListFooterUI* ListUI::GetFooter() const
+ListFooterUI* ListUI::GetFooter() const
 {
    return m_pFooter;
 }

@@ -73,11 +73,11 @@ protected:
    int m_iScrollPos;
 };
 
-class UILIB_API CCanvasUI : public ContainerUI
+class UILIB_API CanvasUI : public ContainerUI
 {
 public:
-   CCanvasUI();
-   virtual ~CCanvasUI();
+   CanvasUI();
+   virtual ~CanvasUI();
 
    const TCHAR* GetClass() const;
 
@@ -96,7 +96,7 @@ protected:
 };
 
 
-class UILIB_API CWindowCanvasUI : public CCanvasUI
+class UILIB_API CWindowCanvasUI : public CanvasUI
 {
 public:
    CWindowCanvasUI();
@@ -104,7 +104,7 @@ public:
 };
 
 
-class UILIB_API CControlCanvasUI : public CCanvasUI
+class UILIB_API CControlCanvasUI : public CanvasUI
 {
 public:
    CControlCanvasUI();
@@ -112,7 +112,7 @@ public:
 };
 
 
-class UILIB_API CWhiteCanvasUI : public CCanvasUI
+class UILIB_API CWhiteCanvasUI : public CanvasUI
 {
 public:
    CWhiteCanvasUI();
@@ -120,7 +120,7 @@ public:
 };
 
 
-class UILIB_API CDialogCanvasUI : public CCanvasUI
+class UILIB_API CDialogCanvasUI : public CanvasUI
 {
 public:
    CDialogCanvasUI();
@@ -128,7 +128,7 @@ public:
 };
 
 
-class UILIB_API CTabFolderCanvasUI : public CCanvasUI
+class UILIB_API CTabFolderCanvasUI : public CanvasUI
 {
 public:
    CTabFolderCanvasUI();

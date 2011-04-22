@@ -6,12 +6,12 @@
 class CActiveXCtrl;
 struct IOleObject;
 
-class UILIB_API CActiveXUI : public ControlUI, public IMessageFilterUI
+class UILIB_API ActiveXUI : public ControlUI, public IMessageFilterUI
 {
 friend CActiveXCtrl;
 public:
-   CActiveXUI();
-   virtual ~CActiveXUI();
+   ActiveXUI();
+   virtual ~ActiveXUI();
 
    const TCHAR* GetClass() const;
 

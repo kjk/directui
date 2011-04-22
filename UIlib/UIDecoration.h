@@ -33,7 +33,7 @@ public:
 };
 
 
-class UILIB_API CFadedLineUI : public ControlUI
+class UILIB_API FadedLineUI : public ControlUI
 {
 public:
    const TCHAR* GetClass() const;

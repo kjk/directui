@@ -89,7 +89,7 @@ public:
 class CActiveXFrameWnd : public IOleInPlaceFrame
 {
 public:
-   CActiveXFrameWnd(CActiveXUI* owner) : m_dwRef(1), m_owner(owner), m_pActiveObject(NULL)
+   CActiveXFrameWnd(ActiveXUI* owner) : m_dwRef(1), m_owner(owner), m_pActiveObject(NULL)
    {
    }
    ~CActiveXFrameWnd()
@@ -98,7 +98,7 @@ public:
    }
 
    ULONG m_dwRef;
-   CActiveXUI* m_owner;
+   ActiveXUI* m_owner;
    IOleInPlaceActiveObject* m_pActiveObject;
 
    // IUnknown
@@ -187,7 +187,7 @@ class CActiveXCtrl :
    public IObjectWithSite,
    public IOleContainer
 {
-friend CActiveXUI;
+friend ActiveXUI;
 friend CActiveXWnd;
 public:
    CActiveXCtrl();
@@ -266,7 +266,7 @@ protected:
 
 protected:
    LONG m_dwRef;
-   CActiveXUI* m_owner;
+   ActiveXUI* m_owner;
    CActiveXWnd* m_win;
    IUnknown* m_pUnkSite;
    IViewObject* m_pViewObject;
@@ -809,22 +809,22 @@ LRESULT CActiveXWnd::OnPaint(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHan
    return 1;
 }
 
-CActiveXUI::CActiveXUI() : m_pUnk(NULL), m_ctrl(NULL), m_hwndHost(NULL), m_bCreated(false)
+ActiveXUI::ActiveXUI() : m_pUnk(NULL), m_ctrl(NULL), m_hwndHost(NULL), m_bCreated(false)
 {
    m_szFixed.cx = m_szFixed.cy = 0;
 }
 
-CActiveXUI::~CActiveXUI()
+ActiveXUI::~ActiveXUI()
 {
    ReleaseControl();
 }
 
-const TCHAR* CActiveXUI::GetClass() const
+const TCHAR* ActiveXUI::GetClass() const
 {
    return _T("ActiveXUI");
 }
 
-SIZE CActiveXUI::EstimateSize(SIZE szAvailable)
+SIZE ActiveXUI::EstimateSize(SIZE szAvailable)
 {
    return m_szFixed;
 }
@@ -844,7 +844,7 @@ static void PixelToHiMetric(const SIZEL* lpSizeInPix, LPSIZEL lpSizeInHiMetric)
    lpSizeInHiMetric->cy = MAP_PIX_TO_LOGHIM(lpSizeInPix->cy, nPixelsPerInchY);
 }
 
-void CActiveXUI::SetPos(RECT rc)
+void ActiveXUI::SetPos(RECT rc)
 {
    if (!m_bCreated)  DelayedControlCreation();
 
@@ -873,7 +873,7 @@ void CActiveXUI::SetPos(RECT rc)
    }
 }
 
-void CActiveXUI::DoPaint(HDC hDC, const RECT& /*rcPaint*/)
+void ActiveXUI::DoPaint(HDC hDC, const RECT& /*rcPaint*/)
 {
    if (m_ctrl != NULL && m_ctrl->m_bWindowless && m_ctrl->m_pViewObject != NULL) 
    {
@@ -881,7 +881,7 @@ void CActiveXUI::DoPaint(HDC hDC, const RECT& /*rcPaint*/)
    }
 }
 
-void CActiveXUI::SetAttribute(const TCHAR* name, const TCHAR* value)
+void ActiveXUI::SetAttribute(const TCHAR* name, const TCHAR* value)
 {
    if (_tcscmp(name, _T("clsid")) == 0)  CreateControl(value);
    else if (_tcscmp(name, _T("width")) == 0)  SetWidth(_ttoi(value));
@@ -889,7 +889,7 @@ void CActiveXUI::SetAttribute(const TCHAR* name, const TCHAR* value)
    else ControlUI::SetAttribute(name, value);
 }
 
-LRESULT CActiveXUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, bool& bHandled)
+LRESULT ActiveXUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, bool& bHandled)
 {
    if (m_ctrl == NULL)  return 0;
    ASSERT(m_ctrl->m_bWindowless);
@@ -934,17 +934,17 @@ LRESULT CActiveXUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, bool
    return lResult;
 }
 
-void CActiveXUI::SetWidth(int cx)
+void ActiveXUI::SetWidth(int cx)
 {
    m_szFixed.cx = cx;
 }
 
-void CActiveXUI::SetHeight(int cy)
+void ActiveXUI::SetHeight(int cy)
 {
    m_szFixed.cy = cy;
 }
 
-bool CActiveXUI::CreateControl(const TCHAR* pstrCLSID)
+bool ActiveXUI::CreateControl(const TCHAR* pstrCLSID)
 {
    CLSID clsid = { 0 };
    OLECHAR szCLSID[100] = { 0 };
@@ -958,7 +958,7 @@ bool CActiveXUI::CreateControl(const TCHAR* pstrCLSID)
    return CreateControl(clsid);
 }
 
-bool CActiveXUI::CreateControl(const CLSID clsid)
+bool ActiveXUI::CreateControl(const CLSID clsid)
 {
    ASSERT(clsid!=IID_NULL);
    if (clsid == IID_NULL)  return false;
@@ -970,7 +970,7 @@ bool CActiveXUI::CreateControl(const CLSID clsid)
    return true;
 }
 
-void CActiveXUI::ReleaseControl()
+void ActiveXUI::ReleaseControl()
 {
    m_hwndHost = NULL;
    if (m_pUnk != NULL)  {
@@ -993,7 +993,7 @@ void CActiveXUI::ReleaseControl()
    m_manager->RemoveMessageFilter(this);
 }
 
-bool CActiveXUI::DelayedControlCreation()
+bool ActiveXUI::DelayedControlCreation()
 {
    ReleaseControl();
    // At this point we'll create the ActiveX control
@@ -1043,7 +1043,7 @@ bool CActiveXUI::DelayedControlCreation()
    return SUCCEEDED(Hr);
 }
 
-HRESULT CActiveXUI::GetControl(const IID iid, LPVOID* ppRet)
+HRESULT ActiveXUI::GetControl(const IID iid, LPVOID* ppRet)
 {
    ASSERT(ppRet!=NULL);
    ASSERT(*ppRet==NULL);

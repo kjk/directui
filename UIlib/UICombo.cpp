@@ -120,7 +120,7 @@ void CSingleLinePickUI::DoPaint(HDC hDC, const RECT& rcPaint)
 class CDropDownWnd : public CWindowWnd
 {
 public:
-   void Init(CDropDownUI* owner);
+   void Init(DropDownUI* owner);
    const TCHAR* GetWindowClassName() const;
    void OnFinalMessage(HWND hWnd);
 
@@ -128,12 +128,12 @@ public:
 
 public:
    CPaintManagerUI m_pm;
-   CDropDownUI* m_owner;
+   DropDownUI* m_owner;
    int m_iOldSel;
 };
 
 
-void CDropDownWnd::Init(CDropDownUI* owner)
+void CDropDownWnd::Init(DropDownUI* owner)
 {
    m_owner = owner;
    m_iOldSel = m_owner->GetCurSel();
@@ -214,7 +214,7 @@ LRESULT CDropDownWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 ////////////////////////////////////////////////////////
 
 
-CDropDownUI::CDropDownUI() : 
+DropDownUI::DropDownUI() : 
    m_curSel(-1), 
    m_uButtonState(0)
 {
@@ -222,33 +222,33 @@ CDropDownUI::CDropDownUI() :
    ::ZeroMemory(&m_rcButton, sizeof(RECT));
 }
 
-const TCHAR* CDropDownUI::GetClass() const
+const TCHAR* DropDownUI::GetClass() const
 {
    return _T("DropDownUI");
 }
 
-void* CDropDownUI::GetInterface(const TCHAR* name)
+void* DropDownUI::GetInterface(const TCHAR* name)
 {
    if (_tcscmp(name, _T("ListOwner")) == 0)  return static_cast<IListOwnerUI*>(this);
    return ContainerUI::GetInterface(name);
 }
 
-UINT CDropDownUI::GetControlFlags() const
+UINT DropDownUI::GetControlFlags() const
 {
    return UIFLAG_TABSTOP;
 }
 
-void CDropDownUI::Init()
+void DropDownUI::Init()
 {
    if (m_curSel < 0)  SelectItem(0);
 }
 
-int CDropDownUI::GetCurSel() const
+int DropDownUI::GetCurSel() const
 {
    return m_curSel;
 }
 
-bool CDropDownUI::SelectItem(int idx)
+bool DropDownUI::SelectItem(int idx)
 {
    if (idx == m_curSel)  return true;
    if (m_curSel >= 0)  {
@@ -274,7 +274,7 @@ bool CDropDownUI::SelectItem(int idx)
    return true;
 }
 
-bool CDropDownUI::Add(ControlUI* ctrl)
+bool DropDownUI::Add(ControlUI* ctrl)
 {
    IListItemUI* listItem = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
    if (listItem != NULL)  {
@@ -284,19 +284,19 @@ bool CDropDownUI::Add(ControlUI* ctrl)
    return ContainerUI::Add(ctrl);
 }
 
-bool CDropDownUI::Remove(ControlUI* ctrl)
+bool DropDownUI::Remove(ControlUI* ctrl)
 {
    ASSERT(!"Not supported");
    return false;
 }
 
-void CDropDownUI::RemoveAll()
+void DropDownUI::RemoveAll()
 {
    m_curSel = -1;
    ContainerUI::RemoveAll();
 }
 
-void CDropDownUI::Event(TEventUI& event)
+void DropDownUI::Event(TEventUI& event)
 {
    if (event.Type == UIEVENT_BUTTONDOWN && IsEnabled()) 
    {
@@ -353,7 +353,7 @@ void CDropDownUI::Event(TEventUI& event)
    ControlUI::Event(event);
 }
 
-bool CDropDownUI::Activate()
+bool DropDownUI::Activate()
 {
    if (!ControlUI::Activate())  return false;
    CDropDownWnd* win = new CDropDownWnd;
@@ -363,24 +363,24 @@ bool CDropDownUI::Activate()
    return true;
 }
 
-CStdString CDropDownUI::GetText() const
+CStdString DropDownUI::GetText() const
 {
    if (m_curSel < 0)  return _T("");
    ControlUI* ctrl = static_cast<ControlUI*>(m_items[m_curSel]);
    return ctrl->GetText();
 }
 
-SIZE CDropDownUI::GetDropDownSize() const
+SIZE DropDownUI::GetDropDownSize() const
 {
    return m_szDropBox;
 }
 
-void CDropDownUI::SetDropDownSize(SIZE szDropBox)
+void DropDownUI::SetDropDownSize(SIZE szDropBox)
 {
    m_szDropBox = szDropBox;
 }
 
-void CDropDownUI::SetPos(RECT rc)
+void DropDownUI::SetPos(RECT rc)
 {
    // Put all elements out of sight
    RECT rcNull = { 0 };
@@ -389,7 +389,7 @@ void CDropDownUI::SetPos(RECT rc)
    ControlUI::SetPos(rc);
 }
 
-SIZE CDropDownUI::EstimateSize(SIZE /*szAvailable*/)
+SIZE DropDownUI::EstimateSize(SIZE /*szAvailable*/)
 {
    SIZE sz = { 0, 12 + m_manager->GetThemeFontInfo(UIFONT_NORMAL).tmHeight };
    // Once there is an element in the list, we'll use the first one to
@@ -402,7 +402,7 @@ SIZE CDropDownUI::EstimateSize(SIZE /*szAvailable*/)
    return sz;
 }
 
-void CDropDownUI::DoPaint(HDC hDC, const RECT& rcPaint)
+void DropDownUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
    // Paint the nice frame
    int cy = m_rcItem.bottom - m_rcItem.top;

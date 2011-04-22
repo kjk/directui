@@ -334,26 +334,26 @@ void ContainerUI::ProcessScrollbar(RECT rc, int cyRequired)
 }
 
 
-CCanvasUI::CCanvasUI() : m_hBitmap(NULL), m_iOrientation(HTBOTTOMRIGHT)
+CanvasUI::CanvasUI() : m_hBitmap(NULL), m_iOrientation(HTBOTTOMRIGHT)
 {
 }
 
-CCanvasUI::~CCanvasUI()
+CanvasUI::~CanvasUI()
 {
    if (m_hBitmap != NULL)  ::DeleteObject(m_hBitmap);
 }
 
-const TCHAR* CCanvasUI::GetClass() const
+const TCHAR* CanvasUI::GetClass() const
 {
    return _T("CanvasUI");
 }
 
-bool CCanvasUI::SetWatermark(UINT iBitmapRes, int iOrientation)
+bool CanvasUI::SetWatermark(UINT iBitmapRes, int iOrientation)
 {
    return SetWatermark(MAKEINTRESOURCE(iBitmapRes), iOrientation);
 }
 
-bool CCanvasUI::SetWatermark(const TCHAR* pstrBitmap, int iOrientation)
+bool CanvasUI::SetWatermark(const TCHAR* pstrBitmap, int iOrientation)
 {
    if (m_hBitmap != NULL)  ::DeleteObject(m_hBitmap);
    m_hBitmap = (HBITMAP) ::LoadImage(m_manager->GetResourceInstance(), pstrBitmap, IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION);
@@ -365,7 +365,7 @@ bool CCanvasUI::SetWatermark(const TCHAR* pstrBitmap, int iOrientation)
    return true;
 }
 
-void CCanvasUI::DoPaint(HDC hDC, const RECT& rcPaint)
+void CanvasUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
    // Fill background
    RECT rcFill = { 0 };
@@ -396,7 +396,7 @@ void CCanvasUI::DoPaint(HDC hDC, const RECT& rcPaint)
    ContainerUI::DoPaint(hDC, rcPaint);
 }
 
-void CCanvasUI::SetAttribute(const TCHAR* name, const TCHAR* value)
+void CanvasUI::SetAttribute(const TCHAR* name, const TCHAR* value)
 {
    if (_tcscmp(name, _T("watermark")) == 0)  SetWatermark(value);
    else ContainerUI::SetAttribute(name, value);

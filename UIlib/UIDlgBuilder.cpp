@@ -43,28 +43,28 @@ ControlUI* CDialogBuilder::_Parse(CMarkupNode* root, ControlUI* parent)
          if (_tcscmp(pstrClass, _T("List")) == 0)                   ctrl = new ListUI;
          break;
       case 6:
-         if (_tcscmp(pstrClass, _T("Canvas")) == 0)                 ctrl = new CCanvasUI;
+         if (_tcscmp(pstrClass, _T("Canvas")) == 0)                 ctrl = new CanvasUI;
          else if (_tcscmp(pstrClass, _T("Button")) == 0)            ctrl = new ButtonUI;
-         else if (_tcscmp(pstrClass, _T("Option")) == 0)            ctrl = new COptionUI;
+         else if (_tcscmp(pstrClass, _T("Option")) == 0)            ctrl = new OptionUI;
          break;
       case 7:
          if (_tcscmp(pstrClass, _T("Toolbar")) == 0)                ctrl = new ToolbarUI;
-         else if (_tcscmp(pstrClass, _T("TabPage")) == 0)           ctrl = new CTabPageUI;
-         else if (_tcscmp(pstrClass, _T("ActiveX")) == 0)           ctrl = new CActiveXUI;
+         else if (_tcscmp(pstrClass, _T("TabPage")) == 0)           ctrl = new TabPageUI;
+         else if (_tcscmp(pstrClass, _T("ActiveX")) == 0)           ctrl = new ActiveXUI;
          break;
       case 8:
-         if (_tcscmp(pstrClass, _T("DropDown")) == 0)               ctrl = new CDropDownUI;
+         if (_tcscmp(pstrClass, _T("DropDown")) == 0)               ctrl = new DropDownUI;
          break;
       case 9:
-         if (_tcscmp(pstrClass, _T("FadedLine")) == 0)              ctrl = new CFadedLineUI;      
+         if (_tcscmp(pstrClass, _T("FadedLine")) == 0)              ctrl = new FadedLineUI;      
          else if (_tcscmp(pstrClass, _T("TaskPanel")) == 0)         ctrl = new TaskPanelUI;
          else if (_tcscmp(pstrClass, _T("Statusbar")) == 0)         ctrl = new StatusbarUI;
-         else if (_tcscmp(pstrClass, _T("TabFolder")) == 0)         ctrl = new CTabFolderUI;
+         else if (_tcscmp(pstrClass, _T("TabFolder")) == 0)         ctrl = new TabFolderUI;
          else if (_tcscmp(pstrClass, _T("TextPanel")) == 0)         ctrl = new TextPanelUI;
          break;
       case 10:
-         if (_tcscmp(pstrClass, _T("ListHeader")) == 0)             ctrl = new CListHeaderUI;
-         else if (_tcscmp(pstrClass, _T("ListFooter")) == 0)        ctrl = new CListFooterUI;
+         if (_tcscmp(pstrClass, _T("ListHeader")) == 0)             ctrl = new ListHeaderUI;
+         else if (_tcscmp(pstrClass, _T("ListFooter")) == 0)        ctrl = new ListFooterUI;
          else if (_tcscmp(pstrClass, _T("TileLayout")) == 0)        ctrl = new CTileLayoutUI;
          else if (_tcscmp(pstrClass, _T("ToolButton")) == 0)        ctrl = new ToolButtonUI;
          else if (_tcscmp(pstrClass, _T("ImagePanel")) == 0)        ctrl = new ImagePanelUI;

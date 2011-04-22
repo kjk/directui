@@ -35,10 +35,10 @@ protected:
 };
 
 
-class UILIB_API COptionUI : public ControlUI
+class UILIB_API OptionUI : public ControlUI
 {
 public:
-   COptionUI();
+   OptionUI();
 
    const TCHAR* GetClass() const;
    UINT GetControlFlags() const;

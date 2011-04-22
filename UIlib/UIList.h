@@ -5,8 +5,8 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-class CListHeaderUI;
-class CListFooterUI;
+class ListHeaderUI;
+class ListFooterUI;
 
 #define UILIST_MAX_COLUMNS 10
 
@@ -41,8 +41,8 @@ public:
 class IListUI : public IListOwnerUI
 {
 public:
-   virtual CListHeaderUI* GetHeader() const = 0;
-   virtual CListFooterUI* GetFooter() const = 0; 
+   virtual ListHeaderUI* GetHeader() const = 0;
+   virtual ListFooterUI* GetFooter() const = 0; 
    virtual ContainerUI* GetList() const = 0;
    virtual const TListInfoUI* GetListInfo() const = 0;
    virtual IListCallbackUI* GetTextCallback() const = 0;
@@ -94,10 +94,10 @@ protected:
    IListOwnerUI* m_owner;
 };
 
-class UILIB_API CListHeaderUI : public HorizontalLayoutUI
+class UILIB_API ListHeaderUI : public HorizontalLayoutUI
 {
 public:
-   CListHeaderUI();
+   ListHeaderUI();
 
    const TCHAR* GetClass() const;
    void* GetInterface(const TCHAR* name);
@@ -132,10 +132,10 @@ protected:
    UINT m_uDragState;
 };
 
-class UILIB_API CListFooterUI : public HorizontalLayoutUI
+class UILIB_API ListFooterUI : public HorizontalLayoutUI
 {
 public:
-   CListFooterUI();
+   ListFooterUI();
 
    const TCHAR* GetClass() const;
    void* GetInterface(const TCHAR* name);
@@ -156,8 +156,8 @@ public:
    int GetCurSel() const;
    bool SelectItem(int idx);
 
-   CListHeaderUI* GetHeader() const;
-   CListFooterUI* GetFooter() const;   
+   ListHeaderUI* GetHeader() const;
+   ListFooterUI* GetFooter() const;   
    ContainerUI* GetList() const;
    const TListInfoUI* GetListInfo() const;
 
@@ -187,8 +187,8 @@ protected:
    int m_iExpandedItem;
    IListCallbackUI* m_pCallback;
    VerticalLayoutUI* m_pList;
-   CListHeaderUI* m_pHeader;
-   CListFooterUI* m_pFooter;
+   ListHeaderUI* m_pHeader;
+   ListFooterUI* m_pFooter;
    TListInfoUI m_ListInfo;
 };
 

@@ -41,17 +41,17 @@ void CListHeaderShadowUI::DoPaint(HDC hDC, const RECT& /*rcPaint*/)
 }
 
 
-const TCHAR* CFadedLineUI::GetClass() const
+const TCHAR* FadedLineUI::GetClass() const
 {
    return _T("FadedLineUI");
 }
 
-SIZE CFadedLineUI::EstimateSize(SIZE /*szAvailable*/)
+SIZE FadedLineUI::EstimateSize(SIZE /*szAvailable*/)
 {
    return CSize(0, 10);
 }
 
-void CFadedLineUI::DoPaint(HDC hDC, const RECT& /*rcPaint*/)
+void FadedLineUI::DoPaint(HDC hDC, const RECT& /*rcPaint*/)
 {
    COLORREF clrLine = m_manager->GetThemeColor(UICOLOR_NAVIGATOR_BORDER_NORMAL);
    COLORREF clrDialog = m_manager->GetThemeColor(UICOLOR_DIALOG_BACKGROUND);

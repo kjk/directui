@@ -7,10 +7,10 @@
 
 #include "UIlist.h"
 
-class UILIB_API CTabFolderUI : public ContainerUI, public IListOwnerUI
+class UILIB_API TabFolderUI : public ContainerUI, public IListOwnerUI
 {
 public:
-   CTabFolderUI();
+   TabFolderUI();
 
    const TCHAR* GetClass() const;
 
@@ -36,10 +36,10 @@ protected:
    CStdValArray m_tabAreas;
 };
 
-class UILIB_API CTabPageUI : public ContainerUI
+class UILIB_API TabPageUI : public ContainerUI
 {
 public:
-   CTabPageUI();
+   TabPageUI();
    const TCHAR* GetClass() const;
 
    bool Activate();

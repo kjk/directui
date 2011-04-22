@@ -119,21 +119,21 @@ void ButtonUI::DoPaint(HDC hDC, const RECT& rcPaint)
 }
 
 
-COptionUI::COptionUI() : m_cxWidth(0), m_uButtonState(0), m_uStyle(DT_LEFT), m_bSelected(false)
+OptionUI::OptionUI() : m_cxWidth(0), m_uButtonState(0), m_uStyle(DT_LEFT), m_bSelected(false)
 {
 }
 
-const TCHAR* COptionUI::GetClass() const
+const TCHAR* OptionUI::GetClass() const
 {
    return _T("OptionUI");
 }
 
-UINT COptionUI::GetControlFlags() const
+UINT OptionUI::GetControlFlags() const
 {
    return UIFLAG_TABSTOP;
 }
 
-void COptionUI::Event(TEventUI& event)
+void OptionUI::Event(TEventUI& event)
 {
    if (event.Type == UIEVENT_BUTTONDOWN || event.Type == UIEVENT_DBLCLICK) 
    {
@@ -161,12 +161,12 @@ void COptionUI::Event(TEventUI& event)
    ControlUI::Event(event);
 }
 
-bool COptionUI::IsChecked() const
+bool OptionUI::IsChecked() const
 {
    return m_bSelected;
 }
 
-void COptionUI::SetCheck(bool bSelected)
+void OptionUI::SetCheck(bool bSelected)
 {
    if (m_bSelected == bSelected)  return;
    m_bSelected = bSelected;
@@ -174,20 +174,20 @@ void COptionUI::SetCheck(bool bSelected)
    Invalidate();
 }
 
-bool COptionUI::Activate()
+bool OptionUI::Activate()
 {
    if (!ControlUI::Activate())  return false;
    SetCheck(true);
    return true;
 }
 
-void COptionUI::SetWidth(int cxWidth)
+void OptionUI::SetWidth(int cxWidth)
 {
    m_cxWidth = cxWidth;
    UpdateLayout();
 }
 
-void COptionUI::SetAttribute(const TCHAR* name, const TCHAR* value)
+void OptionUI::SetAttribute(const TCHAR* name, const TCHAR* value)
 {
    if (_tcscmp(name, _T("width")) == 0)  SetWidth(_ttoi(value));
    else if (_tcscmp(name, _T("selected")) == 0)  SetCheck(_tcscmp(value, _T("true")) == 0);
@@ -197,12 +197,12 @@ void COptionUI::SetAttribute(const TCHAR* name, const TCHAR* value)
    else ControlUI::SetAttribute(name, value);
 }
 
-SIZE COptionUI::EstimateSize(SIZE /*szAvailable*/)
+SIZE OptionUI::EstimateSize(SIZE /*szAvailable*/)
 {
    return CSize(m_cxWidth, 18 + m_manager->GetThemeFontInfo(UIFONT_NORMAL).tmHeight);
 }
 
-void COptionUI::DoPaint(HDC hDC, const RECT& rcPaint)
+void OptionUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
    // Draw button
    UINT uState = 0;

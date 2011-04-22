@@ -3,33 +3,33 @@
 #include "UITab.h"
 
 
-CTabFolderUI::CTabFolderUI() : m_curSel(-1), m_curPage(NULL), m_tabAreas(sizeof(RECT))
+TabFolderUI::TabFolderUI() : m_curSel(-1), m_curPage(NULL), m_tabAreas(sizeof(RECT))
 {
    m_chShortcut = VK_NEXT;
 }
 
-const TCHAR* CTabFolderUI::GetClass() const
+const TCHAR* TabFolderUI::GetClass() const
 {
    return _T("TabFolderUI");
 }
 
-void CTabFolderUI::Init()
+void TabFolderUI::Init()
 {
    if (m_curSel == -1)  SelectItem(0);
 }
 
-bool CTabFolderUI::Add(ControlUI* ctrl)
+bool TabFolderUI::Add(ControlUI* ctrl)
 {
    ctrl->SetVisible(false);
    return ContainerUI::Add(ctrl);
 }
 
-int CTabFolderUI::GetCurSel() const
+int TabFolderUI::GetCurSel() const
 {
    return m_curSel;
 }
 
-bool CTabFolderUI::SelectItem(int idx)
+bool TabFolderUI::SelectItem(int idx)
 {
    int iPrevSel = m_curSel;
    if (idx < 0 || idx >= m_items.GetSize())  return false;
@@ -48,7 +48,7 @@ bool CTabFolderUI::SelectItem(int idx)
    return true;
 }
 
-void CTabFolderUI::Event(TEventUI& event)
+void TabFolderUI::Event(TEventUI& event)
 {
    if (event.Type == UIEVENT_BUTTONDOWN && IsEnabled()) 
    {
@@ -73,7 +73,7 @@ void CTabFolderUI::Event(TEventUI& event)
    ContainerUI::Event(event);
 }
 
-void CTabFolderUI::SetPos(RECT rc)
+void TabFolderUI::SetPos(RECT rc)
 {
    ControlUI::SetPos(rc);
    // Determine size of embedded page and place it there
@@ -84,7 +84,7 @@ void CTabFolderUI::SetPos(RECT rc)
    if (m_curPage != NULL)  m_curPage->SetPos(m_rcPage);
 }
 
-void CTabFolderUI::DoPaint(HDC hDC, const RECT& rcPaint)
+void TabFolderUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
    {
       CRenderClip clip;
@@ -128,23 +128,23 @@ void CTabFolderUI::DoPaint(HDC hDC, const RECT& rcPaint)
    if (m_curPage != NULL)  m_curPage->DoPaint(hDC, rcPaint);
 }
 
-void CTabFolderUI::SetAttribute(const TCHAR* name, const TCHAR* value)
+void TabFolderUI::SetAttribute(const TCHAR* name, const TCHAR* value)
 {
    if (_tcscmp(name, _T("select")) == 0)  SelectItem(_ttoi(value));
    else ContainerUI::SetAttribute(name, value);
 }
 
-CTabPageUI::CTabPageUI()
+TabPageUI::TabPageUI()
 {
    SetInset(CSize(6, 6));
 }
 
-const TCHAR* CTabPageUI::GetClass() const
+const TCHAR* TabPageUI::GetClass() const
 {
    return _T("TabPageUI");
 }
 
-bool CTabPageUI::Activate()
+bool TabPageUI::Activate()
 {
    if (!ContainerUI::Activate())  return false;
    ControlUI* parent = GetParent();

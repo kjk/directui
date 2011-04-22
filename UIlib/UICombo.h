@@ -27,10 +27,10 @@ protected:
    UINT m_uButtonState;
 };
 
-class UILIB_API CDropDownUI : public ContainerUI, public IListOwnerUI
+class UILIB_API DropDownUI : public ContainerUI, public IListOwnerUI
 {
 public:
-   CDropDownUI();
+   DropDownUI();
 
    const TCHAR* GetClass() const;
    void* GetInterface(const TCHAR* name);
