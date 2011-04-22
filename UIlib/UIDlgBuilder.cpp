@@ -40,7 +40,7 @@ ControlUI* CDialogBuilder::_Parse(CMarkupNode* root, ControlUI* parent)
       ControlUI* ctrl = NULL;
       switch( cchLen)  {
       case 4:
-         if (_tcscmp(pstrClass, _T("List")) == 0)                   ctrl = new CListUI;
+         if (_tcscmp(pstrClass, _T("List")) == 0)                   ctrl = new ListUI;
          break;
       case 6:
          if (_tcscmp(pstrClass, _T("Canvas")) == 0)                 ctrl = new CCanvasUI;
@@ -57,17 +57,17 @@ ControlUI* CDialogBuilder::_Parse(CMarkupNode* root, ControlUI* parent)
          break;
       case 9:
          if (_tcscmp(pstrClass, _T("FadedLine")) == 0)              ctrl = new CFadedLineUI;      
-         else if (_tcscmp(pstrClass, _T("TaskPanel")) == 0)         ctrl = new CTaskPanelUI;
+         else if (_tcscmp(pstrClass, _T("TaskPanel")) == 0)         ctrl = new TaskPanelUI;
          else if (_tcscmp(pstrClass, _T("Statusbar")) == 0)         ctrl = new StatusbarUI;
          else if (_tcscmp(pstrClass, _T("TabFolder")) == 0)         ctrl = new CTabFolderUI;
-         else if (_tcscmp(pstrClass, _T("TextPanel")) == 0)         ctrl = new CTextPanelUI;
+         else if (_tcscmp(pstrClass, _T("TextPanel")) == 0)         ctrl = new TextPanelUI;
          break;
       case 10:
          if (_tcscmp(pstrClass, _T("ListHeader")) == 0)             ctrl = new CListHeaderUI;
          else if (_tcscmp(pstrClass, _T("ListFooter")) == 0)        ctrl = new CListFooterUI;
          else if (_tcscmp(pstrClass, _T("TileLayout")) == 0)        ctrl = new CTileLayoutUI;
          else if (_tcscmp(pstrClass, _T("ToolButton")) == 0)        ctrl = new ToolButtonUI;
-         else if (_tcscmp(pstrClass, _T("ImagePanel")) == 0)        ctrl = new CImagePanelUI;
+         else if (_tcscmp(pstrClass, _T("ImagePanel")) == 0)        ctrl = new ImagePanelUI;
          else if (_tcscmp(pstrClass, _T("LabelPanel")) == 0)        ctrl = new CLabelPanelUI;
          break;
       case 11:
@@ -79,8 +79,8 @@ ControlUI* CDialogBuilder::_Parse(CMarkupNode* root, ControlUI* parent)
          if (_tcscmp(pstrClass, _T("WindowCanvas")) == 0)           ctrl = new CWindowCanvasUI;
          else if (_tcscmp(pstrClass, _T("DialogCanvas")) == 0)      ctrl = new CDialogCanvasUI;
          else if (_tcscmp(pstrClass, _T("DialogLayout")) == 0)      ctrl = new CDialogLayoutUI;
-         else if (_tcscmp(pstrClass, _T("PaddingPanel")) == 0)      ctrl = new CPaddingPanelUI;
-         else if (_tcscmp(pstrClass, _T("WarningPanel")) == 0)      ctrl = new CWarningPanelUI;
+         else if (_tcscmp(pstrClass, _T("PaddingPanel")) == 0)      ctrl = new PaddingPanelUI;
+         else if (_tcscmp(pstrClass, _T("WarningPanel")) == 0)      ctrl = new WarningPanelUI;
          break;
       case 13:
          if (_tcscmp(pstrClass, _T("SeparatorLine")) == 0)          ctrl = new CSeparatorLineUI;
@@ -89,23 +89,23 @@ ControlUI* CDialogBuilder::_Parse(CMarkupNode* root, ControlUI* parent)
          else if (_tcscmp(pstrClass, _T("ToolSeparator")) == 0)     ctrl = new ToolSeparatorUI;
          break;
       case 14:
-         if (_tcscmp(pstrClass, _T("VerticalLayout")) == 0)         ctrl = new CVerticalLayoutUI;
+         if (_tcscmp(pstrClass, _T("VerticalLayout")) == 0)         ctrl = new VerticalLayoutUI;
          else if (_tcscmp(pstrClass, _T("SingleLineEdit")) == 0)    ctrl = new CSingleLineEditUI;
          else if (_tcscmp(pstrClass, _T("SingleLinePick")) == 0)    ctrl = new CSingleLinePickUI;
-         else if (_tcscmp(pstrClass, _T("NavigatorPanel")) == 0)    ctrl = new CNavigatorPanelUI;
+         else if (_tcscmp(pstrClass, _T("NavigatorPanel")) == 0)    ctrl = new NavigatorPanelUI;
          else if (_tcscmp(pstrClass, _T("ListHeaderItem")) == 0)    ctrl = new CListHeaderItemUI;
          else if (_tcscmp(pstrClass, _T("GreyTextHeader")) == 0)    ctrl = new CGreyTextHeaderUI;
          break;
       case 15:
          if (_tcscmp(pstrClass, _T("ListTextElement")) == 0)        ctrl = new CListTextElementUI;
-         else if (_tcscmp(pstrClass, _T("NavigatorButton")) == 0)   ctrl = new CNavigatorButtonUI;      
+         else if (_tcscmp(pstrClass, _T("NavigatorButton")) == 0)   ctrl = new NavigatorButtonUI;      
          else if (_tcscmp(pstrClass, _T("TabFolderCanvas")) == 0)   ctrl = new CTabFolderCanvasUI;      
          break;
       case 16:
          if (_tcscmp(pstrClass, _T("ListHeaderShadow")) == 0)       ctrl = new CListHeaderShadowUI; 
          else if (_tcscmp(pstrClass, _T("HorizontalLayout")) == 0)  ctrl = new HorizontalLayoutUI;
          else if (_tcscmp(pstrClass, _T("ListLabelElement")) == 0)  ctrl = new CListLabelElementUI;
-         else if (_tcscmp(pstrClass, _T("SearchTitlePanel")) == 0)  ctrl = new CSearchTitlePanelUI;
+         else if (_tcscmp(pstrClass, _T("SearchTitlePanel")) == 0)  ctrl = new SearchTitlePanelUI;
          break;
       case 17:
          if (_tcscmp(pstrClass, _T("ToolbarTitlePanel")) == 0)   ctrl = new ToolbarTitlePanelUI;

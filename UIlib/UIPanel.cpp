@@ -3,32 +3,32 @@
 #include "UIPanel.h"
 
 
-CNavigatorPanelUI::CNavigatorPanelUI() : m_curSel(-1)
+NavigatorPanelUI::NavigatorPanelUI() : m_curSel(-1)
 {
 }
 
-const TCHAR* CNavigatorPanelUI::GetClass() const
+const TCHAR* NavigatorPanelUI::GetClass() const
 {
    return _T("NavigatorPanelUI");
 }
 
-void* CNavigatorPanelUI::GetInterface(const TCHAR* name)
+void* NavigatorPanelUI::GetInterface(const TCHAR* name)
 {
    if (_tcscmp(name, _T("ListOwner")) == 0)  return static_cast<IListOwnerUI*>(this);
-   return CVerticalLayoutUI::GetInterface(name);
+   return VerticalLayoutUI::GetInterface(name);
 }
 
-int CNavigatorPanelUI::GetCurSel() const
+int NavigatorPanelUI::GetCurSel() const
 {
    return m_curSel;
 }
 
-void CNavigatorPanelUI::Event(TEventUI& event)
+void NavigatorPanelUI::Event(TEventUI& event)
 {
-   CVerticalLayoutUI::Event(event);
+   VerticalLayoutUI::Event(event);
 }
 
-bool CNavigatorPanelUI::SelectItem(int idx)
+bool NavigatorPanelUI::SelectItem(int idx)
 {
    if (idx == m_curSel)  return true;
    if (m_curSel >= 0)  {
@@ -49,7 +49,7 @@ bool CNavigatorPanelUI::SelectItem(int idx)
    return true;
 }
 
-bool CNavigatorPanelUI::Add(ControlUI* ctrl)
+bool NavigatorPanelUI::Add(ControlUI* ctrl)
 {
    IListItemUI* listItem = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
    if (listItem != NULL)  {
@@ -59,30 +59,30 @@ bool CNavigatorPanelUI::Add(ControlUI* ctrl)
    return ContainerUI::Add(ctrl);
 }
 
-SIZE CNavigatorPanelUI::EstimateSize(SIZE szAvailable)
+SIZE NavigatorPanelUI::EstimateSize(SIZE szAvailable)
 {
    return CSize(0, 0);
 }
 
-void CNavigatorPanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
+void NavigatorPanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
    COLORREF clrFirst, clrSecond;
    m_manager->GetThemeColorPair(UICOLOR_NAVIGATOR_BACKGROUND, clrFirst, clrSecond);
    CBlueRenderEngineUI::DoPaintGradient(hDC, m_manager, m_rcItem, clrFirst, clrSecond, false, 64);
-   CVerticalLayoutUI::DoPaint(hDC, rcPaint);
+   VerticalLayoutUI::DoPaint(hDC, rcPaint);
 }
 
 
-CNavigatorButtonUI::CNavigatorButtonUI() : m_uButtonState(0)
+NavigatorButtonUI::NavigatorButtonUI() : m_uButtonState(0)
 {
 }
 
-const TCHAR* CNavigatorButtonUI::GetClass() const
+const TCHAR* NavigatorButtonUI::GetClass() const
 {
    return _T("NavigatorButton");
 }
 
-void CNavigatorButtonUI::Event(TEventUI& event)
+void NavigatorButtonUI::Event(TEventUI& event)
 {
    if (event.Type == UIEVENT_BUTTONDOWN && IsEnabled()) 
    {
@@ -115,17 +115,17 @@ void CNavigatorButtonUI::Event(TEventUI& event)
    }
 }
 
-SIZE CNavigatorButtonUI::EstimateSize(SIZE szAvailable)
+SIZE NavigatorButtonUI::EstimateSize(SIZE szAvailable)
 {
    return CSize(0, 18 + m_manager->GetThemeFontInfo(UIFONT_NORMAL).tmHeight);
 }
 
-void CNavigatorButtonUI::DoPaint(HDC hDC, const RECT& rcPaint)
+void NavigatorButtonUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
    DrawItem(hDC, m_rcItem, 0);
 }
 
-void CNavigatorButtonUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
+void NavigatorButtonUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
 {
    RECT rcButton = GetButtonRect(m_rcItem);
 
@@ -159,32 +159,32 @@ void CNavigatorButtonUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
    CBlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcText, m_txt, iTextColor, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE | DT_VCENTER);
 }
 
-RECT CNavigatorButtonUI::GetButtonRect(RECT rc) const
+RECT NavigatorButtonUI::GetButtonRect(RECT rc) const
 {
    int cy = m_manager->GetThemeFontInfo(UIFONT_NORMAL).tmHeight + 8;
    return CRect(rc.left + 10, rc.top, rc.right, rc.top + cy);
 }
 
 
-CTaskPanelUI::CTaskPanelUI() : m_hFadeBitmap(NULL)
+TaskPanelUI::TaskPanelUI() : m_hFadeBitmap(NULL)
 {
    SetInset(CSize(8, 8));
    SetPadding(10);
    SetWidth(165);  // By default it gets a fixed 165 pixel width
 }
 
-CTaskPanelUI::~CTaskPanelUI()
+TaskPanelUI::~TaskPanelUI()
 {
    if (m_hFadeBitmap != NULL)  ::DeleteObject(m_hFadeBitmap);
    if (m_manager != NULL)  m_manager->KillTimer(this, FADE_TIMERID);
 }
 
-const TCHAR* CTaskPanelUI::GetClass() const
+const TCHAR* TaskPanelUI::GetClass() const
 {
    return _T("TaskPanelUI");
 }
 
-SIZE CTaskPanelUI::EstimateSize(SIZE szAvailable)
+SIZE TaskPanelUI::EstimateSize(SIZE szAvailable)
 {
    // The TaskPanel dissapears if the windows size becomes too small
    // Currently it is set to vasnish when its width gets below 1/4 of window.
@@ -206,7 +206,7 @@ SIZE CTaskPanelUI::EstimateSize(SIZE szAvailable)
    return sz;
 }
 
-void CTaskPanelUI::Event(TEventUI& event)
+void TaskPanelUI::Event(TEventUI& event)
 {
    if (event.Type == UIEVENT_TIMER && event.wParam == FADE_TIMERID) 
    {
@@ -220,18 +220,18 @@ void CTaskPanelUI::Event(TEventUI& event)
       m_manager->Invalidate(m_rcFade);
       return;
    }
-   CVerticalLayoutUI::Event(event);
+   VerticalLayoutUI::Event(event);
 }
 
-void CTaskPanelUI::SetPos(RECT rc)
+void TaskPanelUI::SetPos(RECT rc)
 {
    int cyFont = m_manager->GetThemeFontInfo(UIFONT_NORMAL).tmHeight;
    RECT rcClient = { rc.left, rc.top + cyFont + 6, rc.right, rc.bottom };
-   CVerticalLayoutUI::SetPos(rcClient);
+   VerticalLayoutUI::SetPos(rcClient);
    m_rcItem = rc;
 }
 
-void CTaskPanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
+void TaskPanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
    // Handling gracefull fading of panel
    if (m_hFadeBitmap != NULL)  {
@@ -255,32 +255,32 @@ void CTaskPanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
    CBlueRenderEngineUI::DoPaintGradient(hDC, m_manager, rcClient, clrFirst, clrSecond, false, 128);
    CBlueRenderEngineUI::DoPaintFrame(hDC, m_manager, rcClient, UICOLOR_TASK_CAPTION, UICOLOR_TASK_CAPTION, UICOLOR__INVALID, 0);
    // Paint elements
-   CVerticalLayoutUI::DoPaint(hDC, rcPaint);
+   VerticalLayoutUI::DoPaint(hDC, rcPaint);
 }
 
-CSearchTitlePanelUI::CSearchTitlePanelUI() : m_iconIdx(-1)
+SearchTitlePanelUI::SearchTitlePanelUI() : m_iconIdx(-1)
 {
    SetInset(CSize(0, 0));
 }
 
-const TCHAR* CSearchTitlePanelUI::GetClass() const
+const TCHAR* SearchTitlePanelUI::GetClass() const
 {
    return _T("SearchTitlePanelUI");
 }
 
-void CSearchTitlePanelUI::SetImage(int idx)
+void SearchTitlePanelUI::SetImage(int idx)
 {
    m_iconIdx = idx;
 }
 
-void CSearchTitlePanelUI::SetPos(RECT rc)
+void SearchTitlePanelUI::SetPos(RECT rc)
 {
    RECT rcClient = { rc.left + 1, rc.top + 35, rc.right - 1, rc.bottom - 1 };
    HorizontalLayoutUI::SetPos(rcClient);
    m_rcItem = rc;
 }
 
-void CSearchTitlePanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
+void SearchTitlePanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
    RECT rcFrame = { m_rcItem.left, m_rcItem.top + 34, m_rcItem.right, m_rcItem.bottom };
    CBlueRenderEngineUI::DoPaintFrame(hDC, m_manager, rcFrame, UICOLOR_HEADER_SEPARATOR, UICOLOR_HEADER_SEPARATOR, UICOLOR_HEADER_BACKGROUND);
@@ -297,69 +297,69 @@ void CSearchTitlePanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
    HorizontalLayoutUI::DoPaint(hDC, rcPaint);
 }
 
-void CSearchTitlePanelUI::SetAttribute(const TCHAR* name, const TCHAR* value)
+void SearchTitlePanelUI::SetAttribute(const TCHAR* name, const TCHAR* value)
 {
    if (_tcscmp(name, _T("image")) == 0)  SetImage(_ttoi(value));
    else HorizontalLayoutUI::SetAttribute(name, value);
 }
 
 
-CPaddingPanelUI::CPaddingPanelUI()
+PaddingPanelUI::PaddingPanelUI()
 {
    m_cxyFixed.cx = m_cxyFixed.cy = 0;
 }
 
-CPaddingPanelUI::CPaddingPanelUI(int cx, int cy)
+PaddingPanelUI::PaddingPanelUI(int cx, int cy)
 {
    m_cxyFixed.cx = cx;
    m_cxyFixed.cy = cy;
 }
 
-void CPaddingPanelUI::SetWidth(int cxWidth)
+void PaddingPanelUI::SetWidth(int cxWidth)
 {
    m_cxyFixed.cx = cxWidth;
    UpdateLayout();
 }
 
-void CPaddingPanelUI::SetHeight(int cyHeight)
+void PaddingPanelUI::SetHeight(int cyHeight)
 {
    m_cxyFixed.cy = cyHeight;
    UpdateLayout();
 }
 
-void CPaddingPanelUI::SetAttribute(const TCHAR* name, const TCHAR* value)
+void PaddingPanelUI::SetAttribute(const TCHAR* name, const TCHAR* value)
 {
    if (_tcscmp(name, _T("width")) == 0)  SetWidth(_ttoi(value));
    else if (_tcscmp(name, _T("height")) == 0)  SetHeight(_ttoi(value));
    else ControlUI::SetAttribute(name, value);
 }
 
-const TCHAR* CPaddingPanelUI::GetClass() const
+const TCHAR* PaddingPanelUI::GetClass() const
 {
    return _T("PaddingPanel");
 }
 
-SIZE CPaddingPanelUI::EstimateSize(SIZE szAvailable)
+SIZE PaddingPanelUI::EstimateSize(SIZE szAvailable)
 {
    return m_cxyFixed;
 }
 
-void CPaddingPanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
+void PaddingPanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
 }
 
 
-CImagePanelUI::CImagePanelUI() : m_hBitmap(NULL)
+ImagePanelUI::ImagePanelUI() : m_hBitmap(NULL)
 {
    m_cxyFixed.cx = m_cxyFixed.cy = 0;
 }
 
-CImagePanelUI::~CImagePanelUI()
+ImagePanelUI::~ImagePanelUI()
 {
    if (m_hBitmap != NULL)  ::DeleteObject(m_hBitmap);
 }
 
-bool CImagePanelUI::SetImage(const TCHAR* pstrBitmap)
+bool ImagePanelUI::SetImage(const TCHAR* pstrBitmap)
 {
    if (m_hBitmap != NULL)  ::DeleteObject(m_hBitmap);
    m_hBitmap = (HBITMAP) ::LoadImage(m_manager->GetResourceInstance(), pstrBitmap, IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION);
@@ -372,19 +372,19 @@ bool CImagePanelUI::SetImage(const TCHAR* pstrBitmap)
    return true;
 }
 
-void CImagePanelUI::SetWidth(int cxWidth)
+void ImagePanelUI::SetWidth(int cxWidth)
 {
    m_cxyFixed.cx = cxWidth;
    UpdateLayout();
 }
 
-void CImagePanelUI::SetHeight(int cyHeight)
+void ImagePanelUI::SetHeight(int cyHeight)
 {
    m_cxyFixed.cy = cyHeight;
    UpdateLayout();
 }
 
-void CImagePanelUI::SetAttribute(const TCHAR* name, const TCHAR* value)
+void ImagePanelUI::SetAttribute(const TCHAR* name, const TCHAR* value)
 {
    if (_tcscmp(name, _T("width")) == 0)  SetWidth(_ttoi(value));
    else if (_tcscmp(name, _T("height")) == 0)  SetHeight(_ttoi(value));
@@ -392,58 +392,58 @@ void CImagePanelUI::SetAttribute(const TCHAR* name, const TCHAR* value)
    else ControlUI::SetAttribute(name, value);
 }
 
-const TCHAR* CImagePanelUI::GetClass() const
+const TCHAR* ImagePanelUI::GetClass() const
 {
    return _T("ImagePanel");
 }
 
-SIZE CImagePanelUI::EstimateSize(SIZE szAvailable)
+SIZE ImagePanelUI::EstimateSize(SIZE szAvailable)
 {
    return m_cxyFixed;
 }
 
-void CImagePanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
+void ImagePanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
    CBlueRenderEngineUI::DoPaintBitmap(hDC, m_manager, m_hBitmap, m_rcItem);
 }
 
 
-CTextPanelUI::CTextPanelUI() : m_nLinks(0), m_uButtonState(0), m_TextColor(UICOLOR_EDIT_TEXT_NORMAL), m_BackColor(UICOLOR__INVALID)
+TextPanelUI::TextPanelUI() : m_nLinks(0), m_uButtonState(0), m_TextColor(UICOLOR_EDIT_TEXT_NORMAL), m_BackColor(UICOLOR__INVALID)
 {
    m_uTextStyle = DT_WORDBREAK;
    ::ZeroMemory(m_rcLinks, sizeof(m_rcLinks));
 }
 
-const TCHAR* CTextPanelUI::GetClass() const
+const TCHAR* TextPanelUI::GetClass() const
 {
    return _T("TextPanelUI");
 }
 
-bool CTextPanelUI::Activate()
+bool TextPanelUI::Activate()
 {
    if (!CLabelPanelUI::Activate())  return false;
    if (m_nLinks > 0)  m_manager->SendNotify(this, _T("link"));
    return true;
 }
 
-void CTextPanelUI::SetTextColor(UITYPE_COLOR TextColor)
+void TextPanelUI::SetTextColor(UITYPE_COLOR TextColor)
 {
    m_TextColor = TextColor;
    Invalidate();
 }
 
-void CTextPanelUI::SetBkColor(UITYPE_COLOR BackColor)
+void TextPanelUI::SetBkColor(UITYPE_COLOR BackColor)
 {
    m_BackColor = BackColor;
    Invalidate();
 }
 
-UINT CTextPanelUI::GetControlFlags() const
+UINT TextPanelUI::GetControlFlags() const
 {
    return m_nLinks > 0 ? UIFLAG_SETCURSOR : 0;
 }
 
-void CTextPanelUI::Event(TEventUI& event)
+void TextPanelUI::Event(TEventUI& event)
 {
    if (event.Type == UIEVENT_SETCURSOR)  {
       for (int i = 0; i < m_nLinks; i++)  {
@@ -476,14 +476,14 @@ void CTextPanelUI::Event(TEventUI& event)
    CLabelPanelUI::Event(event);
 }
 
-void CTextPanelUI::SetAttribute(const TCHAR* name, const TCHAR* value)
+void TextPanelUI::SetAttribute(const TCHAR* name, const TCHAR* value)
 {
    if (_tcscmp(name, _T("textColor")) == 0)  SetTextColor((UITYPE_COLOR)_ttoi(value));
    else if (_tcscmp(name, _T("backColor")) == 0)  SetBkColor((UITYPE_COLOR)_ttoi(value));
    else CLabelPanelUI::SetAttribute(name, value);
 }
 
-SIZE CTextPanelUI::EstimateSize(SIZE szAvailable)
+SIZE TextPanelUI::EstimateSize(SIZE szAvailable)
 {
    RECT rcText = { 0, 0, MAX(szAvailable.cx, m_cxWidth), 9999 };
    m_nLinks = 0;
@@ -491,23 +491,23 @@ SIZE CTextPanelUI::EstimateSize(SIZE szAvailable)
    return CSize(rcText.right - rcText.left, rcText.bottom - rcText.left);
 }
 
-void CTextPanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
+void TextPanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
    RECT rcText = m_rcItem;
    m_nLinks = lengthof(m_rcLinks);
    CBlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcText, m_txt, m_TextColor, m_BackColor, m_rcLinks, m_nLinks, m_uTextStyle);
 }
 
-CWarningPanelUI::CWarningPanelUI() : m_BackColor(UICOLOR_STANDARD_YELLOW)
+WarningPanelUI::WarningPanelUI() : m_BackColor(UICOLOR_STANDARD_YELLOW)
 {
 }
 
-const TCHAR* CWarningPanelUI::GetClass() const
+const TCHAR* WarningPanelUI::GetClass() const
 {
    return _T("WarningPanelUI");
 }
 
-void CWarningPanelUI::SetWarningType(UINT uType)
+void WarningPanelUI::SetWarningType(UINT uType)
 {
    switch( uType)  {
    case MB_ICONERROR:
@@ -522,16 +522,16 @@ void CWarningPanelUI::SetWarningType(UINT uType)
    }
 }
 
-void CWarningPanelUI::SetAttribute(const TCHAR* name, const TCHAR* value)
+void WarningPanelUI::SetAttribute(const TCHAR* name, const TCHAR* value)
 {
    if (_tcscmp(name, _T("type")) == 0)  {
       if (_tcscmp(value, _T("error")) == 0)  SetWarningType(MB_ICONERROR);
       if (_tcscmp(value, _T("warning")) == 0)  SetWarningType(MB_ICONWARNING);
    }
-   else CTextPanelUI::SetAttribute(name, value);
+   else TextPanelUI::SetAttribute(name, value);
 }
 
-SIZE CWarningPanelUI::EstimateSize(SIZE szAvailable)
+SIZE WarningPanelUI::EstimateSize(SIZE szAvailable)
 {
    RECT rcText = { 0, 0, szAvailable.cx, szAvailable.cy };
    ::InflateRect(&rcText, -6, -4);
@@ -540,7 +540,7 @@ SIZE CWarningPanelUI::EstimateSize(SIZE szAvailable)
    return CSize(0, (rcText.bottom - rcText.top) + 16);
 }
 
-void CWarningPanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
+void WarningPanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
    RECT rcSign = m_rcItem;
    rcSign.bottom -= 8;

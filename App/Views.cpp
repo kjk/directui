@@ -247,7 +247,7 @@ const TCHAR* CRegistersPageWnd::GetDialogResource() const
 
 void CRegistersPageWnd::OnPrepareAnimation()
 {
-   CListUI* pList = static_cast<CListUI*>(m_pm.FindControl(_T("list")));
+   ListUI* pList = static_cast<ListUI*>(m_pm.FindControl(_T("list")));
    pList->SetTextCallback(this);                                          // We want GetItemText for items
    for (int i = 0; i < 1000; i++)  pList->Add(new CListTextElementUI);    // We want 1000 items in list
 }
@@ -361,7 +361,7 @@ int CSystemsPageWnd::CompareItem(ControlUI* pList, ControlUI* item1, ControlUI* 
 
 void CSystemsPageWnd::OnPrepareAnimation()
 {
-   CListUI* pList = static_cast<CListUI*>(m_pm.FindControl(_T("list")));
+   ListUI* pList = static_cast<ListUI*>(m_pm.FindControl(_T("list")));
    pList->SetTextCallback(this);  // List will call our GetItemText()
 }
 
@@ -369,14 +369,14 @@ void CSystemsPageWnd::OnExpandItem(ControlUI* ctrl)
 {
    CListExpandElementUI* item = static_cast<CListExpandElementUI*>(ctrl);
    // Add slowly...
-   CTextPanelUI* pText = new CTextPanelUI();
+   TextPanelUI* pText = new TextPanelUI();
    CStdString sText;
    sText.Format(_T("<b>Episode:</b> Gyldendal #%p"), ctrl);
    pText->SetText(sText);
    item->Add(pText);
    // Add quickly...
-   item->Add((new CTextPanelUI())->ApplyAttributeList(_T("text=\"<b>Navn:</b> Anders And\"")));
-   item->Add((new CTextPanelUI())->ApplyAttributeList(_T("text=\"<b>Tidspunkt:</b> <i 3>Juleaften\"")));
+   item->Add((new TextPanelUI())->ApplyAttributeList(_T("text=\"<b>Navn:</b> Anders And\"")));
+   item->Add((new TextPanelUI())->ApplyAttributeList(_T("text=\"<b>Tidspunkt:</b> <i 3>Juleaften\"")));
 }
 
 

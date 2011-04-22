@@ -65,10 +65,10 @@ public:
 };
 
 
-class UILIB_API CListElementUI : public ControlUI, public IListItemUI
+class UILIB_API ListElementUI : public ControlUI, public IListItemUI
 {
 public:
-   CListElementUI();
+   ListElementUI();
 
    UINT GetControlFlags() const;
    void* GetInterface(const TCHAR* name);
@@ -144,10 +144,10 @@ public:
    void DoPaint(HDC hDC, const RECT& rcPaint);
 };
 
-class UILIB_API CListUI : public CVerticalLayoutUI, public IListUI
+class UILIB_API ListUI : public VerticalLayoutUI, public IListUI
 {
 public:
-   CListUI();
+   ListUI();
 
    const TCHAR* GetClass() const;
    UINT GetControlFlags() const;
@@ -186,13 +186,13 @@ protected:
    int m_curSel;
    int m_iExpandedItem;
    IListCallbackUI* m_pCallback;
-   CVerticalLayoutUI* m_pList;
+   VerticalLayoutUI* m_pList;
    CListHeaderUI* m_pHeader;
    CListFooterUI* m_pFooter;
    TListInfoUI m_ListInfo;
 };
 
-class UILIB_API CListLabelElementUI : public CListElementUI
+class UILIB_API CListLabelElementUI : public ListElementUI
 {
 public:
    CListLabelElementUI();

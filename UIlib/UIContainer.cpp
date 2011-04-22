@@ -463,16 +463,16 @@ const TCHAR* CTabFolderCanvasUI::GetClass() const
 }
 
 
-CVerticalLayoutUI::CVerticalLayoutUI() : m_cyNeeded(0)
+VerticalLayoutUI::VerticalLayoutUI() : m_cyNeeded(0)
 {
 }
 
-const TCHAR* CVerticalLayoutUI::GetClass() const
+const TCHAR* VerticalLayoutUI::GetClass() const
 {
    return _T("VertialLayoutUI");
 }
 
-void CVerticalLayoutUI::SetPos(RECT rc)
+void VerticalLayoutUI::SetPos(RECT rc)
 {
    m_rcItem = rc;
    // Adjust for inset

@@ -5,52 +5,52 @@
 #include "UILabel.h"
 #include "UIPanel.h"
 
-CListElementUI::CListElementUI() : 
+ListElementUI::ListElementUI() : 
    m_idx(-1),
    m_owner(NULL), 
    m_bSelected(false)
 {
 }
 
-UINT CListElementUI::GetControlFlags() const
+UINT ListElementUI::GetControlFlags() const
 {
    return UIFLAG_WANTRETURN;
 }
 
-void* CListElementUI::GetInterface(const TCHAR* name)
+void* ListElementUI::GetInterface(const TCHAR* name)
 {
    if (_tcscmp(name, _T("ListItem")) == 0)  return static_cast<IListItemUI*>(this);
    return ControlUI::GetInterface(name);
 }
 
-void CListElementUI::SetOwner(ControlUI* owner)
+void ListElementUI::SetOwner(ControlUI* owner)
 {
    m_owner = static_cast<IListOwnerUI*>(owner->GetInterface(_T("ListOwner")));
 }
 
-int CListElementUI::GetIndex() const
+int ListElementUI::GetIndex() const
 {
    return m_idx;
 }
 
-void CListElementUI::SetIndex(int idx)
+void ListElementUI::SetIndex(int idx)
 {
    m_idx = idx;
 }
 
-bool CListElementUI::Activate()
+bool ListElementUI::Activate()
 {
    if (!ControlUI::Activate())  return false;
    if (m_manager != NULL)  m_manager->SendNotify(this, _T("itemactivate"));
    return true;
 }
 
-bool CListElementUI::IsSelected() const
+bool ListElementUI::IsSelected() const
 {
    return m_bSelected;
 }
 
-bool CListElementUI::Select(bool bSelect)
+bool ListElementUI::Select(bool bSelect)
 {
    if (!IsEnabled())  return false;
    if (bSelect == m_bSelected)  return true;
@@ -60,17 +60,17 @@ bool CListElementUI::Select(bool bSelect)
    return true;
 }
 
-bool CListElementUI::IsExpanded() const
+bool ListElementUI::IsExpanded() const
 {
    return false;
 }
 
-bool CListElementUI::Expand(bool /*bExpand = true*/)
+bool ListElementUI::Expand(bool /*bExpand = true*/)
 {
    return false;
 }
 
-void CListElementUI::Event(TEventUI& event)
+void ListElementUI::Event(TEventUI& event)
 {
    if (event.Type == UIEVENT_DBLCLICK && IsEnabled()) 
    {
@@ -92,7 +92,7 @@ void CListElementUI::Event(TEventUI& event)
    if (m_owner != NULL)  m_owner->Event(event); else ControlUI::Event(event);
 }
 
-void CListElementUI::SetAttribute(const TCHAR* name, const TCHAR* value)
+void ListElementUI::SetAttribute(const TCHAR* name, const TCHAR* value)
 {
    if (_tcscmp(name, _T("selected")) == 0)  Select();
    else ControlUI::SetAttribute(name, value);
@@ -244,7 +244,7 @@ CListFooterUI::CListFooterUI()
 {
    CLabelPanelUI* pLabel = new CLabelPanelUI;
    Add(pLabel);
-   CPaddingPanelUI* pPadding = new CPaddingPanelUI;
+   PaddingPanelUI* pPadding = new PaddingPanelUI;
    Add(pPadding);
 }
 
@@ -278,9 +278,9 @@ void CListFooterUI::DoPaint(HDC hDC, const RECT& rcPaint)
 }
 
 
-CListUI::CListUI() : m_pCallback(NULL), m_curSel(-1), m_iExpandedItem(-1)
+ListUI::ListUI() : m_pCallback(NULL), m_curSel(-1), m_iExpandedItem(-1)
 {
-   m_pList = new CVerticalLayoutUI;
+   m_pList = new VerticalLayoutUI;
    m_pHeader = new CListHeaderUI;
    m_pFooter = new CListFooterUI;
 
@@ -288,10 +288,10 @@ CListUI::CListUI() : m_pCallback(NULL), m_curSel(-1), m_iExpandedItem(-1)
    pWhite->Add(m_pList);
 
    m_pFooter->Add(new CLabelPanelUI);
-   m_pFooter->Add(new CPaddingPanelUI);
+   m_pFooter->Add(new PaddingPanelUI);
 
    Add(m_pHeader);
-   CVerticalLayoutUI::Add(pWhite);
+   VerticalLayoutUI::Add(pWhite);
    Add(m_pFooter);
 
    m_pList->EnableScrollBar();
@@ -299,30 +299,30 @@ CListUI::CListUI() : m_pCallback(NULL), m_curSel(-1), m_iExpandedItem(-1)
    ::ZeroMemory(&m_ListInfo, sizeof(TListInfoUI));
 }
 
-const TCHAR* CListUI::GetClass() const
+const TCHAR* ListUI::GetClass() const
 {
    return _T("ListUI");
 }
 
-UINT CListUI::GetControlFlags() const
+UINT ListUI::GetControlFlags() const
 {
    return UIFLAG_TABSTOP;
 }
 
-void* CListUI::GetInterface(const TCHAR* name)
+void* ListUI::GetInterface(const TCHAR* name)
 {
    if (_tcscmp(name, _T("List")) == 0)  return static_cast<IListUI*>(this);
    if (_tcscmp(name, _T("ListOwner")) == 0)  return static_cast<IListOwnerUI*>(this);
-   return CVerticalLayoutUI::GetInterface(name);
+   return VerticalLayoutUI::GetInterface(name);
 }
 
-bool CListUI::Add(ControlUI* ctrl)
+bool ListUI::Add(ControlUI* ctrl)
 {
    // Override the Add() method so we can add items specifically to
    // the intended widgets. Headers and footers are assumed to be
    // answer the correct interface so we can add multiple list headers/footers.
-   if (ctrl->GetInterface(_T("ListHeader")) != NULL)  return CVerticalLayoutUI::Add(ctrl);
-   if (ctrl->GetInterface(_T("ListFooter")) != NULL)  return CVerticalLayoutUI::Add(ctrl);
+   if (ctrl->GetInterface(_T("ListHeader")) != NULL)  return VerticalLayoutUI::Add(ctrl);
+   if (ctrl->GetInterface(_T("ListFooter")) != NULL)  return VerticalLayoutUI::Add(ctrl);
    // We also need to recognize header sub-items
    if (_tcsstr(ctrl->GetClass(), _T("Header")) != NULL)  return m_pHeader->Add(ctrl);
    if (_tcsstr(ctrl->GetClass(), _T("Footer")) != NULL)  return m_pFooter->Add(ctrl);
@@ -335,32 +335,32 @@ bool CListUI::Add(ControlUI* ctrl)
    return m_pList->Add(ctrl);
 }
 
-bool CListUI::Remove(ControlUI* ctrl)
+bool ListUI::Remove(ControlUI* ctrl)
 {
    ASSERT(!"Not supported yet");
    return false; 
 }
 
-void CListUI::RemoveAll()
+void ListUI::RemoveAll()
 {
    m_curSel = -1;
    m_iExpandedItem = -1;
    m_pList->RemoveAll();
 }
 
-ControlUI* CListUI::GetItem(int idx) const
+ControlUI* ListUI::GetItem(int idx) const
 {
    return m_pList->GetItem(idx);
 }
 
-int CListUI::GetCount() const
+int ListUI::GetCount() const
 {
    return m_pList->GetCount();
 }
 
-void CListUI::SetPos(RECT rc)
+void ListUI::SetPos(RECT rc)
 {
-   CVerticalLayoutUI::SetPos(rc);
+   VerticalLayoutUI::SetPos(rc);
    if (m_pHeader == NULL)  return;
    // Determine general list information and the size of header columns
    m_ListInfo.Text = UICOLOR_CONTROL_TEXT_NORMAL;
@@ -386,7 +386,7 @@ void CListUI::SetPos(RECT rc)
    }
 }
 
-void CListUI::Event(TEventUI& event)
+void ListUI::Event(TEventUI& event)
 {
    switch( event.Type)  {
    case UIEVENT_KEYDOWN:
@@ -438,27 +438,27 @@ void CListUI::Event(TEventUI& event)
    ControlUI::Event(event);
 }
 
-CListHeaderUI* CListUI::GetHeader() const
+CListHeaderUI* ListUI::GetHeader() const
 {
    return m_pHeader;
 }
 
-CListFooterUI* CListUI::GetFooter() const
+CListFooterUI* ListUI::GetFooter() const
 {
    return m_pFooter;
 }
 
-ContainerUI* CListUI::GetList() const
+ContainerUI* ListUI::GetList() const
 {
    return m_pList;
 }
 
-int CListUI::GetCurSel() const
+int ListUI::GetCurSel() const
 {
    return m_curSel;
 }
 
-bool CListUI::SelectItem(int idx)
+bool ListUI::SelectItem(int idx)
 {
    if (idx == m_curSel)  return true;
    // We should first unselect the currently selected item
@@ -491,17 +491,17 @@ bool CListUI::SelectItem(int idx)
    return true;
 }
 
-const TListInfoUI* CListUI::GetListInfo() const
+const TListInfoUI* ListUI::GetListInfo() const
 {
    return &m_ListInfo;
 }
 
-void CListUI::SetExpanding(bool bExpandable)
+void ListUI::SetExpanding(bool bExpandable)
 {
    m_ListInfo.bExpandable = bExpandable;
 }
 
-bool CListUI::ExpandItem(int idx, bool bExpand /*= true*/)
+bool ListUI::ExpandItem(int idx, bool bExpand /*= true*/)
 {
    if (!m_ListInfo.bExpandable)  return false;
    if (m_iExpandedItem >= 0)  {
@@ -528,12 +528,12 @@ bool CListUI::ExpandItem(int idx, bool bExpand /*= true*/)
    return true;
 }
 
-int CListUI::GetExpandedItem() const
+int ListUI::GetExpandedItem() const
 {
    return m_iExpandedItem;
 }
 
-void CListUI::EnsureVisible(int idx)
+void ListUI::EnsureVisible(int idx)
 {
    if (m_curSel < 0)  return;
    RECT rcItem = m_pList->GetItem(idx)->GetPos();
@@ -546,26 +546,26 @@ void CListUI::EnsureVisible(int idx)
    Scroll(0, dx);
 }
 
-void CListUI::Scroll(int dx, int dy)
+void ListUI::Scroll(int dx, int dy)
 {
    if (dx == 0 && dy == 0)  return;
    m_pList->SetScrollPos(m_pList->GetScrollPos() + dy);
 }
 
-void CListUI::SetAttribute(const TCHAR* name, const TCHAR* value)
+void ListUI::SetAttribute(const TCHAR* name, const TCHAR* value)
 {
    if (_tcscmp(name, _T("header")) == 0)  GetHeader()->SetVisible(_tcscmp(value, _T("hidden")) != 0);
    else if (_tcscmp(name, _T("footer")) == 0)  GetFooter()->SetVisible(_tcscmp(value, _T("hidden")) != 0);
    else if (_tcscmp(name, _T("expanding")) == 0)  SetExpanding(_tcscmp(value, _T("true")) == 0);
-   else CVerticalLayoutUI::SetAttribute(name, value);
+   else VerticalLayoutUI::SetAttribute(name, value);
 }
 
-IListCallbackUI* CListUI::GetTextCallback() const
+IListCallbackUI* ListUI::GetTextCallback() const
 {
    return m_pCallback;
 }
 
-void CListUI::SetTextCallback(IListCallbackUI* pCallback)
+void ListUI::SetTextCallback(IListCallbackUI* pCallback)
 {
    m_pCallback = pCallback;
 }
@@ -611,7 +611,7 @@ void CListLabelElementUI::Event(TEventUI& event)
          Invalidate();
       }
    }
-   CListElementUI::Event(event);
+   ListElementUI::Event(event);
 }
 
 void CListLabelElementUI::SetAttribute(const TCHAR* name, const TCHAR* value)
@@ -623,7 +623,7 @@ void CListLabelElementUI::SetAttribute(const TCHAR* name, const TCHAR* value)
       if (_tcsstr(value, _T("center")) != NULL)  m_uTextStyle |= DT_CENTER;
       if (_tcsstr(value, _T("right")) != NULL)  m_uTextStyle |= DT_RIGHT;
    }
-   else CListElementUI::SetAttribute(name, value);
+   else ListElementUI::SetAttribute(name, value);
 }
 
 SIZE CListLabelElementUI::EstimateSize(SIZE /*szAvailable*/)
@@ -692,7 +692,7 @@ UINT CListTextElementUI::GetControlFlags() const
 
 void CListTextElementUI::SetOwner(ControlUI* owner)
 {
-   CListElementUI::SetOwner(owner);
+   ListElementUI::SetOwner(owner);
    m_owner = static_cast<IListUI*>(owner->GetInterface("List"));
 }
 

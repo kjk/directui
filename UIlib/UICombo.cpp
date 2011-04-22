@@ -170,7 +170,7 @@ LRESULT CDropDownWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
       // reassigned by this operation - which is why it is important to reassign
       // the items back to the righfull owner/manager when the window closes.
       CControlCanvasUI* win = new CControlCanvasUI;
-      CVerticalLayoutUI* pLayout = new CVerticalLayoutUI;
+      VerticalLayoutUI* pLayout = new VerticalLayoutUI;
       for (int i = 0; i < m_owner->GetCount(); i++)  pLayout->Add(static_cast<ControlUI*>(m_owner->GetItem(i)));
       pLayout->SetAutoDestroy(false);
       pLayout->EnableScrollBar();

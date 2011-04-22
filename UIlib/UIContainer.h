@@ -136,10 +136,10 @@ public:
 };
 
 
-class UILIB_API CVerticalLayoutUI : public ContainerUI
+class UILIB_API VerticalLayoutUI : public ContainerUI
 {
 public:
-   CVerticalLayoutUI();
+   VerticalLayoutUI();
 
    const TCHAR* GetClass() const;
    void SetPos(RECT rc);

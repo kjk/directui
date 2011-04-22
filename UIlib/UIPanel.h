@@ -8,11 +8,11 @@
 #include "UILabel.h"
 
 
-class UILIB_API CTaskPanelUI : public CVerticalLayoutUI
+class UILIB_API TaskPanelUI : public VerticalLayoutUI
 {
 public:
-   CTaskPanelUI();
-   ~CTaskPanelUI();
+   TaskPanelUI();
+   ~TaskPanelUI();
 
    enum { FADE_TIMERID = 10 };
    enum { FADE_DELAY = 500UL };
@@ -30,10 +30,10 @@ protected:
    RECT m_rcFade;
 };
 
-class UILIB_API CNavigatorPanelUI : public CVerticalLayoutUI, public IListOwnerUI
+class UILIB_API NavigatorPanelUI : public VerticalLayoutUI, public IListOwnerUI
 {
 public:
-   CNavigatorPanelUI();
+   NavigatorPanelUI();
 
    const TCHAR* GetClass() const;   
    void* GetInterface(const TCHAR* name);
@@ -52,10 +52,10 @@ protected:
    int m_curSel;
 };
 
-class UILIB_API CNavigatorButtonUI : public CListElementUI
+class UILIB_API NavigatorButtonUI : public ListElementUI
 {
 public:
-   CNavigatorButtonUI();
+   NavigatorButtonUI();
 
    const TCHAR* GetClass() const;
    void Event(TEventUI& event);
@@ -70,10 +70,10 @@ protected:
    UINT m_uButtonState;
 };
 
-class UILIB_API CSearchTitlePanelUI : public HorizontalLayoutUI
+class UILIB_API SearchTitlePanelUI : public HorizontalLayoutUI
 {
 public:
-   CSearchTitlePanelUI();
+   SearchTitlePanelUI();
 
    const TCHAR* GetClass() const;
 
@@ -88,11 +88,11 @@ protected:
 };
 
 
-class UILIB_API CPaddingPanelUI : public ControlUI
+class UILIB_API PaddingPanelUI : public ControlUI
 {
 public:
-   CPaddingPanelUI();
-   CPaddingPanelUI(int cx, int cy);
+   PaddingPanelUI();
+   PaddingPanelUI(int cx, int cy);
 
    const TCHAR* GetClass() const;
 
@@ -107,11 +107,11 @@ protected:
    SIZE m_cxyFixed;
 };
 
-class UILIB_API CImagePanelUI : public ControlUI
+class UILIB_API ImagePanelUI : public ControlUI
 {
 public:
-   CImagePanelUI();
-   virtual ~CImagePanelUI();
+   ImagePanelUI();
+   virtual ~ImagePanelUI();
 
    const TCHAR* GetClass() const;
 
@@ -128,10 +128,10 @@ protected:
    SIZE m_cxyFixed;
 };
 
-class UILIB_API CTextPanelUI : public CLabelPanelUI
+class UILIB_API TextPanelUI : public CLabelPanelUI
 {
 public:
-   CTextPanelUI();
+   TextPanelUI();
 
    const TCHAR* GetClass() const;
    UINT GetControlFlags() const;
@@ -156,10 +156,10 @@ protected:
 };
 
 
-class UILIB_API CWarningPanelUI : public CTextPanelUI
+class UILIB_API WarningPanelUI : public TextPanelUI
 {
 public:
-   CWarningPanelUI();
+   WarningPanelUI();
 
    const TCHAR* GetClass() const;
 
