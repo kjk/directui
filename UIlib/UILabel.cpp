@@ -15,7 +15,7 @@ void CLabelPanelUI::SetText(const TCHAR* txt)
 {
    // Automatic assignment of keyboard shortcut
    if (_tcschr(txt, '&') != NULL)  m_chShortcut = *(_tcschr(txt, '&') + 1);
-   CControlUI::SetText(txt);
+   ControlUI::SetText(txt);
 }
 
 void CLabelPanelUI::SetWidth(int cx)
@@ -37,7 +37,7 @@ void CLabelPanelUI::SetAttribute(const TCHAR* name, const TCHAR* value)
       if (_tcsstr(value, _T("right")) != NULL)  m_uTextStyle |= DT_RIGHT;
    }
    else if (_tcscmp(name, _T("width")) == 0)  SetWidth(_ttoi(value));
-   else CControlUI::SetAttribute(name, value);
+   else ControlUI::SetAttribute(name, value);
 }
 
 SIZE CLabelPanelUI::EstimateSize(SIZE /*szAvailable*/)

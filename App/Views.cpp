@@ -26,7 +26,7 @@ LRESULT CStandardPageWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
    if (uMsg == WM_CREATE)  {     
       m_pm.Init(m_hWnd);
       CDialogBuilder builder;
-      CControlUI* root = builder.Create(GetDialogResource());
+      ControlUI* root = builder.Create(GetDialogResource());
       ASSERT(root && "Failed to parse XML");
       m_pm.AttachDialog(root);
       m_pm.AddNotifier(this);
@@ -252,7 +252,7 @@ void CRegistersPageWnd::OnPrepareAnimation()
    for (int i = 0; i < 1000; i++)  pList->Add(new CListTextElementUI);    // We want 1000 items in list
 }
 
-const TCHAR* CRegistersPageWnd::GetItemText(CControlUI* ctrl, int idx, int iSubItem)
+const TCHAR* CRegistersPageWnd::GetItemText(ControlUI* ctrl, int idx, int iSubItem)
 {
    if (idx == 0 && iSubItem == 0)  return _T("<i 3>Item1");
    if (idx == 1 && iSubItem == 0)  return _T("<i 3>Item2");
@@ -265,7 +265,7 @@ const TCHAR* CRegistersPageWnd::GetItemText(CControlUI* ctrl, int idx, int iSubI
    return sTemp;
 }
 
-int CRegistersPageWnd::CompareItem(CControlUI* pList, CControlUI* item1, CControlUI* item2)
+int CRegistersPageWnd::CompareItem(ControlUI* pList, ControlUI* item1, ControlUI* item2)
 {
    return 0;
 }
@@ -340,7 +340,7 @@ void CSystemsPageWnd::Notify(TNotifyUI& msg)
    CStandardPageWnd::Notify(msg);
 }
 
-const TCHAR* CSystemsPageWnd::GetItemText(CControlUI* ctrl, int idx, int iSubItem)
+const TCHAR* CSystemsPageWnd::GetItemText(ControlUI* ctrl, int idx, int iSubItem)
 {
    if (idx == 0 && iSubItem == 1)  return _T("Expanding Item #1");
    if (idx == 1 && iSubItem == 1)  return _T("Expanding Item #2");
@@ -354,7 +354,7 @@ const TCHAR* CSystemsPageWnd::GetItemText(CControlUI* ctrl, int idx, int iSubIte
    return _T("");
 }
 
-int CSystemsPageWnd::CompareItem(CControlUI* pList, CControlUI* item1, CControlUI* item2)
+int CSystemsPageWnd::CompareItem(ControlUI* pList, ControlUI* item1, ControlUI* item2)
 {
    return 0;
 }
@@ -365,7 +365,7 @@ void CSystemsPageWnd::OnPrepareAnimation()
    pList->SetTextCallback(this);  // List will call our GetItemText()
 }
 
-void CSystemsPageWnd::OnExpandItem(CControlUI* ctrl)
+void CSystemsPageWnd::OnExpandItem(ControlUI* ctrl)
 {
    CListExpandElementUI* item = static_cast<CListExpandElementUI*>(ctrl);
    // Add slowly...

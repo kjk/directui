@@ -5,7 +5,7 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-class UILIB_API CSingleLinePickUI : public CControlUI
+class UILIB_API CSingleLinePickUI : public ControlUI
 {
 public:
    CSingleLinePickUI();
@@ -46,8 +46,8 @@ public:
    int GetCurSel() const;  
    bool SelectItem(int idx);
 
-   bool Add(CControlUI* ctrl);
-   bool Remove(CControlUI* ctrl);
+   bool Add(ControlUI* ctrl);
+   bool Remove(ControlUI* ctrl);
    void RemoveAll();
 
    bool Activate();

@@ -38,7 +38,7 @@ public:
    const TCHAR* GetClass() const;   
    void* GetInterface(const TCHAR* name);
 
-   bool Add(CControlUI* ctrl);
+   bool Add(ControlUI* ctrl);
 
    int GetCurSel() const;
    bool SelectItem(int idx);
@@ -88,7 +88,7 @@ protected:
 };
 
 
-class UILIB_API CPaddingPanelUI : public CControlUI
+class UILIB_API CPaddingPanelUI : public ControlUI
 {
 public:
    CPaddingPanelUI();
@@ -107,7 +107,7 @@ protected:
    SIZE m_cxyFixed;
 };
 
-class UILIB_API CImagePanelUI : public CControlUI
+class UILIB_API CImagePanelUI : public ControlUI
 {
 public:
    CImagePanelUI();

@@ -9,14 +9,14 @@
 class IContainerUI
 {
 public:
-   virtual CControlUI* GetItem(int idx) const = 0;
+   virtual ControlUI* GetItem(int idx) const = 0;
    virtual int GetCount() const = 0;
-   virtual bool Add(CControlUI* ctrl) = 0;
-   virtual bool Remove(CControlUI* ctrl) = 0;
+   virtual bool Add(ControlUI* ctrl) = 0;
+   virtual bool Remove(ControlUI* ctrl) = 0;
    virtual void RemoveAll() = 0;
 };
 
-class UILIB_API CContainerUI : public CControlUI, public IContainerUI
+class UILIB_API CContainerUI : public ControlUI, public IContainerUI
 {
 public:
    CContainerUI();
@@ -26,10 +26,10 @@ public:
    const TCHAR* GetClass() const;
    LPVOID GetInterface(const TCHAR* name);
 
-   CControlUI* GetItem(int idx) const;
+   ControlUI* GetItem(int idx) const;
    int GetCount() const;
-   bool Add(CControlUI* ctrl);
-   bool Remove(CControlUI* ctrl);
+   bool Add(ControlUI* ctrl);
+   bool Remove(ControlUI* ctrl);
    void RemoveAll();
 
    void Event(TEventUI& event);
@@ -50,8 +50,8 @@ public:
 
    void SetAttribute(const TCHAR* name, const TCHAR* value);
 
-   void SetManager(CPaintManagerUI* manager, CControlUI* parent);
-   CControlUI* FindControl(FINDCONTROLPROC Proc, void* data, UINT uFlags);
+   void SetManager(CPaintManagerUI* manager, ControlUI* parent);
+   ControlUI* FindControl(FINDCONTROLPROC Proc, void* data, UINT uFlags);
 
    virtual int GetScrollPos() const;
    virtual int GetScrollPage() const;
@@ -184,7 +184,7 @@ public:
    const TCHAR* GetClass() const;
    void* GetInterface(const TCHAR* name);
 
-   void SetStretchMode(CControlUI* ctrl, UINT uMode);
+   void SetStretchMode(ControlUI* ctrl, UINT uMode);
 
    void SetPos(RECT rc);
    SIZE EstimateSize(SIZE szAvailable);
@@ -195,7 +195,7 @@ protected:
 protected:  
    typedef struct 
    {
-      CControlUI* ctrl;
+      ControlUI* ctrl;
       UINT uMode;
       RECT rcItem;
    } STRETCHMODE;

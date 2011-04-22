@@ -3,7 +3,7 @@
 #include "UIDlgBuilder.h"
 
 
-CControlUI* CDialogBuilder::Create(const TCHAR* xml, IDialogBuilderCallback* pCallback /*= NULL*/)
+ControlUI* CDialogBuilder::Create(const TCHAR* xml, IDialogBuilderCallback* pCallback /*= NULL*/)
 {
    m_pCallback = pCallback;
    if (!m_xml.Load(xml))  return NULL;
@@ -13,7 +13,7 @@ CControlUI* CDialogBuilder::Create(const TCHAR* xml, IDialogBuilderCallback* pCa
    return _Parse(&root);
 }
 
-CControlUI* CDialogBuilder::CreateFromResource(UINT nRes, IDialogBuilderCallback* pCallback /*= NULL*/)
+ControlUI* CDialogBuilder::CreateFromResource(UINT nRes, IDialogBuilderCallback* pCallback /*= NULL*/)
 {
    HRSRC hResource = ::FindResource(CPaintManagerUI::GetResourceInstance(), MAKEINTRESOURCE(nRes), _T("XML"));
    if (hResource == NULL)  return NULL;
@@ -29,15 +29,15 @@ CControlUI* CDialogBuilder::CreateFromResource(UINT nRes, IDialogBuilderCallback
    return Create(sXML, pCallback);
 }
 
-CControlUI* CDialogBuilder::_Parse(CMarkupNode* root, CControlUI* parent)
+ControlUI* CDialogBuilder::_Parse(CMarkupNode* root, ControlUI* parent)
 {
    CDialogLayoutUI* pStretched = NULL;
    IContainerUI* pContainer = NULL;
-   CControlUI* pReturn = NULL;
+   ControlUI* pReturn = NULL;
    for (CMarkupNode node = root->GetChild() ; node.IsValid(); node = node.GetSibling())  {
       const TCHAR* pstrClass = node.GetName();
       SIZE_T cchLen = _tcslen(pstrClass);
-      CControlUI* ctrl = NULL;
+      ControlUI* ctrl = NULL;
       switch( cchLen)  {
       case 4:
          if (_tcscmp(pstrClass, _T("List")) == 0)                   ctrl = new CListUI;

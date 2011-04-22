@@ -20,10 +20,10 @@ UINT CListElementUI::GetControlFlags() const
 void* CListElementUI::GetInterface(const TCHAR* name)
 {
    if (_tcscmp(name, _T("ListItem")) == 0)  return static_cast<IListItemUI*>(this);
-   return CControlUI::GetInterface(name);
+   return ControlUI::GetInterface(name);
 }
 
-void CListElementUI::SetOwner(CControlUI* owner)
+void CListElementUI::SetOwner(ControlUI* owner)
 {
    m_owner = static_cast<IListOwnerUI*>(owner->GetInterface(_T("ListOwner")));
 }
@@ -40,7 +40,7 @@ void CListElementUI::SetIndex(int idx)
 
 bool CListElementUI::Activate()
 {
-   if (!CControlUI::Activate())  return false;
+   if (!ControlUI::Activate())  return false;
    if (m_manager != NULL)  m_manager->SendNotify(this, _T("itemactivate"));
    return true;
 }
@@ -89,13 +89,13 @@ void CListElementUI::Event(TEventUI& event)
    // An important twist: The list-item will send the event not to its immediate
    // parent but to the "attached" list. A list may actually embed several components
    // in its path to the item, but key-presses etc. needs to go to the actual list.
-   if (m_owner != NULL)  m_owner->Event(event); else CControlUI::Event(event);
+   if (m_owner != NULL)  m_owner->Event(event); else ControlUI::Event(event);
 }
 
 void CListElementUI::SetAttribute(const TCHAR* name, const TCHAR* value)
 {
    if (_tcscmp(name, _T("selected")) == 0)  Select();
-   else CControlUI::SetAttribute(name, value);
+   else ControlUI::SetAttribute(name, value);
 }
 
 
@@ -157,7 +157,7 @@ void CListHeaderItemUI::SetWidth(int cxWidth)
 void CListHeaderItemUI::SetAttribute(const TCHAR* name, const TCHAR* value)
 {
    if (_tcscmp(name, _T("width")) == 0)  SetWidth(_ttol(value));
-   else CControlUI::SetAttribute(name, value);
+   else ControlUI::SetAttribute(name, value);
 }
 
 UINT CListHeaderItemUI::GetControlFlags() const
@@ -209,7 +209,7 @@ void CListHeaderItemUI::Event(TEventUI& event)
          return;
       }
    }
-   CControlUI::Event(event);
+   ControlUI::Event(event);
 }
 
 SIZE CListHeaderItemUI::EstimateSize(SIZE /*szAvailable*/)
@@ -316,7 +316,7 @@ void* CListUI::GetInterface(const TCHAR* name)
    return CVerticalLayoutUI::GetInterface(name);
 }
 
-bool CListUI::Add(CControlUI* ctrl)
+bool CListUI::Add(ControlUI* ctrl)
 {
    // Override the Add() method so we can add items specifically to
    // the intended widgets. Headers and footers are assumed to be
@@ -335,7 +335,7 @@ bool CListUI::Add(CControlUI* ctrl)
    return m_pList->Add(ctrl);
 }
 
-bool CListUI::Remove(CControlUI* ctrl)
+bool CListUI::Remove(ControlUI* ctrl)
 {
    ASSERT(!"Not supported yet");
    return false; 
@@ -348,7 +348,7 @@ void CListUI::RemoveAll()
    m_pList->RemoveAll();
 }
 
-CControlUI* CListUI::GetItem(int idx) const
+ControlUI* CListUI::GetItem(int idx) const
 {
    return m_pList->GetItem(idx);
 }
@@ -435,7 +435,7 @@ void CListUI::Event(TEventUI& event)
       }
       break;
    }
-   CControlUI::Event(event);
+   ControlUI::Event(event);
 }
 
 CListHeaderUI* CListUI::GetHeader() const
@@ -463,7 +463,7 @@ bool CListUI::SelectItem(int idx)
    if (idx == m_curSel)  return true;
    // We should first unselect the currently selected item
    if (m_curSel >= 0)  {
-      CControlUI* ctrl = GetItem(m_curSel);
+      ControlUI* ctrl = GetItem(m_curSel);
       if (ctrl != NULL)  {
          IListItemUI* listItem = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
          if (listItem != NULL)  listItem->Select(false);
@@ -471,7 +471,7 @@ bool CListUI::SelectItem(int idx)
    }
    // Now figure out if the control can be selected
    // TODO: Redo old selected if failure
-   CControlUI* ctrl = GetItem(idx);
+   ControlUI* ctrl = GetItem(idx);
    if (ctrl == NULL)  return false;
    if (!ctrl->IsVisible())  return false;
    if (!ctrl->IsEnabled())  return false;
@@ -505,7 +505,7 @@ bool CListUI::ExpandItem(int idx, bool bExpand /*= true*/)
 {
    if (!m_ListInfo.bExpandable)  return false;
    if (m_iExpandedItem >= 0)  {
-      CControlUI* ctrl = GetItem(m_iExpandedItem);
+      ControlUI* ctrl = GetItem(m_iExpandedItem);
       if (ctrl != NULL)  {
          IListItemUI* item = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
          if (item != NULL)  item->Expand(false);
@@ -513,7 +513,7 @@ bool CListUI::ExpandItem(int idx, bool bExpand /*= true*/)
       m_iExpandedItem = -1;
    }
    if (bExpand)  {
-      CControlUI* ctrl = GetItem(idx);
+      ControlUI* ctrl = GetItem(idx);
       if (ctrl == NULL)  return false;
       if (!ctrl->IsVisible())  return false;
       IListItemUI* item = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
@@ -690,7 +690,7 @@ UINT CListTextElementUI::GetControlFlags() const
    return UIFLAG_WANTRETURN | (m_nLinks > 0 ? UIFLAG_SETCURSOR : 0);
 }
 
-void CListTextElementUI::SetOwner(CControlUI* owner)
+void CListTextElementUI::SetOwner(ControlUI* owner)
 {
    CListElementUI::SetOwner(owner);
    m_owner = static_cast<IListUI*>(owner->GetInterface("List"));
@@ -873,14 +873,14 @@ void CListExpandElementUI::SetPos(RECT rc)
    CListTextElementUI::SetPos(rc);
 }
 
-bool CListExpandElementUI::Add(CControlUI* ctrl)
+bool CListExpandElementUI::Add(ControlUI* ctrl)
 {
    ASSERT(m_pContainer);
    if (m_pContainer == NULL)  return false;
    return m_pContainer->Add(ctrl);
 }
 
-bool CListExpandElementUI::Remove(CControlUI* ctrl)
+bool CListExpandElementUI::Remove(ControlUI* ctrl)
 {
    ASSERT(!"Not supported yet");
    return false; 
@@ -891,7 +891,7 @@ void CListExpandElementUI::RemoveAll()
    if (m_pContainer != NULL)  m_pContainer->RemoveAll();
 }
 
-CControlUI* CListExpandElementUI::GetItem(int idx) const
+ControlUI* CListExpandElementUI::GetItem(int idx) const
 {
    if (m_pContainer == NULL)  return NULL;
    return m_pContainer->GetItem(idx);
@@ -921,15 +921,15 @@ void CListExpandElementUI::DoPaint(HDC hDC, const RECT& rcPaint)
    }
 }
 
-void CListExpandElementUI::SetManager(CPaintManagerUI* manager, CControlUI* parent)
+void CListExpandElementUI::SetManager(CPaintManagerUI* manager, ControlUI* parent)
 {
    if (m_pContainer != NULL)  m_pContainer->SetManager(manager, parent);
    CListTextElementUI::SetManager(manager, parent);
 }
 
-CControlUI* CListExpandElementUI::FindControl(FINDCONTROLPROC Proc, void* data, UINT uFlags)
+ControlUI* CListExpandElementUI::FindControl(FINDCONTROLPROC Proc, void* data, UINT uFlags)
 {
-   CControlUI* pResult = NULL;
+   ControlUI* pResult = NULL;
    if (m_pContainer != NULL)  pResult = m_pContainer->FindControl(Proc, data, uFlags);
    if (pResult == NULL)  pResult = CListTextElementUI::FindControl(Proc, data, uFlags);
    return pResult;

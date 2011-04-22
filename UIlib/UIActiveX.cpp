@@ -886,7 +886,7 @@ void CActiveXUI::SetAttribute(const TCHAR* name, const TCHAR* value)
    if (_tcscmp(name, _T("clsid")) == 0)  CreateControl(value);
    else if (_tcscmp(name, _T("width")) == 0)  SetWidth(_ttoi(value));
    else if (_tcscmp(name, _T("height")) == 0)  SetHeight(_ttoi(value));
-   else CControlUI::SetAttribute(name, value);
+   else ControlUI::SetAttribute(name, value);
 }
 
 LRESULT CActiveXUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, bool& bHandled)

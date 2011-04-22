@@ -35,7 +35,7 @@ public:
    static void DoPaintAlphaBitmap(HDC hDC, CPaintManagerUI* manager, HBITMAP hBitmap, RECT rc, BYTE iAlpha);
    static void DoAnimateWindow(HWND hWnd, UINT uStyle, DWORD dwTime = 200);
    static void GenerateClip(HDC hDC, RECT rcItem, CRenderClip& clip);
-   static HBITMAP GenerateAlphaBitmap(CPaintManagerUI* manager, CControlUI* ctrl, RECT rc, UITYPE_COLOR Background);
+   static HBITMAP GenerateAlphaBitmap(CPaintManagerUI* manager, ControlUI* ctrl, RECT rc, UITYPE_COLOR Background);
 };
 
 

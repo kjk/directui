@@ -54,19 +54,19 @@ void CButtonUI::Event(TEventUI& event)
       m_uButtonState &= ~UISTATE_HOT;
       Invalidate();
    }
-   CControlUI::Event(event);
+   ControlUI::Event(event);
 }
 
 void CButtonUI::SetText(const TCHAR* txt)
 {
-   CControlUI::SetText(txt);
+   ControlUI::SetText(txt);
    // Automatic assignment of keyboard shortcut
    if (_tcschr(txt, '&') != NULL)  m_chShortcut = *(_tcschr(txt, '&') + 1);
 }
 
 bool CButtonUI::Activate()
 {
-   if (!CControlUI::Activate())  return false;
+   if (!ControlUI::Activate())  return false;
    if (m_manager != NULL)  m_manager->SendNotify(this, _T("click"));
    return true;
 }
@@ -84,7 +84,7 @@ void CButtonUI::SetAttribute(const TCHAR* name, const TCHAR* value)
       if (_tcsstr(value, _T("center")) != NULL)  m_uTextStyle |= DT_CENTER;
       if (_tcsstr(value, _T("right")) != NULL)  m_uTextStyle |= DT_RIGHT;
    }
-   else CControlUI::SetAttribute(name, value);
+   else ControlUI::SetAttribute(name, value);
 }
 
 void CButtonUI::SetPadding(int cx, int cy)
@@ -158,7 +158,7 @@ void COptionUI::Event(TEventUI& event)
          Invalidate();
       }
    }
-   CControlUI::Event(event);
+   ControlUI::Event(event);
 }
 
 bool COptionUI::IsChecked() const
@@ -176,7 +176,7 @@ void COptionUI::SetCheck(bool bSelected)
 
 bool COptionUI::Activate()
 {
-   if (!CControlUI::Activate())  return false;
+   if (!ControlUI::Activate())  return false;
    SetCheck(true);
    return true;
 }
@@ -194,7 +194,7 @@ void COptionUI::SetAttribute(const TCHAR* name, const TCHAR* value)
    else if (_tcscmp(name, _T("align")) == 0)  {
       if (_tcsstr(value, _T("right")) != NULL)  m_uStyle |= DT_RIGHT;
    }
-   else CControlUI::SetAttribute(name, value);
+   else ControlUI::SetAttribute(name, value);
 }
 
 SIZE COptionUI::EstimateSize(SIZE /*szAvailable*/)

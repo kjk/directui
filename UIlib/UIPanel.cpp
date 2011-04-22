@@ -32,13 +32,13 @@ bool CNavigatorPanelUI::SelectItem(int idx)
 {
    if (idx == m_curSel)  return true;
    if (m_curSel >= 0)  {
-      CControlUI* ctrl = GetItem(m_curSel);
+      ControlUI* ctrl = GetItem(m_curSel);
       IListItemUI* listItem = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
       if (listItem != NULL)  listItem->Select(false);
    }
    m_curSel = idx;
    if (m_curSel >= 0)  {
-      CControlUI* ctrl = GetItem(m_curSel);
+      ControlUI* ctrl = GetItem(m_curSel);
       IListItemUI* listItem = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
       if (listItem == NULL)  return false;
       listItem->Select(true);
@@ -49,7 +49,7 @@ bool CNavigatorPanelUI::SelectItem(int idx)
    return true;
 }
 
-bool CNavigatorPanelUI::Add(CControlUI* ctrl)
+bool CNavigatorPanelUI::Add(ControlUI* ctrl)
 {
    IListItemUI* listItem = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
    if (listItem != NULL)  {
@@ -331,7 +331,7 @@ void CPaddingPanelUI::SetAttribute(const TCHAR* name, const TCHAR* value)
 {
    if (_tcscmp(name, _T("width")) == 0)  SetWidth(_ttoi(value));
    else if (_tcscmp(name, _T("height")) == 0)  SetHeight(_ttoi(value));
-   else CControlUI::SetAttribute(name, value);
+   else ControlUI::SetAttribute(name, value);
 }
 
 const TCHAR* CPaddingPanelUI::GetClass() const
@@ -389,7 +389,7 @@ void CImagePanelUI::SetAttribute(const TCHAR* name, const TCHAR* value)
    if (_tcscmp(name, _T("width")) == 0)  SetWidth(_ttoi(value));
    else if (_tcscmp(name, _T("height")) == 0)  SetHeight(_ttoi(value));
    else if (_tcscmp(name, _T("image")) == 0)  SetImage(value);
-   else CControlUI::SetAttribute(name, value);
+   else ControlUI::SetAttribute(name, value);
 }
 
 const TCHAR* CImagePanelUI::GetClass() const

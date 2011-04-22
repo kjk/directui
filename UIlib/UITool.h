@@ -17,7 +17,7 @@ public:
    void DoPaint(HDC hDC, const RECT& rcPaint);
 };
 
-class UILIB_API CToolbarTitlePanelUI : public CControlUI
+class UILIB_API CToolbarTitlePanelUI : public ControlUI
 {
 public:
    CToolbarTitlePanelUI();
@@ -32,7 +32,7 @@ protected:
    int m_iPadding;
 };
 
-class UILIB_API CToolSeparatorUI : public CControlUI
+class UILIB_API CToolSeparatorUI : public ControlUI
 {
 public:
    const TCHAR* GetClass() const;
@@ -40,7 +40,7 @@ public:
    void DoPaint(HDC hDC, const RECT& rcPaint);
 };
 
-class UILIB_API CToolGripperUI : public CControlUI
+class UILIB_API CToolGripperUI : public ControlUI
 {
 public:
    const TCHAR* GetClass() const;

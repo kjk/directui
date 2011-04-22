@@ -67,7 +67,7 @@ void CSingleLinePickUI::Event(TEventUI& event)
       if (event.chKey == VK_SPACE && m_nLinks > 0)  m_manager->SendNotify(this, _T("link"));
       if (event.chKey == VK_F4 && IsEnabled())  m_manager->SendNotify(this, _T("browse"));
    }
-   CControlUI::Event(event);
+   ControlUI::Event(event);
 }
 
 void CSingleLinePickUI::SetWidth(int cxWidth)
@@ -171,7 +171,7 @@ LRESULT CDropDownWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
       // the items back to the righfull owner/manager when the window closes.
       CControlCanvasUI* win = new CControlCanvasUI;
       CVerticalLayoutUI* pLayout = new CVerticalLayoutUI;
-      for (int i = 0; i < m_owner->GetCount(); i++)  pLayout->Add(static_cast<CControlUI*>(m_owner->GetItem(i)));
+      for (int i = 0; i < m_owner->GetCount(); i++)  pLayout->Add(static_cast<ControlUI*>(m_owner->GetItem(i)));
       pLayout->SetAutoDestroy(false);
       pLayout->EnableScrollBar();
       win->Add(pLayout);
@@ -252,7 +252,7 @@ bool CDropDownUI::SelectItem(int idx)
 {
    if (idx == m_curSel)  return true;
    if (m_curSel >= 0)  {
-      CControlUI* ctrl = static_cast<CControlUI*>(m_items[m_curSel]);
+      ControlUI* ctrl = static_cast<ControlUI*>(m_items[m_curSel]);
       IListItemUI* listItem = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
       if (listItem != NULL)  listItem->Select(false);
       m_curSel = -1;
@@ -260,7 +260,7 @@ bool CDropDownUI::SelectItem(int idx)
    if (m_items.GetSize() == 0)  return false;
    if (idx < 0)  idx = 0;
    if (idx >= m_items.GetSize())  idx = m_items.GetSize() - 1;
-   CControlUI* ctrl = static_cast<CControlUI*>(m_items[idx]);
+   ControlUI* ctrl = static_cast<ControlUI*>(m_items[idx]);
    if (!ctrl->IsVisible())  return false;
    if (!ctrl->IsEnabled())  return false;
    IListItemUI* listItem = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
@@ -274,7 +274,7 @@ bool CDropDownUI::SelectItem(int idx)
    return true;
 }
 
-bool CDropDownUI::Add(CControlUI* ctrl)
+bool CDropDownUI::Add(ControlUI* ctrl)
 {
    IListItemUI* listItem = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
    if (listItem != NULL)  {
@@ -284,7 +284,7 @@ bool CDropDownUI::Add(CControlUI* ctrl)
    return CContainerUI::Add(ctrl);
 }
 
-bool CDropDownUI::Remove(CControlUI* ctrl)
+bool CDropDownUI::Remove(ControlUI* ctrl)
 {
    ASSERT(!"Not supported");
    return false;
@@ -350,12 +350,12 @@ void CDropDownUI::Event(TEventUI& event)
       SelectItem(FindSelectable(m_curSel + (bDownward ? 1 : -1), bDownward));
       return;
    }
-   CControlUI::Event(event);
+   ControlUI::Event(event);
 }
 
 bool CDropDownUI::Activate()
 {
-   if (!CControlUI::Activate())  return false;
+   if (!ControlUI::Activate())  return false;
    CDropDownWnd* win = new CDropDownWnd;
    win->Init(this);
    if (m_manager != NULL)  m_manager->SendNotify(this, _T("dropdown"));
@@ -366,7 +366,7 @@ bool CDropDownUI::Activate()
 CStdString CDropDownUI::GetText() const
 {
    if (m_curSel < 0)  return _T("");
-   CControlUI* ctrl = static_cast<CControlUI*>(m_items[m_curSel]);
+   ControlUI* ctrl = static_cast<ControlUI*>(m_items[m_curSel]);
    return ctrl->GetText();
 }
 
@@ -384,9 +384,9 @@ void CDropDownUI::SetPos(RECT rc)
 {
    // Put all elements out of sight
    RECT rcNull = { 0 };
-   for (int i = 0; i < m_items.GetSize(); i++)  static_cast<CControlUI*>(m_items[i])->SetPos(rcNull);
+   for (int i = 0; i < m_items.GetSize(); i++)  static_cast<ControlUI*>(m_items[i])->SetPos(rcNull);
    // Position this control
-   CControlUI::SetPos(rc);
+   ControlUI::SetPos(rc);
 }
 
 SIZE CDropDownUI::EstimateSize(SIZE /*szAvailable*/)
@@ -397,7 +397,7 @@ SIZE CDropDownUI::EstimateSize(SIZE /*szAvailable*/)
    if (m_cxyFixed.cx > 0 && !m_items.IsEmpty())  {
       RECT rcText = m_rcItem;
       ::InflateRect(&rcText, -4, -2);
-      sz = static_cast<CControlUI*>(m_items[0])->EstimateSize(CSize(rcText.right - rcText.left, 0));
+      sz = static_cast<ControlUI*>(m_items[0])->EstimateSize(CSize(rcText.right - rcText.left, 0));
    }
    return sz;
 }
@@ -417,7 +417,7 @@ void CDropDownUI::DoPaint(HDC hDC, const RECT& rcPaint)
    // Paint dropdown edit box
    ::InflateRect(&rcText, -1, -1);
    if (m_curSel >= 0)  {
-      CControlUI* ctrl = static_cast<CControlUI*>(m_items[m_curSel]);
+      ControlUI* ctrl = static_cast<ControlUI*>(m_items[m_curSel]);
       IListItemUI* pElement = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
       if (pElement != NULL)  {
          // Render item with specific draw-style

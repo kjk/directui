@@ -26,8 +26,8 @@ typedef struct tagTListInfoUI
 class IListCallbackUI
 {
 public:
-   virtual const TCHAR* GetItemText(CControlUI* pList, int iItem, int iSubItem) = 0;
-   virtual int CompareItem(CControlUI* pList, CControlUI* item1, CControlUI* item2) = 0;
+   virtual const TCHAR* GetItemText(ControlUI* pList, int iItem, int iSubItem) = 0;
+   virtual int CompareItem(ControlUI* pList, ControlUI* item1, ControlUI* item2) = 0;
 };
 
 class IListOwnerUI
@@ -56,7 +56,7 @@ class IListItemUI
 public:
    virtual int GetIndex() const = 0;
    virtual void SetIndex(int idx) = 0;
-   virtual void SetOwner(CControlUI* owner) = 0;
+   virtual void SetOwner(ControlUI* owner) = 0;
    virtual bool IsSelected() const = 0;
    virtual bool Select(bool bSelect = true) = 0;
    virtual bool IsExpanded() const = 0;
@@ -65,7 +65,7 @@ public:
 };
 
 
-class UILIB_API CListElementUI : public CControlUI, public IListItemUI
+class UILIB_API CListElementUI : public ControlUI, public IListItemUI
 {
 public:
    CListElementUI();
@@ -76,7 +76,7 @@ public:
    int GetIndex() const;
    void SetIndex(int idx);
 
-   void SetOwner(CControlUI* owner);
+   void SetOwner(ControlUI* owner);
 
    bool IsSelected() const;
    bool Select(bool bSelect = true);
@@ -106,7 +106,7 @@ public:
    void DoPaint(HDC hDC, const RECT& rcPaint);
 };
 
-class UILIB_API CListHeaderItemUI : public CControlUI
+class UILIB_API CListHeaderItemUI : public ControlUI
 {
 public:
    CListHeaderItemUI();
@@ -161,10 +161,10 @@ public:
    CContainerUI* GetList() const;
    const TListInfoUI* GetListInfo() const;
 
-   CControlUI* GetItem(int idx) const;
+   ControlUI* GetItem(int idx) const;
    int GetCount() const;
-   bool Add(CControlUI* ctrl);
-   bool Remove(CControlUI* ctrl);
+   bool Add(ControlUI* ctrl);
+   bool Remove(ControlUI* ctrl);
    void RemoveAll();
 
    void EnsureVisible(int idx);
@@ -224,7 +224,7 @@ public:
    const TCHAR* GetClass() const;
    UINT GetControlFlags() const;
 
-   void SetOwner(CControlUI* owner);
+   void SetOwner(ControlUI* owner);
 
    void Event(TEventUI& event);
    SIZE EstimateSize(SIZE szAvailable);
@@ -252,13 +252,13 @@ public:
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
 
-   void SetManager(CPaintManagerUI* manager, CControlUI* parent);
-   CControlUI* FindControl(FINDCONTROLPROC Proc, void* data, UINT uFlags);
+   void SetManager(CPaintManagerUI* manager, ControlUI* parent);
+   ControlUI* FindControl(FINDCONTROLPROC Proc, void* data, UINT uFlags);
 
-   CControlUI* GetItem(int idx) const;
+   ControlUI* GetItem(int idx) const;
    int GetCount() const;
-   bool Add(CControlUI* ctrl);
-   bool Remove(CControlUI* ctrl);
+   bool Add(ControlUI* ctrl);
+   bool Remove(ControlUI* ctrl);
    void RemoveAll();
 
    bool IsExpanded() const;

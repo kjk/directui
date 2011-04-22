@@ -6,7 +6,7 @@
 #endif // _MSC_VER > 1000
 
 
-class UILIB_API CButtonUI : public CControlUI
+class UILIB_API CButtonUI : public ControlUI
 {
 public:
    CButtonUI();
@@ -35,7 +35,7 @@ protected:
 };
 
 
-class UILIB_API COptionUI : public CControlUI
+class UILIB_API COptionUI : public ControlUI
 {
 public:
    COptionUI();

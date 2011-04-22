@@ -6,7 +6,7 @@
 class CActiveXCtrl;
 struct IOleObject;
 
-class UILIB_API CActiveXUI : public CControlUI, public IMessageFilterUI
+class UILIB_API CActiveXUI : public ControlUI, public IMessageFilterUI
 {
 friend CActiveXCtrl;
 public:

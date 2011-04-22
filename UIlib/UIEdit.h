@@ -9,7 +9,7 @@
 class CSingleLineEditWnd;
 
 
-class UILIB_API CSingleLineEditUI : public CControlUI
+class UILIB_API CSingleLineEditUI : public ControlUI
 {
 friend CSingleLineEditWnd;
 public:
@@ -40,7 +40,7 @@ protected:
 class CMultiLineEditWnd;
 
 
-class UILIB_API CMultiLineEditUI : public CControlUI
+class UILIB_API CMultiLineEditUI : public ControlUI
 {
 friend CMultiLineEditWnd;
 public:

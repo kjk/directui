@@ -3,7 +3,7 @@
 
 #pragma once
 
-class CControlUI;
+class ControlUI;
 
 typedef enum EVENTTYPE_UI
 {
@@ -153,7 +153,7 @@ typedef enum
 #define UIARC_EXPANDBUTTON   0x00000002
 #define UIARC_COLLAPSEBUTTON 0x00000004
 
-// Flags for CControlUI::GetControlFlags()
+// Flags for ControlUI::GetControlFlags()
 #define UIFLAG_TABSTOP       0x00000001
 #define UIFLAG_SETCURSOR     0x00000002
 #define UIFLAG_WANTRETURN    0x00000004
@@ -197,7 +197,7 @@ typedef enum
 typedef struct tagTEventUI
 {
    int Type;
-   CControlUI* pSender;
+   ControlUI* pSender;
    DWORD dwTimestamp;
    POINT ptMouse;
    TCHAR chKey;
@@ -210,7 +210,7 @@ typedef struct tagTEventUI
 typedef struct tagTNotifyUI 
 {
    CStdString sType;
-   CControlUI* pSender;
+   ControlUI* pSender;
    DWORD dwTimestamp;
    POINT ptMouse;
    WPARAM wParam;
@@ -285,22 +285,22 @@ public:
    const TEXTMETRIC& GetThemeFontInfo(UITYPE_FONT Index) const;
    bool GetThemeColorPair(UITYPE_COLOR Index, COLORREF& clr1, COLORREF& clr2) const;
 
-   bool AttachDialog(CControlUI* ctrl);
-   bool InitControls(CControlUI* ctrl, CControlUI* parent = NULL);
-   void ReapObjects(CControlUI* ctrl);
+   bool AttachDialog(ControlUI* ctrl);
+   bool InitControls(ControlUI* ctrl, ControlUI* parent = NULL);
+   void ReapObjects(ControlUI* ctrl);
 
-   CControlUI* GetFocus() const;
-   void SetFocus(CControlUI* ctrl);
+   ControlUI* GetFocus() const;
+   void SetFocus(ControlUI* ctrl);
 
    bool SetNextTabControl(bool bForward = true);
 
-   bool SetTimer(CControlUI* ctrl, UINT timerID, UINT uElapse);
-   bool KillTimer(CControlUI* ctrl, UINT timerID);
+   bool SetTimer(ControlUI* ctrl, UINT timerID, UINT uElapse);
+   bool KillTimer(ControlUI* ctrl, UINT timerID);
 
    bool AddNotifier(INotifyUI* ctrl);
    bool RemoveNotifier(INotifyUI* ctrl);   
    void SendNotify(TNotifyUI& Msg);
-   void SendNotify(CControlUI* ctrl, const TCHAR* msg, WPARAM wParam = 0, LPARAM lParam = 0);
+   void SendNotify(ControlUI* ctrl, const TCHAR* msg, WPARAM wParam = 0, LPARAM lParam = 0);
 
    bool AddMessageFilter(IMessageFilterUI* filter);
    bool RemoveMessageFilter(IMessageFilterUI* filter);
@@ -308,8 +308,8 @@ public:
    bool AddAnimJob(const CAnimJobUI& job);
    bool AddPostPaintBlit(const TPostPaintUI& job);
 
-   CControlUI* FindControl(POINT pt) const;
-   CControlUI* FindControl(const TCHAR* name);
+   ControlUI* FindControl(POINT pt) const;
+   ControlUI* FindControl(const TCHAR* name);
 
    static void MessageLoop();
    static bool TranslateMessage(const MSG* pMsg);
@@ -322,11 +322,11 @@ public:
    void SetSystemSettings(const TSystemSettingsUI Config);
 
 private:
-   static CControlUI* CALLBACK __FindControlFromNameHash(CControlUI* pThis, void* data);
-   static CControlUI* CALLBACK __FindControlFromCount(CControlUI* pThis, void* data);
-   static CControlUI* CALLBACK __FindControlFromPoint(CControlUI* pThis, void* data);
-   static CControlUI* CALLBACK __FindControlFromTab(CControlUI* pThis, void* data);
-   static CControlUI* CALLBACK __FindControlFromShortcut(CControlUI* pThis, void* data);
+   static ControlUI* CALLBACK __FindControlFromNameHash(ControlUI* pThis, void* data);
+   static ControlUI* CALLBACK __FindControlFromCount(ControlUI* pThis, void* data);
+   static ControlUI* CALLBACK __FindControlFromPoint(ControlUI* pThis, void* data);
+   static ControlUI* CALLBACK __FindControlFromTab(ControlUI* pThis, void* data);
+   static ControlUI* CALLBACK __FindControlFromShortcut(ControlUI* pThis, void* data);
 
 private:
    HWND m_hWndPaint;
@@ -336,11 +336,11 @@ private:
    HWND m_hwndTooltip;
    TOOLINFO m_ToolTip;
    //
-   CControlUI* m_root;
-   CControlUI* m_focus;
-   CControlUI* m_pEventHover;
-   CControlUI* m_pEventClick;
-   CControlUI* m_pEventKey;
+   ControlUI* m_root;
+   ControlUI* m_focus;
+   ControlUI* m_pEventHover;
+   ControlUI* m_pEventClick;
+   ControlUI* m_pEventKey;
    //
    POINT m_ptLastMousePos;
    SIZE m_szMinWindow;
@@ -368,13 +368,13 @@ private:
 };
 
 
-typedef CControlUI* (CALLBACK* FINDCONTROLPROC)(CControlUI*, void*);
+typedef ControlUI* (CALLBACK* FINDCONTROLPROC)(ControlUI*, void*);
 
-class UILIB_API CControlUI : public INotifyUI
+class UILIB_API ControlUI : public INotifyUI
 {
 public:
-   CControlUI();
-   virtual ~CControlUI();
+   ControlUI();
+   virtual ~ControlUI();
 
 public:
    virtual CStdString GetName() const;
@@ -382,7 +382,7 @@ public:
    virtual void* GetInterface(const TCHAR* name);
 
    virtual bool Activate();
-   virtual CControlUI* GetParent() const;
+   virtual ControlUI* GetParent() const;
 
    virtual CStdString GetText() const;
    virtual void SetText(const TCHAR* txt);
@@ -404,10 +404,10 @@ public:
    virtual void SetVisible(bool bVisible = true);
    virtual void SetEnabled(bool bEnable = true);
 
-   virtual CControlUI* FindControl(FINDCONTROLPROC Proc, void* data, UINT uFlags);
+   virtual ControlUI* FindControl(FINDCONTROLPROC Proc, void* data, UINT uFlags);
 
    virtual CPaintManagerUI* GetManager() const;
-   virtual void SetManager(CPaintManagerUI* manager, CControlUI* parent);
+   virtual void SetManager(CPaintManagerUI* manager, ControlUI* parent);
 
    virtual RECT GetPos() const;
    virtual void SetPos(RECT rc);
@@ -421,7 +421,7 @@ public:
    virtual void Notify(TNotifyUI& msg);
 
    virtual void SetAttribute(const TCHAR* name, const TCHAR* value);
-   CControlUI* ApplyAttributeList(const TCHAR* pstrList);
+   ControlUI* ApplyAttributeList(const TCHAR* pstrList);
 
    virtual const TCHAR* GetClass() const = 0;
    virtual SIZE EstimateSize(SIZE szAvailable) = 0;
@@ -429,7 +429,7 @@ public:
 
 protected:
    CPaintManagerUI* m_manager;
-   CControlUI* m_parent;
+   ControlUI* m_parent;
    TCHAR m_chShortcut;
    CStdString m_sName;
    CStdString m_txt;

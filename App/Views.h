@@ -46,8 +46,8 @@ public:
    const TCHAR* GetDialogResource() const;
    void OnPrepareAnimation();
    // IListCallbackUI
-   const TCHAR* GetItemText(CControlUI* ctrl, int idx, int iSubItem);
-   int CompareItem(CControlUI* pList, CControlUI* item1, CControlUI* item2);
+   const TCHAR* GetItemText(ControlUI* ctrl, int idx, int iSubItem);
+   int CompareItem(ControlUI* pList, ControlUI* item1, ControlUI* item2);
 };
 
 class CReportsPageWnd : public CStandardPageWnd
@@ -65,10 +65,10 @@ public:
    const TCHAR* GetDialogResource() const;
    void Notify(TNotifyUI& msg);
    void OnPrepareAnimation();
-   void OnExpandItem(CControlUI* ctrl);
+   void OnExpandItem(ControlUI* ctrl);
    // IListCallbackUI
-   const TCHAR* GetItemText(CControlUI* ctrl, int idx, int iSubItem);
-   int CompareItem(CControlUI* pList, CControlUI* item1, CControlUI* item2);
+   const TCHAR* GetItemText(ControlUI* ctrl, int idx, int iSubItem);
+   int CompareItem(ControlUI* pList, ControlUI* item1, ControlUI* item2);
 };
 
 class CSearchPageWnd : public CStandardPageWnd

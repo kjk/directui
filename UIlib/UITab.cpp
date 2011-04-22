@@ -18,7 +18,7 @@ void CTabFolderUI::Init()
    if (m_curSel == -1)  SelectItem(0);
 }
 
-bool CTabFolderUI::Add(CControlUI* ctrl)
+bool CTabFolderUI::Add(ControlUI* ctrl)
 {
    ctrl->SetVisible(false);
    return CContainerUI::Add(ctrl);
@@ -37,7 +37,7 @@ bool CTabFolderUI::SelectItem(int idx)
    // Assign page to internal pointers
    if (m_curPage != NULL)  m_curPage->SetVisible(false);
    m_curSel = idx;
-   m_curPage = static_cast<CControlUI*>(m_items[idx]);
+   m_curPage = static_cast<ControlUI*>(m_items[idx]);
    if (m_manager != NULL)  m_manager->SendNotify(this, _T("itemselect"));
    m_curPage->SetVisible(true);
    // Need to re-think the layout
@@ -75,7 +75,7 @@ void CTabFolderUI::Event(TEventUI& event)
 
 void CTabFolderUI::SetPos(RECT rc)
 {
-   CControlUI::SetPos(rc);
+   ControlUI::SetPos(rc);
    // Determine size of embedded page and place it there
    int cyFont = m_manager->GetThemeFontInfo(UIFONT_BOLD).tmHeight;
    ::SetRect(&m_rcClient, rc.left + m_rcInset.left, rc.top + m_rcInset.top + cyFont + 8, rc.right - m_rcInset.right, rc.bottom - m_rcInset.bottom);
@@ -111,7 +111,7 @@ void CTabFolderUI::DoPaint(HDC hDC, const RECT& rcPaint)
          m_tabAreas.Empty();
          for (int i = 0; i < GetCount(); i++)  
          {
-            const CControlUI* page = GetItem(i);
+            const ControlUI* page = GetItem(i);
             const CStdString& txt = page->GetText();
             RECT rcTab = { rcTabs.left + posX, rcTabs.top, rcTabs.right, m_rcClient.top };
             UINT uState = 0;
@@ -147,7 +147,7 @@ const TCHAR* CTabPageUI::GetClass() const
 bool CTabPageUI::Activate()
 {
    if (!CContainerUI::Activate())  return false;
-   CControlUI* parent = GetParent();
+   ControlUI* parent = GetParent();
    if (parent == NULL || parent->GetInterface(_T("ListOwner")) == NULL)  return false;
    return static_cast<IListOwnerUI*>(parent->GetInterface(_T("ListOwner")))->SelectItem(0 /*m_idx*/);
 }

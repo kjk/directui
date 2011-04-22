@@ -137,7 +137,7 @@ void CSingleLineEditUI::Event(TEventUI& event)
       m_win->Init(this);
       return;
    }
-   CControlUI::Event(event);
+   ControlUI::Event(event);
 }
 
 void CSingleLineEditUI::SetText(const TCHAR* txt)
@@ -298,13 +298,13 @@ CStdString CMultiLineEditUI::GetText() const
 
 void CMultiLineEditUI::SetVisible(bool bVisible)
 {
-   CControlUI::SetVisible(bVisible);
+   ControlUI::SetVisible(bVisible);
    if (m_win != NULL)  ::ShowWindow(*m_win, bVisible ? SW_SHOWNOACTIVATE : SW_HIDE);
 }
 
 void CMultiLineEditUI::SetEnabled(bool bEnabled)
 {
-   CControlUI::SetEnabled(bEnabled);
+   ControlUI::SetEnabled(bEnabled);
    if (m_win != NULL)  ::EnableWindow(*m_win, bEnabled == true);
 }
 
@@ -331,7 +331,7 @@ void CMultiLineEditUI::SetPos(RECT rc)
       rcEdit.Deflate(3, 3);
       ::SetWindowPos(*m_win, HWND_TOP, rcEdit.left, rcEdit.top, rcEdit.GetWidth(), rcEdit.GetHeight(), SWP_NOACTIVATE);
    }
-   CControlUI::SetPos(rc);
+   ControlUI::SetPos(rc);
 }
 
 void CMultiLineEditUI::SetPos(int left, int top, int right, int bottom)
@@ -349,7 +349,7 @@ void CMultiLineEditUI::Event(TEventUI& event)
    {
       if (m_win != NULL)  ::SetFocus(*m_win);
    }
-   CControlUI::Event(event);
+   ControlUI::Event(event);
 }
 
 void CMultiLineEditUI::DoPaint(HDC hDC, const RECT& /*rcPaint*/)

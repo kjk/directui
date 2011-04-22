@@ -16,7 +16,7 @@ public:
 
    void Init();
 
-   bool Add(CControlUI* ctrl);
+   bool Add(ControlUI* ctrl);
 
    int GetCurSel() const;
    bool SelectItem(int idx);
@@ -32,7 +32,7 @@ protected:
    int m_curSel;
    RECT m_rcPage;
    RECT m_rcClient;
-   CControlUI* m_curPage;
+   ControlUI* m_curPage;
    CStdValArray m_tabAreas;
 };
 

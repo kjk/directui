@@ -5,7 +5,7 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-class UILIB_API CLabelPanelUI : public CControlUI
+class UILIB_API CLabelPanelUI : public ControlUI
 {
 public:
    CLabelPanelUI();
@@ -26,7 +26,7 @@ protected:
    UINT m_uTextStyle;
 };
 
-class UILIB_API CGreyTextHeaderUI : public CControlUI
+class UILIB_API CGreyTextHeaderUI : public ControlUI
 {
 public:
    const TCHAR* GetClass() const;
