@@ -65,10 +65,10 @@ ControlUI* CDialogBuilder::_Parse(CMarkupNode* root, ControlUI* parent)
       case 10:
          if (_tcscmp(pstrClass, _T("ListHeader")) == 0)             ctrl = new ListHeaderUI;
          else if (_tcscmp(pstrClass, _T("ListFooter")) == 0)        ctrl = new ListFooterUI;
-         else if (_tcscmp(pstrClass, _T("TileLayout")) == 0)        ctrl = new CTileLayoutUI;
+         else if (_tcscmp(pstrClass, _T("TileLayout")) == 0)        ctrl = new TileLayoutUI;
          else if (_tcscmp(pstrClass, _T("ToolButton")) == 0)        ctrl = new ToolButtonUI;
          else if (_tcscmp(pstrClass, _T("ImagePanel")) == 0)        ctrl = new ImagePanelUI;
-         else if (_tcscmp(pstrClass, _T("LabelPanel")) == 0)        ctrl = new CLabelPanelUI;
+         else if (_tcscmp(pstrClass, _T("LabelPanel")) == 0)        ctrl = new LabelPanelUI;
          break;
       case 11:
          if (_tcscmp(pstrClass, _T("ToolGripper")) == 0)            ctrl = new ToolGripperUI;

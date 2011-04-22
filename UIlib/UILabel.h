@@ -5,10 +5,10 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-class UILIB_API CLabelPanelUI : public ControlUI
+class UILIB_API LabelPanelUI : public ControlUI
 {
 public:
-   CLabelPanelUI();
+   LabelPanelUI();
 
    const TCHAR* GetClass() const;
 

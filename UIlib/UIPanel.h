@@ -128,7 +128,7 @@ protected:
    SIZE m_cxyFixed;
 };
 
-class UILIB_API TextPanelUI : public CLabelPanelUI
+class UILIB_API TextPanelUI : public LabelPanelUI
 {
 public:
    TextPanelUI();

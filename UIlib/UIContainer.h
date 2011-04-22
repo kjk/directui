@@ -160,10 +160,10 @@ public:
 };
 
 
-class UILIB_API CTileLayoutUI : public ContainerUI
+class UILIB_API TileLayoutUI : public ContainerUI
 {
 public:
-   CTileLayoutUI();
+   TileLayoutUI();
 
    const TCHAR* GetClass() const;
 

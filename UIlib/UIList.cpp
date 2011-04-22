@@ -242,7 +242,7 @@ RECT CListHeaderItemUI::GetThumbRect(RECT rc) const
 
 ListFooterUI::ListFooterUI()
 {
-   CLabelPanelUI* pLabel = new CLabelPanelUI;
+   LabelPanelUI* pLabel = new LabelPanelUI;
    Add(pLabel);
    PaddingPanelUI* pPadding = new PaddingPanelUI;
    Add(pPadding);
@@ -287,7 +287,7 @@ ListUI::ListUI() : m_pCallback(NULL), m_curSel(-1), m_iExpandedItem(-1)
    CWhiteCanvasUI* pWhite = new CWhiteCanvasUI;
    pWhite->Add(m_pList);
 
-   m_pFooter->Add(new CLabelPanelUI);
+   m_pFooter->Add(new LabelPanelUI);
    m_pFooter->Add(new PaddingPanelUI);
 
    Add(m_pHeader);
@@ -799,7 +799,7 @@ bool CListExpandElementUI::Expand(bool bExpand)
    if (bExpand)  
    {
       delete m_pContainer;
-      CTileLayoutUI* pTile = new CTileLayoutUI;
+      TileLayoutUI* pTile = new TileLayoutUI;
       pTile->SetPadding(4);
       m_pContainer = pTile;
       if (m_manager != NULL)  m_manager->SendNotify(this, _T("itemexpand"));

@@ -421,7 +421,7 @@ const TCHAR* TextPanelUI::GetClass() const
 
 bool TextPanelUI::Activate()
 {
-   if (!CLabelPanelUI::Activate())  return false;
+   if (!LabelPanelUI::Activate())  return false;
    if (m_nLinks > 0)  m_manager->SendNotify(this, _T("link"));
    return true;
 }
@@ -473,14 +473,14 @@ void TextPanelUI::Event(TEventUI& event)
    // When you move over a link
    if (m_nLinks > 0 && event.Type == UIEVENT_MOUSEMOVE)  Invalidate();
    if (m_nLinks > 0 && event.Type == UIEVENT_MOUSELEAVE)  Invalidate();
-   CLabelPanelUI::Event(event);
+   LabelPanelUI::Event(event);
 }
 
 void TextPanelUI::SetAttribute(const TCHAR* name, const TCHAR* value)
 {
    if (_tcscmp(name, _T("textColor")) == 0)  SetTextColor((UITYPE_COLOR)_ttoi(value));
    else if (_tcscmp(name, _T("backColor")) == 0)  SetBkColor((UITYPE_COLOR)_ttoi(value));
-   else CLabelPanelUI::SetAttribute(name, value);
+   else LabelPanelUI::SetAttribute(name, value);
 }
 
 SIZE TextPanelUI::EstimateSize(SIZE szAvailable)

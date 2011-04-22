@@ -572,25 +572,25 @@ void HorizontalLayoutUI::SetPos(RECT rc)
 }
 
 
-CTileLayoutUI::CTileLayoutUI() : m_nColumns(2), m_cyNeeded(0)
+TileLayoutUI::TileLayoutUI() : m_nColumns(2), m_cyNeeded(0)
 {
    SetPadding(10);
    SetInset(CSize(10, 10));
 }
 
-const TCHAR* CTileLayoutUI::GetClass() const
+const TCHAR* TileLayoutUI::GetClass() const
 {
    return _T("TileLayoutUI");
 }
 
-void CTileLayoutUI::SetColumns(int nCols)
+void TileLayoutUI::SetColumns(int nCols)
 {
    if (nCols <= 0)  return;
    m_nColumns = nCols;
    UpdateLayout();
 }
 
-void CTileLayoutUI::SetPos(RECT rc)
+void TileLayoutUI::SetPos(RECT rc)
 {
    m_rcItem = rc;
    // Adjust for inset

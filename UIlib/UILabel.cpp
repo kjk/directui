@@ -2,35 +2,35 @@
 #include "StdAfx.h"
 #include "UILabel.h"
 
-CLabelPanelUI::CLabelPanelUI() : m_cxWidth(0), m_uTextStyle(DT_VCENTER)
+LabelPanelUI::LabelPanelUI() : m_cxWidth(0), m_uTextStyle(DT_VCENTER)
 {
 }
 
-const TCHAR* CLabelPanelUI::GetClass() const
+const TCHAR* LabelPanelUI::GetClass() const
 {
    return _T("LabelPanelUI");
 }
 
-void CLabelPanelUI::SetText(const TCHAR* txt)
+void LabelPanelUI::SetText(const TCHAR* txt)
 {
    // Automatic assignment of keyboard shortcut
    if (_tcschr(txt, '&') != NULL)  m_chShortcut = *(_tcschr(txt, '&') + 1);
    ControlUI::SetText(txt);
 }
 
-void CLabelPanelUI::SetWidth(int cx)
+void LabelPanelUI::SetWidth(int cx)
 {
    m_cxWidth = cx;
    UpdateLayout();
 }
 
-void CLabelPanelUI::SetTextStyle(UINT uStyle)
+void LabelPanelUI::SetTextStyle(UINT uStyle)
 {
    m_uTextStyle = uStyle;
    Invalidate();
 }
 
-void CLabelPanelUI::SetAttribute(const TCHAR* name, const TCHAR* value)
+void LabelPanelUI::SetAttribute(const TCHAR* name, const TCHAR* value)
 {
    if (_tcscmp(name, _T("align")) == 0)  {
       if (_tcsstr(value, _T("center")) != NULL)  m_uTextStyle |= DT_CENTER;
@@ -40,12 +40,12 @@ void CLabelPanelUI::SetAttribute(const TCHAR* name, const TCHAR* value)
    else ControlUI::SetAttribute(name, value);
 }
 
-SIZE CLabelPanelUI::EstimateSize(SIZE /*szAvailable*/)
+SIZE LabelPanelUI::EstimateSize(SIZE /*szAvailable*/)
 {
    return CSize(m_cxWidth, m_manager->GetThemeFontInfo(UIFONT_NORMAL).tmHeight + 4);
 }
 
-void CLabelPanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
+void LabelPanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
    RECT rcText = m_rcItem;
    int nLinks = 0;
