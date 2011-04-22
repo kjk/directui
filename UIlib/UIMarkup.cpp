@@ -42,7 +42,7 @@ MarkupNode MarkupNode::GetChild(const char* name)
    if (m_owner == NULL)  return MarkupNode();
    ULONG pos = m_owner->m_elements[m_pos].iChild;
    while (pos != 0)  {
-      if (str::Eq(m_owner->m_xml + m_owner->m_elements[pos].iStart, name) == 0)  {
+      if (str::Eq(m_owner->m_xml + m_owner->m_elements[pos].iStart, name))  {
          return MarkupNode(m_owner, pos);
       }
       pos = m_owner->m_elements[pos].iNext;
@@ -102,7 +102,7 @@ const char* MarkupNode::GetAttributeValue(const char* name)
    if (m_owner == NULL)  return NULL;
    if (m_nAttributes == 0)  _MapAttributes();
    for (int i = 0; i < m_nAttributes; i++)  {
-      if (str::Eq(m_owner->m_xml + m_aAttributes[i].iName, name) == 0)
+      if (str::Eq(m_owner->m_xml + m_aAttributes[i].iName, name))
          return m_owner->m_xml + m_aAttributes[i].iValue;
    }
    return "";
@@ -122,7 +122,7 @@ bool MarkupNode::GetAttributeValue(const char* name, char* value, SIZE_T cchMax)
    if (m_owner == NULL)  return false;
    if (m_nAttributes == 0)  _MapAttributes();
    for (int i = 0; i < m_nAttributes; i++)  {
-      if (str::Eq(m_owner->m_xml + m_aAttributes[i].iName, name) == 0)  {
+      if (str::Eq(m_owner->m_xml + m_aAttributes[i].iName, name))  {
          strncpy(value, m_owner->m_xml + m_aAttributes[i].iValue, cchMax);
          return true;
       }
@@ -149,7 +149,7 @@ bool MarkupNode::HasAttribute(const char* name)
    if (m_owner == NULL)  return false;
    if (m_nAttributes == 0)  _MapAttributes();
    for (int i = 0; i < m_nAttributes; i++)  {
-      if (str::Eq(m_owner->m_xml + m_aAttributes[i].iName, name) == 0)
+      if (str::Eq(m_owner->m_xml + m_aAttributes[i].iName, name))
          return true;
    }
    return false;

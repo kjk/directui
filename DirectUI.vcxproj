@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="App\resource.h" />
+    <ClInclude Include="App\StdAfx.h" />
+    <ClInclude Include="App\Views.h" />
+    <ClInclude Include="UIlib\StdAfx.h" />
+    <ClInclude Include="UIlib\UIActiveX.h" />
+    <ClInclude Include="UIlib\UIAnim.h" />
+    <ClInclude Include="UIlib\UIBase.h" />
+    <ClInclude Include="UIlib\UIBlue.h" />
+    <ClInclude Include="UIlib\UIButton.h" />
+    <ClInclude Include="UIlib\UICombo.h" />
+    <ClInclude Include="UIlib\UIContainer.h" />
+    <ClInclude Include="UIlib\UIDecoration.h" />
+    <ClInclude Include="UIlib\UIDlgBuilder.h" />
+    <ClInclude Include="UIlib\UIEdit.h" />
+    <ClInclude Include="UIlib\UILabel.h" />
+    <ClInclude Include="UIlib\UIlib.h" />
+    <ClInclude Include="UIlib\UIList.h" />
+    <ClInclude Include="UIlib\UIManager.h" />
+    <ClInclude Include="UIlib\UIMarkup.h" />
+    <ClInclude Include="UIlib\UIPanel.h" />
+    <ClInclude Include="UIlib\UITab.h" />
+    <ClInclude Include="UIlib\UITool.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="App\App.cpp" />
+    <ClCompile Include="App\StdAfx.cpp" />
+    <ClCompile Include="App\Views.cpp" />
+    <ClCompile Include="UIlib\UIActiveX.cpp" />
+    <ClCompile Include="UIlib\UIAnim.cpp" />
+    <ClCompile Include="UIlib\UIBase.cpp" />
+    <ClCompile Include="UIlib\UIBlue.cpp" />
+    <ClCompile Include="UIlib\UIButton.cpp" />
+    <ClCompile Include="UIlib\UICombo.cpp" />
+    <ClCompile Include="UIlib\UIContainer.cpp" />
+    <ClCompile Include="UIlib\UIDecoration.cpp" />
+    <ClCompile Include="UIlib\UIDlgBuilder.cpp" />
+    <ClCompile Include="UIlib\UIEdit.cpp" />
+    <ClCompile Include="UIlib\UILabel.cpp" />
+    <ClCompile Include="UIlib\UIlib.cpp" />
+    <ClCompile Include="UIlib\UIList.cpp" />
+    <ClCompile Include="UIlib\UIManager.cpp" />
+    <ClCompile Include="UIlib\UIMarkup.cpp" />
+    <ClCompile Include="UIlib\UIPanel.cpp" />
+    <ClCompile Include="UIlib\UITab.cpp" />
+    <ClCompile Include="UIlib\UITool.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="App\App.exe.manifest" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="App\App.manifest.rc" />
+    <ResourceCompile Include="App\DirectUI.rc" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectName>App</ProjectName>
+    <ProjectGuid>{9458F693-A9CC-4786-B79A-A2103EC71FA3}</ProjectGuid>
+    <RootNamespace>MusicaFantastica</RootNamespace>
+    <Keyword>MakeFileProj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30128.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">dbg</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">dbg</IntDir>
+    <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">nmake -f makefile.msvc CFG=dbg</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">nmake -f makefile.msvc CFG=dbg</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">nmake -f makefile.msvc CFG=dbg clean</NMakeCleanCommandLine>
+    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">dbg\TestApp.exe</NMakeOutput>
+    <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIN32;_DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(NMakeIncludeSearchPath);$(ProjectDir)src;$(ProjectDir)src\pandora;$(ProjectDir)ext\wdl\WDL;$(ProjectDir)ext\wdl\WDL\lice;$(ProjectDir)ext\wdl\WDL\wingui;$(ProjectDir)ext\wdlextras</NMakeIncludeSearchPath>
+    <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(NMakeForcedIncludes)</NMakeForcedIncludes>
+    <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(NMakeAssemblySearchPath)</NMakeAssemblySearchPath>
+    <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(NMakeForcedUsingAssemblies)</NMakeForcedUsingAssemblies>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">rel</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">rel</IntDir>
+    <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">nmake -f makefile.msvc CFG=rel</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">nmake -f makefile.msvc CFG=rel</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">nmake -f makefile.msvc CFG=rel clean</NMakeCleanCommandLine>
+    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">rel\TestApp.exe</NMakeOutput>
+    <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIN32;NDEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(NMakeIncludeSearchPath);$(ProjectDir)src;$(ProjectDir)src\pandora;$(ProjectDir)ext\wdl\WDL;$(ProjectDir)ext\wdl\WDL\lice;$(ProjectDir)ext\wdl\WDL\wingui;$(ProjectDir)ext\wdlextras</NMakeIncludeSearchPath>
+    <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(NMakeForcedIncludes)</NMakeForcedIncludes>
+    <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(NMakeAssemblySearchPath)</NMakeAssemblySearchPath>
+    <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(NMakeForcedUsingAssemblies)</NMakeForcedUsingAssemblies>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

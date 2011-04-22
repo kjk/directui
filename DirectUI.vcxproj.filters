@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="UIlib">
+      <UniqueIdentifier>{4d5b3d34-8156-4352-ac33-3dc29597fd99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App">
+      <UniqueIdentifier>{da419723-df32-47b8-bd26-b2ad3d454f0a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="UIlib\StdAfx.h">
+      <Filter>UIlib</Filter>
+    </ClInclude>
+    <ClInclude Include="UIlib\UIActiveX.h">
+      <Filter>UIlib</Filter>
+    </ClInclude>
+    <ClInclude Include="UIlib\UIAnim.h">
+      <Filter>UIlib</Filter>
+    </ClInclude>
+    <ClInclude Include="UIlib\UIBase.h">
+      <Filter>UIlib</Filter>
+    </ClInclude>
+    <ClInclude Include="UIlib\UIBlue.h">
+      <Filter>UIlib</Filter>
+    </ClInclude>
+    <ClInclude Include="UIlib\UIButton.h">
+      <Filter>UIlib</Filter>
+    </ClInclude>
+    <ClInclude Include="UIlib\UICombo.h">
+      <Filter>UIlib</Filter>
+    </ClInclude>
+    <ClInclude Include="UIlib\UIContainer.h">
+      <Filter>UIlib</Filter>
+    </ClInclude>
+    <ClInclude Include="UIlib\UIDecoration.h">
+      <Filter>UIlib</Filter>
+    </ClInclude>
+    <ClInclude Include="UIlib\UIDlgBuilder.h">
+      <Filter>UIlib</Filter>
+    </ClInclude>
+    <ClInclude Include="UIlib\UIEdit.h">
+      <Filter>UIlib</Filter>
+    </ClInclude>
+    <ClInclude Include="UIlib\UILabel.h">
+      <Filter>UIlib</Filter>
+    </ClInclude>
+    <ClInclude Include="UIlib\UIlib.h">
+      <Filter>UIlib</Filter>
+    </ClInclude>
+    <ClInclude Include="UIlib\UIList.h">
+      <Filter>UIlib</Filter>
+    </ClInclude>
+    <ClInclude Include="UIlib\UIManager.h">
+      <Filter>UIlib</Filter>
+    </ClInclude>
+    <ClInclude Include="UIlib\UIMarkup.h">
+      <Filter>UIlib</Filter>
+    </ClInclude>
+    <ClInclude Include="UIlib\UIPanel.h">
+      <Filter>UIlib</Filter>
+    </ClInclude>
+    <ClInclude Include="UIlib\UITab.h">
+      <Filter>UIlib</Filter>
+    </ClInclude>
+    <ClInclude Include="UIlib\UITool.h">
+      <Filter>UIlib</Filter>
+    </ClInclude>
+    <ClInclude Include="App\resource.h">
+      <Filter>App</Filter>
+    </ClInclude>
+    <ClInclude Include="App\StdAfx.h">
+      <Filter>App</Filter>
+    </ClInclude>
+    <ClInclude Include="App\Views.h">
+      <Filter>App</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="UIlib\UIActiveX.cpp">
+      <Filter>UIlib</Filter>
+    </ClCompile>
+    <ClCompile Include="UIlib\UIAnim.cpp">
+      <Filter>UIlib</Filter>
+    </ClCompile>
+    <ClCompile Include="UIlib\UIBase.cpp">
+      <Filter>UIlib</Filter>
+    </ClCompile>
+    <ClCompile Include="UIlib\UIBlue.cpp">
+      <Filter>UIlib</Filter>
+    </ClCompile>
+    <ClCompile Include="UIlib\UIButton.cpp">
+      <Filter>UIlib</Filter>
+    </ClCompile>
+    <ClCompile Include="UIlib\UICombo.cpp">
+      <Filter>UIlib</Filter>
+    </ClCompile>
+    <ClCompile Include="UIlib\UIContainer.cpp">
+      <Filter>UIlib</Filter>
+    </ClCompile>
+    <ClCompile Include="UIlib\UIDecoration.cpp">
+      <Filter>UIlib</Filter>
+    </ClCompile>
+    <ClCompile Include="UIlib\UIDlgBuilder.cpp">
+      <Filter>UIlib</Filter>
+    </ClCompile>
+    <ClCompile Include="UIlib\UIEdit.cpp">
+      <Filter>UIlib</Filter>
+    </ClCompile>
+    <ClCompile Include="UIlib\UILabel.cpp">
+      <Filter>UIlib</Filter>
+    </ClCompile>
+    <ClCompile Include="UIlib\UIlib.cpp">
+      <Filter>UIlib</Filter>
+    </ClCompile>
+    <ClCompile Include="UIlib\UIList.cpp">
+      <Filter>UIlib</Filter>
+    </ClCompile>
+    <ClCompile Include="UIlib\UIManager.cpp">
+      <Filter>UIlib</Filter>
+    </ClCompile>
+    <ClCompile Include="UIlib\UIMarkup.cpp">
+      <Filter>UIlib</Filter>
+    </ClCompile>
+    <ClCompile Include="UIlib\UIPanel.cpp">
+      <Filter>UIlib</Filter>
+    </ClCompile>
+    <ClCompile Include="UIlib\UITab.cpp">
+      <Filter>UIlib</Filter>
+    </ClCompile>
+    <ClCompile Include="UIlib\UITool.cpp">
+      <Filter>UIlib</Filter>
+    </ClCompile>
+    <ClCompile Include="App\App.cpp">
+      <Filter>App</Filter>
+    </ClCompile>
+    <ClCompile Include="App\StdAfx.cpp">
+      <Filter>App</Filter>
+    </ClCompile>
+    <ClCompile Include="App\Views.cpp">
+      <Filter>App</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="App\App.exe.manifest">
+      <Filter>App</Filter>
+    </Manifest>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="App\App.manifest.rc">
+      <Filter>App</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="App\DirectUI.rc">
+      <Filter>App</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>
