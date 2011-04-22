@@ -117,7 +117,7 @@ void SingleLinePickUI::DoPaint(HDC hDC, const RECT& rcPaint)
 }
 
 
-class CDropDownWnd : public WindowWnd
+class DropDownWnd : public WindowWnd
 {
 public:
    void Init(DropDownUI* owner);
@@ -133,7 +133,7 @@ public:
 };
 
 
-void CDropDownWnd::Init(DropDownUI* owner)
+void DropDownWnd::Init(DropDownUI* owner)
 {
    m_owner = owner;
    m_iOldSel = m_owner->GetCurSel();
@@ -152,17 +152,17 @@ void CDropDownWnd::Init(DropDownUI* owner)
    ::SendMessage(hWndParent, WM_NCACTIVATE, TRUE, 0L);
 }
 
-const TCHAR* CDropDownWnd::GetWindowClassName() const
+const TCHAR* DropDownWnd::GetWindowClassName() const
 {
    return _T("DropDownWnd");
 }
 
-void CDropDownWnd::OnFinalMessage(HWND hWnd)
+void DropDownWnd::OnFinalMessage(HWND hWnd)
 {
    delete this;
 }
 
-LRESULT CDropDownWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
+LRESULT DropDownWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
    if (uMsg == WM_CREATE)  {     
       m_pm.Init(m_hWnd);
@@ -352,7 +352,7 @@ void DropDownUI::Event(TEventUI& event)
 bool DropDownUI::Activate()
 {
    if (!ControlUI::Activate())  return false;
-   CDropDownWnd* win = new CDropDownWnd;
+   DropDownWnd* win = new DropDownWnd;
    win->Init(this);
    if (m_manager != NULL)  m_manager->SendNotify(this, _T("dropdown"));
    Invalidate();

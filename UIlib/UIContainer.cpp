@@ -289,7 +289,7 @@ void ContainerUI::DoPaint(HDC hDC, const RECT& rcPaint)
    RECT rcTemp = { 0 };
    if (!::IntersectRect(&rcTemp, &rcPaint, &m_rcItem))  return;
 
-   CRenderClip clip;
+   RenderClip clip;
    BlueRenderEngineUI::GenerateClip(hDC, m_rcItem, clip);
 
    for (int it = 0; it < m_items.GetSize(); it++)  {
@@ -388,7 +388,7 @@ void CanvasUI::DoPaint(HDC hDC, const RECT& rcPaint)
       }
       RECT rcTemp = { 0 };
       if (::IntersectRect(&rcTemp, &rcPaint, &rcBitmap))  {
-         CRenderClip clip;
+         RenderClip clip;
          BlueRenderEngineUI::GenerateClip(hDC, m_rcItem, clip);
          BlueRenderEngineUI::DoPaintBitmap(hDC, m_manager, m_hBitmap, rcBitmap);
       }
@@ -402,7 +402,6 @@ void CanvasUI::SetAttribute(const TCHAR* name, const TCHAR* value)
    else ContainerUI::SetAttribute(name, value);
 }
 
-
 WindowCanvasUI::WindowCanvasUI()
 {
    SetInset(CSize(10, 10));
@@ -413,7 +412,6 @@ const TCHAR* WindowCanvasUI::GetClass() const
 {
    return _T("WindowCanvasUI");
 }
-
 
 ControlCanvasUI::ControlCanvasUI()
 {
@@ -426,7 +424,6 @@ const TCHAR* ControlCanvasUI::GetClass() const
    return _T("ControlCanvasUI");
 }
 
-
 WhiteCanvasUI::WhiteCanvasUI()
 {
    SetInset(CSize(0, 0));
@@ -437,7 +434,6 @@ const TCHAR* WhiteCanvasUI::GetClass() const
 {
    return _T("WhiteCanvasUI");
 }
-
 
 DialogCanvasUI::DialogCanvasUI()
 {
@@ -461,7 +457,6 @@ const TCHAR* TabFolderCanvasUI::GetClass() const
 {
    return _T("TabFolderCanvasUI");
 }
-
 
 VerticalLayoutUI::VerticalLayoutUI() : m_cyNeeded(0)
 {

@@ -87,7 +87,7 @@ void TabFolderUI::SetPos(RECT rc)
 void TabFolderUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
    {
-      CRenderClip clip;
+      RenderClip clip;
       BlueRenderEngineUI::GenerateClip(hDC, rcPaint, clip);
 
       // Fill client area background

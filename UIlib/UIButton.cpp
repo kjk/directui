@@ -110,14 +110,12 @@ SIZE ButtonUI::EstimateSize(SIZE /*szAvailable*/)
 
 void ButtonUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
-   // Draw button
    UINT uState = 0;
    if (IsFocused())  uState |= UISTATE_FOCUSED;
    if (!IsEnabled())  uState |= UISTATE_DISABLED;
    RECT rcPadding = { m_szPadding.cx, m_szPadding.cy, m_szPadding.cx, m_szPadding.cy };
    BlueRenderEngineUI::DoPaintButton(hDC, m_manager, m_rcItem, m_txt, rcPadding, m_uButtonState | uState, m_uTextStyle);
 }
-
 
 OptionUI::OptionUI() : m_cxWidth(0), m_uButtonState(0), m_uStyle(DT_LEFT), m_bSelected(false)
 {

@@ -3,10 +3,10 @@
 
 #pragma once
 
-class UILIB_API CRenderClip
+class UILIB_API RenderClip
 {
 public:
-   ~CRenderClip();
+   ~RenderClip();
    RECT rcItem;
    HDC hDC;
    HRGN hRgn;
@@ -34,7 +34,7 @@ public:
    static void DoPaintGradient(HDC hDC, PaintManagerUI* manager, RECT rc, COLORREF clrFirst, COLORREF clrSecond, bool bVertical, int nSteps);
    static void DoPaintAlphaBitmap(HDC hDC, PaintManagerUI* manager, HBITMAP hBitmap, RECT rc, BYTE iAlpha);
    static void DoAnimateWindow(HWND hWnd, UINT uStyle, DWORD dwTime = 200);
-   static void GenerateClip(HDC hDC, RECT rcItem, CRenderClip& clip);
+   static void GenerateClip(HDC hDC, RECT rcItem, RenderClip& clip);
    static HBITMAP GenerateAlphaBitmap(PaintManagerUI* manager, ControlUI* ctrl, RECT rc, UITYPE_COLOR Background);
 };
 

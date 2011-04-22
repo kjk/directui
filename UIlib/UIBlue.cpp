@@ -2,7 +2,6 @@
 #include "StdAfx.h"
 #include "UIBlue.h"
 
-
 #ifndef BlendRGB
    #define BlendRGB(c1, c2, factor) \
       RGB( GetRValue(c1) + ((GetRValue(c2) - GetRValue(c1)) * factor / 100L), \
@@ -10,8 +9,7 @@
            GetBValue(c1) + ((GetBValue(c2) - GetBValue(c1)) * factor / 100L)) 
 #endif
 
-
-CRenderClip::~CRenderClip()
+RenderClip::~RenderClip()
 {
    ASSERT(::GetObjectType(hDC)==OBJ_DC || ::GetObjectType(hDC)==OBJ_MEMDC);
    ASSERT(::GetObjectType(hRgn)==OBJ_REGION);
@@ -21,8 +19,7 @@ CRenderClip::~CRenderClip()
    ::DeleteObject(hRgn);
 }
 
-
-void BlueRenderEngineUI::GenerateClip(HDC hDC, RECT rcItem, CRenderClip& clip)
+void BlueRenderEngineUI::GenerateClip(HDC hDC, RECT rcItem, RenderClip& clip)
 {
    RECT rcClip = { 0 };
    ::GetClipBox(hDC, &rcClip);
@@ -125,7 +122,7 @@ void BlueRenderEngineUI::DoPaintBitmap(HDC hDC, PaintManagerUI* manager, HBITMAP
 
 void BlueRenderEngineUI::DoPaintArcCaption(HDC hDC, PaintManagerUI* manager, RECT rc, const TCHAR* txt, UINT uStyle)
 {
-   CRenderClip clip;
+   RenderClip clip;
    GenerateClip(hDC, rc, clip);
 
    ::SelectObject(hDC, manager->GetThemePen(UICOLOR_TASK_CAPTION));
