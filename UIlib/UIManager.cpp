@@ -205,7 +205,7 @@ PaintManagerUI::PaintManagerUI() :
 
       // We need the image library for effects. It is however optional in Windows so
       // we'll also need to provide a gracefull fallback.
-      ::LoadLibrary("msimg32.dll");
+      ::LoadLibraryA("msimg32.dll");
    }
    m_szMinWindow.cx = 140;
    m_szMinWindow.cy = 200;
@@ -371,7 +371,7 @@ bool PaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRE
    case WM_SETCURSOR:
       break;
    default:
-      TRACE(_T("MSG: %-20s (%08ld)"), TRACEMSG(uMsg), ::GetTickCount());
+      TRACE("MSG: %-20s (%08ld)", TRACEMSG(uMsg), ::GetTickCount());
    }
 #endif
    // Not ready yet?
@@ -834,7 +834,7 @@ bool PaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRE
    case WM_VSCROLL:
       {
          if (lParam == NULL)  break;
-         ContainerUI* pContainer = static_cast<ContainerUI*>(::GetProp((HWND) lParam, "WndX"));
+         ContainerUI* pContainer = static_cast<ContainerUI*>(::GetPropA((HWND) lParam, "WndX"));
          if (pContainer == NULL)  break;
          TEventUI event = { 0 };
          event.Type = UIEVENT_VSCROLL;

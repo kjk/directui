@@ -67,7 +67,7 @@ bool AnimationSpooler::Init(HWND hWnd)
    HWND hWndFocus = hWnd;
    while ( ::GetParent(hWndFocus) != NULL)  hWndFocus = ::GetParent(hWndFocus);
    // Is DirectX v9 available at all?
-   HMODULE hMod = ::LoadLibrary("D3D9.DLL");
+   HMODULE hMod = ::LoadLibraryA("D3D9.DLL");
    if (hMod == NULL)  return false;
    ::FreeLibrary(hMod);
    // Initialize Direct3D

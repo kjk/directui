@@ -51,7 +51,7 @@ private:
    inline void _SkipWhitespace(const TCHAR*& pstr) const;
    inline void _SkipIdentifier(TCHAR*& pstr) const;
    inline void _SkipIdentifier(const TCHAR*& pstr) const;
-   bool _ParseData(TCHAR*& txt, TCHAR*& pstrData, char cEnd);
+   bool _ParseData(TCHAR*& txt, TCHAR*& pstrData, TCHAR cEnd);
    void _ParseMetaChar(TCHAR*& txt, TCHAR*& pstrDest);
    bool _ParseAttributes(TCHAR*& txt);
    bool _Failed(const TCHAR* pstrError, const TCHAR* pstrLocation = NULL);

@@ -693,7 +693,7 @@ UINT ListTextElementUI::GetControlFlags() const
 void ListTextElementUI::SetOwner(ControlUI* owner)
 {
    ListElementUI::SetOwner(owner);
-   m_owner = static_cast<IListUI*>(owner->GetInterface("List"));
+   m_owner = static_cast<IListUI*>(owner->GetInterface(_T("List")));
 }
 
 void ListTextElementUI::Event(TEventUI& event)

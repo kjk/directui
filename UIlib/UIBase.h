@@ -25,12 +25,11 @@ class PaintManagerUI;
    #define TRACEMSG __TraceMsg
 #else
    #define TRACE
-   #define TRACEMSG _T("")
+   #define TRACEMSG ""
 #endif
 
-void UILIB_API __Trace(const TCHAR* pstrFormat, ...);
-const TCHAR* __TraceMsg(UINT uMsg);
-
+void UILIB_API __Trace(const char* fmt, ...);
+const char* __TraceMsg(UINT uMsg);
 
 class UILIB_API CRect : public tagRECT
 {

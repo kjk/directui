@@ -24,7 +24,7 @@ public:
    {
       if (uMsg == WM_CREATE)  {
          SetIcon(IDR_MAINFRAME);
-         _CreatePage("page_start");
+         _CreatePage(_T("page_start"));
       }
       if (uMsg == WM_DESTROY)  {
          ::PostQuitMessage(0L);
@@ -90,7 +90,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*l
    HRESULT Hr = ::CoInitialize(NULL);
    if (FAILED(Hr))  return 0;
 
-   if (::LoadLibrary("d3d9.dll") == NULL)  ::MessageBox(NULL, "Denne applikation vises bedst med DirectX 9 installeret!", "Test", MB_ICONINFORMATION);
+   if (::LoadLibraryA("d3d9.dll") == NULL)  ::MessageBox(NULL, "Denne applikation vises bedst med DirectX 9 installeret!", "Test", MB_ICONINFORMATION);
 
    FrameWindowWnd* pFrame = new FrameWindowWnd();
    if (pFrame == NULL)  return 0;

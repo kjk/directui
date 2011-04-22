@@ -1,8 +1,10 @@
 
-#ifdef UILIB_EXPORTS
-#define UILIB_API __declspec(dllexport)
-#else
-#define UILIB_API __declspec(dllimport)
+#if !defined(UILIB_API)
+  #if defined(UILIB_EXPORTS)
+    #define UILIB_API __declspec(dllexport)
+  #else
+    #define UILIB_API __declspec(dllimport)
+  #endif
 #endif
 
 #include <windows.h>
@@ -12,6 +14,8 @@
 #include <assert.h>
 #include <crtdbg.h>
 #include <malloc.h>
+#include <stdio.h>
+#include <stdarg.h>
 
 #include "UIBase.h"
 #include "UIAnim.h"

@@ -7,20 +7,20 @@
    #pragma comment(lib, "shlwapi.lib")
 #endif
 
-void UILIB_API __Trace(const TCHAR* pstrFormat, ...)
+void UILIB_API __Trace(const char* fmt, ...)
 {
 #ifdef _DEBUG
-   TCHAR szBuffer[300] = { 0 };
+   char buf[300] = { 0 };
    va_list args;
-   va_start(args, pstrFormat);
-   ::wvnsprintf(szBuffer, lengthof(szBuffer) - 2, pstrFormat, args);
-   _tcscat(szBuffer, _T("\n"));
+   va_start(args, fmt);
+   ::vsnprintf(buf, lengthof(buf) - 2, fmt, args);
    va_end(args);
-   ::OutputDebugString(szBuffer);
+   ::OutputDebugStringA(buf);
+   ::OutputDebugStringA("\n");
 #endif
 }
 
-const TCHAR* __TraceMsg(UINT uMsg)
+const char* __TraceMsg(UINT uMsg)
 {
 #define MSGDEF(x) if(uMsg==x) return #x
    MSGDEF(WM_SETCURSOR);
@@ -77,9 +77,9 @@ const TCHAR* __TraceMsg(UINT uMsg)
    MSGDEF(WM_GETICON);   
    MSGDEF(WM_GETTEXT);
    MSGDEF(WM_GETTEXTLENGTH);   
-   static TCHAR szMsg[10];
-   ::wsprintf(szMsg, _T("0x%04X"), uMsg);
-   return szMsg;
+   static char buf[32];
+   ::sprintf(buf, "0x%04X", uMsg);
+   return buf;
 }
 
 CRect::CRect()
@@ -412,15 +412,15 @@ LRESULT CALLBACK WindowWnd::__ControlProc(HWND hWnd, UINT uMsg, WPARAM wParam, L
    if (uMsg == WM_NCCREATE)  {
       LPCREATESTRUCT lpcs = reinterpret_cast<LPCREATESTRUCT>(lParam);
       pThis = static_cast<WindowWnd*>(lpcs->lpCreateParams);
-      ::SetProp(hWnd, "WndX", (HANDLE) pThis);
+      ::SetPropA(hWnd, "WndX", (HANDLE) pThis);
       pThis->m_hWnd = hWnd;
    } 
    else {
-      pThis = reinterpret_cast<WindowWnd*>(::GetProp(hWnd, "WndX"));
+      pThis = reinterpret_cast<WindowWnd*>(::GetPropA(hWnd, "WndX"));
       if (uMsg == WM_NCDESTROY && pThis != NULL)  {
          LRESULT lRes = ::CallWindowProc(pThis->m_OldWndProc, hWnd, uMsg, wParam, lParam);
          if (pThis->m_bSubclassed)  pThis->Unsubclass();
-         ::SetProp(hWnd, "WndX", NULL);
+         ::SetPropA(hWnd, "WndX", NULL);
          pThis->m_hWnd = NULL;
          pThis->OnFinalMessage(hWnd);
          return lRes;

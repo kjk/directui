@@ -307,7 +307,7 @@ void ContainerUI::ProcessScrollbar(RECT rc, int cyRequired)
    if (cyRequired > rc.bottom - rc.top && m_hwndScroll == NULL && m_bAllowScrollbars)  {
       m_hwndScroll = ::CreateWindowEx(0, WC_SCROLLBAR, NULL, WS_CHILD | SBS_VERT, 0, 0, 0, 0, m_manager->GetPaintWindow(), NULL, m_manager->GetResourceInstance(), NULL);
       ASSERT(::IsWindow(m_hwndScroll));
-      ::SetProp(m_hwndScroll, "WndX", static_cast<HANDLE>(this));
+      ::SetPropA(m_hwndScroll, "WndX", static_cast<HANDLE>(this));
       ::SetScrollPos(m_hwndScroll, SB_CTL, 0, TRUE);
       ::ShowWindow(m_hwndScroll, SW_SHOWNOACTIVATE);
       SetPos(m_rcItem);

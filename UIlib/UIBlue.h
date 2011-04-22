@@ -29,7 +29,7 @@ public:
    static void DoPaintOptionBox(HDC hDC, PaintManagerUI* manager, RECT rcItem, const TCHAR* txt, UINT uState, UINT uStyle);
    static void DoPaintTabFolder(HDC hDC, PaintManagerUI* manager, RECT& rc, const TCHAR* txt, UINT uState);
    static void DoPaintToolbarButton(HDC hDC, PaintManagerUI* manager, RECT rc, const TCHAR* txt, SIZE szPadding, UINT uState);
-   static void DoPaintQuickText(HDC hDC, PaintManagerUI* manager, RECT& rc, LPCSTR txt, UITYPE_COLOR iTextColor, UITYPE_FONT iFont, UINT uStyle);
+   static void DoPaintQuickText(HDC hDC, PaintManagerUI* manager, RECT& rc, LPCTSTR txt, UITYPE_COLOR iTextColor, UITYPE_FONT iFont, UINT uStyle);
    static void DoPaintPrettyText(HDC hDC, PaintManagerUI* manager, RECT& rc, const TCHAR* txt, UITYPE_COLOR iTextColor, UITYPE_COLOR iBackColor, RECT* pLinks, int& nLinkRects, UINT uStyle);
    static void DoPaintGradient(HDC hDC, PaintManagerUI* manager, RECT rc, COLORREF clrFirst, COLORREF clrSecond, bool bVertical, int nSteps);
    static void DoPaintAlphaBitmap(HDC hDC, PaintManagerUI* manager, HBITMAP hBitmap, RECT rc, BYTE iAlpha);

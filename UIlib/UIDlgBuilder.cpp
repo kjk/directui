@@ -23,10 +23,16 @@ ControlUI* DialogBuilder::CreateFromResource(UINT nRes, IDialogBuilderCallback* 
       return NULL;
    }
    StdString sXML;
+   // TODO: must convert from char * to TCHAR * in unicode build
+   ASSERT(false);
+#if 0
    sXML.Assign(static_cast<LPCSTR>(::LockResource(hGlobal)), ::SizeofResource(PaintManagerUI::GetResourceInstance(), hResource));
    sXML.Replace(_T("\\n"), _T("\n"));
    ::FreeResource(hResource);
    return Create(sXML, pCallback);
+#else
+    return NULL;
+#endif
 }
 
 ControlUI* DialogBuilder::_Parse(MarkupNode* root, ControlUI* parent)
