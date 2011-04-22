@@ -2,7 +2,7 @@
 #include "StdAfx.h"
 #include "UIContainer.h"
 
-CContainerUI::CContainerUI() : 
+ContainerUI::ContainerUI() : 
    m_hwndScroll(NULL), 
    m_iPadding(0),
    m_iScrollPos(0),
@@ -13,41 +13,41 @@ CContainerUI::CContainerUI() :
    ::ZeroMemory(&m_rcInset, sizeof(m_rcInset));
 }
 
-CContainerUI::~CContainerUI()
+ContainerUI::~ContainerUI()
 {
    RemoveAll();
 }
 
-const TCHAR* CContainerUI::GetClass() const
+const TCHAR* ContainerUI::GetClass() const
 {
    return _T("ContainerUI");
 }
 
-void* CContainerUI::GetInterface(const TCHAR* name)
+void* ContainerUI::GetInterface(const TCHAR* name)
 {
    if (_tcscmp(name, _T("Container")) == 0)  return static_cast<IContainerUI*>(this);
    return ControlUI::GetInterface(name);
 }
 
-ControlUI* CContainerUI::GetItem(int idx) const
+ControlUI* ContainerUI::GetItem(int idx) const
 {
    if (idx < 0 || idx >= m_items.GetSize())  return NULL;
    return static_cast<ControlUI*>(m_items[idx]);
 }
 
-int CContainerUI::GetCount() const
+int ContainerUI::GetCount() const
 {
    return m_items.GetSize();
 }
 
-bool CContainerUI::Add(ControlUI* ctrl)
+bool ContainerUI::Add(ControlUI* ctrl)
 {
    if (m_manager != NULL)  m_manager->InitControls(ctrl, this);
    if (m_manager != NULL)  m_manager->UpdateLayout();
    return m_items.Add(ctrl);
 }
 
-bool CContainerUI::Remove(ControlUI* ctrl)
+bool ContainerUI::Remove(ControlUI* ctrl)
 {
    for (int it = 0; m_bAutoDestroy && it < m_items.GetSize(); it++)  {
       if (static_cast<ControlUI*>(m_items[it]) == ctrl)  {
@@ -59,7 +59,7 @@ bool CContainerUI::Remove(ControlUI* ctrl)
    return false;
 }
 
-void CContainerUI::RemoveAll()
+void ContainerUI::RemoveAll()
 {
    for (int it = 0; m_bAutoDestroy && it < m_items.GetSize(); it++)  delete static_cast<ControlUI*>(m_items[it]);
    m_items.Empty();
@@ -67,38 +67,38 @@ void CContainerUI::RemoveAll()
    if (m_manager != NULL)  m_manager->UpdateLayout();
 }
 
-void CContainerUI::SetAutoDestroy(bool bAuto)
+void ContainerUI::SetAutoDestroy(bool bAuto)
 {
    m_bAutoDestroy = bAuto;
 }
 
-void CContainerUI::SetInset(SIZE szInset)
+void ContainerUI::SetInset(SIZE szInset)
 {
    m_rcInset.left = m_rcInset.right = szInset.cx;
    m_rcInset.top = m_rcInset.bottom = szInset.cy;
 }
 
-void CContainerUI::SetInset(RECT rcInset)
+void ContainerUI::SetInset(RECT rcInset)
 {
    m_rcInset = rcInset;
 }
 
-void CContainerUI::SetPadding(int iPadding)
+void ContainerUI::SetPadding(int iPadding)
 {
    m_iPadding = iPadding;
 }
 
-void CContainerUI::SetWidth(int cx)
+void ContainerUI::SetWidth(int cx)
 {
    m_cxyFixed.cx = cx;
 }
 
-void CContainerUI::SetHeight(int cy)
+void ContainerUI::SetHeight(int cy)
 {
    m_cxyFixed.cy = cy;
 }
 
-void CContainerUI::SetVisible(bool bVisible)
+void ContainerUI::SetVisible(bool bVisible)
 {
    // Hide possible scrollbar control
    if (m_hwndScroll != NULL)  ::ShowScrollBar(m_hwndScroll, SB_CTL, bVisible);
@@ -109,7 +109,7 @@ void CContainerUI::SetVisible(bool bVisible)
    ControlUI::SetVisible(bVisible);
 }
 
-void CContainerUI::Event(TEventUI& event)
+void ContainerUI::Event(TEventUI& event)
 {
    if (m_hwndScroll != NULL)  
    {
@@ -167,18 +167,18 @@ void CContainerUI::Event(TEventUI& event)
    ControlUI::Event(event);
 }
 
-int CContainerUI::GetScrollPos() const
+int ContainerUI::GetScrollPos() const
 {
    return m_iScrollPos;
 }
 
-int CContainerUI::GetScrollPage() const
+int ContainerUI::GetScrollPage() const
 {
    // TODO: Determine this dynamically
    return 40;
 }
 
-SIZE CContainerUI::GetScrollRange() const
+SIZE ContainerUI::GetScrollRange() const
 {
    if (m_hwndScroll == NULL)  return CSize();
    int cx = 0, cy = 0;
@@ -186,7 +186,7 @@ SIZE CContainerUI::GetScrollRange() const
    return CSize(cx, cy);
 }
 
-void CContainerUI::SetScrollPos(int iScrollPos)
+void ContainerUI::SetScrollPos(int iScrollPos)
 {
    if (m_hwndScroll == NULL)  return;
    int iRange1 = 0, iRange2 = 0;
@@ -199,14 +199,14 @@ void CContainerUI::SetScrollPos(int iScrollPos)
    Invalidate();
 }
 
-void CContainerUI::EnableScrollBar(bool bEnable)
+void ContainerUI::EnableScrollBar(bool bEnable)
 {
    if (m_bAllowScrollbars == bEnable)  return;
    m_iScrollPos = 0;
    m_bAllowScrollbars = bEnable;
 }
 
-int CContainerUI::FindSelectable(int idx, bool bForward /*= true*/) const
+int ContainerUI::FindSelectable(int idx, bool bForward /*= true*/) const
 {
    // NOTE: This is actually a helper-function for the list/combo/ect controls
    //       that allow them to find the next enabled/available selectable item
@@ -230,7 +230,7 @@ int CContainerUI::FindSelectable(int idx, bool bForward /*= true*/) const
    }
 }
 
-void CContainerUI::SetPos(RECT rc)
+void ContainerUI::SetPos(RECT rc)
 {
    ControlUI::SetPos(rc);
    if (m_items.IsEmpty())  return;
@@ -244,12 +244,12 @@ void CContainerUI::SetPos(RECT rc)
    static_cast<ControlUI*>(m_items[0])->SetPos(rc);
 }
 
-SIZE CContainerUI::EstimateSize(SIZE /*szAvailable*/)
+SIZE ContainerUI::EstimateSize(SIZE /*szAvailable*/)
 {
    return m_cxyFixed;
 }
 
-void CContainerUI::SetAttribute(const TCHAR* name, const TCHAR* value)
+void ContainerUI::SetAttribute(const TCHAR* name, const TCHAR* value)
 {
    if (_tcscmp(name, _T("inset")) == 0)  SetInset(CSize(_ttoi(value), _ttoi(value)));
    else if (_tcscmp(name, _T("padding")) == 0)  SetPadding(_ttoi(value));
@@ -259,7 +259,7 @@ void CContainerUI::SetAttribute(const TCHAR* name, const TCHAR* value)
    else ControlUI::SetAttribute(name, value);
 }
 
-void CContainerUI::SetManager(CPaintManagerUI* manager, ControlUI* parent)
+void ContainerUI::SetManager(CPaintManagerUI* manager, ControlUI* parent)
 {
    for (int it = 0; it < m_items.GetSize(); it++)  {
       static_cast<ControlUI*>(m_items[it])->SetManager(manager, this);
@@ -267,7 +267,7 @@ void CContainerUI::SetManager(CPaintManagerUI* manager, ControlUI* parent)
    ControlUI::SetManager(manager, parent);
 }
 
-ControlUI* CContainerUI::FindControl(FINDCONTROLPROC Proc, void* data, UINT uFlags)
+ControlUI* ContainerUI::FindControl(FINDCONTROLPROC Proc, void* data, UINT uFlags)
 {
    // Check if this guy is valid
    if ((uFlags & UIFIND_VISIBLE) != 0 && !IsVisible())  return NULL;
@@ -284,7 +284,7 @@ ControlUI* CContainerUI::FindControl(FINDCONTROLPROC Proc, void* data, UINT uFla
    return ControlUI::FindControl(Proc, data, uFlags);
 }
 
-void CContainerUI::DoPaint(HDC hDC, const RECT& rcPaint)
+void ContainerUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
    RECT rcTemp = { 0 };
    if (!::IntersectRect(&rcTemp, &rcPaint, &m_rcItem))  return;
@@ -301,7 +301,7 @@ void CContainerUI::DoPaint(HDC hDC, const RECT& rcPaint)
    }
 }
 
-void CContainerUI::ProcessScrollbar(RECT rc, int cyRequired)
+void ContainerUI::ProcessScrollbar(RECT rc, int cyRequired)
 {
    // Need the scrollbar control, but it's been created already?
    if (cyRequired > rc.bottom - rc.top && m_hwndScroll == NULL && m_bAllowScrollbars)  {
@@ -393,13 +393,13 @@ void CCanvasUI::DoPaint(HDC hDC, const RECT& rcPaint)
          CBlueRenderEngineUI::DoPaintBitmap(hDC, m_manager, m_hBitmap, rcBitmap);
       }
    }
-   CContainerUI::DoPaint(hDC, rcPaint);
+   ContainerUI::DoPaint(hDC, rcPaint);
 }
 
 void CCanvasUI::SetAttribute(const TCHAR* name, const TCHAR* value)
 {
    if (_tcscmp(name, _T("watermark")) == 0)  SetWatermark(value);
-   else CContainerUI::SetAttribute(name, value);
+   else ContainerUI::SetAttribute(name, value);
 }
 
 
@@ -521,16 +521,16 @@ void CVerticalLayoutUI::SetPos(RECT rc)
 }
 
 
-CHorizontalLayoutUI::CHorizontalLayoutUI()
+HorizontalLayoutUI::HorizontalLayoutUI()
 {
 }
 
-const TCHAR* CHorizontalLayoutUI::GetClass() const
+const TCHAR* HorizontalLayoutUI::GetClass() const
 {
    return _T("HorizontalLayoutUI");
 }
 
-void CHorizontalLayoutUI::SetPos(RECT rc)
+void HorizontalLayoutUI::SetPos(RECT rc)
 {
    m_rcItem = rc;
    // Adjust for inset
@@ -655,7 +655,7 @@ const TCHAR* CDialogLayoutUI::GetClass() const
 void* CDialogLayoutUI::GetInterface(const TCHAR* name)
 {
    if (_tcscmp(name, _T("DialogLayout")) == 0)  return this;
-   return CContainerUI::GetInterface(name);
+   return ContainerUI::GetInterface(name);
 }
 
 void CDialogLayoutUI::SetStretchMode(ControlUI* ctrl, UINT uMode)

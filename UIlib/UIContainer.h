@@ -16,11 +16,11 @@ public:
    virtual void RemoveAll() = 0;
 };
 
-class UILIB_API CContainerUI : public ControlUI, public IContainerUI
+class UILIB_API ContainerUI : public ControlUI, public IContainerUI
 {
 public:
-   CContainerUI();
-   virtual ~CContainerUI();
+   ContainerUI();
+   virtual ~ContainerUI();
 
 public:
    const TCHAR* GetClass() const;
@@ -73,7 +73,7 @@ protected:
    int m_iScrollPos;
 };
 
-class UILIB_API CCanvasUI : public CContainerUI
+class UILIB_API CCanvasUI : public ContainerUI
 {
 public:
    CCanvasUI();
@@ -136,7 +136,7 @@ public:
 };
 
 
-class UILIB_API CVerticalLayoutUI : public CContainerUI
+class UILIB_API CVerticalLayoutUI : public ContainerUI
 {
 public:
    CVerticalLayoutUI();
@@ -150,17 +150,17 @@ protected:
 };
 
 
-class UILIB_API CHorizontalLayoutUI : public CContainerUI
+class UILIB_API HorizontalLayoutUI : public ContainerUI
 {
 public:
-   CHorizontalLayoutUI();
+   HorizontalLayoutUI();
 
    const TCHAR* GetClass() const;
    void SetPos(RECT rc);
 };
 
 
-class UILIB_API CTileLayoutUI : public CContainerUI
+class UILIB_API CTileLayoutUI : public ContainerUI
 {
 public:
    CTileLayoutUI();
@@ -176,7 +176,7 @@ protected:
 };
 
 
-class UILIB_API CDialogLayoutUI : public CContainerUI
+class UILIB_API CDialogLayoutUI : public ContainerUI
 {
 public:
    CDialogLayoutUI();

@@ -112,7 +112,7 @@ const TCHAR* CListHeaderUI::GetClass() const
 void* CListHeaderUI::GetInterface(const TCHAR* name)
 {
    if (_tcscmp(name, _T("ListHeader")) == 0)  return this;
-   return CHorizontalLayoutUI::GetInterface(name);
+   return HorizontalLayoutUI::GetInterface(name);
 }
 
 SIZE CListHeaderUI::EstimateSize(SIZE /*szAvailable*/)
@@ -129,7 +129,7 @@ void CListHeaderUI::DoPaint(HDC hDC, const RECT& rcPaint)
    RECT rcBottom = { m_rcItem.left + 1, m_rcItem.bottom - 3, m_rcItem.right - 1, m_rcItem.bottom };
    CBlueRenderEngineUI::DoPaintGradient(hDC, m_manager, rcBottom, clrBack1, clrBack2, true, 4);
    // Draw headers too...
-   CHorizontalLayoutUI::DoPaint(hDC, rcPaint);
+   HorizontalLayoutUI::DoPaint(hDC, rcPaint);
 }
 
 
@@ -256,7 +256,7 @@ const TCHAR* CListFooterUI::GetClass() const
 void* CListFooterUI::GetInterface(const TCHAR* name)
 {
    if (_tcscmp(name, _T("ListFooter")) == 0)  return this;
-   return CHorizontalLayoutUI::GetInterface(name);
+   return HorizontalLayoutUI::GetInterface(name);
 }
 
 SIZE CListFooterUI::EstimateSize(SIZE /*szAvailable*/)
@@ -274,7 +274,7 @@ void CListFooterUI::DoPaint(HDC hDC, const RECT& rcPaint)
    RECT rcBottom = { m_rcItem.left + 1, m_rcItem.bottom - 3, m_rcItem.right - 1, m_rcItem.bottom };
    CBlueRenderEngineUI::DoPaintGradient(hDC, m_manager, rcBottom, clrBack1, clrBack2, true, 4);
    // Paint items as well...
-   CHorizontalLayoutUI::DoPaint(hDC, rcPaint);
+   HorizontalLayoutUI::DoPaint(hDC, rcPaint);
 }
 
 
@@ -448,7 +448,7 @@ CListFooterUI* CListUI::GetFooter() const
    return m_pFooter;
 }
 
-CContainerUI* CListUI::GetList() const
+ContainerUI* CListUI::GetList() const
 {
    return m_pList;
 }

@@ -7,7 +7,7 @@
 
 #include "UIlist.h"
 
-class UILIB_API CTabFolderUI : public CContainerUI, public IListOwnerUI
+class UILIB_API CTabFolderUI : public ContainerUI, public IListOwnerUI
 {
 public:
    CTabFolderUI();
@@ -36,7 +36,7 @@ protected:
    CStdValArray m_tabAreas;
 };
 
-class UILIB_API CTabPageUI : public CContainerUI
+class UILIB_API CTabPageUI : public ContainerUI
 {
 public:
    CTabPageUI();

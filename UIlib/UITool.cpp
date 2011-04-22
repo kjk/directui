@@ -3,17 +3,17 @@
 #include "UIBlue.h"
 
 
-const TCHAR* CStatusbarUI::GetClass() const
+const TCHAR* StatusbarUI::GetClass() const
 {
    return _T("StatusbarUI");
 }
 
-SIZE CStatusbarUI::EstimateSize(SIZE /*szAvailable*/)
+SIZE StatusbarUI::EstimateSize(SIZE /*szAvailable*/)
 {
    return CSize(0, 10 + m_manager->GetThemeFontInfo(UIFONT_CAPTION).tmHeight);
 }
 
-void CStatusbarUI::DoPaint(HDC hDC, const RECT& rcPaint)
+void StatusbarUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
    CBlueRenderEngineUI::DoPaintPanel(hDC, m_manager, m_rcItem);
    RECT rcMessage = m_rcItem;
@@ -23,16 +23,16 @@ void CStatusbarUI::DoPaint(HDC hDC, const RECT& rcPaint)
 }
 
 
-CToolbarTitlePanelUI::CToolbarTitlePanelUI() : m_iPadding(6)
+ToolbarTitlePanelUI::ToolbarTitlePanelUI() : m_iPadding(6)
 {
 }
 
-const TCHAR* CToolbarTitlePanelUI::GetClass() const
+const TCHAR* ToolbarTitlePanelUI::GetClass() const
 {
    return _T("ToolbarTitlePanelUI");
 }
 
-SIZE CToolbarTitlePanelUI::EstimateSize(SIZE szAvailable)
+SIZE ToolbarTitlePanelUI::EstimateSize(SIZE szAvailable)
 {
    SIZE sz = { 0 };
    RECT rcText = { 0, 0, szAvailable.cx, szAvailable.cy };
@@ -43,7 +43,7 @@ SIZE CToolbarTitlePanelUI::EstimateSize(SIZE szAvailable)
    return sz;
 }
 
-void CToolbarTitlePanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
+void ToolbarTitlePanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
    CBlueRenderEngineUI::DoPaintPanel(hDC, m_manager, m_rcItem);
    RECT rcText = m_rcItem;
@@ -52,38 +52,38 @@ void CToolbarTitlePanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
    CBlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcText, m_txt, UICOLOR_TITLE_TEXT, UICOLOR__INVALID, NULL, nLinks, DT_WORDBREAK | DT_NOPREFIX);
 }
 
-CToolbarUI::CToolbarUI()
+ToolbarUI::ToolbarUI()
 {
    SetInset(CSize(2, 2));
    SetPadding(2);
 }
 
-const TCHAR* CToolbarUI::GetClass() const
+const TCHAR* ToolbarUI::GetClass() const
 {
    return _T("ToolbarUI");
 }
 
-SIZE CToolbarUI::EstimateSize(SIZE /*szAvailable*/)
+SIZE ToolbarUI::EstimateSize(SIZE /*szAvailable*/)
 {
    return CSize(0, 10 + m_manager->GetThemeFontInfo(UIFONT_CAPTION).tmHeight);
 }
 
-void CToolbarUI::DoPaint(HDC hDC, const RECT& rcPaint)
+void ToolbarUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
    CBlueRenderEngineUI::DoPaintPanel(hDC, m_manager, m_rcItem);
-   CContainerUI::DoPaint(hDC, rcPaint);
+   ContainerUI::DoPaint(hDC, rcPaint);
 }
 
-CToolButtonUI::CToolButtonUI()
+ToolButtonUI::ToolButtonUI()
 {
 }
 
-const TCHAR* CToolButtonUI::GetClass() const
+const TCHAR* ToolButtonUI::GetClass() const
 {
    return _T("ToolButtonUI");
 }
 
-void CToolButtonUI::DoPaint(HDC hDC, const RECT& rcPaint)
+void ToolButtonUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
    UINT uState = 0;
    if (IsFocused())  uState |= UISTATE_FOCUSED;
@@ -91,17 +91,17 @@ void CToolButtonUI::DoPaint(HDC hDC, const RECT& rcPaint)
    CBlueRenderEngineUI::DoPaintToolbarButton(hDC, m_manager, m_rcItem, m_txt, m_szPadding, m_uButtonState | uState);
 }
 
-const TCHAR* CToolSeparatorUI::GetClass() const
+const TCHAR* ToolSeparatorUI::GetClass() const
 {
    return _T("ToolSeparatorUI");
 }
 
-SIZE CToolSeparatorUI::EstimateSize(SIZE /*szAvailable*/)
+SIZE ToolSeparatorUI::EstimateSize(SIZE /*szAvailable*/)
 {
    return CSize(4, 0);
 }
 
-void CToolSeparatorUI::DoPaint(HDC hDC, const RECT& rcPaint)
+void ToolSeparatorUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
    RECT rc1 = { m_rcItem.left + 1, m_rcItem.top + 2, m_rcItem.left + 1, m_rcItem.bottom - 3 };
    CBlueRenderEngineUI::DoPaintLine(hDC, m_manager, rc1, UICOLOR_TITLE_BORDER_DARK);
@@ -109,17 +109,17 @@ void CToolSeparatorUI::DoPaint(HDC hDC, const RECT& rcPaint)
    CBlueRenderEngineUI::DoPaintLine(hDC, m_manager, rc2, UICOLOR_TITLE_BORDER_LIGHT);
 }
 
-const TCHAR* CToolGripperUI::GetClass() const
+const TCHAR* ToolGripperUI::GetClass() const
 {
    return _T("ToolGripperUI");
 }
 
-SIZE CToolGripperUI::EstimateSize(SIZE /*szAvailable*/)
+SIZE ToolGripperUI::EstimateSize(SIZE /*szAvailable*/)
 {
    return CSize(12, 0);
 }
 
-void CToolGripperUI::DoPaint(HDC hDC, const RECT& rcPaint)
+void ToolGripperUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
    RECT rcLine = { m_rcItem.left + 5, m_rcItem.top + 6, m_rcItem.left + 5 + 3, m_rcItem.top + 6 };
    for (int i = m_rcItem.top + 6; i <= m_rcItem.bottom - 6; i += 2)  {

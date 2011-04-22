@@ -837,7 +837,7 @@ bool CPaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LR
    case WM_VSCROLL:
       {
          if (lParam == NULL)  break;
-         CContainerUI* pContainer = static_cast<CContainerUI*>(::GetProp((HWND) lParam, "WndX"));
+         ContainerUI* pContainer = static_cast<ContainerUI*>(::GetProp((HWND) lParam, "WndX"));
          if (pContainer == NULL)  break;
          TEventUI event = { 0 };
          event.Type = UIEVENT_VSCROLL;

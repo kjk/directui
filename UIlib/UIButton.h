@@ -6,10 +6,10 @@
 #endif // _MSC_VER > 1000
 
 
-class UILIB_API CButtonUI : public ControlUI
+class UILIB_API ButtonUI : public ControlUI
 {
 public:
-   CButtonUI();
+   ButtonUI();
 
    const TCHAR* GetClass() const;
    UINT GetControlFlags() const;

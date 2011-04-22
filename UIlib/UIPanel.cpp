@@ -56,7 +56,7 @@ bool CNavigatorPanelUI::Add(ControlUI* ctrl)
       listItem->SetOwner(this);
       listItem->SetIndex(m_items.GetSize());
    }
-   return CContainerUI::Add(ctrl);
+   return ContainerUI::Add(ctrl);
 }
 
 SIZE CNavigatorPanelUI::EstimateSize(SIZE szAvailable)
@@ -276,7 +276,7 @@ void CSearchTitlePanelUI::SetImage(int idx)
 void CSearchTitlePanelUI::SetPos(RECT rc)
 {
    RECT rcClient = { rc.left + 1, rc.top + 35, rc.right - 1, rc.bottom - 1 };
-   CHorizontalLayoutUI::SetPos(rcClient);
+   HorizontalLayoutUI::SetPos(rcClient);
    m_rcItem = rc;
 }
 
@@ -294,13 +294,13 @@ void CSearchTitlePanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
       ::DrawIconEx(hDC, m_rcItem.left + 5, m_rcItem.top, hIcon, 50, 50, 0, NULL, DI_NORMAL);
       ::DestroyIcon(hIcon);
    }
-   CHorizontalLayoutUI::DoPaint(hDC, rcPaint);
+   HorizontalLayoutUI::DoPaint(hDC, rcPaint);
 }
 
 void CSearchTitlePanelUI::SetAttribute(const TCHAR* name, const TCHAR* value)
 {
    if (_tcscmp(name, _T("image")) == 0)  SetImage(_ttoi(value));
-   else CHorizontalLayoutUI::SetAttribute(name, value);
+   else HorizontalLayoutUI::SetAttribute(name, value);
 }
 
 

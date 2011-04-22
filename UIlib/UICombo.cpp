@@ -230,7 +230,7 @@ const TCHAR* CDropDownUI::GetClass() const
 void* CDropDownUI::GetInterface(const TCHAR* name)
 {
    if (_tcscmp(name, _T("ListOwner")) == 0)  return static_cast<IListOwnerUI*>(this);
-   return CContainerUI::GetInterface(name);
+   return ContainerUI::GetInterface(name);
 }
 
 UINT CDropDownUI::GetControlFlags() const
@@ -281,7 +281,7 @@ bool CDropDownUI::Add(ControlUI* ctrl)
       listItem->SetOwner(this);
       listItem->SetIndex(m_items.GetSize());
    }
-   return CContainerUI::Add(ctrl);
+   return ContainerUI::Add(ctrl);
 }
 
 bool CDropDownUI::Remove(ControlUI* ctrl)
@@ -293,7 +293,7 @@ bool CDropDownUI::Remove(ControlUI* ctrl)
 void CDropDownUI::RemoveAll()
 {
    m_curSel = -1;
-   CContainerUI::RemoveAll();
+   ContainerUI::RemoveAll();
 }
 
 void CDropDownUI::Event(TEventUI& event)

@@ -27,7 +27,7 @@ protected:
    UINT m_uButtonState;
 };
 
-class UILIB_API CDropDownUI : public CContainerUI, public IListOwnerUI
+class UILIB_API CDropDownUI : public ContainerUI, public IListOwnerUI
 {
 public:
    CDropDownUI();

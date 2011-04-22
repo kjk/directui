@@ -7,20 +7,20 @@
 
 #include "UIButton.h"
 
-class UILIB_API CToolbarUI : public CHorizontalLayoutUI
+class UILIB_API ToolbarUI : public HorizontalLayoutUI
 {
 public:
-   CToolbarUI();
+   ToolbarUI();
 
    const TCHAR* GetClass() const;
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
 };
 
-class UILIB_API CToolbarTitlePanelUI : public ControlUI
+class UILIB_API ToolbarTitlePanelUI : public ControlUI
 {
 public:
-   CToolbarTitlePanelUI();
+   ToolbarTitlePanelUI();
 
    void SetPadding(int iPadding);
 
@@ -32,7 +32,7 @@ protected:
    int m_iPadding;
 };
 
-class UILIB_API CToolSeparatorUI : public ControlUI
+class UILIB_API ToolSeparatorUI : public ControlUI
 {
 public:
    const TCHAR* GetClass() const;
@@ -40,7 +40,7 @@ public:
    void DoPaint(HDC hDC, const RECT& rcPaint);
 };
 
-class UILIB_API CToolGripperUI : public ControlUI
+class UILIB_API ToolGripperUI : public ControlUI
 {
 public:
    const TCHAR* GetClass() const;
@@ -48,17 +48,17 @@ public:
    void DoPaint(HDC hDC, const RECT& rcPaint);
 };
 
-class UILIB_API CToolButtonUI : public CButtonUI
+class UILIB_API ToolButtonUI : public ButtonUI
 {
 public:
-   CToolButtonUI();
+   ToolButtonUI();
 
    const TCHAR* GetClass() const;
 
    void DoPaint(HDC hDC, const RECT& rcPaint);
 };
 
-class UILIB_API CStatusbarUI : public CContainerUI
+class UILIB_API StatusbarUI : public ContainerUI
 {
 public:
    const TCHAR* GetClass() const;

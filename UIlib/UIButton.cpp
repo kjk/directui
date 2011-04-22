@@ -3,23 +3,23 @@
 #include "UIButton.h"
 
 
-CButtonUI::CButtonUI() : m_cxWidth(0), m_uButtonState(0), m_uTextStyle(DT_SINGLELINE | DT_CENTER)
+ButtonUI::ButtonUI() : m_cxWidth(0), m_uButtonState(0), m_uTextStyle(DT_SINGLELINE | DT_CENTER)
 {
    m_szPadding.cx = 4;
    m_szPadding.cy = 0;
 }
 
-const TCHAR* CButtonUI::GetClass() const
+const TCHAR* ButtonUI::GetClass() const
 {
    return _T("ButtonUI");
 }
 
-UINT CButtonUI::GetControlFlags() const
+UINT ButtonUI::GetControlFlags() const
 {
    return UIFLAG_TABSTOP;
 }
 
-void CButtonUI::Event(TEventUI& event)
+void ButtonUI::Event(TEventUI& event)
 {
    if (event.Type == UIEVENT_BUTTONDOWN || event.Type == UIEVENT_DBLCLICK) 
    {
@@ -57,27 +57,27 @@ void CButtonUI::Event(TEventUI& event)
    ControlUI::Event(event);
 }
 
-void CButtonUI::SetText(const TCHAR* txt)
+void ButtonUI::SetText(const TCHAR* txt)
 {
    ControlUI::SetText(txt);
    // Automatic assignment of keyboard shortcut
    if (_tcschr(txt, '&') != NULL)  m_chShortcut = *(_tcschr(txt, '&') + 1);
 }
 
-bool CButtonUI::Activate()
+bool ButtonUI::Activate()
 {
    if (!ControlUI::Activate())  return false;
    if (m_manager != NULL)  m_manager->SendNotify(this, _T("click"));
    return true;
 }
 
-void CButtonUI::SetWidth(int cxWidth)
+void ButtonUI::SetWidth(int cxWidth)
 {
    m_cxWidth = cxWidth;
    UpdateLayout();
 }
 
-void CButtonUI::SetAttribute(const TCHAR* name, const TCHAR* value)
+void ButtonUI::SetAttribute(const TCHAR* name, const TCHAR* value)
 {
    if (_tcscmp(name, _T("width")) == 0)  SetWidth(_ttoi(value));
    else if (_tcscmp(name, _T("align")) == 0)  {
@@ -87,14 +87,14 @@ void CButtonUI::SetAttribute(const TCHAR* name, const TCHAR* value)
    else ControlUI::SetAttribute(name, value);
 }
 
-void CButtonUI::SetPadding(int cx, int cy)
+void ButtonUI::SetPadding(int cx, int cy)
 {
    m_szPadding.cx = cx;
    m_szPadding.cy = cy;
    UpdateLayout();
 }
 
-SIZE CButtonUI::EstimateSize(SIZE /*szAvailable*/)
+SIZE ButtonUI::EstimateSize(SIZE /*szAvailable*/)
 {
    SIZE sz = { m_cxWidth, 12 + m_manager->GetThemeFontInfo(UIFONT_NORMAL).tmHeight };
    if (m_cxWidth == 0 && m_manager != NULL)  {
@@ -108,7 +108,7 @@ SIZE CButtonUI::EstimateSize(SIZE /*szAvailable*/)
    return sz;
 }
 
-void CButtonUI::DoPaint(HDC hDC, const RECT& rcPaint)
+void ButtonUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
    // Draw button
    UINT uState = 0;

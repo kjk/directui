@@ -21,7 +21,7 @@ void CTabFolderUI::Init()
 bool CTabFolderUI::Add(ControlUI* ctrl)
 {
    ctrl->SetVisible(false);
-   return CContainerUI::Add(ctrl);
+   return ContainerUI::Add(ctrl);
 }
 
 int CTabFolderUI::GetCurSel() const
@@ -70,7 +70,7 @@ void CTabFolderUI::Event(TEventUI& event)
          return;
       }
    }
-   CContainerUI::Event(event);
+   ContainerUI::Event(event);
 }
 
 void CTabFolderUI::SetPos(RECT rc)
@@ -131,7 +131,7 @@ void CTabFolderUI::DoPaint(HDC hDC, const RECT& rcPaint)
 void CTabFolderUI::SetAttribute(const TCHAR* name, const TCHAR* value)
 {
    if (_tcscmp(name, _T("select")) == 0)  SelectItem(_ttoi(value));
-   else CContainerUI::SetAttribute(name, value);
+   else ContainerUI::SetAttribute(name, value);
 }
 
 CTabPageUI::CTabPageUI()
@@ -146,7 +146,7 @@ const TCHAR* CTabPageUI::GetClass() const
 
 bool CTabPageUI::Activate()
 {
-   if (!CContainerUI::Activate())  return false;
+   if (!ContainerUI::Activate())  return false;
    ControlUI* parent = GetParent();
    if (parent == NULL || parent->GetInterface(_T("ListOwner")) == NULL)  return false;
    return static_cast<IListOwnerUI*>(parent->GetInterface(_T("ListOwner")))->SelectItem(0 /*m_idx*/);

@@ -44,11 +44,11 @@ ControlUI* CDialogBuilder::_Parse(CMarkupNode* root, ControlUI* parent)
          break;
       case 6:
          if (_tcscmp(pstrClass, _T("Canvas")) == 0)                 ctrl = new CCanvasUI;
-         else if (_tcscmp(pstrClass, _T("Button")) == 0)            ctrl = new CButtonUI;
+         else if (_tcscmp(pstrClass, _T("Button")) == 0)            ctrl = new ButtonUI;
          else if (_tcscmp(pstrClass, _T("Option")) == 0)            ctrl = new COptionUI;
          break;
       case 7:
-         if (_tcscmp(pstrClass, _T("Toolbar")) == 0)                ctrl = new CToolbarUI;
+         if (_tcscmp(pstrClass, _T("Toolbar")) == 0)                ctrl = new ToolbarUI;
          else if (_tcscmp(pstrClass, _T("TabPage")) == 0)           ctrl = new CTabPageUI;
          else if (_tcscmp(pstrClass, _T("ActiveX")) == 0)           ctrl = new CActiveXUI;
          break;
@@ -58,7 +58,7 @@ ControlUI* CDialogBuilder::_Parse(CMarkupNode* root, ControlUI* parent)
       case 9:
          if (_tcscmp(pstrClass, _T("FadedLine")) == 0)              ctrl = new CFadedLineUI;      
          else if (_tcscmp(pstrClass, _T("TaskPanel")) == 0)         ctrl = new CTaskPanelUI;
-         else if (_tcscmp(pstrClass, _T("Statusbar")) == 0)         ctrl = new CStatusbarUI;
+         else if (_tcscmp(pstrClass, _T("Statusbar")) == 0)         ctrl = new StatusbarUI;
          else if (_tcscmp(pstrClass, _T("TabFolder")) == 0)         ctrl = new CTabFolderUI;
          else if (_tcscmp(pstrClass, _T("TextPanel")) == 0)         ctrl = new CTextPanelUI;
          break;
@@ -66,12 +66,12 @@ ControlUI* CDialogBuilder::_Parse(CMarkupNode* root, ControlUI* parent)
          if (_tcscmp(pstrClass, _T("ListHeader")) == 0)             ctrl = new CListHeaderUI;
          else if (_tcscmp(pstrClass, _T("ListFooter")) == 0)        ctrl = new CListFooterUI;
          else if (_tcscmp(pstrClass, _T("TileLayout")) == 0)        ctrl = new CTileLayoutUI;
-         else if (_tcscmp(pstrClass, _T("ToolButton")) == 0)        ctrl = new CToolButtonUI;
+         else if (_tcscmp(pstrClass, _T("ToolButton")) == 0)        ctrl = new ToolButtonUI;
          else if (_tcscmp(pstrClass, _T("ImagePanel")) == 0)        ctrl = new CImagePanelUI;
          else if (_tcscmp(pstrClass, _T("LabelPanel")) == 0)        ctrl = new CLabelPanelUI;
          break;
       case 11:
-         if (_tcscmp(pstrClass, _T("ToolGripper")) == 0)            ctrl = new CToolGripperUI;
+         if (_tcscmp(pstrClass, _T("ToolGripper")) == 0)            ctrl = new ToolGripperUI;
          else if (_tcscmp(pstrClass, _T("WhiteCanvas")) == 0)       ctrl = new CWhiteCanvasUI;
          else if (_tcscmp(pstrClass, _T("TitleShadow")) == 0)       ctrl = new CTitleShadowUI;
          break;
@@ -86,7 +86,7 @@ ControlUI* CDialogBuilder::_Parse(CMarkupNode* root, ControlUI* parent)
          if (_tcscmp(pstrClass, _T("SeparatorLine")) == 0)          ctrl = new CSeparatorLineUI;
          else if (_tcscmp(pstrClass, _T("ControlCanvas")) == 0)     ctrl = new CControlCanvasUI;
          else if (_tcscmp(pstrClass, _T("MultiLineEdit")) == 0)     ctrl = new CMultiLineEditUI;
-         else if (_tcscmp(pstrClass, _T("ToolSeparator")) == 0)     ctrl = new CToolSeparatorUI;
+         else if (_tcscmp(pstrClass, _T("ToolSeparator")) == 0)     ctrl = new ToolSeparatorUI;
          break;
       case 14:
          if (_tcscmp(pstrClass, _T("VerticalLayout")) == 0)         ctrl = new CVerticalLayoutUI;
@@ -103,12 +103,12 @@ ControlUI* CDialogBuilder::_Parse(CMarkupNode* root, ControlUI* parent)
          break;
       case 16:
          if (_tcscmp(pstrClass, _T("ListHeaderShadow")) == 0)       ctrl = new CListHeaderShadowUI; 
-         else if (_tcscmp(pstrClass, _T("HorizontalLayout")) == 0)  ctrl = new CHorizontalLayoutUI;
+         else if (_tcscmp(pstrClass, _T("HorizontalLayout")) == 0)  ctrl = new HorizontalLayoutUI;
          else if (_tcscmp(pstrClass, _T("ListLabelElement")) == 0)  ctrl = new CListLabelElementUI;
          else if (_tcscmp(pstrClass, _T("SearchTitlePanel")) == 0)  ctrl = new CSearchTitlePanelUI;
          break;
       case 17:
-         if (_tcscmp(pstrClass, _T("ToolbarTitlePanel")) == 0)   ctrl = new CToolbarTitlePanelUI;
+         if (_tcscmp(pstrClass, _T("ToolbarTitlePanel")) == 0)   ctrl = new ToolbarTitlePanelUI;
          else if (_tcscmp(pstrClass, _T("ListExpandElement")) == 0)  ctrl = new CListExpandElementUI;
          break;
       }

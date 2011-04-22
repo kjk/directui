@@ -43,7 +43,7 @@ class IListUI : public IListOwnerUI
 public:
    virtual CListHeaderUI* GetHeader() const = 0;
    virtual CListFooterUI* GetFooter() const = 0; 
-   virtual CContainerUI* GetList() const = 0;
+   virtual ContainerUI* GetList() const = 0;
    virtual const TListInfoUI* GetListInfo() const = 0;
    virtual IListCallbackUI* GetTextCallback() const = 0;
    virtual void SetTextCallback(IListCallbackUI* pCallback) = 0;
@@ -94,7 +94,7 @@ protected:
    IListOwnerUI* m_owner;
 };
 
-class UILIB_API CListHeaderUI : public CHorizontalLayoutUI
+class UILIB_API CListHeaderUI : public HorizontalLayoutUI
 {
 public:
    CListHeaderUI();
@@ -132,7 +132,7 @@ protected:
    UINT m_uDragState;
 };
 
-class UILIB_API CListFooterUI : public CHorizontalLayoutUI
+class UILIB_API CListFooterUI : public HorizontalLayoutUI
 {
 public:
    CListFooterUI();
@@ -158,7 +158,7 @@ public:
 
    CListHeaderUI* GetHeader() const;
    CListFooterUI* GetFooter() const;   
-   CContainerUI* GetList() const;
+   ContainerUI* GetList() const;
    const TListInfoUI* GetListInfo() const;
 
    ControlUI* GetItem(int idx) const;
@@ -269,7 +269,7 @@ public:
 protected:
    bool m_bExpanded;
    int m_cyExpanded;
-   CContainerUI* m_pContainer;
+   ContainerUI* m_pContainer;
 };
 
 

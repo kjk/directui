@@ -70,7 +70,7 @@ protected:
    UINT m_uButtonState;
 };
 
-class UILIB_API CSearchTitlePanelUI : public CHorizontalLayoutUI
+class UILIB_API CSearchTitlePanelUI : public HorizontalLayoutUI
 {
 public:
    CSearchTitlePanelUI();
