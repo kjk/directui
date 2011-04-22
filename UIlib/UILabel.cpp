@@ -30,13 +30,13 @@ void LabelPanelUI::SetTextStyle(UINT uStyle)
    Invalidate();
 }
 
-void LabelPanelUI::SetAttribute(const TCHAR* name, const TCHAR* value)
+void LabelPanelUI::SetAttribute(const char* name, const char* value)
 {
-   if (_tcscmp(name, _T("align")) == 0)  {
-      if (_tcsstr(value, _T("center")) != NULL)  m_uTextStyle |= DT_CENTER;
-      if (_tcsstr(value, _T("right")) != NULL)  m_uTextStyle |= DT_RIGHT;
+   if (str::Eq(name, "align"))  {
+      if (str::Find(value, "center") != NULL)  m_uTextStyle |= DT_CENTER;
+      if (str::Find(value, "right") != NULL)   m_uTextStyle |= DT_RIGHT;
    }
-   else if (_tcscmp(name, _T("width")) == 0)  SetWidth(_ttoi(value));
+   else if (str::Eq(name, "width"))  SetWidth(atoi(value));
    else ControlUI::SetAttribute(name, value);
 }
 

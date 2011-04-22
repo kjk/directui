@@ -92,12 +92,11 @@ void ListElementUI::Event(TEventUI& event)
    if (m_owner != NULL)  m_owner->Event(event); else ControlUI::Event(event);
 }
 
-void ListElementUI::SetAttribute(const TCHAR* name, const TCHAR* value)
+void ListElementUI::SetAttribute(const char* name, const char* value)
 {
-   if (_tcscmp(name, _T("selected")) == 0)  Select();
+   if (str::Eq(name, "selected"))  Select();
    else ControlUI::SetAttribute(name, value);
 }
-
 
 ListHeaderUI::ListHeaderUI()
 {
@@ -154,9 +153,9 @@ void ListHeaderItemUI::SetWidth(int cxWidth)
    UpdateLayout();
 }
 
-void ListHeaderItemUI::SetAttribute(const TCHAR* name, const TCHAR* value)
+void ListHeaderItemUI::SetAttribute(const char* name, const char* value)
 {
-   if (_tcscmp(name, _T("width")) == 0)  SetWidth(_ttol(value));
+   if (str::Eq(name, "width"))  SetWidth(atol(value));
    else ControlUI::SetAttribute(name, value);
 }
 
@@ -552,11 +551,11 @@ void ListUI::Scroll(int dx, int dy)
    m_pList->SetScrollPos(m_pList->GetScrollPos() + dy);
 }
 
-void ListUI::SetAttribute(const TCHAR* name, const TCHAR* value)
+void ListUI::SetAttribute(const char* name, const char* value)
 {
-   if (_tcscmp(name, _T("header")) == 0)  GetHeader()->SetVisible(_tcscmp(value, _T("hidden")) != 0);
-   else if (_tcscmp(name, _T("footer")) == 0)  GetFooter()->SetVisible(_tcscmp(value, _T("hidden")) != 0);
-   else if (_tcscmp(name, _T("expanding")) == 0)  SetExpanding(_tcscmp(value, _T("true")) == 0);
+   if (str::Eq(name, "header"))  GetHeader()->SetVisible(!str::Eq(value, "hidden"));
+   else if (str::Eq(name, "footer"))  GetFooter()->SetVisible(!str::Eq(value, "hidden"));
+   else if (str::Eq(name, "expanding"))  SetExpanding(str::Eq(value, "true"));
    else VerticalLayoutUI::SetAttribute(name, value);
 }
 
@@ -614,14 +613,14 @@ void ListLabelElementUI::Event(TEventUI& event)
    ListElementUI::Event(event);
 }
 
-void ListLabelElementUI::SetAttribute(const TCHAR* name, const TCHAR* value)
+void ListLabelElementUI::SetAttribute(const char* name, const char* value)
 {
-   if (_tcscmp(name, _T("width")) == 0)  {
-      SetWidth(_ttoi(value));
+   if (str::Eq(name, "width")) {
+      SetWidth(atoi(value));
    }
-   else if (_tcscmp(name, _T("align")) == 0)  {
-      if (_tcsstr(value, _T("center")) != NULL)  m_uTextStyle |= DT_CENTER;
-      if (_tcsstr(value, _T("right")) != NULL)  m_uTextStyle |= DT_RIGHT;
+   else if (str::Eq(name, "align"))  {
+      if (str::Find(value, "center") != NULL)  m_uTextStyle |= DT_CENTER;
+      if (str::Find(value, "right") != NULL)  m_uTextStyle |= DT_RIGHT;
    }
    else ListElementUI::SetAttribute(name, value);
 }

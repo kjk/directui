@@ -4,13 +4,13 @@
 class IDialogBuilderCallback
 {
 public:
-   virtual ControlUI* CreateControl(const TCHAR* pstrClass) = 0;
+   virtual ControlUI* CreateControl(const char* pstrClass) = 0;
 };
 
 class UILIB_API DialogBuilder
 {
 public:
-   ControlUI* Create(const TCHAR* xml, IDialogBuilderCallback* pCallback = NULL);
+   ControlUI* Create(const char* xml, IDialogBuilderCallback* pCallback = NULL);
    ControlUI* CreateFromResource(UINT nRes, IDialogBuilderCallback* pCallback = NULL);
 
 private:

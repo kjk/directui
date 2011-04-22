@@ -14,7 +14,7 @@ public:
    const TCHAR* GetClass() const;
 
    bool CreateControl(const CLSID clsid);
-   bool CreateControl(const TCHAR* pstrCLSID);
+   bool CreateControl(const char* pstrCLSID);
    HRESULT GetControl(const IID iid, LPVOID* ppRet);
 
    void SetWidth(int cx);
@@ -24,7 +24,7 @@ public:
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
 
-   void SetAttribute(const TCHAR* name, const TCHAR* value);
+   void SetAttribute(const char* name, const char* value);
 
    LRESULT MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, bool& bHandled);
 

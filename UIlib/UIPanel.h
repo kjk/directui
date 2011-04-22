@@ -76,7 +76,7 @@ public:
 
    void SetPos(RECT rc);
    void DoPaint(HDC hDC, const RECT& rcPaint);
-   void SetAttribute(const TCHAR* name, const TCHAR* value);
+   void SetAttribute(const char* name, const char* value);
 
 protected:
    int m_iconIdx;
@@ -95,7 +95,7 @@ public:
 
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
-   void SetAttribute(const TCHAR* name, const TCHAR* value);
+   void SetAttribute(const char* name, const char* value);
 
 protected:
    SIZE m_cxyFixed;
@@ -109,13 +109,13 @@ public:
 
    const TCHAR* GetClass() const;
 
-   bool SetImage(const TCHAR* pstrImage);
+   bool SetImage(const char* pstrImage);
    void SetWidth(int cx);
    void SetHeight(int cy);
 
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
-   void SetAttribute(const TCHAR* name, const TCHAR* value);
+   void SetAttribute(const char* name, const char* value);
 
 protected:
    HBITMAP m_hBitmap;
@@ -139,7 +139,7 @@ public:
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
 
-   void SetAttribute(const TCHAR* name, const TCHAR* value);
+   void SetAttribute(const char* name, const char* value);
 
 protected:
    int m_nLinks;
@@ -160,7 +160,7 @@ public:
 
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);  
-   void SetAttribute(const TCHAR* name, const TCHAR* value);
+   void SetAttribute(const char* name, const char* value);
 
 protected:
    UITYPE_COLOR m_BackColor;

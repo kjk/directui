@@ -20,7 +20,7 @@ public:
 
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
-   void SetAttribute(const TCHAR* name, const TCHAR* value);
+   void SetAttribute(const char* name, const char* value);
 
 protected:
    int m_cxWidth;
@@ -48,7 +48,7 @@ public:
 
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
-   void SetAttribute(const TCHAR* name, const TCHAR* value);
+   void SetAttribute(const char* name, const char* value);
 
 protected:
    bool m_bSelected;

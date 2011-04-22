@@ -297,9 +297,9 @@ void SearchTitlePanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
    HorizontalLayoutUI::DoPaint(hDC, rcPaint);
 }
 
-void SearchTitlePanelUI::SetAttribute(const TCHAR* name, const TCHAR* value)
+void SearchTitlePanelUI::SetAttribute(const char* name, const char* value)
 {
-   if (_tcscmp(name, _T("image")) == 0)  SetImage(_ttoi(value));
+   if (str::Eq(name, "image"))  SetImage(atoi(value));
    else HorizontalLayoutUI::SetAttribute(name, value);
 }
 
@@ -327,10 +327,10 @@ void PaddingPanelUI::SetHeight(int cyHeight)
    UpdateLayout();
 }
 
-void PaddingPanelUI::SetAttribute(const TCHAR* name, const TCHAR* value)
+void PaddingPanelUI::SetAttribute(const char* name, const char* value)
 {
-   if (_tcscmp(name, _T("width")) == 0)  SetWidth(_ttoi(value));
-   else if (_tcscmp(name, _T("height")) == 0)  SetHeight(_ttoi(value));
+   if (str::Eq(name, "width"))  SetWidth(atoi(value));
+   else if (str::Eq(name, "height"))  SetHeight(atoi(value));
    else ControlUI::SetAttribute(name, value);
 }
 
@@ -359,10 +359,10 @@ ImagePanelUI::~ImagePanelUI()
    if (m_hBitmap != NULL)  ::DeleteObject(m_hBitmap);
 }
 
-bool ImagePanelUI::SetImage(const TCHAR* pstrBitmap)
+bool ImagePanelUI::SetImage(const char* pstrBitmap)
 {
    if (m_hBitmap != NULL)  ::DeleteObject(m_hBitmap);
-   m_hBitmap = (HBITMAP) ::LoadImage(m_manager->GetResourceInstance(), pstrBitmap, IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION);
+   m_hBitmap = (HBITMAP) ::LoadImageA(m_manager->GetResourceInstance(), pstrBitmap, IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION);
    ASSERT(m_hBitmap);
    if (m_hBitmap == NULL)  return false;
    BITMAP bm = { 0 };
@@ -384,11 +384,11 @@ void ImagePanelUI::SetHeight(int cyHeight)
    UpdateLayout();
 }
 
-void ImagePanelUI::SetAttribute(const TCHAR* name, const TCHAR* value)
+void ImagePanelUI::SetAttribute(const char* name, const char* value)
 {
-   if (_tcscmp(name, _T("width")) == 0)  SetWidth(_ttoi(value));
-   else if (_tcscmp(name, _T("height")) == 0)  SetHeight(_ttoi(value));
-   else if (_tcscmp(name, _T("image")) == 0)  SetImage(value);
+   if (str::Eq(name, "width"))  SetWidth(atoi(value));
+   else if (str::Eq(name, "height"))  SetHeight(atoi(value));
+   else if (str::Eq(name, "image"))  SetImage(value);
    else ControlUI::SetAttribute(name, value);
 }
 
@@ -476,10 +476,10 @@ void TextPanelUI::Event(TEventUI& event)
    LabelPanelUI::Event(event);
 }
 
-void TextPanelUI::SetAttribute(const TCHAR* name, const TCHAR* value)
+void TextPanelUI::SetAttribute(const char* name, const char* value)
 {
-   if (_tcscmp(name, _T("textColor")) == 0)  SetTextColor((UITYPE_COLOR)_ttoi(value));
-   else if (_tcscmp(name, _T("backColor")) == 0)  SetBkColor((UITYPE_COLOR)_ttoi(value));
+   if (str::Eq(name, "textColor"))  SetTextColor((UITYPE_COLOR)atoi(value));
+   else if (str::Eq(name, "backColor"))  SetBkColor((UITYPE_COLOR)atoi(value));
    else LabelPanelUI::SetAttribute(name, value);
 }
 
@@ -522,11 +522,11 @@ void WarningPanelUI::SetWarningType(UINT uType)
    }
 }
 
-void WarningPanelUI::SetAttribute(const TCHAR* name, const TCHAR* value)
+void WarningPanelUI::SetAttribute(const char* name, const char* value)
 {
-   if (_tcscmp(name, _T("type")) == 0)  {
-      if (_tcscmp(value, _T("error")) == 0)  SetWarningType(MB_ICONERROR);
-      if (_tcscmp(value, _T("warning")) == 0)  SetWarningType(MB_ICONWARNING);
+   if (str::Eq(name, "type"))  {
+      if (str::Eq(value, "error"))  SetWarningType(MB_ICONERROR);
+      if (str::Eq(value, "warning"))  SetWarningType(MB_ICONWARNING);
    }
    else TextPanelUI::SetAttribute(name, value);
 }

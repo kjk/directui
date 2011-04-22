@@ -22,7 +22,7 @@ public:
    void SetPos(RECT rc);
    void DoPaint(HDC hDC, const RECT& rcPaint);
 
-   void SetAttribute(const TCHAR* name, const TCHAR* value);
+   void SetAttribute(const char* name, const char* value);
 
 protected:
    int m_curSel;

@@ -881,11 +881,11 @@ void ActiveXUI::DoPaint(HDC hDC, const RECT& /*rcPaint*/)
    }
 }
 
-void ActiveXUI::SetAttribute(const TCHAR* name, const TCHAR* value)
+void ActiveXUI::SetAttribute(const char* name, const char* value)
 {
-   if (_tcscmp(name, _T("clsid")) == 0)  CreateControl(value);
-   else if (_tcscmp(name, _T("width")) == 0)  SetWidth(_ttoi(value));
-   else if (_tcscmp(name, _T("height")) == 0)  SetHeight(_ttoi(value));
+   if (str::Eq(name, "clsid"))  CreateControl(value);
+   else if (str::Eq(name, "width"))  SetWidth(atoi(value));
+   else if (str::Eq(name, "height"))  SetHeight(atoi(value));
    else ControlUI::SetAttribute(name, value);
 }
 
@@ -944,10 +944,12 @@ void ActiveXUI::SetHeight(int cy)
    m_szFixed.cy = cy;
 }
 
-bool ActiveXUI::CreateControl(const TCHAR* pstrCLSID)
+bool ActiveXUI::CreateControl(const char* pstrCLSID)
 {
    CLSID clsid = { 0 };
    OLECHAR szCLSID[100] = { 0 };
+   ASSERT(0);
+#if 0 // TODO: impolement for unicode
 #ifndef _UNICODE
    ::MultiByteToWideChar(::GetACP(), 0, pstrCLSID, -1, szCLSID, dimof(szCLSID) - 1);
 #else
@@ -955,6 +957,7 @@ bool ActiveXUI::CreateControl(const TCHAR* pstrCLSID)
 #endif
    if (pstrCLSID[0] == '{')  ::CLSIDFromString(szCLSID, &clsid);
    else ::CLSIDFromProgID(szCLSID, &clsid);
+#endif
    return CreateControl(clsid);
 }
 

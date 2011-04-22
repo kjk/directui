@@ -53,7 +53,7 @@ const TCHAR* StartPageWnd::GetWindowClassName() const
    return _T("UIStart"); 
 }
 
-const TCHAR* StartPageWnd::GetDialogResource() const 
+const char* StartPageWnd::GetDialogResource() const 
 { 
    return "<Dialog>"
       "<HorizontalLayout>"
@@ -115,7 +115,7 @@ const TCHAR* ConfigurePageWnd::GetWindowClassName() const
    return _T("UIConfigure"); 
 }
 
-const TCHAR* ConfigurePageWnd::GetDialogResource() const 
+const char* ConfigurePageWnd::GetDialogResource() const 
 { 
    return "<Dialog>"
       "<HorizontalLayout>"
@@ -184,7 +184,7 @@ const TCHAR* RegistersPageWnd::GetWindowClassName() const
    return _T("UIRegisters"); 
 }
 
-const TCHAR* RegistersPageWnd::GetDialogResource() const 
+const char* RegistersPageWnd::GetDialogResource() const 
 { 
    return "<Dialog>"
       "<HorizontalLayout>"
@@ -261,7 +261,7 @@ const TCHAR* SystemsPageWnd::GetWindowClassName() const
    return _T("UISystems"); 
 }
 
-const TCHAR* SystemsPageWnd::GetDialogResource() const 
+const char* SystemsPageWnd::GetDialogResource() const 
 { 
    return "<Dialog>"
       "<HorizontalLayout>"
@@ -357,8 +357,8 @@ void SystemsPageWnd::OnExpandItem(ControlUI* ctrl)
    pText->SetText(sText);
    item->Add(pText);
    // Add quickly...
-   item->Add((new TextPanelUI())->ApplyAttributeList(_T("text=\"<b>Navn:</b> Anders And\"")));
-   item->Add((new TextPanelUI())->ApplyAttributeList(_T("text=\"<b>Tidspunkt:</b> <i 3>Juleaften\"")));
+   item->Add((new TextPanelUI())->ApplyAttributeList("text=\"<b>Navn:</b> Anders And\""));
+   item->Add((new TextPanelUI())->ApplyAttributeList("text=\"<b>Tidspunkt:</b> <i 3>Juleaften\""));
 }
 
 const TCHAR* ReportsPageWnd::GetWindowClassName() const 
@@ -366,7 +366,7 @@ const TCHAR* ReportsPageWnd::GetWindowClassName() const
    return _T("UIReports"); 
 }
 
-const TCHAR* ReportsPageWnd::GetDialogResource() const 
+const char* ReportsPageWnd::GetDialogResource() const 
 { 
    return "<Dialog>"
       "<HorizontalLayout>"
@@ -431,7 +431,7 @@ void SearchPageWnd::Notify(TNotifyUI& msg)
    StandardPageWnd::Notify(msg);
 }
 
-const TCHAR* SearchPageWnd::GetDialogResource() const 
+const char* SearchPageWnd::GetDialogResource() const 
 { 
    return "<Dialog caption=\"Search Page\" >"
       "<VerticalLayout>"
@@ -493,7 +493,7 @@ void EditPageWnd::Notify(TNotifyUI& msg)
    StandardPageWnd::Notify(msg);
 }
 
-const TCHAR* EditPageWnd::GetDialogResource() const 
+const char* EditPageWnd::GetDialogResource() const 
 { 
    return "<Dialog caption=\"Rediger Person\" >"
       "<VerticalLayout>"
@@ -593,7 +593,7 @@ void PopupWnd::Notify(TNotifyUI& msg)
    StandardPageWnd::Notify(msg);
 }
 
-const TCHAR* PopupWnd::GetDialogResource() const 
+const char* PopupWnd::GetDialogResource() const 
 { 
    return "<Dialog>"
       "<VerticalLayout>"

@@ -43,7 +43,7 @@ public:
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
 
-   void SetAttribute(const TCHAR* name, const TCHAR* value);
+   void SetAttribute(const char* name, const char* value);
 
    void SetManager(PaintManagerUI* manager, ControlUI* parent);
    ControlUI* FindControl(FINDCONTROLPROC Proc, void* data, UINT uFlags);
@@ -77,11 +77,11 @@ public:
    const TCHAR* GetClass() const;
 
    bool SetWatermark(UINT iBitmapRes, int iOrientation = HTBOTTOMRIGHT);
-   bool SetWatermark(const TCHAR* pstrBitmap, int iOrientation = HTBOTTOMRIGHT);
+   bool SetWatermark(const char* pstrBitmap, int iOrientation = HTBOTTOMRIGHT);
 
    void DoPaint(HDC hDC, const RECT& rcPaint);
 
-   void SetAttribute(const TCHAR* name, const TCHAR* value);
+   void SetAttribute(const char* name, const char* value);
 
 protected:
    COLORREF m_clrBack;

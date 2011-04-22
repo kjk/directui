@@ -1382,6 +1382,15 @@ void ControlUI::SetText(const TCHAR* txt)
    Invalidate();
 }
 
+#ifdef UNICODE
+void ControlUI::SetText(const char* txt)
+{
+   ASSERT(0);
+   // TODO: write me
+   Invalidate();
+}
+#endif
+
 UINT_PTR ControlUI::GetTag() const
 {
    return m_pTag;
@@ -1396,6 +1405,14 @@ void ControlUI::SetToolTip(const TCHAR* txt)
 {
    m_sToolTip = txt;
 }
+
+#ifdef UNICODE
+void ControlUI::SetToolTip(const char* txt)
+{
+   ASSERT(0);
+   // TODO: write me
+}
+#endif
 
 StdString ControlUI::GetToolTip() const
 {
@@ -1428,6 +1445,14 @@ void ControlUI::SetName(const TCHAR* name)
 {
    m_sName = name;
 }
+
+#ifdef UNICODE
+void ControlUI::SetName(const char* name)
+{
+   ASSERT(0);
+   // TODO: write me
+}
+#endif
 
 void* ControlUI::GetInterface(const TCHAR* name)
 {
@@ -1498,27 +1523,30 @@ void ControlUI::Notify(TNotifyUI& /*msg*/)
 {
 }
 
-void ControlUI::SetAttribute(const TCHAR* name, const TCHAR* value)
+void ControlUI::SetAttribute(const char* name, const char* value)
 {
-   if (_tcscmp(name, _T("pos")) == 0)  {
+   if (str::Eq(name, "pos"))  {
       RECT rcPos = { 0 };
-      TCHAR* pstr = NULL;
-      rcPos.left = _tcstol(value, &pstr, 10);  ASSERT(pstr);    
-      rcPos.top = _tcstol(pstr + 1, &pstr, 10);    ASSERT(pstr);    
-      rcPos.right = _tcstol(pstr + 1, &pstr, 10);  ASSERT(pstr);    
-      rcPos.bottom = _tcstol(pstr + 1, &pstr, 10); ASSERT(pstr);    
+      char* pstr = NULL;
+      rcPos.left = strtol(value, &pstr, 10);  ASSERT(pstr);    
+      rcPos.top = strtol(pstr + 1, &pstr, 10);    ASSERT(pstr);    
+      rcPos.right = strtol(pstr + 1, &pstr, 10);  ASSERT(pstr);    
+      rcPos.bottom = strtol(pstr + 1, &pstr, 10); ASSERT(pstr);    
       SetPos(rcPos);
    }
-   else if (_tcscmp(name, _T("name")) == 0)  SetName(value);
-   else if (_tcscmp(name, _T("text")) == 0)  SetText(value);
-   else if (_tcscmp(name, _T("tooltip")) == 0)  SetToolTip(value);
-   else if (_tcscmp(name, _T("enabled")) == 0)  SetEnabled(_tcscmp(value, _T("true")) == 0);
-   else if (_tcscmp(name, _T("visible")) == 0)  SetVisible(_tcscmp(value, _T("true")) == 0);
-   else if (_tcscmp(name, _T("shortcut")) == 0)  SetShortcut(value[0]);
+   else if (str::Eq(name, "name"))  SetName(value);
+   else if (str::Eq(name, "text"))  SetText(value);
+   else if (str::Eq(name, "tooltip"))  SetToolTip(value);
+   else if (str::Eq(name, "enabled"))  SetEnabled(str::Eq(value, "true"));
+   else if (str::Eq(name, "visible"))  SetVisible(str::Eq(value, "true"));
+   else if (str::Eq(name, "shortcut"))  SetShortcut(value[0]);
 }
 
-ControlUI* ControlUI::ApplyAttributeList(const TCHAR* pstrList)
+ControlUI* ControlUI::ApplyAttributeList(const char* pstrList)
 {
+   ASSERT(0);
+   // TODO: write me
+#if 0
    StdString sItem;
    StdString sValue;
    while (*pstrList != '\0')  {
@@ -1535,5 +1563,6 @@ ControlUI* ControlUI::ApplyAttributeList(const TCHAR* pstrList)
       SetAttribute(sItem, sValue);
       if (*pstrList++ != ',')  return this;
    }
+#endif
    return this;
 }

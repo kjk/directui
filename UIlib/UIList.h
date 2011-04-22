@@ -81,7 +81,7 @@ public:
    bool Activate();
 
    void Event(TEventUI& event);
-   void SetAttribute(const TCHAR* name, const TCHAR* value);
+   void SetAttribute(const char* name, const char* value);
 
 protected:
    int m_idx;
@@ -117,7 +117,7 @@ public:
    void DoPaint(HDC hDC, const RECT& rcPaint);
 
    void SetWidth(int cxWidth);
-   void SetAttribute(const TCHAR* name, const TCHAR* value);
+   void SetAttribute(const char* name, const char* value);
 
    RECT GetThumbRect(RECT rc) const;
 
@@ -172,7 +172,7 @@ public:
 
    void SetPos(RECT rc);
    void Event(TEventUI& event);
-   void SetAttribute(const TCHAR* name, const TCHAR* value);
+   void SetAttribute(const char* name, const char* value);
 
    IListCallbackUI* GetTextCallback() const;
    void SetTextCallback(IListCallbackUI* pCallback);
@@ -203,7 +203,7 @@ public:
 
    void DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle);
 
-   void SetAttribute(const TCHAR* name, const TCHAR* value);
+   void SetAttribute(const char* name, const char* value);
 
 protected:
    int m_cxWidth;

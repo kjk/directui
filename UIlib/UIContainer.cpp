@@ -249,13 +249,14 @@ SIZE ContainerUI::EstimateSize(SIZE /*szAvailable*/)
    return m_cxyFixed;
 }
 
-void ContainerUI::SetAttribute(const TCHAR* name, const TCHAR* value)
+void ContainerUI::SetAttribute(const char* name, const char* value)
 {
-   if (_tcscmp(name, _T("inset")) == 0)  SetInset(CSize(_ttoi(value), _ttoi(value)));
-   else if (_tcscmp(name, _T("padding")) == 0)  SetPadding(_ttoi(value));
-   else if (_tcscmp(name, _T("width")) == 0)  SetWidth(_ttoi(value));
-   else if (_tcscmp(name, _T("height")) == 0)  SetHeight(_ttoi(value));
-   else if (_tcscmp(name, _T("scrollbar")) == 0)  EnableScrollBar(_tcscmp(value, _T("true")) == 0);
+   if (str::Eq(name, "inset"))  SetInset(CSize(atoi(value), atoi(value)));
+   else if (str::Eq(name, "padding"))  SetPadding(atoi(value));
+   else if (str::Eq(name, "width"))  SetWidth(atoi(value));
+   else if (str::Eq(name, "height"))  SetHeight(atoi(value));
+   else if (str::Eq(name, "scrollbar"))
+      EnableScrollBar(str::Eq(value, "true"));
    else ControlUI::SetAttribute(name, value);
 }
 
@@ -350,13 +351,13 @@ const TCHAR* CanvasUI::GetClass() const
 
 bool CanvasUI::SetWatermark(UINT iBitmapRes, int iOrientation)
 {
-   return SetWatermark(MAKEINTRESOURCE(iBitmapRes), iOrientation);
+   return SetWatermark(MAKEINTRESOURCEA(iBitmapRes), iOrientation);
 }
 
-bool CanvasUI::SetWatermark(const TCHAR* pstrBitmap, int iOrientation)
+bool CanvasUI::SetWatermark(const char* pstrBitmap, int iOrientation)
 {
    if (m_hBitmap != NULL)  ::DeleteObject(m_hBitmap);
-   m_hBitmap = (HBITMAP) ::LoadImage(m_manager->GetResourceInstance(), pstrBitmap, IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION);
+   m_hBitmap = (HBITMAP) ::LoadImageA(m_manager->GetResourceInstance(), pstrBitmap, IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION);
    ASSERT(m_hBitmap!=NULL);
    if (m_hBitmap == NULL)  return false;
    ::GetObject(m_hBitmap, sizeof(BITMAP), &m_BitmapInfo);
@@ -396,9 +397,9 @@ void CanvasUI::DoPaint(HDC hDC, const RECT& rcPaint)
    ContainerUI::DoPaint(hDC, rcPaint);
 }
 
-void CanvasUI::SetAttribute(const TCHAR* name, const TCHAR* value)
+void CanvasUI::SetAttribute(const char* name, const char* value)
 {
-   if (_tcscmp(name, _T("watermark")) == 0)  SetWatermark(value);
+   if (str::Eq(name, "watermark"))  SetWatermark(value);
    else ContainerUI::SetAttribute(name, value);
 }
 

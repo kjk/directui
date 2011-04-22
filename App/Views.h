@@ -11,7 +11,7 @@ public:
    virtual void Init();
    virtual void OnPrepareAnimation();
    virtual void Notify(TNotifyUI& msg);
-   virtual const TCHAR* GetDialogResource() const = 0;
+   virtual const char* GetDialogResource() const = 0;
 
 public:
    PaintManagerUI m_pm;
@@ -21,7 +21,7 @@ class StartPageWnd : public StandardPageWnd
 {
 public:
    const TCHAR* GetWindowClassName() const;
-   const TCHAR* GetDialogResource() const;
+   const char* GetDialogResource() const;
    void OnPrepareAnimation();
    void Init();
 };
@@ -30,7 +30,7 @@ class ConfigurePageWnd : public StandardPageWnd
 {
 public:
    const TCHAR* GetWindowClassName() const;
-   const TCHAR* GetDialogResource() const;
+   const char* GetDialogResource() const;
    void OnPrepareAnimation();
 };
 
@@ -38,7 +38,7 @@ class RegistersPageWnd : public StandardPageWnd, public IListCallbackUI
 {
 public:
    const TCHAR* GetWindowClassName() const;
-   const TCHAR* GetDialogResource() const;
+   const char* GetDialogResource() const;
    void OnPrepareAnimation();
    // IListCallbackUI
    const TCHAR* GetItemText(ControlUI* ctrl, int idx, int iSubItem);
@@ -49,7 +49,7 @@ class ReportsPageWnd : public StandardPageWnd
 {
 public:
    const TCHAR* GetWindowClassName() const;
-   const TCHAR* GetDialogResource() const;
+   const char* GetDialogResource() const;
    void OnPrepareAnimation();
 };
 
@@ -57,7 +57,7 @@ class SystemsPageWnd : public StandardPageWnd, public IListCallbackUI
 {
 public:
    const TCHAR* GetWindowClassName() const;
-   const TCHAR* GetDialogResource() const;
+   const char* GetDialogResource() const;
    void Notify(TNotifyUI& msg);
    void OnPrepareAnimation();
    void OnExpandItem(ControlUI* ctrl);
@@ -70,7 +70,7 @@ class SearchPageWnd : public StandardPageWnd
 {
 public:
    const TCHAR* GetWindowClassName() const;
-   const TCHAR* GetDialogResource() const;
+   const char* GetDialogResource() const;
    void Notify(TNotifyUI& msg);
    void Init();
 };
@@ -79,7 +79,7 @@ class EditPageWnd : public StandardPageWnd
 {
 public:
    const TCHAR* GetWindowClassName() const;
-   const TCHAR* GetDialogResource() const;
+   const char* GetDialogResource() const;
    void Notify(TNotifyUI& msg);
    void OnPrepareAnimation();
    void Init();
@@ -90,7 +90,7 @@ class PopupWnd : public StandardPageWnd
 public:
    UINT GetClassStyle() const;
    const TCHAR* GetWindowClassName() const;
-   const TCHAR* GetDialogResource() const;
+   const char* GetDialogResource() const;
    void Notify(TNotifyUI& msg);
    void Init();
 };

@@ -372,17 +372,26 @@ public:
 
 public:
    virtual StdString GetName() const;
+#ifdef UNICODE
    virtual void SetName(const TCHAR* name);
+#endif
+   virtual void SetName(const char* name);
    virtual void* GetInterface(const TCHAR* name);
 
    virtual bool Activate();
    virtual ControlUI* GetParent() const;
 
    virtual StdString GetText() const;
+#ifdef UNICODE
    virtual void SetText(const TCHAR* txt);
+#endif
+   virtual void SetText(const char* txt);
 
    virtual StdString GetToolTip() const;
+#ifdef UNICODE
    virtual void SetToolTip(const TCHAR* txt);
+#endif
+   virtual void SetToolTip(const char* txt);
 
    virtual TCHAR GetShortcut() const;
    virtual void SetShortcut(TCHAR ch);
@@ -414,8 +423,8 @@ public:
    virtual void Event(TEventUI& event);
    virtual void Notify(TNotifyUI& msg);
 
-   virtual void SetAttribute(const TCHAR* name, const TCHAR* value);
-   ControlUI* ApplyAttributeList(const TCHAR* pstrList);
+   virtual void SetAttribute(const char* name, const char* value);
+   ControlUI* ApplyAttributeList(const char* pstrList);
 
    virtual const TCHAR* GetClass() const = 0;
    virtual SIZE EstimateSize(SIZE szAvailable) = 0;

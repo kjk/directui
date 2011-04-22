@@ -8,17 +8,17 @@ class UILIB_API MarkupParser
 {
 friend MarkupNode;
 public:
-   MarkupParser(const TCHAR* xml = NULL);
+   MarkupParser(const char* xml = NULL);
    ~MarkupParser();
 
-   bool Load(const TCHAR* xml);
+   bool Load(const char* xml);
    bool LoadFromFile(const TCHAR* fileName);
    void Release();
    bool IsValid() const;
 
    void SetPreserveWhitespace(bool bPreserve = true);
-   void GetLastErrorMessage(TCHAR* msg, SIZE_T cchMax) const;
-   void GetLastErrorLocation(TCHAR* pstrSource, SIZE_T cchMax) const;
+   void GetLastErrorMessage(char* msg, SIZE_T cchMax) const;
+   void GetLastErrorLocation(char* pstrSource, SIZE_T cchMax) const;
 
    MarkupNode GetRoot();
 
@@ -32,26 +32,26 @@ private:
       ULONG iData;
    } XMLELEMENT;
    
-   TCHAR* m_xml;
-   XMLELEMENT* m_elements;
-   ULONG m_nElements;
-   ULONG m_nReservedElements;
-   TCHAR m_errorMsg[100];
-   TCHAR m_errorXml[50];
-   bool m_bPreserveWhitespace;
+   char*        m_xml;
+   XMLELEMENT*  m_elements;
+   ULONG        m_nElements;
+   ULONG        m_nReservedElements;
+   char         m_errorMsg[100];
+   char         m_errorXml[50];
+   bool         m_bPreserveWhitespace;
 
 private:
    bool _Parse();
-   bool _Parse(TCHAR*& txt, ULONG iParent);
+   bool _Parse(char*& txt, ULONG iParent);
    XMLELEMENT* _ReserveElement();
-   inline void _SkipWhitespace(TCHAR*& pstr) const;
-   inline void _SkipWhitespace(const TCHAR*& pstr) const;
-   inline void _SkipIdentifier(TCHAR*& pstr) const;
-   inline void _SkipIdentifier(const TCHAR*& pstr) const;
-   bool _ParseData(TCHAR*& txt, TCHAR*& pstrData, TCHAR cEnd);
-   void _ParseMetaChar(TCHAR*& txt, TCHAR*& pstrDest);
-   bool _ParseAttributes(TCHAR*& txt);
-   bool _Failed(const TCHAR* pstrError, const TCHAR* pstrLocation = NULL);
+   inline void _SkipWhitespace(char*& s) const;
+   inline void _SkipWhitespace(const char*& s) const;
+   inline void _SkipIdentifier(char*& s) const;
+   inline void _SkipIdentifier(const char*& s) const;
+   bool _ParseData(char*& txt, char*& pstrData, char cEnd);
+   void _ParseMetaChar(char*& txt, char*& pstrDest);
+   bool _ParseAttributes(char*& txt);
+   bool _Failed(const char* pstrError, const char* pstrLocation = NULL);
 };
 
 class UILIB_API MarkupNode
@@ -67,21 +67,21 @@ public:
    MarkupNode GetParent();
    MarkupNode GetSibling();
    MarkupNode GetChild();
-   MarkupNode GetChild(const TCHAR* name);
+   MarkupNode GetChild(const char* name);
 
    bool HasSiblings() const;
    bool HasChildren() const;
-   const TCHAR* GetName() const;
-   const TCHAR* GetValue() const;
+   const char* GetName() const;
+   const char* GetValue() const;
 
    bool HasAttributes();
-   bool HasAttribute(const TCHAR* name);
+   bool HasAttribute(const char* name);
    int GetAttributeCount();
-   const TCHAR* GetAttributeName(int idx);
-   const TCHAR* GetAttributeValue(int idx);
-   const TCHAR* GetAttributeValue(const TCHAR* name);
-   bool GetAttributeValue(int idx, TCHAR* value, SIZE_T cchMax);
-   bool GetAttributeValue(const TCHAR* name, TCHAR* value, SIZE_T cchMax);
+   const char* GetAttributeName(int idx);
+   const char* GetAttributeValue(int idx);
+   const char* GetAttributeValue(const char* name);
+   bool GetAttributeValue(int idx, char* value, SIZE_T cchMax);
+   bool GetAttributeValue(const char* name, char* value, SIZE_T cchMax);
 
 private:
    void _MapAttributes();

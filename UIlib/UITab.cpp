@@ -128,9 +128,9 @@ void TabFolderUI::DoPaint(HDC hDC, const RECT& rcPaint)
    if (m_curPage != NULL)  m_curPage->DoPaint(hDC, rcPaint);
 }
 
-void TabFolderUI::SetAttribute(const TCHAR* name, const TCHAR* value)
+void TabFolderUI::SetAttribute(const char* name, const char* value)
 {
-   if (_tcscmp(name, _T("select")) == 0)  SelectItem(_ttoi(value));
+   if (str::Eq(name, "select"))  SelectItem(atoi(value));
    else ContainerUI::SetAttribute(name, value);
 }
 

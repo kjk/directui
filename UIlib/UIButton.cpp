@@ -77,12 +77,12 @@ void ButtonUI::SetWidth(int cxWidth)
    UpdateLayout();
 }
 
-void ButtonUI::SetAttribute(const TCHAR* name, const TCHAR* value)
+void ButtonUI::SetAttribute(const char* name, const char* value)
 {
-   if (_tcscmp(name, _T("width")) == 0)  SetWidth(_ttoi(value));
-   else if (_tcscmp(name, _T("align")) == 0)  {
-      if (_tcsstr(value, _T("center")) != NULL)  m_uTextStyle |= DT_CENTER;
-      if (_tcsstr(value, _T("right")) != NULL)  m_uTextStyle |= DT_RIGHT;
+   if (str::Eq(name, "width"))  SetWidth(atoi(value));
+   else if (str::Eq(name, "align"))  {
+      if (str::Find(value, "center") != NULL)  m_uTextStyle |= DT_CENTER;
+      if (str::Find(value, "right") != NULL)  m_uTextStyle |= DT_RIGHT;
    }
    else ControlUI::SetAttribute(name, value);
 }
@@ -185,12 +185,13 @@ void OptionUI::SetWidth(int cxWidth)
    UpdateLayout();
 }
 
-void OptionUI::SetAttribute(const TCHAR* name, const TCHAR* value)
+void OptionUI::SetAttribute(const char* name, const char* value)
 {
-   if (_tcscmp(name, _T("width")) == 0)  SetWidth(_ttoi(value));
-   else if (_tcscmp(name, _T("selected")) == 0)  SetCheck(_tcscmp(value, _T("true")) == 0);
-   else if (_tcscmp(name, _T("align")) == 0)  {
-      if (_tcsstr(value, _T("right")) != NULL)  m_uStyle |= DT_RIGHT;
+   if (str::Eq(name, "width"))  SetWidth(atoi(value));
+   else if (str::Eq(name, "selected"))
+      SetCheck(str::Eq(value, "true"));
+   else if (str::Eq(name, "align"))  {
+      if (str::Find(value, "right") != NULL)  m_uStyle |= DT_RIGHT;
    }
    else ControlUI::SetAttribute(name, value);
 }
