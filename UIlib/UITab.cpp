@@ -3,7 +3,7 @@
 #include "UITab.h"
 
 
-CTabFolderUI::CTabFolderUI() : m_curSel(-1), m_pCurPage(NULL), m_aTabAreas(sizeof(RECT))
+CTabFolderUI::CTabFolderUI() : m_curSel(-1), m_curPage(NULL), m_tabAreas(sizeof(RECT))
 {
    m_chShortcut = VK_NEXT;
 }
@@ -35,15 +35,15 @@ bool CTabFolderUI::SelectItem(int idx)
    if (idx < 0 || idx >= m_items.GetSize())  return false;
    if (idx == m_curSel)  return true;
    // Assign page to internal pointers
-   if (m_pCurPage != NULL)  m_pCurPage->SetVisible(false);
+   if (m_curPage != NULL)  m_curPage->SetVisible(false);
    m_curSel = idx;
-   m_pCurPage = static_cast<CControlUI*>(m_items[idx]);
+   m_curPage = static_cast<CControlUI*>(m_items[idx]);
    if (m_manager != NULL)  m_manager->SendNotify(this, _T("itemselect"));
-   m_pCurPage->SetVisible(true);
+   m_curPage->SetVisible(true);
    // Need to re-think the layout
    if (m_manager != NULL)  m_manager->UpdateLayout();
    // Set focus on page
-   m_pCurPage->SetFocus();
+   m_curPage->SetFocus();
    if (m_manager != NULL)  m_manager->SetNextTabControl();
    return true;
 }
@@ -52,8 +52,8 @@ void CTabFolderUI::Event(TEventUI& event)
 {
    if (event.Type == UIEVENT_BUTTONDOWN && IsEnabled()) 
    {
-      for (int i = 0; i < m_items.GetSize() && i < m_aTabAreas.GetSize(); i++)  {
-         if (::PtInRect( static_cast<LPRECT>(m_aTabAreas[i]), event.ptMouse))  {
+      for (int i = 0; i < m_items.GetSize() && i < m_tabAreas.GetSize(); i++)  {
+         if (::PtInRect( static_cast<LPRECT>(m_tabAreas[i]), event.ptMouse))  {
             SelectItem(i);
             return;
          }
@@ -81,7 +81,7 @@ void CTabFolderUI::SetPos(RECT rc)
    ::SetRect(&m_rcClient, rc.left + m_rcInset.left, rc.top + m_rcInset.top + cyFont + 8, rc.right - m_rcInset.right, rc.bottom - m_rcInset.bottom);
    m_rcPage = m_rcClient;
    ::InflateRect(&m_rcPage, -8, -8);
-   if (m_pCurPage != NULL)  m_pCurPage->SetPos(m_rcPage);
+   if (m_curPage != NULL)  m_curPage->SetPos(m_rcPage);
 }
 
 void CTabFolderUI::DoPaint(HDC hDC, const RECT& rcPaint)
@@ -108,24 +108,24 @@ void CTabFolderUI::DoPaint(HDC hDC, const RECT& rcPaint)
       if (::IntersectRect(&rcTemp, &rcPaint, &rcTabs))  
       {
          int posX = 1;
-         m_aTabAreas.Empty();
+         m_tabAreas.Empty();
          for (int i = 0; i < GetCount(); i++)  
          {
-            const CControlUI* pPage = GetItem(i);
-            const CStdString& strText = pPage->GetText();
+            const CControlUI* page = GetItem(i);
+            const CStdString& txt = page->GetText();
             RECT rcTab = { rcTabs.left + posX, rcTabs.top, rcTabs.right, m_rcClient.top };
             UINT uState = 0;
             if (IsFocused())  uState |= UISTATE_FOCUSED;
             if (!IsEnabled())  uState |= UISTATE_DISABLED;
             if (m_curSel == i)  uState = UISTATE_PUSHED;
-            CBlueRenderEngineUI::DoPaintTabFolder(hDC, m_manager, rcTab, strText, uState);
+            CBlueRenderEngineUI::DoPaintTabFolder(hDC, m_manager, rcTab, txt, uState);
             posX += (rcTab.right - rcTab.left) + 2;
-            m_aTabAreas.Add(&rcTab);
+            m_tabAreas.Add(&rcTab);
          }
       }
    }
 
-   if (m_pCurPage != NULL)  m_pCurPage->DoPaint(hDC, rcPaint);
+   if (m_curPage != NULL)  m_curPage->DoPaint(hDC, rcPaint);
 }
 
 void CTabFolderUI::SetAttribute(const TCHAR* name, const TCHAR* value)
@@ -133,7 +133,6 @@ void CTabFolderUI::SetAttribute(const TCHAR* name, const TCHAR* value)
    if (_tcscmp(name, _T("select")) == 0)  SelectItem(_ttoi(value));
    else CContainerUI::SetAttribute(name, value);
 }
-
 
 CTabPageUI::CTabPageUI()
 {
@@ -148,7 +147,7 @@ const TCHAR* CTabPageUI::GetClass() const
 bool CTabPageUI::Activate()
 {
    if (!CContainerUI::Activate())  return false;
-   CControlUI* pParent = GetParent();
-   if (pParent == NULL || pParent->GetInterface(_T("ListOwner")) == NULL)  return false;
-   return static_cast<IListOwnerUI*>(pParent->GetInterface(_T("ListOwner")))->SelectItem(0 /*m_idx*/);
+   CControlUI* parent = GetParent();
+   if (parent == NULL || parent->GetInterface(_T("ListOwner")) == NULL)  return false;
+   return static_cast<IListOwnerUI*>(parent->GetInterface(_T("ListOwner")))->SelectItem(0 /*m_idx*/);
 }

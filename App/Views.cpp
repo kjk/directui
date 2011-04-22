@@ -26,9 +26,9 @@ LRESULT CStandardPageWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
    if (uMsg == WM_CREATE)  {     
       m_pm.Init(m_hWnd);
       CDialogBuilder builder;
-      CControlUI* pRoot = builder.Create(GetDialogResource());
-      ASSERT(pRoot && "Failed to parse XML");
-      m_pm.AttachDialog(pRoot);
+      CControlUI* root = builder.Create(GetDialogResource());
+      ASSERT(root && "Failed to parse XML");
+      m_pm.AttachDialog(root);
       m_pm.AddNotifier(this);
       Init();
       return 0;

@@ -32,7 +32,7 @@ static UINT MapKeyState()
 
 typedef struct tagFINDTABINFO
 {
-   CControlUI* pFocus;
+   CControlUI* focus;
    CControlUI* pLast;
    bool bForward;
    bool bNextIsIt;
@@ -78,8 +78,8 @@ CPaintManagerUI::CPaintManagerUI() :
    m_hbmpOffscreen(NULL),
    m_hwndTooltip(NULL),
    m_uTimerID(0x1000),
-   m_pRoot(NULL),
-   m_pFocus(NULL),
+   m_root(NULL),
+   m_focus(NULL),
    m_pEventHover(NULL),
    m_pEventClick(NULL),
    m_pEventKey(NULL),
@@ -226,7 +226,7 @@ CPaintManagerUI::~CPaintManagerUI()
    // Delete the control-tree structures
    int i;
    for (i = 0; i < m_aDelayedCleanup.GetSize(); i++)  delete static_cast<CControlUI*>(m_aDelayedCleanup[i]);
-   delete m_pRoot;
+   delete m_root;
    // Release other collections
    for (i = 0; i < m_aTimers.GetSize(); i++)  delete static_cast<TIMERINFO*>(m_aTimers[i]);
    // Reset other parts...
@@ -314,8 +314,8 @@ bool CPaintManagerUI::PreMessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam,
          // will be activated on keypress.
          if (wParam == VK_RETURN)  {
             CControlUI* ctrl = FindControl(_T("ok"));
-            if (ctrl != NULL && m_pFocus != ctrl)  {
-               if (m_pFocus == NULL || (m_pFocus->GetControlFlags() & UIFLAG_WANTRETURN) == 0)  {
+            if (ctrl != NULL && m_focus != ctrl)  {
+               if (m_focus == NULL || (m_focus->GetControlFlags() & UIFLAG_WANTRETURN) == 0)  {
                   ctrl->Activate();
                   return true;
                }
@@ -335,7 +335,7 @@ bool CPaintManagerUI::PreMessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam,
          // Handle ALT-shortcut key-combinations
          FINDSHORTCUT fs = { 0 };
          fs.ch = toupper(wParam);
-         CControlUI* ctrl = m_pRoot->FindControl(__FindControlFromShortcut, &fs, UIFIND_VISIBLE | UIFIND_ENABLED | UIFIND_ME_FIRST);
+         CControlUI* ctrl = m_root->FindControl(__FindControlFromShortcut, &fs, UIFIND_VISIBLE | UIFIND_ENABLED | UIFIND_ME_FIRST);
          if (ctrl != NULL)  {
             ctrl->SetFocus();
             ctrl->Activate();
@@ -350,14 +350,14 @@ bool CPaintManagerUI::PreMessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam,
             m_SystemConfig.bShowKeyboardCues = true;
             ::InvalidateRect(m_hWndPaint, NULL, FALSE);
          }
-         if (m_pFocus != NULL)  {
+         if (m_focus != NULL)  {
             TEventUI event = { 0 };
             event.Type = UIEVENT_SYSKEY;
             event.chKey = wParam;
             event.ptMouse = m_ptLastMousePos;
             event.wKeyState = MapKeyState();
             event.dwTimestamp = ::GetTickCount();
-            m_pFocus->Event(event);
+            m_focus->Event(event);
          }
       }
       break;
@@ -441,7 +441,7 @@ bool CPaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LR
             ::GetClientRect(m_hWndPaint, &rcClient);
             if (!::IsRectEmpty(&rcClient))  {
                HDC hDC = ::CreateCompatibleDC(m_hDcPaint);
-               m_pRoot->SetPos(rcClient);
+               m_root->SetPos(rcClient);
                ::DeleteDC(hDC);
                m_bResizeNeeded = false;
                // We'll want to notify the window when it is first initialized
@@ -449,7 +449,7 @@ bool CPaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LR
                // to submit swipes/animations.
                if (m_bFirstLayout)  {
                   m_bFirstLayout = false;
-                  SendNotify(m_pRoot, _T("windowinit"));
+                  SendNotify(m_root, _T("windowinit"));
                }
             }
             // Reset offscreen device
@@ -508,7 +508,7 @@ bool CPaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LR
                HBITMAP hOldBitmap = (HBITMAP) ::SelectObject(m_hDcOffscreen, m_hbmpOffscreen);
                // Paint the image on the offscreen bitmap
                int iSaveDC = ::SaveDC(m_hDcOffscreen);
-               m_pRoot->DoPaint(m_hDcOffscreen, ps.rcPaint);
+               m_root->DoPaint(m_hDcOffscreen, ps.rcPaint);
                ::RestoreDC(m_hDcOffscreen, iSaveDC);
                // Draw alpha bitmaps on top?
                for (int i = 0; i < m_aPostPaint.GetSize(); i++)  {
@@ -532,7 +532,7 @@ bool CPaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LR
             {
                // A standard paint job
                int iSaveDC = ::SaveDC(ps.hdc);
-               m_pRoot->DoPaint(ps.hdc, ps.rcPaint);
+               m_root->DoPaint(ps.hdc, ps.rcPaint);
                ::RestoreDC(ps.hdc, iSaveDC);
             }
             // All Done!
@@ -549,7 +549,7 @@ bool CPaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LR
          ::GetClientRect(m_hWndPaint, &rcClient);
          HDC hDC = (HDC) wParam;
          int save = ::SaveDC(hDC);
-         m_pRoot->DoPaint(hDC, rcClient);
+         m_root->DoPaint(hDC, rcClient);
          // Check for traversing children. The crux is that WM_PRINT will assume
          // that the DC is positioned at frame coordinates and will paint the child
          // control at the wrong position. We'll simulate the entire thing instead.
@@ -579,11 +579,11 @@ bool CPaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LR
       break;
    case WM_SIZE:
       {
-         if (m_pFocus != NULL)  {
+         if (m_focus != NULL)  {
             TEventUI event = { 0 };
             event.Type = UIEVENT_WINDOWSIZE;
             event.dwTimestamp = ::GetTickCount();
-            m_pFocus->Event(event);
+            m_focus->Event(event);
          }
          if (m_anim.IsAnimating())  m_anim.CancelJobs();
          m_bResizeNeeded = true;
@@ -755,27 +755,27 @@ bool CPaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LR
       break;
    case WM_CHAR:
       {
-         if (m_pFocus == NULL)  break;
+         if (m_focus == NULL)  break;
          TEventUI event = { 0 };
          event.Type = UIEVENT_CHAR;
          event.chKey = wParam;
          event.ptMouse = m_ptLastMousePos;
          event.wKeyState = MapKeyState();
          event.dwTimestamp = ::GetTickCount();
-         m_pFocus->Event(event);
+         m_focus->Event(event);
       }
       break;
    case WM_KEYDOWN:
       {
-         if (m_pFocus == NULL)  break;
+         if (m_focus == NULL)  break;
          TEventUI event = { 0 };
          event.Type = UIEVENT_KEYDOWN;
          event.chKey = wParam;
          event.ptMouse = m_ptLastMousePos;
          event.wKeyState = MapKeyState();
          event.dwTimestamp = ::GetTickCount();
-         m_pFocus->Event(event);
-         m_pEventKey = m_pFocus;
+         m_focus->Event(event);
+         m_pEventKey = m_focus;
       }
       break;
    case WM_KEYUP:
@@ -864,7 +864,7 @@ bool CPaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LR
       break;
    default:
       // Handle WM_MOUSEWHEEL
-      if ((uMsg == m_uMsgMouseWheel || uMsg == 0x020A) && m_pFocus != NULL) 
+      if ((uMsg == m_uMsgMouseWheel || uMsg == 0x020A) && m_focus != NULL) 
       {
          int zDelta = (int) (short) HIWORD(wParam);
          TEventUI event = { 0 };
@@ -872,10 +872,10 @@ bool CPaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LR
          event.wParam = MAKELPARAM(zDelta < 0 ? SB_LINEDOWN : SB_LINEUP, 0);
          event.lParam = lParam;
          event.dwTimestamp = ::GetTickCount();
-         m_pFocus->Event(event);
+         m_focus->Event(event);
          // Simulate regular scrolling by sending scroll events
          event.Type = UIEVENT_VSCROLL;
-         for (int i = 0; i < abs(zDelta); i += 40)  m_pFocus->Event(event);
+         for (int i = 0; i < abs(zDelta); i += 40)  m_focus->Event(event);
          // Let's make sure that the scroll item below the cursor is the same as before...
          ::SendMessage(m_hWndPaint, WM_MOUSEMOVE, 0, (LPARAM) MAKELPARAM(m_ptLastMousePos.x, m_ptLastMousePos.y));
       }
@@ -907,12 +907,12 @@ bool CPaintManagerUI::AttachDialog(CControlUI* ctrl)
    // Remove the existing control-tree. We might have gotten inside this function as
    // a result of an event fired or similar, so we cannot just delete the objects and
    // pull the internal memory of the calling code. We'll delay the cleanup.
-   if (m_pRoot != NULL)  {
-      m_aDelayedCleanup.Add(m_pRoot);
+   if (m_root != NULL)  {
+      m_aDelayedCleanup.Add(m_root);
       ::PostMessage(m_hWndPaint, WM_APP + 1, 0, 0L);
    }
    // Set the dialog root element
-   m_pRoot = ctrl;
+   m_root = ctrl;
    // Go ahead...
    m_bResizeNeeded = true;
    m_bFirstLayout = true;
@@ -921,11 +921,11 @@ bool CPaintManagerUI::AttachDialog(CControlUI* ctrl)
    return InitControls(ctrl);
 }
 
-bool CPaintManagerUI::InitControls(CControlUI* ctrl, CControlUI* pParent /*= NULL*/)
+bool CPaintManagerUI::InitControls(CControlUI* ctrl, CControlUI* parent /*= NULL*/)
 {
    ASSERT(ctrl);
    if (ctrl == NULL)  return false;
-   ctrl->SetManager(this, pParent != NULL ? pParent : ctrl->GetParent());
+   ctrl->SetManager(this, parent != NULL ? parent : ctrl->GetParent());
    // We're usually initializing the control after adding some more of them to the tree,
    // and thus this would be a good time to request the name-map rebuilt.
    m_aNameHash.Empty();
@@ -952,7 +952,7 @@ void CPaintManagerUI::MessageLoop()
    }
 }
 
-bool CPaintManagerUI::TranslateMessage(const LPMSG pMsg)
+bool CPaintManagerUI::TranslateMessage(const MSG* pMsg)
 {
    // Pretranslate Message takes care of system-wide messages, such as
    // tabbing and shortcut key-combos. We'll look for all messages for
@@ -986,7 +986,7 @@ bool CPaintManagerUI::AddPostPaintBlit(const TPostPaintUI& job)
 
 CControlUI* CPaintManagerUI::GetFocus() const
 {
-   return m_pFocus;
+   return m_focus;
 }
 
 void CPaintManagerUI::SetFocus(CControlUI* ctrl)
@@ -994,17 +994,17 @@ void CPaintManagerUI::SetFocus(CControlUI* ctrl)
    // Paint manager window has focus?
    if (::GetFocus() != m_hWndPaint)  ::SetFocus(m_hWndPaint);
    // Already has focus?
-   if (ctrl == m_pFocus)  return;
+   if (ctrl == m_focus)  return;
    // Remove focus from old control
-   if (m_pFocus != NULL)  
+   if (m_focus != NULL)  
    {
       TEventUI event = { 0 };
       event.Type = UIEVENT_KILLFOCUS;
       event.pSender = ctrl;
       event.dwTimestamp = ::GetTickCount();
-      m_pFocus->Event(event);
-      SendNotify(m_pFocus, _T("killfocus"));
-      m_pFocus = NULL;
+      m_focus->Event(event);
+      SendNotify(m_focus, _T("killfocus"));
+      m_focus = NULL;
    }
    // Set focus to new control
    if (ctrl != NULL 
@@ -1012,13 +1012,13 @@ void CPaintManagerUI::SetFocus(CControlUI* ctrl)
        && ctrl->IsVisible() 
        && ctrl->IsEnabled())  
    {
-      m_pFocus = ctrl;
+      m_focus = ctrl;
       TEventUI event = { 0 };
       event.Type = UIEVENT_SETFOCUS;
       event.pSender = ctrl;
       event.dwTimestamp = ::GetTickCount();
-      m_pFocus->Event(event);
-      SendNotify(m_pFocus, _T("setfocus"));
+      m_focus->Event(event);
+      SendNotify(m_focus, _T("setfocus"));
    }
 }
 
@@ -1065,16 +1065,16 @@ bool CPaintManagerUI::SetNextTabControl(bool bForward)
    }
    // Find next/previous tabbable control
    FINDTABINFO info1 = { 0 };
-   info1.pFocus = m_pFocus;
+   info1.focus = m_focus;
    info1.bForward = bForward;
-   CControlUI* ctrl = m_pRoot->FindControl(__FindControlFromTab, &info1, UIFIND_VISIBLE | UIFIND_ENABLED | UIFIND_ME_FIRST);
+   CControlUI* ctrl = m_root->FindControl(__FindControlFromTab, &info1, UIFIND_VISIBLE | UIFIND_ENABLED | UIFIND_ME_FIRST);
    if (ctrl == NULL)  {  
       if (bForward)  {
          // Wrap around
          FINDTABINFO info2 = { 0 };
-         info2.pFocus = bForward ? NULL : info1.pLast;
+         info2.focus = bForward ? NULL : info1.pLast;
          info2.bForward = bForward;
-         ctrl = m_pRoot->FindControl(__FindControlFromTab, &info2, UIFIND_VISIBLE | UIFIND_ENABLED | UIFIND_ME_FIRST);
+         ctrl = m_root->FindControl(__FindControlFromTab, &info2, UIFIND_VISIBLE | UIFIND_ENABLED | UIFIND_ME_FIRST);
       }
       else {
          ctrl = info1.pLast;
@@ -1116,16 +1116,16 @@ bool CPaintManagerUI::RemoveNotifier(INotifyUI* pNotifier)
    return false;
 }
 
-bool CPaintManagerUI::AddMessageFilter(IMessageFilterUI* pFilter)
+bool CPaintManagerUI::AddMessageFilter(IMessageFilterUI* filter)
 {
-   ASSERT(m_aMessageFilters.Find(pFilter)<0);
-   return m_aMessageFilters.Add(pFilter);
+   ASSERT(m_aMessageFilters.Find(filter)<0);
+   return m_aMessageFilters.Add(filter);
 }
 
-bool CPaintManagerUI::RemoveMessageFilter(IMessageFilterUI* pFilter)
+bool CPaintManagerUI::RemoveMessageFilter(IMessageFilterUI* filter)
 {
    for (int i = 0; i < m_aMessageFilters.GetSize(); i++)  {
-      if (static_cast<IMessageFilterUI*>(m_aMessageFilters[i]) == pFilter)  {
+      if (static_cast<IMessageFilterUI*>(m_aMessageFilters[i]) == filter)  {
          return m_aMessageFilters.Remove(i);
       }
    }
@@ -1218,13 +1218,13 @@ bool CPaintManagerUI::GetThemeColorPair(UITYPE_COLOR Index, COLORREF& clr1, COLO
 
 CControlUI* CPaintManagerUI::FindControl(const TCHAR* name)
 {
-   ASSERT(m_pRoot);
+   ASSERT(m_root);
    // First time here? Build hash array...
    if (m_aNameHash.GetSize() == 0)  {
       int nCount = 0;
-      m_pRoot->FindControl(__FindControlFromCount, &nCount, UIFIND_ALL);
+      m_root->FindControl(__FindControlFromCount, &nCount, UIFIND_ALL);
       m_aNameHash.Resize(nCount + (nCount / 10));
-      m_pRoot->FindControl(__FindControlFromNameHash, this, UIFIND_ALL);
+      m_root->FindControl(__FindControlFromNameHash, this, UIFIND_ALL);
    }
    // Find name in the hash array
    int nCount = 0;
@@ -1240,8 +1240,8 @@ CControlUI* CPaintManagerUI::FindControl(const TCHAR* name)
 
 CControlUI* CPaintManagerUI::FindControl(POINT pt) const
 {
-   ASSERT(m_pRoot);
-   return m_pRoot->FindControl(__FindControlFromPoint, &pt, UIFIND_VISIBLE | UIFIND_HITTEST);
+   ASSERT(m_root);
+   return m_root->FindControl(__FindControlFromPoint, &pt, UIFIND_VISIBLE | UIFIND_HITTEST);
 }
 
 CControlUI* CALLBACK CPaintManagerUI::__FindControlFromCount(CControlUI* /*pThis*/, void* data)
@@ -1254,14 +1254,14 @@ CControlUI* CALLBACK CPaintManagerUI::__FindControlFromCount(CControlUI* /*pThis
 CControlUI* CALLBACK CPaintManagerUI::__FindControlFromTab(CControlUI* pThis, void* data)
 {
    FINDTABINFO* pInfo = static_cast<FINDTABINFO*>(data);
-   if (pInfo->pFocus == pThis)  {
+   if (pInfo->focus == pThis)  {
       if (pInfo->bForward)  pInfo->bNextIsIt = true;
       return pInfo->bForward ? NULL : pInfo->pLast;
    }
    if ((pThis->GetControlFlags() & UIFLAG_TABSTOP) == 0)  return NULL;
    pInfo->pLast = pThis;
    if (pInfo->bNextIsIt)  return pThis;
-   if (pInfo->pFocus == NULL)  return pThis;
+   if (pInfo->focus == NULL)  return pThis;
    return NULL;  // Examine all controls
 }
 
@@ -1299,7 +1299,7 @@ CControlUI* CALLBACK CPaintManagerUI::__FindControlFromPoint(CControlUI* pThis, 
 
 CControlUI::CControlUI() : 
    m_manager(NULL), 
-   m_pParent(NULL), 
+   m_parent(NULL), 
    m_pTag(NULL),
    m_chShortcut('\0'),
    m_bVisible(true), 
@@ -1356,7 +1356,7 @@ bool CControlUI::Activate()
 
 CControlUI* CControlUI::GetParent() const
 {
-   return m_pParent;
+   return m_parent;
 }
 
 void CControlUI::SetFocus()
@@ -1414,11 +1414,11 @@ CPaintManagerUI* CControlUI::GetManager() const
    return m_manager;
 }
 
-void CControlUI::SetManager(CPaintManagerUI* manager, CControlUI* pParent)
+void CControlUI::SetManager(CPaintManagerUI* manager, CControlUI* parent)
 {
    bool bInit = m_manager == NULL;
    m_manager = manager;
-   m_pParent = pParent;
+   m_parent = parent;
    if (bInit)  Init();
 }
 
@@ -1494,7 +1494,7 @@ void CControlUI::Event(TEventUI& event)
       m_manager->SendNotify(this, _T("timer"), event.wParam, event.lParam);
       return;
    }
-   if (m_pParent != NULL)  m_pParent->Event(event);
+   if (m_parent != NULL)  m_parent->Event(event);
 }
 
 void CControlUI::Notify(TNotifyUI& /*msg*/)

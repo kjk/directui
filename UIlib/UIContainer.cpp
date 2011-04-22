@@ -259,12 +259,12 @@ void CContainerUI::SetAttribute(const TCHAR* name, const TCHAR* value)
    else CControlUI::SetAttribute(name, value);
 }
 
-void CContainerUI::SetManager(CPaintManagerUI* manager, CControlUI* pParent)
+void CContainerUI::SetManager(CPaintManagerUI* manager, CControlUI* parent)
 {
    for (int it = 0; it < m_items.GetSize(); it++)  {
       static_cast<CControlUI*>(m_items[it])->SetManager(manager, this);
    }
-   CControlUI::SetManager(manager, pParent);
+   CControlUI::SetManager(manager, parent);
 }
 
 CControlUI* CContainerUI::FindControl(FINDCONTROLPROC Proc, void* data, UINT uFlags)

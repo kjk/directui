@@ -286,7 +286,7 @@ public:
    bool GetThemeColorPair(UITYPE_COLOR Index, COLORREF& clr1, COLORREF& clr2) const;
 
    bool AttachDialog(CControlUI* ctrl);
-   bool InitControls(CControlUI* ctrl, CControlUI* pParent = NULL);
+   bool InitControls(CControlUI* ctrl, CControlUI* parent = NULL);
    void ReapObjects(CControlUI* ctrl);
 
    CControlUI* GetFocus() const;
@@ -302,8 +302,8 @@ public:
    void SendNotify(TNotifyUI& Msg);
    void SendNotify(CControlUI* ctrl, const TCHAR* msg, WPARAM wParam = 0, LPARAM lParam = 0);
 
-   bool AddMessageFilter(IMessageFilterUI* pFilter);
-   bool RemoveMessageFilter(IMessageFilterUI* pFilter);
+   bool AddMessageFilter(IMessageFilterUI* filter);
+   bool RemoveMessageFilter(IMessageFilterUI* filter);
 
    bool AddAnimJob(const CAnimJobUI& job);
    bool AddPostPaintBlit(const TPostPaintUI& job);
@@ -312,7 +312,7 @@ public:
    CControlUI* FindControl(const TCHAR* name);
 
    static void MessageLoop();
-   static bool TranslateMessage(const LPMSG pMsg);
+   static bool TranslateMessage(const MSG* pMsg);
 
    bool MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT& lRes);
    bool PreMessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT& lRes);
@@ -336,8 +336,8 @@ private:
    HWND m_hwndTooltip;
    TOOLINFO m_ToolTip;
    //
-   CControlUI* m_pRoot;
-   CControlUI* m_pFocus;
+   CControlUI* m_root;
+   CControlUI* m_focus;
    CControlUI* m_pEventHover;
    CControlUI* m_pEventClick;
    CControlUI* m_pEventKey;
@@ -407,7 +407,7 @@ public:
    virtual CControlUI* FindControl(FINDCONTROLPROC Proc, void* data, UINT uFlags);
 
    virtual CPaintManagerUI* GetManager() const;
-   virtual void SetManager(CPaintManagerUI* manager, CControlUI* pParent);
+   virtual void SetManager(CPaintManagerUI* manager, CControlUI* parent);
 
    virtual RECT GetPos() const;
    virtual void SetPos(RECT rc);
@@ -429,7 +429,7 @@ public:
 
 protected:
    CPaintManagerUI* m_manager;
-   CControlUI* m_pParent;
+   CControlUI* m_parent;
    TCHAR m_chShortcut;
    CStdString m_sName;
    CStdString m_txt;

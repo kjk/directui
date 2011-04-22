@@ -33,15 +33,15 @@ bool CNavigatorPanelUI::SelectItem(int idx)
    if (idx == m_curSel)  return true;
    if (m_curSel >= 0)  {
       CControlUI* ctrl = GetItem(m_curSel);
-      IListItemUI* pListItem = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
-      if (pListItem != NULL)  pListItem->Select(false);
+      IListItemUI* listItem = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
+      if (listItem != NULL)  listItem->Select(false);
    }
    m_curSel = idx;
    if (m_curSel >= 0)  {
       CControlUI* ctrl = GetItem(m_curSel);
-      IListItemUI* pListItem = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
-      if (pListItem == NULL)  return false;
-      pListItem->Select(true);
+      IListItemUI* listItem = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
+      if (listItem == NULL)  return false;
+      listItem->Select(true);
       if (m_manager != NULL)  m_manager->SendNotify(ctrl, _T("itemclick"));
    }
    if (m_manager != NULL)  m_manager->SendNotify(this, _T("itemselect"));
@@ -51,10 +51,10 @@ bool CNavigatorPanelUI::SelectItem(int idx)
 
 bool CNavigatorPanelUI::Add(CControlUI* ctrl)
 {
-   IListItemUI* pListItem = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
-   if (pListItem != NULL)  {
-      pListItem->SetOwner(this);
-      pListItem->SetIndex(m_items.GetSize());
+   IListItemUI* listItem = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
+   if (listItem != NULL)  {
+      listItem->SetOwner(this);
+      listItem->SetIndex(m_items.GetSize());
    }
    return CContainerUI::Add(ctrl);
 }

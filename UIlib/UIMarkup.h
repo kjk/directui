@@ -15,7 +15,7 @@ public:
    ~CMarkup();
 
    bool Load(const TCHAR* xml);
-   bool LoadFromFile(const TCHAR* pstrFilename);
+   bool LoadFromFile(const TCHAR* fileName);
    void Release();
    bool IsValid() const;
 
@@ -36,11 +36,11 @@ private:
    } XMLELEMENT;
    
    TCHAR* m_xml;
-   XMLELEMENT* m_pElements;
+   XMLELEMENT* m_elements;
    ULONG m_nElements;
    ULONG m_nReservedElements;
-   TCHAR m_szErrorMsg[100];
-   TCHAR m_szErrorXML[50];
+   TCHAR m_errorMsg[100];
+   TCHAR m_errorXml[50];
    bool m_bPreserveWhitespace;
 
 private:

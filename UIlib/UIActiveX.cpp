@@ -143,7 +143,7 @@ public:
    {
       return S_OK;
    }
-   STDMETHOD(TranslateAccelerator)(LPMSG /*lpMsg*/, WORD /*wID*/)
+   STDMETHOD(TranslateAccelerator)(MSG* /*lpMsg*/, WORD /*wID*/)
    {
       return S_FALSE;
    }

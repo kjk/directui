@@ -197,7 +197,7 @@ void CListHeaderItemUI::Event(TEventUI& event)
             m_rcItem = rc;
             m_cxWidth = rc.right - rc.left;
             ptLastMouse = event.ptMouse;
-            m_pParent->Invalidate();
+            m_parent->Invalidate();
          }
       }
    }
@@ -327,10 +327,10 @@ bool CListUI::Add(CControlUI* ctrl)
    if (_tcsstr(ctrl->GetClass(), _T("Header")) != NULL)  return m_pHeader->Add(ctrl);
    if (_tcsstr(ctrl->GetClass(), _T("Footer")) != NULL)  return m_pFooter->Add(ctrl);
    // The list items should know about us
-   IListItemUI* pListItem = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
-   if (pListItem != NULL)  {
-      pListItem->SetOwner(this);
-      pListItem->SetIndex(GetCount());
+   IListItemUI* listItem = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
+   if (listItem != NULL)  {
+      listItem->SetOwner(this);
+      listItem->SetIndex(GetCount());
    }
    return m_pList->Add(ctrl);
 }
@@ -465,8 +465,8 @@ bool CListUI::SelectItem(int idx)
    if (m_curSel >= 0)  {
       CControlUI* ctrl = GetItem(m_curSel);
       if (ctrl != NULL)  {
-         IListItemUI* pListItem = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
-         if (pListItem != NULL)  pListItem->Select(false);
+         IListItemUI* listItem = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
+         if (listItem != NULL)  listItem->Select(false);
       }
    }
    // Now figure out if the control can be selected
@@ -475,10 +475,10 @@ bool CListUI::SelectItem(int idx)
    if (ctrl == NULL)  return false;
    if (!ctrl->IsVisible())  return false;
    if (!ctrl->IsEnabled())  return false;
-   IListItemUI* pListItem = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
-   if (pListItem == NULL)  return false;
+   IListItemUI* listItem = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
+   if (listItem == NULL)  return false;
    m_curSel = idx;
-   if (!pListItem->Select(true))  {
+   if (!listItem->Select(true))  {
       m_curSel = -1;
       return false;
    }
@@ -921,10 +921,10 @@ void CListExpandElementUI::DoPaint(HDC hDC, const RECT& rcPaint)
    }
 }
 
-void CListExpandElementUI::SetManager(CPaintManagerUI* manager, CControlUI* pParent)
+void CListExpandElementUI::SetManager(CPaintManagerUI* manager, CControlUI* parent)
 {
-   if (m_pContainer != NULL)  m_pContainer->SetManager(manager, pParent);
-   CListTextElementUI::SetManager(manager, pParent);
+   if (m_pContainer != NULL)  m_pContainer->SetManager(manager, parent);
+   CListTextElementUI::SetManager(manager, parent);
 }
 
 CControlUI* CListExpandElementUI::FindControl(FINDCONTROLPROC Proc, void* data, UINT uFlags)

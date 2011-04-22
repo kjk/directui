@@ -253,8 +253,8 @@ bool CDropDownUI::SelectItem(int idx)
    if (idx == m_curSel)  return true;
    if (m_curSel >= 0)  {
       CControlUI* ctrl = static_cast<CControlUI*>(m_items[m_curSel]);
-      IListItemUI* pListItem = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
-      if (pListItem != NULL)  pListItem->Select(false);
+      IListItemUI* listItem = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
+      if (listItem != NULL)  listItem->Select(false);
       m_curSel = -1;
    }
    if (m_items.GetSize() == 0)  return false;
@@ -263,11 +263,11 @@ bool CDropDownUI::SelectItem(int idx)
    CControlUI* ctrl = static_cast<CControlUI*>(m_items[idx]);
    if (!ctrl->IsVisible())  return false;
    if (!ctrl->IsEnabled())  return false;
-   IListItemUI* pListItem = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
-   if (pListItem == NULL)  return false;
+   IListItemUI* listItem = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
+   if (listItem == NULL)  return false;
    m_curSel = idx;
    ctrl->SetFocus();
-   pListItem->Select(true);
+   listItem->Select(true);
    if (m_manager != NULL)  m_manager->SendNotify(ctrl, _T("itemclick"));
    if (m_manager != NULL)  m_manager->SendNotify(this, _T("itemselect"));
    Invalidate();
@@ -276,10 +276,10 @@ bool CDropDownUI::SelectItem(int idx)
 
 bool CDropDownUI::Add(CControlUI* ctrl)
 {
-   IListItemUI* pListItem = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
-   if (pListItem != NULL)  {
-      pListItem->SetOwner(this);
-      pListItem->SetIndex(m_items.GetSize());
+   IListItemUI* listItem = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
+   if (listItem != NULL)  {
+      listItem->SetOwner(this);
+      listItem->SetIndex(m_items.GetSize());
    }
    return CContainerUI::Add(ctrl);
 }

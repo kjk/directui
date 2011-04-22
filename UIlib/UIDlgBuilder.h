@@ -18,7 +18,7 @@ public:
    CControlUI* CreateFromResource(UINT nRes, IDialogBuilderCallback* pCallback = NULL);
 
 private:
-   CControlUI* _Parse(CMarkupNode* parent, CControlUI* pParent = NULL);
+   CControlUI* _Parse(CMarkupNode* root, CControlUI* parent = NULL);
 
    CMarkup m_xml;
    IDialogBuilderCallback* m_pCallback;

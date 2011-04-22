@@ -32,10 +32,9 @@ protected:
    int m_curSel;
    RECT m_rcPage;
    RECT m_rcClient;
-   CControlUI* m_pCurPage;
-   CStdValArray m_aTabAreas;
+   CControlUI* m_curPage;
+   CStdValArray m_tabAreas;
 };
-
 
 class UILIB_API CTabPageUI : public CContainerUI
 {
@@ -45,8 +44,6 @@ public:
 
    bool Activate();
 };
-
-
 
 #endif // !defined(AFX_UITAB_H__20060218_95D6_2F8B_4F7A_0080AD509054__INCLUDED_)
 

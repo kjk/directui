@@ -29,12 +29,12 @@ CControlUI* CDialogBuilder::CreateFromResource(UINT nRes, IDialogBuilderCallback
    return Create(sXML, pCallback);
 }
 
-CControlUI* CDialogBuilder::_Parse(CMarkupNode* pRoot, CControlUI* pParent)
+CControlUI* CDialogBuilder::_Parse(CMarkupNode* root, CControlUI* parent)
 {
    CDialogLayoutUI* pStretched = NULL;
    IContainerUI* pContainer = NULL;
    CControlUI* pReturn = NULL;
-   for (CMarkupNode node = pRoot->GetChild() ; node.IsValid(); node = node.GetSibling())  {
+   for (CMarkupNode node = root->GetChild() ; node.IsValid(); node = node.GetSibling())  {
       const TCHAR* pstrClass = node.GetName();
       SIZE_T cchLen = _tcslen(pstrClass);
       CControlUI* ctrl = NULL;
@@ -123,8 +123,8 @@ CControlUI* CDialogBuilder::_Parse(CMarkupNode* pRoot, CControlUI* pParent)
          _Parse(&node, ctrl);
       }
       // Attach to parent
-      if (pParent != NULL)  {
-         if (pContainer == NULL)  pContainer = static_cast<IContainerUI*>(pParent->GetInterface(_T("Container")));
+      if (parent != NULL)  {
+         if (pContainer == NULL)  pContainer = static_cast<IContainerUI*>(parent->GetInterface(_T("Container")));
          ASSERT(pContainer);
          if (pContainer == NULL)  return NULL;
          pContainer->Add(ctrl);
@@ -140,7 +140,7 @@ CControlUI* CDialogBuilder::_Parse(CMarkupNode* pRoot, CControlUI* pParent)
          }
          // Very custom attributes
          if (node.GetAttributeValue(_T("stretch"), szValue, cchLen))  {
-            if (pStretched == NULL)  pStretched = static_cast<CDialogLayoutUI*>(pParent->GetInterface(_T("DialogLayout")));
+            if (pStretched == NULL)  pStretched = static_cast<CDialogLayoutUI*>(parent->GetInterface(_T("DialogLayout")));
             ASSERT(pStretched);
             if (pStretched == NULL)  return NULL;
             UINT uMode = 0;
