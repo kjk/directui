@@ -1,10 +1,6 @@
 #if !defined(AFX_UIEDIT_H__20060218_14AE_7A41_09A2_0080AD509054__INCLUDED_)
 #define AFX_UIEDIT_H__20060218_14AE_7A41_09A2_0080AD509054__INCLUDED_
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-
 class SingleLineEditWnd;
 
 class UILIB_API SingleLineEditUI : public ControlUI

@@ -1,10 +1,6 @@
 #if !defined(AFX_UILIST_H__20060218_929F_BDFF_55AA_0080AD509054__INCLUDED_)
 #define AFX_UILIST_H__20060218_929F_BDFF_55AA_0080AD509054__INCLUDED_
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-
 class ListHeaderUI;
 class ListFooterUI;
 

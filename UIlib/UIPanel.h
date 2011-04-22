@@ -1,12 +1,7 @@
 #if !defined(AFX_UIPANEL_H__20060218_451A_298B_7A16_0080AD509054__INCLUDED_)
 #define AFX_UIPANEL_H__20060218_451A_298B_7A16_0080AD509054__INCLUDED_
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-
 #include "UILabel.h"
-
 
 class UILIB_API TaskPanelUI : public VerticalLayoutUI
 {
@@ -87,7 +82,6 @@ protected:
    int m_iconIdx;
 };
 
-
 class UILIB_API PaddingPanelUI : public ControlUI
 {
 public:
@@ -155,7 +149,6 @@ protected:
    UITYPE_COLOR m_BackColor;
 };
 
-
 class UILIB_API WarningPanelUI : public TextPanelUI
 {
 public:
@@ -172,7 +165,6 @@ public:
 protected:
    UITYPE_COLOR m_BackColor;
 };
-
 
 #endif // !defined(AFX_UIPANEL_H__20060218_451A_298B_7A16_0080AD509054__INCLUDED_)
 

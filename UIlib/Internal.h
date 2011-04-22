@@ -1,10 +1,6 @@
 #if !defined(AFX_INTERNAL_H__20060218_C01D_1618_FBA5_0080AD509054__INCLUDED_)
 #define AFX_INTERNAL_H__20060218_C01D_1618_FBA5_0080AD509054__INCLUDED_
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-
 #include <d3d9.h>
 #include <math.h>
 

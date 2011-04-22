@@ -1,10 +1,6 @@
 #if !defined(AFX_UITOOL_H__20060218_57EB_12A7_9A10_0080AD509054__INCLUDED_)
 #define AFX_UITOOL_H__20060218_57EB_12A7_9A10_0080AD509054__INCLUDED_
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-
 #include "UIButton.h"
 
 class UILIB_API ToolbarUI : public HorizontalLayoutUI

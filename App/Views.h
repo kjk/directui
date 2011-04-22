@@ -1,10 +1,6 @@
 #if !defined(AFX_VIEWS_H__20050510_6D37_02C3_39BC_0080AD509054__INCLUDED_)
 #define AFX_VIEWS_H__20050510_6D37_02C3_39BC_0080AD509054__INCLUDED_
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-
 class StandardPageWnd : public WindowWnd, public INotifyUI
 {
 public:
@@ -98,7 +94,6 @@ public:
    void Notify(TNotifyUI& msg);
    void Init();
 };
-
 
 #endif // !defined(AFX_VIEWS_H__20050510_6D37_02C3_39BC_0080AD509054__INCLUDED_)
 

@@ -1,10 +1,6 @@
 #if !defined(AFX_UILABEL_H__20060218_34CC_2871_036E_0080AD509054__INCLUDED_)
 #define AFX_UILABEL_H__20060218_34CC_2871_036E_0080AD509054__INCLUDED_
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-
 class UILIB_API LabelPanelUI : public ControlUI
 {
 public:

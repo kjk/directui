@@ -1,11 +1,8 @@
 #if !defined(AFX_MARKUP_H__20050505_6983_3DDF_F867_0080AD509054__INCLUDED_)
 #define AFX_MARKUP_H__20050505_6983_3DDF_F867_0080AD509054__INCLUDED_
 
-#pragma once
-
 class MarkupParser;
 class MarkupNode;
-
 
 class UILIB_API MarkupParser
 {
@@ -56,7 +53,6 @@ private:
    bool _ParseAttributes(TCHAR*& txt);
    bool _Failed(const TCHAR* pstrError, const TCHAR* pstrLocation = NULL);
 };
-
 
 class UILIB_API MarkupNode
 {

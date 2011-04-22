@@ -1,11 +1,6 @@
 #if !defined(AFX_UIBUTTON_H__20060218_72F5_1B46_6300_0080AD509054__INCLUDED_)
 #define AFX_UIBUTTON_H__20060218_72F5_1B46_6300_0080AD509054__INCLUDED_
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-
-
 class UILIB_API ButtonUI : public ControlUI
 {
 public:

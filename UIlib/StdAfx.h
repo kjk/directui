@@ -6,12 +6,9 @@
 #if !defined(AFX_STDAFX_H__E30B2003_188B_4EB4_AB99_3F3734D6CE6C__INCLUDED_)
 #define AFX_STDAFX_H__E30B2003_188B_4EB4_AB99_3F3734D6CE6C__INCLUDED_
 
-#pragma once
-
 #define _CRT_SECURE_NO_DEPRECATE
 
 #include "UIlib.h"
-
 #include <olectl.h>
 
 #define dimof(x) (sizeof(x)/sizeof(*x))
