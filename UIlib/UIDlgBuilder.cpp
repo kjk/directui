@@ -22,7 +22,7 @@ ControlUI* DialogBuilder::CreateFromResource(UINT nRes, IDialogBuilderCallback* 
       FreeResource(hResource);
       return NULL;
    }
-   CStdString sXML;
+   StdString sXML;
    sXML.Assign(static_cast<LPCSTR>(::LockResource(hGlobal)), ::SizeofResource(PaintManagerUI::GetResourceInstance(), hResource));
    sXML.Replace(_T("\\n"), _T("\n"));
    ::FreeResource(hResource);

@@ -33,7 +33,7 @@ protected:
    RECT m_rcPage;
    RECT m_rcClient;
    ControlUI* m_curPage;
-   CStdValArray m_tabAreas;
+   StdValArray m_tabAreas;
 };
 
 class UILIB_API TabPageUI : public ContainerUI

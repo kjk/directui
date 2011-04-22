@@ -50,7 +50,7 @@ public:
       return WindowWnd::HandleMessage(uMsg, wParam, lParam);
    }
 
-   void _CreatePage(CStdString sName)
+   void _CreatePage(StdString sName)
    {
       StandardPageWnd* win = NULL;
       if (sName == "page_start")  win = new StartPageWnd;

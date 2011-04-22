@@ -66,7 +66,7 @@ HIMAGELIST m_himgIcons50 = NULL;
 
 HINSTANCE PaintManagerUI::m_hInstance = NULL;
 HINSTANCE PaintManagerUI::m_hLangInst = NULL;
-CStdPtrArray PaintManagerUI::m_aPreMessages;
+StdPtrArray PaintManagerUI::m_aPreMessages;
 
 PaintManagerUI::PaintManagerUI() :
    m_hWndPaint(NULL),
@@ -617,7 +617,7 @@ bool PaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRE
             m_pEventHover->Event(event);
          }
          // Create tooltip information
-         CStdString sToolTip = pHover->GetToolTip();
+         StdString sToolTip = pHover->GetToolTip();
          if (sToolTip.IsEmpty())  return true;
          sToolTip.ProcessResourceTokens();
          ::ZeroMemory(&m_ToolTip, sizeof(TOOLINFO));
@@ -1266,7 +1266,7 @@ ControlUI* CALLBACK PaintManagerUI::__FindControlFromNameHash(ControlUI* pThis, 
 {
    PaintManagerUI* manager = static_cast<PaintManagerUI*>(data);
    // No name?
-   const CStdString& sName = pThis->GetName();
+   const StdString& sName = pThis->GetName();
    if (sName.IsEmpty())  return NULL;
    // Add this control to the hash list
    int nCount = 0;
@@ -1371,7 +1371,7 @@ TCHAR ControlUI::GetShortcut() const
    return m_chShortcut;
 }
 
-CStdString ControlUI::GetText() const
+StdString ControlUI::GetText() const
 {
    return m_txt;
 }
@@ -1397,7 +1397,7 @@ void ControlUI::SetToolTip(const TCHAR* txt)
    m_sToolTip = txt;
 }
 
-CStdString ControlUI::GetToolTip() const
+StdString ControlUI::GetToolTip() const
 {
    return m_sToolTip;
 }
@@ -1419,7 +1419,7 @@ void ControlUI::SetManager(PaintManagerUI* manager, ControlUI* parent)
    if (bInit)  Init();
 }
 
-CStdString ControlUI::GetName() const
+StdString ControlUI::GetName() const
 {
    return m_sName;
 }
@@ -1519,8 +1519,8 @@ void ControlUI::SetAttribute(const TCHAR* name, const TCHAR* value)
 
 ControlUI* ControlUI::ApplyAttributeList(const TCHAR* pstrList)
 {
-   CStdString sItem;
-   CStdString sValue;
+   StdString sItem;
+   StdString sValue;
    while (*pstrList != '\0')  {
       sItem.Empty();
       sValue.Empty();

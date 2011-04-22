@@ -962,7 +962,7 @@ void ListExpandElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
    ASSERT(pCallback);
    if (pCallback == NULL)  return;
    m_nLinks = 0;
-   CStdString sColText;
+   StdString sColText;
    int nLinks = lengthof(m_rcLinks);
    for (int i = 0; i < pInfo->nColumns; i++) 
    {

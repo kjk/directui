@@ -112,7 +112,7 @@ void TabFolderUI::DoPaint(HDC hDC, const RECT& rcPaint)
          for (int i = 0; i < GetCount(); i++)  
          {
             const ControlUI* page = GetItem(i);
-            const CStdString& txt = page->GetText();
+            const StdString& txt = page->GetText();
             RECT rcTab = { rcTabs.left + posX, rcTabs.top, rcTabs.right, m_rcClient.top };
             UINT uState = 0;
             if (IsFocused())  uState |= UISTATE_FOCUSED;

@@ -57,7 +57,7 @@ protected:
    HWND m_hWnd;
    bool m_bIsAnimating;
    bool m_bIsInitialized;
-   CStdPtrArray m_aJobs;
+   StdPtrArray m_aJobs;
    D3DFORMAT m_ColorFormat;
    LPDIRECT3D9 m_pD3D;
    LPDIRECT3DDEVICE9 m_p3DDevice;

@@ -284,14 +284,14 @@ void MultiLineEditUI::SetText(const TCHAR* txt)
    Invalidate();
 }
 
-CStdString MultiLineEditUI::GetText() const
+StdString MultiLineEditUI::GetText() const
 {
    if (m_win != NULL)  {
       int cchLen = ::GetWindowTextLength(*m_win) + 1;
       TCHAR* pstr = static_cast<TCHAR*>(_alloca(cchLen * sizeof(TCHAR)));
       ASSERT(pstr);
       ::GetWindowText(*m_win, pstr, cchLen);
-      return CStdString(pstr);
+      return StdString(pstr);
    }
    return m_txt;
 }

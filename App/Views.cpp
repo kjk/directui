@@ -8,9 +8,6 @@
 #include <comdef.h>
 
 
-////////////////////////////////////////////////////////////////////////
-//
-
 UINT StandardPageWnd::GetClassStyle() const 
 { 
    return UI_CLASSSTYLE_CHILD; 
@@ -50,10 +47,6 @@ void StandardPageWnd::Notify(TNotifyUI& msg)
 {
    if (msg.sType == _T("windowinit"))  OnPrepareAnimation();
 }
-
-
-////////////////////////////////////////////////////////////////////////
-//
 
 const TCHAR* StartPageWnd::GetWindowClassName() const 
 { 
@@ -116,10 +109,6 @@ void StartPageWnd::OnPrepareAnimation()
 void StartPageWnd::Init()
 {
 }
-
-
-////////////////////////////////////////////////////////////////////////
-//
 
 const TCHAR* ConfigurePageWnd::GetWindowClassName() const 
 { 
@@ -190,10 +179,6 @@ void ConfigurePageWnd::OnPrepareAnimation()
    m_pm.AddAnimJob(AnimJobUI(UIANIMTYPE_FLAT, 0, 300, clrBack, CLR_INVALID, rcCtrl, 140, 0, 5, 200, 0.1f));
 }
 
-
-////////////////////////////////////////////////////////////////////////
-//
-
 const TCHAR* RegistersPageWnd::GetWindowClassName() const 
 { 
    return _T("UIRegisters"); 
@@ -260,7 +245,7 @@ const TCHAR* RegistersPageWnd::GetItemText(ControlUI* ctrl, int idx, int iSubIte
    if (idx == 0 && iSubItem == 1)  return _T("Horse");
    if (idx == 1 && iSubItem == 1)  return _T("Dog");
    if (idx == 2 && iSubItem == 1)  return _T("Rabbit");
-   static CStdString sTemp;
+   static StdString sTemp;
    sTemp.Format(_T("Item %d %d"), idx, iSubItem);
    return sTemp;
 }
@@ -270,9 +255,6 @@ int RegistersPageWnd::CompareItem(ControlUI* pList, ControlUI* item1, ControlUI*
    return 0;
 }
 
-
-////////////////////////////////////////////////////////////////////////
-//
 
 const TCHAR* SystemsPageWnd::GetWindowClassName() const 
 { 
@@ -370,7 +352,7 @@ void SystemsPageWnd::OnExpandItem(ControlUI* ctrl)
    ListExpandElementUI* item = static_cast<ListExpandElementUI*>(ctrl);
    // Add slowly...
    TextPanelUI* pText = new TextPanelUI();
-   CStdString sText;
+   StdString sText;
    sText.Format(_T("<b>Episode:</b> Gyldendal #%p"), ctrl);
    pText->SetText(sText);
    item->Add(pText);
@@ -378,10 +360,6 @@ void SystemsPageWnd::OnExpandItem(ControlUI* ctrl)
    item->Add((new TextPanelUI())->ApplyAttributeList(_T("text=\"<b>Navn:</b> Anders And\"")));
    item->Add((new TextPanelUI())->ApplyAttributeList(_T("text=\"<b>Tidspunkt:</b> <i 3>Juleaften\"")));
 }
-
-
-////////////////////////////////////////////////////////////////////////
-//
 
 const TCHAR* ReportsPageWnd::GetWindowClassName() const 
 { 
@@ -429,10 +407,6 @@ void ReportsPageWnd::OnPrepareAnimation()
    const RECT rcCtrl = m_pm.FindControl(_T("titlepanel"))->GetPos();
    m_pm.AddAnimJob(AnimJobUI(UIANIMTYPE_FLAT, 0, 300, CLR_INVALID, CLR_INVALID, rcCtrl, 0, 0, -2, -200, 0.0f));
 }
-
-
-////////////////////////////////////////////////////////////////////////
-//
 
 const TCHAR* SearchPageWnd::GetWindowClassName() const 
 { 
@@ -496,10 +470,6 @@ const TCHAR* SearchPageWnd::GetDialogResource() const
       "</VerticalLayout>"
       "</Dialog>";
 }
-
-
-////////////////////////////////////////////////////////////////////////
-//
 
 const TCHAR* EditPageWnd::GetWindowClassName() const 
 { 
@@ -600,10 +570,6 @@ void EditPageWnd::OnPrepareAnimation()
    const RECT rcCtrl = m_pm.FindControl(_T("warning"))->GetPos();
    m_pm.AddAnimJob(AnimJobUI(UIANIMTYPE_FLAT, 0, 300, CLR_INVALID, CLR_INVALID, rcCtrl, 0, 0, -2, -200, 0.0f));
 }
-
-
-////////////////////////////////////////////////////////////////////////
-//
 
 UINT PopupWnd::GetClassStyle() const
 {

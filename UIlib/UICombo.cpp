@@ -210,10 +210,6 @@ LRESULT CDropDownWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
    return WindowWnd::HandleMessage(uMsg, wParam, lParam);
 }
 
-
-////////////////////////////////////////////////////////
-
-
 DropDownUI::DropDownUI() : 
    m_curSel(-1), 
    m_uButtonState(0)
@@ -363,7 +359,7 @@ bool DropDownUI::Activate()
    return true;
 }
 
-CStdString DropDownUI::GetText() const
+StdString DropDownUI::GetText() const
 {
    if (m_curSel < 0)  return _T("");
    ControlUI* ctrl = static_cast<ControlUI*>(m_items[m_curSel]);

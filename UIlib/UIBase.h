@@ -5,7 +5,6 @@
 
 class PaintManagerUI;
 
-
 #define UI_WNDSTYLE_CONTAINER  (0)
 #define UI_WNDSTYLE_FRAME      (WS_VISIBLE | WS_OVERLAPPEDWINDOW)
 #define UI_WNDSTYLE_CHILD      (WS_VISIBLE | WS_CHILD | WS_CLIPSIBLINGS | WS_CLIPCHILDREN)
@@ -18,7 +17,6 @@ class PaintManagerUI;
 #define UI_CLASSSTYLE_FRAME      (CS_VREDRAW | CS_HREDRAW)
 #define UI_CLASSSTYLE_CHILD      (CS_VREDRAW | CS_HREDRAW | CS_DBLCLKS | CS_SAVEBITS)
 #define UI_CLASSSTYLE_DIALOG     (CS_VREDRAW | CS_HREDRAW | CS_DBLCLKS | CS_SAVEBITS)
-
 
 #define ASSERT(expr)  _ASSERTE(expr)
 
@@ -62,7 +60,6 @@ public:
    CSize(int cx, int cy);
 };
 
-
 class UILIB_API CPoint : public tagPOINT
 {
 public:
@@ -72,13 +69,11 @@ public:
    CPoint(LPARAM lParam);
 };
 
-
-
-class UILIB_API CStdPtrArray
+class UILIB_API StdPtrArray
 {
 public:
-   CStdPtrArray(int iPreallocSize = 0);
-   virtual ~CStdPtrArray();
+   StdPtrArray(int iPreallocSize = 0);
+   virtual ~StdPtrArray();
 
    void Empty();
    void Resize(int iSize);
@@ -100,12 +95,11 @@ protected:
    int m_nAllocated;
 };
 
-
-class UILIB_API CStdValArray
+class UILIB_API StdValArray
 {
 public:
-   CStdValArray(int iElementSize, int iPreallocSize = 0);
-   virtual ~CStdValArray();
+   StdValArray(int iElementSize, int iPreallocSize = 0);
+   virtual ~StdValArray();
 
    void Empty();
    bool IsEmpty() const;
@@ -166,28 +160,28 @@ protected:
    bool m_bSubclassed;
 };
 
-class UILIB_API CWaitCursor
+class UILIB_API WaitCursor
 {
 public:
-   CWaitCursor();
-   ~CWaitCursor();
+   WaitCursor();
+   ~WaitCursor();
 
 protected:
    HCURSOR m_hOrigCursor;
 };
 
-class UILIB_API CStdString
+class UILIB_API StdString
 {
 public:
    enum { MAX_LOCAL_STRING_LEN = 63 };
 
-   CStdString();
-   CStdString(const TCHAR ch);
-   CStdString(const CStdString& src);
-   CStdString(const TCHAR* lpsz, int nLen = -1);
-   virtual ~CStdString();
+   StdString();
+   StdString(const TCHAR ch);
+   StdString(const StdString& src);
+   StdString(const TCHAR* lpsz, int nLen = -1);
+   virtual ~StdString();
 
-   static CStdString RES(UINT nRes);
+   static StdString RES(UINT nRes);
 
    void Empty();
    int GetLength() const;
@@ -201,17 +195,17 @@ public:
    operator LPCTSTR() const;
 
    TCHAR operator[] (int idx) const;
-   const CStdString& operator=(const CStdString& src);
-   const CStdString& operator=(const TCHAR ch);
-   const CStdString& operator=(const TCHAR* pstr);
+   const StdString& operator=(const StdString& src);
+   const StdString& operator=(const TCHAR ch);
+   const StdString& operator=(const TCHAR* pstr);
 #ifndef _UNICODE
-   const CStdString& CStdString::operator=(LPCWSTR lpwStr);
+   const StdString& StdString::operator=(LPCWSTR lpwStr);
 #endif
-   CStdString operator+(const CStdString& src);
-   CStdString operator+(const TCHAR* pstr);
-   const CStdString& operator+=(const CStdString& src);
-   const CStdString& operator+=(const TCHAR* pstr);
-   const CStdString& operator+=(const TCHAR ch);
+   StdString operator+(const StdString& src);
+   StdString operator+(const TCHAR* pstr);
+   const StdString& operator+=(const StdString& src);
+   const StdString& operator+=(const TCHAR* pstr);
+   const StdString& operator+=(const TCHAR ch);
 
    bool operator == (const TCHAR* str) const;
    bool operator != (const TCHAR* str) const;
@@ -226,9 +220,9 @@ public:
    void MakeUpper();
    void MakeLower();
 
-   CStdString Left(int len) const;
-   CStdString Mid(int pos, int len = -1) const;
-   CStdString Right(int len) const;
+   StdString Left(int len) const;
+   StdString Mid(int pos, int len = -1) const;
+   StdString Right(int len) const;
 
    int Find(TCHAR ch, int pos = 0) const;
    int Find(const TCHAR* pstr, int pos = 0) const;
@@ -240,8 +234,7 @@ public:
 
 protected:
    TCHAR* m_pstr;
-   TCHAR m_szBuffer[MAX_LOCAL_STRING_LEN + 1];
+   TCHAR m_buf[MAX_LOCAL_STRING_LEN + 1];
 };
-
 
 #endif // !defined(AFX_UIBASE_H__20050509_3DFB_5C7A_C897_0080AD509054__INCLUDED_)

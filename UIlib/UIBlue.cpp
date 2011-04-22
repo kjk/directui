@@ -277,7 +277,7 @@ void BlueRenderEngineUI::DoPaintTabFolder(HDC hDC, PaintManagerUI* manager, RECT
    ASSERT(::GetObjectType(hDC)==OBJ_DC || ::GetObjectType(hDC)==OBJ_MEMDC);
    ::SetBkMode(hDC, TRANSPARENT);
    ::SelectObject(hDC, manager->GetThemeFont(UIFONT_NORMAL));
-   CStdString sText = txt;
+   StdString sText = txt;
    sText.ProcessResourceTokens();
    int cchText = sText.GetLength();
    SIZE szText = { 0 };
@@ -392,7 +392,7 @@ void BlueRenderEngineUI::DoPaintPrettyText(HDC hDC, PaintManagerUI* manager, REC
    HRGN hRgn = ::CreateRectRgnIndirect(&rc);
    if (bDraw)  ::ExtSelectClipRgn(hDC, hRgn, RGN_AND);
 
-   CStdString sText = txt;
+   StdString sText = txt;
    sText.ProcessResourceTokens();
    txt = sText;
 
@@ -537,7 +537,7 @@ void BlueRenderEngineUI::DoPaintPrettyText(HDC hDC, PaintManagerUI* manager, REC
                }
                else {
                   if (*txt == ' ')  txt++;
-                  CStdString sRes;
+                  StdString sRes;
                   while (_istalnum(*txt) || *txt == '.' || *txt == '_')  sRes += *txt++;
                   HICON hIcon = (HICON) ::LoadImage(manager->GetResourceInstance(), sRes, IMAGE_ICON, 0, 0, LR_LOADTRANSPARENT | LR_SHARED);
                   ASSERT(hIcon!=NULL);

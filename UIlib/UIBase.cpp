@@ -468,25 +468,25 @@ void WindowWnd::OnFinalMessage(HWND /*hWnd*/)
 }
 
 
-CStdPtrArray::CStdPtrArray(int iPreallocSize) : m_ppVoid(NULL), m_nCount(0), m_nAllocated(iPreallocSize)
+StdPtrArray::StdPtrArray(int iPreallocSize) : m_ppVoid(NULL), m_nCount(0), m_nAllocated(iPreallocSize)
 {
    ASSERT(iPreallocSize>=0);
    if (iPreallocSize > 0)  m_ppVoid = static_cast<void**>(malloc(iPreallocSize * sizeof(void*)));
 }
 
-CStdPtrArray::~CStdPtrArray()
+StdPtrArray::~StdPtrArray()
 {
    if (m_ppVoid != NULL)  free(m_ppVoid);
 }
 
-void CStdPtrArray::Empty()
+void StdPtrArray::Empty()
 {
    if (m_ppVoid != NULL)  free(m_ppVoid);
    m_ppVoid = NULL;
    m_nCount = m_nAllocated = 0;
 }
 
-void CStdPtrArray::Resize(int iSize)
+void StdPtrArray::Resize(int iSize)
 {
    Empty();
    m_ppVoid = static_cast<void**>(malloc(iSize * sizeof(void*)));
@@ -495,12 +495,12 @@ void CStdPtrArray::Resize(int iSize)
    m_nCount = iSize;
 }
 
-bool CStdPtrArray::IsEmpty() const
+bool StdPtrArray::IsEmpty() const
 {
    return m_nCount == 0;
 }
 
-bool CStdPtrArray::Add(void* data)
+bool StdPtrArray::Add(void* data)
 {
    if (++m_nCount >= m_nAllocated) {
       m_nAllocated *= 2;
@@ -512,7 +512,7 @@ bool CStdPtrArray::Add(void* data)
    return true;
 }
 
-bool CStdPtrArray::InsertAt(int idx, void* data)
+bool StdPtrArray::InsertAt(int idx, void* data)
 {
    if (idx == m_nCount)  return Add(data);
    if (idx < 0 || idx > m_nCount)  return false;
@@ -527,50 +527,50 @@ bool CStdPtrArray::InsertAt(int idx, void* data)
    return true;
 }
 
-bool CStdPtrArray::SetAt(int idx, void* data)
+bool StdPtrArray::SetAt(int idx, void* data)
 {
    if (idx < 0 || idx >= m_nCount)  return false;
    m_ppVoid[idx] = data;
    return true;
 }
 
-bool CStdPtrArray::Remove(int idx)
+bool StdPtrArray::Remove(int idx)
 {
    if (idx < 0 || idx >= m_nCount)  return false;
    if (idx < --m_nCount)  ::CopyMemory(m_ppVoid + idx, m_ppVoid + idx + 1, (m_nCount - idx) * sizeof(void*));
    return true;
 }
 
-int CStdPtrArray::Find(void* data) const
+int StdPtrArray::Find(void* data) const
 {
    for (int i = 0; i < m_nCount; i++)  if (m_ppVoid[i] == data)  return i;
    return -1;
 }
 
-int CStdPtrArray::GetSize() const
+int StdPtrArray::GetSize() const
 {
    return m_nCount;
 }
 
-void** CStdPtrArray::GetData()
+void** StdPtrArray::GetData()
 {
    return m_ppVoid;
 }
 
-void* CStdPtrArray::GetAt(int idx) const
+void* StdPtrArray::GetAt(int idx) const
 {
    if (idx < 0 || idx >= m_nCount)  return NULL;
    return m_ppVoid[idx];
 }
 
-void* CStdPtrArray::operator[] (int idx) const
+void* StdPtrArray::operator[] (int idx) const
 {
    ASSERT(idx>=0 && idx<m_nCount);
    return m_ppVoid[idx];
 }
 
 
-CStdValArray::CStdValArray(int iElementSize, int iPreallocSize /*= 0*/) : 
+StdValArray::StdValArray(int iElementSize, int iPreallocSize /*= 0*/) : 
    m_pVoid(NULL), 
    m_nCount(0), 
    m_iElementSize(iElementSize), 
@@ -581,22 +581,22 @@ CStdValArray::CStdValArray(int iElementSize, int iPreallocSize /*= 0*/) :
    if (iPreallocSize > 0)  m_pVoid = static_cast<LPBYTE>(malloc(iPreallocSize * m_iElementSize));
 }
 
-CStdValArray::~CStdValArray()
+StdValArray::~StdValArray()
 {
    if (m_pVoid != NULL)  free(m_pVoid);
 }
 
-void CStdValArray::Empty()
+void StdValArray::Empty()
 {   
    m_nCount = 0;  // NOTE: We keep the memory in place
 }
 
-bool CStdValArray::IsEmpty() const
+bool StdValArray::IsEmpty() const
 {
    return m_nCount == 0;
 }
 
-bool CStdValArray::Add(LPCVOID data)
+bool StdValArray::Add(LPCVOID data)
 {
    if (++m_nCount >= m_nAllocated) {
       m_nAllocated *= 2;
@@ -608,75 +608,75 @@ bool CStdValArray::Add(LPCVOID data)
    return true;
 }
 
-bool CStdValArray::Remove(int idx)
+bool StdValArray::Remove(int idx)
 {
    if (idx < 0 || idx >= m_nCount)  return false;
    if (idx < --m_nCount)  ::CopyMemory(m_pVoid + (idx * m_iElementSize), m_pVoid + ((idx + 1) * m_iElementSize), (m_nCount - idx) * m_iElementSize);
    return true;
 }
 
-int CStdValArray::GetSize() const
+int StdValArray::GetSize() const
 {
    return m_nCount;
 }
 
-void* CStdValArray::GetData()
+void* StdValArray::GetData()
 {
    return static_cast<void*>(m_pVoid);
 }
 
-void* CStdValArray::GetAt(int idx) const
+void* StdValArray::GetAt(int idx) const
 {
    if (idx < 0 || idx >= m_nCount)  return NULL;
    return m_pVoid + (idx * m_iElementSize);
 }
 
-void* CStdValArray::operator[] (int idx) const
+void* StdValArray::operator[] (int idx) const
 {
    ASSERT(idx>=0 && idx<m_nCount);
    return m_pVoid + (idx * m_iElementSize);
 }
 
 
-CWaitCursor::CWaitCursor()
+WaitCursor::WaitCursor()
 {
    m_hOrigCursor = ::SetCursor(::LoadCursor(NULL, IDC_WAIT));
 }
 
-CWaitCursor::~CWaitCursor()
+WaitCursor::~WaitCursor()
 {
    ::SetCursor(m_hOrigCursor);
 }
 
 
-CStdString::CStdString() : m_pstr(m_szBuffer)
+StdString::StdString() : m_pstr(m_buf)
 {
-   m_szBuffer[0] = '\0';
+   m_buf[0] = '\0';
 }
 
-CStdString::CStdString(const TCHAR ch) : m_pstr(m_szBuffer)
+StdString::StdString(const TCHAR ch) : m_pstr(m_buf)
 {
-   m_szBuffer[0] = ch;
-   m_szBuffer[1] = '\0';
+   m_buf[0] = ch;
+   m_buf[1] = '\0';
 }
 
-CStdString::CStdString(const TCHAR* lpsz, int nLen) : m_pstr(m_szBuffer)
+StdString::StdString(const TCHAR* lpsz, int nLen) : m_pstr(m_buf)
 {      
    ASSERT(!::IsBadStringPtr(lpsz,-1) || lpsz==NULL);
    Assign(lpsz, nLen);
 }
 
-CStdString::CStdString(const CStdString& src) : m_pstr(m_szBuffer)
+StdString::StdString(const StdString& src) : m_pstr(m_buf)
 {
    Assign(src.m_pstr);
 }
 
-CStdString::~CStdString()
+StdString::~StdString()
 {
-   if (m_pstr != m_szBuffer)  free(m_pstr);
+   if (m_pstr != m_buf)  free(m_pstr);
 }
 
-CStdString CStdString::RES(UINT nRes)
+StdString StdString::RES(UINT nRes)
 {
    TCHAR szBuffer[256];
    int cchLen = ::LoadString(PaintManagerUI::GetLanguageInstance(), nRes, szBuffer, lengthof(szBuffer) - 1);
@@ -685,23 +685,23 @@ CStdString CStdString::RES(UINT nRes)
    return szBuffer;
 }
 
-int CStdString::GetLength() const
+int StdString::GetLength() const
 { 
    return (int) _tcslen(m_pstr); 
 }
 
-CStdString::operator LPCTSTR() const 
+StdString::operator LPCTSTR() const 
 { 
    return m_pstr; 
 }
 
-void CStdString::Append(const TCHAR* pstr)
+void StdString::Append(const TCHAR* pstr)
 {
    int nNewLength = GetLength() + (int) _tcslen(pstr);
    if (nNewLength >= MAX_LOCAL_STRING_LEN)  {
-      if (m_pstr == m_szBuffer)  {
+      if (m_pstr == m_buf)  {
          m_pstr = static_cast<TCHAR*>(malloc((nNewLength + 1) * sizeof(TCHAR)));
-         _tcscpy(m_pstr, m_szBuffer);
+         _tcscpy(m_pstr, m_buf);
          _tcscat(m_pstr, pstr);
       }
       else {
@@ -710,66 +710,66 @@ void CStdString::Append(const TCHAR* pstr)
       }
    }
    else {
-      if (m_pstr != m_szBuffer)  {
+      if (m_pstr != m_buf)  {
          free(m_pstr);
-         m_pstr = m_szBuffer;
+         m_pstr = m_buf;
       }
-      _tcscat(m_szBuffer, pstr);
+      _tcscat(m_buf, pstr);
    }
 }
 
-void CStdString::Assign(const TCHAR* pstr, int cchMax)
+void StdString::Assign(const TCHAR* pstr, int cchMax)
 {
    if (pstr == NULL)  pstr = _T("");
    cchMax = (cchMax < 0 ? (int) _tcslen(pstr) : cchMax);
    if (cchMax < MAX_LOCAL_STRING_LEN)  {
-      if (m_pstr != m_szBuffer)  {
+      if (m_pstr != m_buf)  {
          free(m_pstr);
-         m_pstr = m_szBuffer;
+         m_pstr = m_buf;
       }
    }
-   else if (cchMax > GetLength() || m_pstr == m_szBuffer)  {
-      if (m_pstr == m_szBuffer)  m_pstr = NULL;
+   else if (cchMax > GetLength() || m_pstr == m_buf)  {
+      if (m_pstr == m_buf)  m_pstr = NULL;
       m_pstr = static_cast<TCHAR*>(realloc(m_pstr, (cchMax + 1) * sizeof(TCHAR)));
    }
    _tcsncpy(m_pstr, pstr, cchMax);
    m_pstr[cchMax] = '\0';
 }
 
-bool CStdString::IsEmpty() const 
+bool StdString::IsEmpty() const 
 { 
    return m_pstr[0] == '\0'; 
 }
 
-void CStdString::Empty() 
+void StdString::Empty() 
 { 
-   if (m_pstr != m_szBuffer)  free(m_pstr);
-   m_pstr = m_szBuffer;
-   m_szBuffer[0] = '\0'; 
+   if (m_pstr != m_buf)  free(m_pstr);
+   m_pstr = m_buf;
+   m_buf[0] = '\0'; 
 }
 
-const TCHAR* CStdString::GetData()
+const TCHAR* StdString::GetData()
 {
    return m_pstr;
 }
 
-TCHAR CStdString::GetAt(int idx) const
+TCHAR StdString::GetAt(int idx) const
 {
    return m_pstr[idx];
 }
 
-TCHAR CStdString::operator[] (int idx) const
+TCHAR StdString::operator[] (int idx) const
 { 
    return m_pstr[idx];
 }   
 
-const CStdString& CStdString::operator=(const CStdString& src)
+const StdString& StdString::operator=(const StdString& src)
 {      
    Assign(src);
    return *this;
 }
 
-const CStdString& CStdString::operator=(const TCHAR* lpStr)
+const StdString& StdString::operator=(const TCHAR* lpStr)
 {      
    ASSERT(!::IsBadStringPtr(lpStr,-1));
    Assign(lpStr);
@@ -778,7 +778,7 @@ const CStdString& CStdString::operator=(const TCHAR* lpStr)
 
 #ifndef _UNICODE
 
-const CStdString& CStdString::operator=(LPCWSTR lpwStr)
+const StdString& StdString::operator=(LPCWSTR lpwStr)
 {      
    ASSERT(!::IsBadStringPtrW(lpwStr,-1));
    int cchStr = ((int) wcslen(lpwStr) * 2) + 1;
@@ -790,106 +790,106 @@ const CStdString& CStdString::operator=(LPCWSTR lpwStr)
 
 #endif // _UNICODE
 
-const CStdString& CStdString::operator=(const TCHAR ch)
+const StdString& StdString::operator=(const TCHAR ch)
 {
    Empty();
-   m_szBuffer[0] = ch;
-   m_szBuffer[1] = '\0';
+   m_buf[0] = ch;
+   m_buf[1] = '\0';
    return *this;
 }
 
-CStdString CStdString::operator+(const CStdString& src)
+StdString StdString::operator+(const StdString& src)
 {
    Append(src);
    return *this;
 }
 
-CStdString CStdString::operator+(const TCHAR* lpStr)
+StdString StdString::operator+(const TCHAR* lpStr)
 {
    ASSERT(!::IsBadStringPtr(lpStr,-1));
    Append(lpStr);
    return *this;
 }
 
-const CStdString& CStdString::operator+=(const CStdString& src)
+const StdString& StdString::operator+=(const StdString& src)
 {      
    Append(src);
    return *this;
 }
 
-const CStdString& CStdString::operator+=(const TCHAR* lpStr)
+const StdString& StdString::operator+=(const TCHAR* lpStr)
 {      
    ASSERT(!::IsBadStringPtr(lpStr,-1));
    Append(lpStr);
    return *this;
 }
 
-const CStdString& CStdString::operator+=(const TCHAR ch)
+const StdString& StdString::operator+=(const TCHAR ch)
 {      
    TCHAR str[] = { ch, '\0' };
    Append(str);
    return *this;
 }
 
-bool CStdString::operator == (const TCHAR* str) const { return (Compare(str) == 0); };
-bool CStdString::operator != (const TCHAR* str) const { return (Compare(str) != 0); };
-bool CStdString::operator <= (const TCHAR* str) const { return (Compare(str) <= 0); };
-bool CStdString::operator <  (const TCHAR* str) const { return (Compare(str) <  0); };
-bool CStdString::operator >= (const TCHAR* str) const { return (Compare(str) >= 0); };
-bool CStdString::operator >  (const TCHAR* str) const { return (Compare(str) >  0); };
+bool StdString::operator == (const TCHAR* str) const { return (Compare(str) == 0); };
+bool StdString::operator != (const TCHAR* str) const { return (Compare(str) != 0); };
+bool StdString::operator <= (const TCHAR* str) const { return (Compare(str) <= 0); };
+bool StdString::operator <  (const TCHAR* str) const { return (Compare(str) <  0); };
+bool StdString::operator >= (const TCHAR* str) const { return (Compare(str) >= 0); };
+bool StdString::operator >  (const TCHAR* str) const { return (Compare(str) >  0); };
 
-void CStdString::SetAt(int idx, TCHAR ch)
+void StdString::SetAt(int idx, TCHAR ch)
 {
    ASSERT(idx>=0 && idx<GetLength());
    m_pstr[idx] = ch;
 }
 
-int CStdString::Compare(const TCHAR* lpsz) const 
+int StdString::Compare(const TCHAR* lpsz) const 
 { 
    return _tcscmp(m_pstr, lpsz); 
 }
 
-int CStdString::CompareNoCase(const TCHAR* lpsz) const 
+int StdString::CompareNoCase(const TCHAR* lpsz) const 
 { 
    return _tcsicmp(m_pstr, lpsz); 
 }
 
-void CStdString::MakeUpper() 
+void StdString::MakeUpper() 
 { 
    _tcsupr(m_pstr); 
 }
 
-void CStdString::MakeLower() 
+void StdString::MakeLower() 
 { 
    _tcslwr(m_pstr); 
 }
 
-CStdString CStdString::Left(int iLength) const
+StdString StdString::Left(int iLength) const
 {
    if (iLength < 0)  iLength = 0;
    if (iLength > GetLength())  iLength = GetLength();
-   return CStdString(m_pstr, iLength);
+   return StdString(m_pstr, iLength);
 }
 
-CStdString CStdString::Mid(int pos, int iLength) const
+StdString StdString::Mid(int pos, int iLength) const
 {
    if (iLength < 0)  iLength = GetLength() - pos;
    if (pos + iLength > GetLength())  iLength = GetLength() - pos;
-   if (iLength <= 0)  return CStdString();
-   return CStdString(m_pstr + pos, iLength);
+   if (iLength <= 0)  return StdString();
+   return StdString(m_pstr + pos, iLength);
 }
 
-CStdString CStdString::Right(int iLength) const
+StdString StdString::Right(int iLength) const
 {
    int pos = GetLength() - iLength;
    if (pos < 0)  {
       pos = 0;
       iLength = GetLength();
    }
-   return CStdString(m_pstr + pos, iLength);
+   return StdString(m_pstr + pos, iLength);
 }
 
-int CStdString::Find(TCHAR ch, int pos /*= 0*/) const
+int StdString::Find(TCHAR ch, int pos /*= 0*/) const
 {
    ASSERT(pos>=0 && pos<=GetLength());
    if (pos != 0 && (pos < 0 || pos >= GetLength()))  return -1;
@@ -898,7 +898,7 @@ int CStdString::Find(TCHAR ch, int pos /*= 0*/) const
    return p - m_pstr;
 }
 
-int CStdString::Find(const TCHAR* pstrSub, int pos /*= 0*/) const
+int StdString::Find(const TCHAR* pstrSub, int pos /*= 0*/) const
 {
    ASSERT(!::IsBadStringPtr(pstrSub,-1));
    ASSERT(pos>=0 && pos<=GetLength());
@@ -908,16 +908,16 @@ int CStdString::Find(const TCHAR* pstrSub, int pos /*= 0*/) const
    return p - m_pstr;
 }
 
-int CStdString::ReverseFind(TCHAR ch) const
+int StdString::ReverseFind(TCHAR ch) const
 {
    const TCHAR* p = _tcsrchr(m_pstr, ch);
    if (p == NULL)  return -1;
    return p - m_pstr;
 }
 
-int CStdString::Replace(const TCHAR* pstrFrom, const TCHAR* pstrTo)
+int StdString::Replace(const TCHAR* pstrFrom, const TCHAR* pstrTo)
 {
-   CStdString sTemp;
+   StdString sTemp;
    int nCount = 0;
    int pos = Find(pstrFrom);
    if (pos < 0)  return 0;
@@ -934,9 +934,9 @@ int CStdString::Replace(const TCHAR* pstrFrom, const TCHAR* pstrTo)
    return nCount;
 }
 
-int CStdString::Format(const TCHAR* pstrFormat, ...)
+int StdString::Format(const TCHAR* pstrFormat, ...)
 {
-   CStdString sFormat = pstrFormat;
+   StdString sFormat = pstrFormat;
    sFormat.ProcessResourceTokens();
    // Do ordinary printf replacements
    // NOTE: Documented max-length of wvsprintf() is 1024
@@ -949,7 +949,7 @@ int CStdString::Format(const TCHAR* pstrFormat, ...)
    return iRet;
 }
 
-void CStdString::ProcessResourceTokens()
+void StdString::ProcessResourceTokens()
 {
    // Replace string-tokens: %{nnn}  where nnn is a resource string identifier
    int pos = Find('%');
@@ -958,7 +958,7 @@ void CStdString::ProcessResourceTokens()
          int iEndPos = pos + 2;
          while (isdigit(GetAt(iEndPos)))  iEndPos++;
          if (GetAt(iEndPos) == '}')  {
-            CStdString sTemp = CStdString::RES((UINT)_ttoi(m_pstr + pos + 2));
+            StdString sTemp = StdString::RES((UINT)_ttoi(m_pstr + pos + 2));
             Replace(Mid(pos, iEndPos - pos + 1), sTemp);
          }
       }

@@ -207,7 +207,7 @@ typedef struct tagTEventUI
 // Structure for notifications to the outside world
 typedef struct tagTNotifyUI 
 {
-   CStdString sType;
+   StdString sType;
    ControlUI* pSender;
    DWORD dwTimestamp;
    POINT ptMouse;
@@ -352,18 +352,17 @@ private:
    TSystemMetricsUI m_SystemMetrics;
    TSystemSettingsUI m_SystemConfig;
    //
-   CStdPtrArray m_aNotifiers;
-   CStdPtrArray m_aNameHash;
-   CStdPtrArray m_aTimers;
-   CStdValArray m_aPostPaint;
-   CStdPtrArray m_aMessageFilters;
-   CStdPtrArray m_aDelayedCleanup;
+   StdPtrArray m_aNotifiers;
+   StdPtrArray m_aNameHash;
+   StdPtrArray m_aTimers;
+   StdValArray m_aPostPaint;
+   StdPtrArray m_aMessageFilters;
+   StdPtrArray m_aDelayedCleanup;
    //
    static HINSTANCE m_hLangInst;
    static HINSTANCE m_hInstance;
-   static CStdPtrArray m_aPreMessages;
+   static StdPtrArray m_aPreMessages;
 };
-
 
 typedef ControlUI* (CALLBACK* FINDCONTROLPROC)(ControlUI*, void*);
 
@@ -374,17 +373,17 @@ public:
    virtual ~ControlUI();
 
 public:
-   virtual CStdString GetName() const;
+   virtual StdString GetName() const;
    virtual void SetName(const TCHAR* name);
    virtual void* GetInterface(const TCHAR* name);
 
    virtual bool Activate();
    virtual ControlUI* GetParent() const;
 
-   virtual CStdString GetText() const;
+   virtual StdString GetText() const;
    virtual void SetText(const TCHAR* txt);
 
-   virtual CStdString GetToolTip() const;
+   virtual StdString GetToolTip() const;
    virtual void SetToolTip(const TCHAR* txt);
 
    virtual TCHAR GetShortcut() const;
@@ -428,9 +427,9 @@ protected:
    PaintManagerUI* m_manager;
    ControlUI* m_parent;
    TCHAR m_chShortcut;
-   CStdString m_sName;
-   CStdString m_txt;
-   CStdString m_sToolTip;
+   StdString m_sName;
+   StdString m_txt;
+   StdString m_sToolTip;
    UINT_PTR m_pTag;
    RECT m_rcItem;
    bool m_bVisible;

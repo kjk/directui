@@ -63,7 +63,7 @@ protected:
    virtual void ProcessScrollbar(RECT rc, int cyRequired);
 
 protected:
-   CStdPtrArray m_items;
+   StdPtrArray m_items;
    RECT m_rcInset;
    int m_iPadding;
    SIZE m_cxyFixed;
@@ -203,7 +203,7 @@ protected:
    RECT m_rcDialog;
    RECT m_rcOriginal;
    bool m_bFirstResize;
-   CStdValArray m_aModes;
+   StdValArray m_aModes;
 };
 
 

@@ -38,7 +38,7 @@ public:
    void Init();
    UINT GetControlFlags() const;
 
-   CStdString GetText() const;
+   StdString GetText() const;
 
    SIZE GetDropDownSize() const;
    void SetDropDownSize(SIZE szDropBox);

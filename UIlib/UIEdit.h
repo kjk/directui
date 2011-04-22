@@ -48,7 +48,7 @@ public:
 
    void Init();
    
-   CStdString GetText() const;
+   StdString GetText() const;
    void SetText(const TCHAR* txt);
 
    void SetEnabled(bool bEnabled);
