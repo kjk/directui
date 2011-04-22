@@ -446,7 +446,7 @@ UINT CTextPanelUI::GetControlFlags() const
 void CTextPanelUI::Event(TEventUI& event)
 {
    if (event.Type == UIEVENT_SETCURSOR)  {
-      for( int i = 0; i < m_nLinks; i++)  {
+      for (int i = 0; i < m_nLinks; i++)  {
          if (::PtInRect(&m_rcLinks[i], event.ptMouse))  {
             ::SetCursor(::LoadCursor(NULL, MAKEINTRESOURCE(IDC_HAND)));
             return;
@@ -454,7 +454,7 @@ void CTextPanelUI::Event(TEventUI& event)
       }      
    }
    if (event.Type == UIEVENT_BUTTONDOWN && IsEnabled())  {
-      for( int i = 0; i < m_nLinks; i++)  {
+      for (int i = 0; i < m_nLinks; i++)  {
          if (::PtInRect(&m_rcLinks[i], event.ptMouse))  {
             m_uButtonState |= UISTATE_PUSHED;
             Invalidate();
@@ -463,7 +463,7 @@ void CTextPanelUI::Event(TEventUI& event)
       }      
    }
    if (event.Type == UIEVENT_BUTTONUP)  {
-      for( int i = 0; i < m_nLinks; i++)  {
+      for (int i = 0; i < m_nLinks; i++)  {
          if (::PtInRect(&m_rcLinks[i], event.ptMouse))  Activate();
       }      
       m_uButtonState &= ~UISTATE_PUSHED;

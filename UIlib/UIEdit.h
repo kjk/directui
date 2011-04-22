@@ -30,7 +30,7 @@ public:
    void DoPaint(HDC hDC, const RECT& rcPaint);
 
 protected:
-   CSingleLineEditWnd* m_pWindow;
+   CSingleLineEditWnd* m_win;
 
    bool m_bReadOnly;
    UINT m_uEditStyle;
@@ -69,7 +69,7 @@ public:
    void DoPaint(HDC hDC, const RECT& rcPaint);
 
 protected:
-   CMultiLineEditWnd* m_pWindow;
+   CMultiLineEditWnd* m_win;
 };
 
 

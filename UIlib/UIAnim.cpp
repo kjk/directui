@@ -143,10 +143,10 @@ void CAnimationSpooler::Term()
 {
    // Get rid of the animation jobs
    int i;
-   for( i = 0; i < m_aJobs.GetSize(); i++)  delete static_cast<CAnimJobUI*>(m_aJobs[i]);
+   for (i = 0; i < m_aJobs.GetSize(); i++)  delete static_cast<CAnimJobUI*>(m_aJobs[i]);
    m_aJobs.Empty();
    // Release Direct3D references
-   for( i = 0; i < m_nBuffers; i++)  {
+   for (i = 0; i < m_nBuffers; i++)  {
       m_p3DVertices[i]->Release();
       m_p3DTextures[i]->Release();
    }
@@ -197,7 +197,7 @@ bool CAnimationSpooler::PrepareAnimation(HWND hWnd)
    ::SendMessage(hWnd, WM_PRINTCLIENT, (WPARAM) hDC, PRF_CHECKVISIBLE | PRF_CLIENT | PRF_ERASEBKGND | PRF_CHILDREN);
    m_p3DBackSurface->ReleaseDC(hDC);
    // Allow each job to prepare its 3D objects
-   for( int i = 0; i < m_aJobs.GetSize(); i++)  {
+   for (int i = 0; i < m_aJobs.GetSize(); i++)  {
       CAnimJobUI* pJob = static_cast<CAnimJobUI*>(m_aJobs[i]);
       switch( pJob->AnimType)  {
       case UIANIMTYPE_FLAT:
@@ -207,7 +207,7 @@ bool CAnimationSpooler::PrepareAnimation(HWND hWnd)
    }
    // Assign start time
    DWORD dwTick = ::timeGetTime();
-   for( int j = 0; j < m_aJobs.GetSize(); j++)  {
+   for (int j = 0; j < m_aJobs.GetSize(); j++)  {
       CAnimJobUI* pJob = static_cast<CAnimJobUI*>(m_aJobs[j]);
       pJob->dwStartTick += dwTick;
    }
@@ -233,7 +233,7 @@ bool CAnimationSpooler::Render()
    if (FAILED(Hr))  return false;
    int nAnimated = 0;
    DWORD dwTick = ::timeGetTime();
-   for( int i = 0; i < m_aJobs.GetSize(); i++)  {
+   for (int i = 0; i < m_aJobs.GetSize(); i++)  {
       const CAnimJobUI* pJob = static_cast<CAnimJobUI*>(m_aJobs[i]);
       if (dwTick < pJob->dwStartTick)  continue;
       DWORD dwTickNow = MIN(dwTick, pJob->dwStartTick + pJob->dwDuration);
@@ -315,8 +315,8 @@ bool CAnimationSpooler::SetColorKey(LPDIRECT3DTEXTURE9 pTexture, LPDIRECT3DSURFA
    Hr = pTex->LockRect(0, &d3dlr, 0, 0);
    if (FAILED(Hr))  return false;
    DWORD* pBits = static_cast<DWORD*>(d3dlr.pBits);
-   for( int y = 0; y < iTexSize; y++)  {
-      for( int x = 0; x < iTexSize; x++)  {
+   for (int y = 0; y < iTexSize; y++)  {
+      for (int x = 0; x < iTexSize; x++)  {
          if (pBits[x] == dwColorKey)  pBits[x] = 0x00000000;
       }
       pBits += d3dlr.Pitch / sizeof(DWORD);
@@ -350,8 +350,8 @@ bool CAnimationSpooler::PrepareJob_Flat(CAnimJobUI* pJob)
    FLOAT fTexSize = (FLOAT) iTexSize;
    // Start building tiles
    pJob->iBufferStart = m_nBuffers;
-   for( int x = rc.left; x < rc.right; x += iTexSize)  {
-      for( int y = rc.top; y < rc.bottom; y += iTexSize)  {
+   for (int x = rc.left; x < rc.right; x += iTexSize)  {
+      for (int y = rc.top; y < rc.bottom; y += iTexSize)  {
          RECT rcTile = { x, y, MIN(rc.right, x + iTexSize), MIN(rc.bottom, y + iTexSize) };
          // Adjust texture coordinates, because last tile may only use parts
          // of the texture...
@@ -435,7 +435,7 @@ bool CAnimationSpooler::RenderJob_Flat(const CAnimJobUI* pJob, LPDIRECT3DSURFACE
    FLOAT fCos = (FLOAT) cos(pJob->data.plot.mFrom.zrot * scale1);
    DWORD clrAlpha = ((DWORD)(0xFF - (FLOAT) abs(pJob->data.plot.mFrom.alpha) * (pJob->data.plot.mFrom.alpha >= 0 ? scale1 : scale2)) << 24) | 0xffffff;
    HRESULT Hr = 0;
-   for( int iBuffer = pJob->iBufferStart; iBuffer < pJob->iBufferEnd; iBuffer++)  {
+   for (int iBuffer = pJob->iBufferStart; iBuffer < pJob->iBufferEnd; iBuffer++)  {
       // Lock the vertex buffer and apply transformation
       LPDIRECT3DVERTEXBUFFER9 pVBuffer = m_p3DVertices[iBuffer];
       void* pVertices = NULL;
@@ -443,7 +443,7 @@ bool CAnimationSpooler::RenderJob_Flat(const CAnimJobUI* pJob, LPDIRECT3DSURFACE
       if (FAILED(Hr))  return false;
       CUSTOMFAN verts;
       memcpy(verts, m_fans[iBuffer], sizeof(CUSTOMFAN));
-      for( int i = 0; i < sizeof(CUSTOMFAN) / sizeof(CUSTOMVERTEX); i++)  {
+      for (int i = 0; i < sizeof(CUSTOMFAN) / sizeof(CUSTOMVERTEX); i++)  {
          verts[i].x -= ptCenter.x;
          verts[i].y -= ptCenter.y;
          verts[i].x += xtrans;                         // Translate

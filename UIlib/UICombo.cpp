@@ -22,7 +22,7 @@ void CSingleLinePickUI::Event(TEventUI& event)
 {
    if (event.Type == UIEVENT_SETCURSOR) 
    {
-      for( int i = 0; i < m_nLinks; i++)  {
+      for (int i = 0; i < m_nLinks; i++)  {
          if (::PtInRect(&m_rcLinks[i], event.ptMouse))  {
             ::SetCursor(::LoadCursor(NULL, MAKEINTRESOURCE(IDC_HAND)));
             return;
@@ -37,7 +37,7 @@ void CSingleLinePickUI::Event(TEventUI& event)
       }
       else {
          // Check for link press
-         for( int i = 0; i < m_nLinks; i++)  {
+         for (int i = 0; i < m_nLinks; i++)  {
             if (::PtInRect(&m_rcLinks[i], event.ptMouse))  {
                m_manager->SendNotify(this, _T("link"));
                return;
@@ -169,13 +169,13 @@ LRESULT CDropDownWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
       // The trick is to add the items to the new container. Their owner gets
       // reassigned by this operation - which is why it is important to reassign
       // the items back to the righfull owner/manager when the window closes.
-      CControlCanvasUI* pWindow = new CControlCanvasUI;
+      CControlCanvasUI* win = new CControlCanvasUI;
       CVerticalLayoutUI* pLayout = new CVerticalLayoutUI;
-      for( int i = 0; i < m_owner->GetCount(); i++)  pLayout->Add(static_cast<CControlUI*>(m_owner->GetItem(i)));
+      for (int i = 0; i < m_owner->GetCount(); i++)  pLayout->Add(static_cast<CControlUI*>(m_owner->GetItem(i)));
       pLayout->SetAutoDestroy(false);
       pLayout->EnableScrollBar();
-      pWindow->Add(pLayout);
-      m_pm.AttachDialog(pWindow);
+      win->Add(pLayout);
+      m_pm.AttachDialog(win);
       return 0;
    }
    else if (uMsg == WM_CLOSE)  {
@@ -356,8 +356,8 @@ void CDropDownUI::Event(TEventUI& event)
 bool CDropDownUI::Activate()
 {
    if (!CControlUI::Activate())  return false;
-   CDropDownWnd* pWindow = new CDropDownWnd;
-   pWindow->Init(this);
+   CDropDownWnd* win = new CDropDownWnd;
+   win->Init(this);
    if (m_manager != NULL)  m_manager->SendNotify(this, _T("dropdown"));
    Invalidate();
    return true;
@@ -384,7 +384,7 @@ void CDropDownUI::SetPos(RECT rc)
 {
    // Put all elements out of sight
    RECT rcNull = { 0 };
-   for( int i = 0; i < m_items.GetSize(); i++)  static_cast<CControlUI*>(m_items[i])->SetPos(rcNull);
+   for (int i = 0; i < m_items.GetSize(); i++)  static_cast<CControlUI*>(m_items[i])->SetPos(rcNull);
    // Position this control
    CControlUI::SetPos(rc);
 }

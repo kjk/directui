@@ -52,7 +52,7 @@ void CTabFolderUI::Event(TEventUI& event)
 {
    if (event.Type == UIEVENT_BUTTONDOWN && IsEnabled()) 
    {
-      for( int i = 0; i < m_items.GetSize() && i < m_aTabAreas.GetSize(); i++)  {
+      for (int i = 0; i < m_items.GetSize() && i < m_aTabAreas.GetSize(); i++)  {
          if (::PtInRect( static_cast<LPRECT>(m_aTabAreas[i]), event.ptMouse))  {
             SelectItem(i);
             return;
@@ -109,7 +109,7 @@ void CTabFolderUI::DoPaint(HDC hDC, const RECT& rcPaint)
       {
          int posX = 1;
          m_aTabAreas.Empty();
-         for( int i = 0; i < GetCount(); i++)  
+         for (int i = 0; i < GetCount(); i++)  
          {
             const CControlUI* pPage = GetItem(i);
             const CStdString& strText = pPage->GetText();

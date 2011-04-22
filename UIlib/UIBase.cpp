@@ -543,7 +543,7 @@ bool CStdPtrArray::Remove(int idx)
 
 int CStdPtrArray::Find(void* data) const
 {
-   for( int i = 0; i < m_nCount; i++)  if (m_ppVoid[i] == data)  return i;
+   for (int i = 0; i < m_nCount; i++)  if (m_ppVoid[i] == data)  return i;
    return -1;
 }
 

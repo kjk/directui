@@ -225,10 +225,10 @@ CPaintManagerUI::~CPaintManagerUI()
 {
    // Delete the control-tree structures
    int i;
-   for( i = 0; i < m_aDelayedCleanup.GetSize(); i++)  delete static_cast<CControlUI*>(m_aDelayedCleanup[i]);
+   for (i = 0; i < m_aDelayedCleanup.GetSize(); i++)  delete static_cast<CControlUI*>(m_aDelayedCleanup[i]);
    delete m_pRoot;
    // Release other collections
-   for( i = 0; i < m_aTimers.GetSize(); i++)  delete static_cast<TIMERINFO*>(m_aTimers[i]);
+   for (i = 0; i < m_aTimers.GetSize(); i++)  delete static_cast<TIMERINFO*>(m_aTimers[i]);
    // Reset other parts...
    if (m_hwndTooltip != NULL)  ::DestroyWindow(m_hwndTooltip);
    if (m_hDcOffscreen != NULL)  ::DeleteDC(m_hDcOffscreen);
@@ -380,7 +380,7 @@ bool CPaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LR
    // Not ready yet?
    if (m_hWndPaint == NULL)  return false;
    // Cycle through listeners
-   for( int i = 0; i < m_aMessageFilters.GetSize(); i++)  
+   for (int i = 0; i < m_aMessageFilters.GetSize(); i++)  
    {
       bool bHandled = false;
       LRESULT lResult = static_cast<IMessageFilterUI*>(m_aMessageFilters[i])->MessageHandler(uMsg, wParam, lParam, bHandled);
@@ -394,7 +394,7 @@ bool CPaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LR
    case WM_APP + 1:
       {
          // Delayed control-tree cleanup. See AttachDialog() for details.
-         for( int i = 0; i < m_aDelayedCleanup.GetSize(); i++)  delete static_cast<CControlUI*>(m_aDelayedCleanup[i]);
+         for (int i = 0; i < m_aDelayedCleanup.GetSize(); i++)  delete static_cast<CControlUI*>(m_aDelayedCleanup[i]);
          m_aDelayedCleanup.Empty();
       }
       break;
@@ -511,7 +511,7 @@ bool CPaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LR
                m_pRoot->DoPaint(m_hDcOffscreen, ps.rcPaint);
                ::RestoreDC(m_hDcOffscreen, iSaveDC);
                // Draw alpha bitmaps on top?
-               for( int i = 0; i < m_aPostPaint.GetSize(); i++)  {
+               for (int i = 0; i < m_aPostPaint.GetSize(); i++)  {
                   TPostPaintUI* pBlit = static_cast<TPostPaintUI*>(m_aPostPaint[i]);
                   CBlueRenderEngineUI::DoPaintAlphaBitmap(m_hDcOffscreen, this, pBlit->hBitmap, pBlit->rc, pBlit->iAlpha);
                }
@@ -591,7 +591,7 @@ bool CPaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LR
       return true;
    case WM_TIMER:
       {
-         for( int i = 0; i < m_aTimers.GetSize(); i++)  {
+         for (int i = 0; i < m_aTimers.GetSize(); i++)  {
             const TIMERINFO* pTimer = static_cast<TIMERINFO*>(m_aTimers[i]);
             if (pTimer->hWnd == m_hWndPaint && pTimer->uWinTimer == LOWORD(wParam))  {
                TEventUI event = { 0 };
@@ -875,7 +875,7 @@ bool CPaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LR
          m_pFocus->Event(event);
          // Simulate regular scrolling by sending scroll events
          event.Type = UIEVENT_VSCROLL;
-         for( int i = 0; i < abs(zDelta); i += 40)  m_pFocus->Event(event);
+         for (int i = 0; i < abs(zDelta); i += 40)  m_pFocus->Event(event);
          // Let's make sure that the scroll item below the cursor is the same as before...
          ::SendMessage(m_hWndPaint, WM_MOUSEMOVE, 0, (LPARAM) MAKELPARAM(m_ptLastMousePos.x, m_ptLastMousePos.y));
       }
@@ -960,7 +960,7 @@ bool CPaintManagerUI::TranslateMessage(const LPMSG pMsg)
    HWND hwndParent = ::GetParent(pMsg->hwnd);
    UINT uStyle = GetWindowStyle(pMsg->hwnd);
    LRESULT lRes = 0;
-   for( int i = 0; i < m_aPreMessages.GetSize(); i++)  {
+   for (int i = 0; i < m_aPreMessages.GetSize(); i++)  {
       CPaintManagerUI* pT = static_cast<CPaintManagerUI*>(m_aPreMessages[i]);
       if (pMsg->hwnd == pT->GetPaintWindow()
          || (hwndParent == pT->GetPaintWindow() && ((uStyle & WS_CHILD) != 0))) 
@@ -1040,7 +1040,7 @@ bool CPaintManagerUI::SetTimer(CControlUI* ctrl, UINT nTimerID, UINT uElapse)
 bool CPaintManagerUI::KillTimer(CControlUI* ctrl, UINT nTimerID)
 {
    ASSERT(ctrl!=NULL);
-   for( int i = 0; i< m_aTimers.GetSize(); i++)  {
+   for (int i = 0; i< m_aTimers.GetSize(); i++)  {
       TIMERINFO* pTimer = static_cast<TIMERINFO*>(m_aTimers[i]);
       if (pTimer->pSender == ctrl
           && pTimer->hWnd == m_hWndPaint
@@ -1108,7 +1108,7 @@ bool CPaintManagerUI::AddNotifier(INotifyUI* pNotifier)
 
 bool CPaintManagerUI::RemoveNotifier(INotifyUI* pNotifier)
 {
-   for( int i = 0; i < m_aNotifiers.GetSize(); i++)  {
+   for (int i = 0; i < m_aNotifiers.GetSize(); i++)  {
       if (static_cast<INotifyUI*>(m_aNotifiers[i]) == pNotifier)  {
          return m_aNotifiers.Remove(i);
       }
@@ -1124,7 +1124,7 @@ bool CPaintManagerUI::AddMessageFilter(IMessageFilterUI* pFilter)
 
 bool CPaintManagerUI::RemoveMessageFilter(IMessageFilterUI* pFilter)
 {
-   for( int i = 0; i < m_aMessageFilters.GetSize(); i++)  {
+   for (int i = 0; i < m_aMessageFilters.GetSize(); i++)  {
       if (static_cast<IMessageFilterUI*>(m_aMessageFilters[i]) == pFilter)  {
          return m_aMessageFilters.Remove(i);
       }
@@ -1150,7 +1150,7 @@ void CPaintManagerUI::SendNotify(TNotifyUI& Msg)
    // Allow sender control to react
    Msg.pSender->Notify(Msg);
    // Send to all listeners
-   for( int i = 0; i < m_aNotifiers.GetSize(); i++)  {
+   for (int i = 0; i < m_aNotifiers.GetSize(); i++)  {
       static_cast<INotifyUI*>(m_aNotifiers[i])->Notify(Msg);
    }
 }

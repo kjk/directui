@@ -449,8 +449,8 @@ void CSearchPageWnd::Notify(TNotifyUI& msg)
    if (msg.sType == _T("click"))  
    {
       if (msg.pSender->GetName() == _T("ok"))  {
-         CStandardPageWnd* pWindow = new CEditPageWnd;
-         pWindow->Create(m_hWnd, NULL, UI_WNDSTYLE_FRAME, 0L);
+         CStandardPageWnd* win = new CEditPageWnd;
+         win->Create(m_hWnd, NULL, UI_WNDSTYLE_FRAME, 0L);
       }
       if (msg.pSender->GetName() == _T("cancel"))  Close();
    }

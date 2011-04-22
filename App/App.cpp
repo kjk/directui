@@ -53,28 +53,28 @@ public:
 
    void _CreatePage(CStdString sName)
    {
-      CStandardPageWnd* pWindow = NULL;
-      if (sName == "page_start")  pWindow = new CStartPageWnd;
-      if (sName == "page_configure")  pWindow = new CConfigurePageWnd;
-      if (sName == "page_reports")  pWindow = new CReportsPageWnd;
-      if (sName == "page_systems")  pWindow = new CSystemsPageWnd;
-      if (sName == "page_registers")  pWindow = new CRegistersPageWnd;
-      if (sName == "link_start")  pWindow = new CStartPageWnd;
-      if (sName == "link_configure")  pWindow = new CConfigurePageWnd;
-      if (sName == "link_reports")  pWindow = new CReportsPageWnd;
-      if (sName == "link_systems")  pWindow = new CSystemsPageWnd;
-      if (sName == "link_registers")  pWindow = new CRegistersPageWnd;
-      if (pWindow != NULL)  {
+      CStandardPageWnd* win = NULL;
+      if (sName == "page_start")  win = new CStartPageWnd;
+      if (sName == "page_configure")  win = new CConfigurePageWnd;
+      if (sName == "page_reports")  win = new CReportsPageWnd;
+      if (sName == "page_systems")  win = new CSystemsPageWnd;
+      if (sName == "page_registers")  win = new CRegistersPageWnd;
+      if (sName == "link_start")  win = new CStartPageWnd;
+      if (sName == "link_configure")  win = new CConfigurePageWnd;
+      if (sName == "link_reports")  win = new CReportsPageWnd;
+      if (sName == "link_systems")  win = new CSystemsPageWnd;
+      if (sName == "link_registers")  win = new CRegistersPageWnd;
+      if (win != NULL)  {
          if (m_hWndClient != NULL)  ::PostMessage(m_hWndClient, WM_CLOSE, 0, 0L);
-         pWindow->m_pm.AddNotifier(this);
-         m_hWndClient = pWindow->Create(m_hWnd, NULL, UI_WNDSTYLE_CHILD, 0);
+         win->m_pm.AddNotifier(this);
+         m_hWndClient = win->Create(m_hWnd, NULL, UI_WNDSTYLE_CHILD, 0);
          PostMessage(WM_SIZE);
          return;
       }
-      if (sName == "page_search")  pWindow = new CSearchPageWnd;
-      if (sName == "page_edit")  pWindow = new CEditPageWnd;
-      if (pWindow != NULL)  {
-         pWindow->Create(m_hWnd, NULL, UI_WNDSTYLE_FRAME, UI_WNDSTYLE_EX_FRAME);
+      if (sName == "page_search")  win = new CSearchPageWnd;
+      if (sName == "page_edit")  win = new CEditPageWnd;
+      if (win != NULL)  {
+         win->Create(m_hWnd, NULL, UI_WNDSTYLE_FRAME, UI_WNDSTYLE_EX_FRAME);
          return;
       }
    }

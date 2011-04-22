@@ -57,7 +57,7 @@ const TCHAR* CSingleLineEditWnd::GetSuperClassName() const
 void CSingleLineEditWnd::OnFinalMessage(HWND /*hWnd*/)
 {
    // Clear reference and die
-   m_owner->m_pWindow = NULL;
+   m_owner->m_win = NULL;
    delete this;
 }
 
@@ -93,7 +93,7 @@ LRESULT CSingleLineEditWnd::OnEditChanged(UINT /*uMsg*/, WPARAM /*wParam*/, LPAR
 }
 
 
-CSingleLineEditUI::CSingleLineEditUI() : m_pWindow(NULL), m_uEditStyle(ES_AUTOHSCROLL), m_bReadOnly(false)
+CSingleLineEditUI::CSingleLineEditUI() : m_win(NULL), m_uEditStyle(ES_AUTOHSCROLL), m_bReadOnly(false)
 {
 }
 
@@ -118,23 +118,23 @@ void CSingleLineEditUI::Event(TEventUI& event)
    }
    if (event.Type == UIEVENT_WINDOWSIZE) 
    {
-      if (m_pWindow != NULL)  m_manager->SetFocus(NULL);
+      if (m_win != NULL)  m_manager->SetFocus(NULL);
    }
    if (event.Type == UIEVENT_SETFOCUS)  
    {
       if (IsEnabled())  {
-         m_pWindow = new CSingleLineEditWnd();
-         ASSERT(m_pWindow);
-         m_pWindow->Init(this);
+         m_win = new CSingleLineEditWnd();
+         ASSERT(m_win);
+         m_win->Init(this);
       }
    }
-   if (event.Type == UIEVENT_BUTTONDOWN && IsFocused() && m_pWindow == NULL)  
+   if (event.Type == UIEVENT_BUTTONDOWN && IsFocused() && m_win == NULL)  
    {
       // FIX: In the case of window having lost focus, editor is gone, but
       //      we don't get another SetFocus when we click on the control again.
-      m_pWindow = new CSingleLineEditWnd();
-      ASSERT(m_pWindow);
-      m_pWindow->Init(this);
+      m_win = new CSingleLineEditWnd();
+      ASSERT(m_win);
+      m_win->Init(this);
       return;
    }
    CControlUI::Event(event);
@@ -222,7 +222,7 @@ const TCHAR* CMultiLineEditWnd::GetSuperClassName() const
 
 void CMultiLineEditWnd::OnFinalMessage(HWND /*hWnd*/)
 {
-   m_owner->m_pWindow = NULL;
+   m_owner->m_win = NULL;
    delete this;
 }
 
@@ -250,20 +250,20 @@ LRESULT CMultiLineEditWnd::OnEditChanged(UINT /*uMsg*/, WPARAM /*wParam*/, LPARA
 }
 
 
-CMultiLineEditUI::CMultiLineEditUI() : m_pWindow(NULL)
+CMultiLineEditUI::CMultiLineEditUI() : m_win(NULL)
 {
 }
 
 CMultiLineEditUI::~CMultiLineEditUI()
 {
-   if (m_pWindow != NULL && ::IsWindow(*m_pWindow))  m_pWindow->Close();
+   if (m_win != NULL && ::IsWindow(*m_win))  m_win->Close();
 }
 
 void CMultiLineEditUI::Init()
 {
-   m_pWindow = new CMultiLineEditWnd();
-   ASSERT(m_pWindow);
-   m_pWindow->Init(this);
+   m_win = new CMultiLineEditWnd();
+   ASSERT(m_win);
+   m_win->Init(this);
 }
 
 const TCHAR* CMultiLineEditUI::GetClass() const
@@ -279,18 +279,18 @@ UINT CMultiLineEditUI::GetControlFlags() const
 void CMultiLineEditUI::SetText(const TCHAR* txt)
 {
    m_txt = txt;
-   if (m_pWindow != NULL)  SetWindowText(*m_pWindow, txt);
+   if (m_win != NULL)  SetWindowText(*m_win, txt);
    if (m_manager != NULL)  m_manager->SendNotify(this, _T("changed"));
    Invalidate();
 }
 
 CStdString CMultiLineEditUI::GetText() const
 {
-   if (m_pWindow != NULL)  {
-      int cchLen = ::GetWindowTextLength(*m_pWindow) + 1;
+   if (m_win != NULL)  {
+      int cchLen = ::GetWindowTextLength(*m_win) + 1;
       TCHAR* pstr = static_cast<TCHAR*>(_alloca(cchLen * sizeof(TCHAR)));
       ASSERT(pstr);
-      ::GetWindowText(*m_pWindow, pstr, cchLen);
+      ::GetWindowText(*m_win, pstr, cchLen);
       return CStdString(pstr);
    }
    return m_txt;
@@ -299,24 +299,24 @@ CStdString CMultiLineEditUI::GetText() const
 void CMultiLineEditUI::SetVisible(bool bVisible)
 {
    CControlUI::SetVisible(bVisible);
-   if (m_pWindow != NULL)  ::ShowWindow(*m_pWindow, bVisible ? SW_SHOWNOACTIVATE : SW_HIDE);
+   if (m_win != NULL)  ::ShowWindow(*m_win, bVisible ? SW_SHOWNOACTIVATE : SW_HIDE);
 }
 
 void CMultiLineEditUI::SetEnabled(bool bEnabled)
 {
    CControlUI::SetEnabled(bEnabled);
-   if (m_pWindow != NULL)  ::EnableWindow(*m_pWindow, bEnabled == true);
+   if (m_win != NULL)  ::EnableWindow(*m_win, bEnabled == true);
 }
 
 void CMultiLineEditUI::SetReadOnly(bool bReadOnly)
 {
-   if (m_pWindow != NULL)  Edit_SetReadOnly(*m_pWindow, bReadOnly == true);
+   if (m_win != NULL)  Edit_SetReadOnly(*m_win, bReadOnly == true);
    Invalidate();
 }
 
 bool CMultiLineEditUI::IsReadOnly() const
 {
-   return (GetWindowStyle(*m_pWindow) & ES_READONLY) != 0;
+   return (GetWindowStyle(*m_win) & ES_READONLY) != 0;
 }
 
 SIZE CMultiLineEditUI::EstimateSize(SIZE /*szAvailable*/)
@@ -326,10 +326,10 @@ SIZE CMultiLineEditUI::EstimateSize(SIZE /*szAvailable*/)
 
 void CMultiLineEditUI::SetPos(RECT rc)
 {
-   if (m_pWindow != NULL)  {
+   if (m_win != NULL)  {
       CRect rcEdit = rc;
       rcEdit.Deflate(3, 3);
-      ::SetWindowPos(*m_pWindow, HWND_TOP, rcEdit.left, rcEdit.top, rcEdit.GetWidth(), rcEdit.GetHeight(), SWP_NOACTIVATE);
+      ::SetWindowPos(*m_win, HWND_TOP, rcEdit.left, rcEdit.top, rcEdit.GetWidth(), rcEdit.GetHeight(), SWP_NOACTIVATE);
    }
    CControlUI::SetPos(rc);
 }
@@ -343,11 +343,11 @@ void CMultiLineEditUI::Event(TEventUI& event)
 {
    if (event.Type == UIEVENT_WINDOWSIZE) 
    {
-      if (m_pWindow != NULL)  m_manager->SetFocus(NULL);
+      if (m_win != NULL)  m_manager->SetFocus(NULL);
    }
    if (event.Type == UIEVENT_SETFOCUS)  
    {
-      if (m_pWindow != NULL)  ::SetFocus(*m_pWindow);
+      if (m_win != NULL)  ::SetFocus(*m_win);
    }
    CControlUI::Event(event);
 }

@@ -373,11 +373,11 @@ void CListUI::SetPos(RECT rc)
    // The header/columns may or may not be visible at runtime. In either case
    // we should determine the correct dimensions...
    if (m_pHeader->IsVisible())  {
-      for( int i = 0; i < m_ListInfo.nColumns; i++)  m_ListInfo.rcColumn[i] = m_pHeader->GetItem(i)->GetPos();
+      for (int i = 0; i < m_ListInfo.nColumns; i++)  m_ListInfo.rcColumn[i] = m_pHeader->GetItem(i)->GetPos();
    }
    else {
       RECT rcCol = { rc.left, 0, rc.left, 0 };
-      for( int i = 0; i < m_ListInfo.nColumns; i++)  {
+      for (int i = 0; i < m_ListInfo.nColumns; i++)  {
          SIZE sz = m_pHeader->GetItem(i)->EstimateSize(CSize(rc.right - rc.left, rc.bottom - rc.top));
          rcCol.right += sz.cx;
          m_ListInfo.rcColumn[i] = rcCol;
@@ -700,7 +700,7 @@ void CListTextElementUI::Event(TEventUI& event)
 {
    // When you hover over a link
    if (event.Type == UIEVENT_SETCURSOR)  {
-      for( int i = 0; i < m_nLinks; i++)  {
+      for (int i = 0; i < m_nLinks; i++)  {
          if (::PtInRect(&m_rcLinks[i], event.ptMouse))  {
             ::SetCursor(::LoadCursor(NULL, MAKEINTRESOURCE(IDC_HAND)));
             return;
@@ -759,7 +759,7 @@ void CListTextElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
    if (pCallback == NULL)  return;
    m_nLinks = 0;
    int nLinks = lengthof(m_rcLinks);
-   for( int i = 0; i < pInfo->nColumns; i++) 
+   for (int i = 0; i < pInfo->nColumns; i++) 
    {
       // Paint text
       RECT rcItem = { pInfo->rcColumn[i].left, m_rcItem.top, pInfo->rcColumn[i].right, m_rcItem.bottom - 1 };
@@ -964,7 +964,7 @@ void CListExpandElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
    m_nLinks = 0;
    CStdString sColText;
    int nLinks = lengthof(m_rcLinks);
-   for( int i = 0; i < pInfo->nColumns; i++) 
+   for (int i = 0; i < pInfo->nColumns; i++) 
    {
       // Paint text
       RECT rcItem = { pInfo->rcColumn[i].left, m_rcItem.top, pInfo->rcColumn[i].right, m_rcItem.top + m_cyItem };

@@ -101,7 +101,7 @@ const TCHAR* CMarkupNode::GetAttributeValue(const TCHAR* name)
 {
    if (m_owner == NULL)  return NULL;
    if (m_nAttributes == 0)  _MapAttributes();
-   for( int i = 0; i < m_nAttributes; i++)  {
+   for (int i = 0; i < m_nAttributes; i++)  {
       if (_tcscmp(m_owner->m_pstrXML + m_aAttributes[i].iName, name) == 0)  return m_owner->m_pstrXML + m_aAttributes[i].iValue;
    }
    return _T("");
@@ -120,7 +120,7 @@ bool CMarkupNode::GetAttributeValue(const TCHAR* name, TCHAR* value, SIZE_T cchM
 {
    if (m_owner == NULL)  return false;
    if (m_nAttributes == 0)  _MapAttributes();
-   for( int i = 0; i < m_nAttributes; i++)  {
+   for (int i = 0; i < m_nAttributes; i++)  {
       if (_tcscmp(m_owner->m_pstrXML + m_aAttributes[i].iName, name) == 0)  {
          _tcsncpy(value, m_owner->m_pstrXML + m_aAttributes[i].iValue, cchMax);
          return true;
@@ -147,7 +147,7 @@ bool CMarkupNode::HasAttribute(const TCHAR* name)
 {
    if (m_owner == NULL)  return false;
    if (m_nAttributes == 0)  _MapAttributes();
-   for( int i = 0; i < m_nAttributes; i++)  {
+   for (int i = 0; i < m_nAttributes; i++)  {
       if (_tcscmp(m_owner->m_pstrXML + m_aAttributes[i].iName, name) == 0)  return true;
    }
    return false;
@@ -270,7 +270,7 @@ bool CMarkup::_Parse()
 bool CMarkup::_Parse(TCHAR*& txt, ULONG iParent)
 {
    ULONG iPrevious = 0;
-   for( ; ;)  
+   for (; ;)  
    {
       if (*txt == '\0' && iParent <= 1)  return true;
       if (*txt != '<')  return _Failed(_T("Expected start tag"), txt);

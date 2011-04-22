@@ -267,7 +267,7 @@ protected:
 protected:
    LONG m_dwRef;
    CActiveXUI* m_owner;
-   CActiveXWnd* m_pWindow;
+   CActiveXWnd* m_win;
    IUnknown* m_pUnkSite;
    IViewObject* m_pViewObject;
    IOleInPlaceObjectWindowless* m_pInPlaceObject;
@@ -283,7 +283,7 @@ protected:
 CActiveXCtrl::CActiveXCtrl() : 
    m_dwRef(1), 
    m_owner(NULL), 
-   m_pWindow(NULL),
+   m_win(NULL),
    m_pUnkSite(NULL), 
    m_pViewObject(NULL),
    m_pInPlaceObject(NULL),
@@ -298,7 +298,7 @@ CActiveXCtrl::CActiveXCtrl() :
 
 CActiveXCtrl::~CActiveXCtrl()
 {
-   if (m_pWindow != NULL)  ::DestroyWindow(*m_pWindow);
+   if (m_win != NULL)  ::DestroyWindow(*m_win);
    if (m_pUnkSite != NULL)  m_pUnkSite->Release();
    if (m_pViewObject != NULL)  m_pViewObject->Release();
    if (m_pInPlaceObject != NULL)  m_pInPlaceObject->Release();
@@ -535,9 +535,9 @@ STDMETHODIMP CActiveXCtrl::OnInPlaceDeactivateEx(BOOL fNoRedraw)
       m_pInPlaceObject->Release();
       m_pInPlaceObject = NULL;
    }
-   if (m_pWindow != NULL)  {
-      ::DestroyWindow(*m_pWindow);
-      m_pWindow = NULL;
+   if (m_win != NULL)  {
+      ::DestroyWindow(*m_win);
+      m_win = NULL;
    }
    return S_OK;
 }
@@ -710,10 +710,10 @@ STDMETHODIMP CActiveXCtrl::ParseDisplayName(IBindCtx *pbc, LPOLESTR pszDisplayNa
 
 HRESULT CActiveXCtrl::CreateActiveXWnd()
 {
-   if (m_pWindow != NULL)  return S_OK;
-   m_pWindow = new CActiveXWnd;
-   if (m_pWindow == NULL)  return E_OUTOFMEMORY;
-   m_owner->m_hwndHost = m_pWindow->Init(this, m_owner->GetManager()->GetPaintWindow());
+   if (m_win != NULL)  return S_OK;
+   m_win = new CActiveXWnd;
+   if (m_win == NULL)  return E_OUTOFMEMORY;
+   m_owner->m_hwndHost = m_win->Init(this, m_owner->GetManager()->GetPaintWindow());
    return S_OK;
 }
 
@@ -868,8 +868,8 @@ void CActiveXUI::SetPos(RECT rc)
       m_ctrl->m_pInPlaceObject->SetObjectRects(&rcItem, &rcItem);
    }
    if (!m_ctrl->m_bWindowless)  {
-      ASSERT(m_ctrl->m_pWindow);
-      ::MoveWindow(*m_ctrl->m_pWindow, m_rcItem.left, m_rcItem.top, m_rcItem.right - m_rcItem.left, m_rcItem.bottom - m_rcItem.top, TRUE);
+      ASSERT(m_ctrl->m_win);
+      ::MoveWindow(*m_ctrl->m_win, m_rcItem.left, m_rcItem.top, m_rcItem.right - m_rcItem.left, m_rcItem.bottom - m_rcItem.top, TRUE);
    }
 }
 

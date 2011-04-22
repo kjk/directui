@@ -433,7 +433,7 @@ void CBlueRenderEngineUI::DoPaintPrettyText(HDC hDC, CPaintManagerUI* manager, R
    int i;
    bool bHoverLink = false;
    POINT ptMouse = manager->GetMousePos();
-   for( i = 0; !bHoverLink && i < nLinkRects; i++)  {
+   for (i = 0; !bHoverLink && i < nLinkRects; i++)  {
       if (::PtInRect(prcLinks + i, ptMouse))  bHoverLink = true;
    }
 
@@ -669,7 +669,7 @@ void CBlueRenderEngineUI::DoPaintPrettyText(HDC hDC, CPaintManagerUI* manager, R
    }
 
    // Clear remaining link rects and return number of used rects
-   for( i = linkIdx; i < nLinkRects; i++)  ::ZeroMemory(prcLinks + i, sizeof(RECT));
+   for (i = linkIdx; i < nLinkRects; i++)  ::ZeroMemory(prcLinks + i, sizeof(RECT));
    nLinkRects = linkIdx;
 
    // Return size of text when requested
@@ -714,7 +714,7 @@ void CBlueRenderEngineUI::DoPaintGradient(HDC hDC, CPaintManagerUI* manager, REC
       else if (nSteps >= 8)  nShift = 3;
       else if (nSteps >= 4)  nShift = 2;
       int nLines = 1 << nShift;
-      for( int i = 0; i < nLines; i++)  {
+      for (int i = 0; i < nLines; i++)  {
          // Do a little alpha blending
          BYTE bR = (BYTE) ((GetRValue(clrSecond) * (nLines - i) + GetRValue(clrFirst) * i) >> nShift);
          BYTE bG = (BYTE) ((GetGValue(clrSecond) * (nLines - i) + GetGValue(clrFirst) * i) >> nShift);
@@ -818,8 +818,8 @@ HBITMAP CBlueRenderEngineUI::GenerateAlphaBitmap(CPaintManagerUI* manager, CCont
       COLORREF clrBack = manager->GetThemeColor(Background);
       DWORD dwKey = RGB(GetBValue(clrBack), GetGValue(clrBack), GetRValue(clrBack));
       DWORD dwShowColor = 0xFF000000;
-      for( int y = 0; y < abs(bmi.bmiHeader.biHeight); y++)  {
-         for( int x = 0; x < bmi.bmiHeader.biWidth; x++)  {
+      for (int y = 0; y < abs(bmi.bmiHeader.biHeight); y++)  {
+         for (int x = 0; x < bmi.bmiHeader.biWidth; x++)  {
             if (*pDest != dwKey)  *pDest = *pDest | dwShowColor; 
             else *pDest = 0x00000000;
             pDest++;
