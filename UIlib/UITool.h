@@ -63,6 +63,5 @@ public:
    void DoPaint(HDC hDC, const RECT& rcPaint);
 };
 
-
 #endif // !defined(AFX_UITOOL_H__20060218_57EB_12A7_9A10_0080AD509054__INCLUDED_)
 
