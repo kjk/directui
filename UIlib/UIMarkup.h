@@ -11,16 +11,16 @@ class UILIB_API CMarkup
 {
 friend CMarkupNode;
 public:
-   CMarkup(const TCHAR* pstrXML = NULL);
+   CMarkup(const TCHAR* xml = NULL);
    ~CMarkup();
 
-   bool Load(const TCHAR* pstrXML);
+   bool Load(const TCHAR* xml);
    bool LoadFromFile(const TCHAR* pstrFilename);
    void Release();
    bool IsValid() const;
 
    void SetPreserveWhitespace(bool bPreserve = true);
-   void GetLastErrorMessage(TCHAR* pstrMessage, SIZE_T cchMax) const;
+   void GetLastErrorMessage(TCHAR* msg, SIZE_T cchMax) const;
    void GetLastErrorLocation(TCHAR* pstrSource, SIZE_T cchMax) const;
 
    CMarkupNode GetRoot();
@@ -35,7 +35,7 @@ private:
       ULONG iData;
    } XMLELEMENT;
    
-   TCHAR* m_pstrXML;
+   TCHAR* m_xml;
    XMLELEMENT* m_pElements;
    ULONG m_nElements;
    ULONG m_nReservedElements;

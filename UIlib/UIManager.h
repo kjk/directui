@@ -294,13 +294,13 @@ public:
 
    bool SetNextTabControl(bool bForward = true);
 
-   bool SetTimer(CControlUI* ctrl, UINT nTimerID, UINT uElapse);
-   bool KillTimer(CControlUI* ctrl, UINT nTimerID);
+   bool SetTimer(CControlUI* ctrl, UINT timerID, UINT uElapse);
+   bool KillTimer(CControlUI* ctrl, UINT timerID);
 
    bool AddNotifier(INotifyUI* ctrl);
    bool RemoveNotifier(INotifyUI* ctrl);   
    void SendNotify(TNotifyUI& Msg);
-   void SendNotify(CControlUI* ctrl, const TCHAR* pstrMessage, WPARAM wParam = 0, LPARAM lParam = 0);
+   void SendNotify(CControlUI* ctrl, const TCHAR* msg, WPARAM wParam = 0, LPARAM lParam = 0);
 
    bool AddMessageFilter(IMessageFilterUI* pFilter);
    bool RemoveMessageFilter(IMessageFilterUI* pFilter);

@@ -3,10 +3,10 @@
 #include "UIDlgBuilder.h"
 
 
-CControlUI* CDialogBuilder::Create(const TCHAR* pstrXML, IDialogBuilderCallback* pCallback /*= NULL*/)
+CControlUI* CDialogBuilder::Create(const TCHAR* xml, IDialogBuilderCallback* pCallback /*= NULL*/)
 {
    m_pCallback = pCallback;
-   if (!m_xml.Load(pstrXML))  return NULL;
+   if (!m_xml.Load(xml))  return NULL;
    // NOTE: The root element is actually discarded since the _Parse() methods is
    //       parsing children and attaching to the current node.
    CMarkupNode root = m_xml.GetRoot();

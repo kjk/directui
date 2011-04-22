@@ -42,7 +42,7 @@ CMarkupNode CMarkupNode::GetChild(const TCHAR* name)
    if (m_owner == NULL)  return CMarkupNode();
    ULONG pos = m_owner->m_pElements[m_pos].iChild;
    while (pos != 0)  {
-      if (_tcscmp(m_owner->m_pstrXML + m_owner->m_pElements[pos].iStart, name) == 0)  {
+      if (_tcscmp(m_owner->m_xml + m_owner->m_pElements[pos].iStart, name) == 0)  {
          return CMarkupNode(m_owner, pos);
       }
       pos = m_owner->m_pElements[pos].iNext;
@@ -72,13 +72,13 @@ bool CMarkupNode::IsValid() const
 const TCHAR* CMarkupNode::GetName() const
 {
    if (m_owner == NULL)  return NULL;
-   return m_owner->m_pstrXML + m_owner->m_pElements[m_pos].iStart;
+   return m_owner->m_xml + m_owner->m_pElements[m_pos].iStart;
 }
 
 const TCHAR* CMarkupNode::GetValue() const
 {
    if (m_owner == NULL)  return NULL;
-   return m_owner->m_pstrXML + m_owner->m_pElements[m_pos].iData;
+   return m_owner->m_xml + m_owner->m_pElements[m_pos].iData;
 }
 
 const TCHAR* CMarkupNode::GetAttributeName(int idx)
@@ -86,7 +86,7 @@ const TCHAR* CMarkupNode::GetAttributeName(int idx)
    if (m_owner == NULL)  return NULL;
    if (m_nAttributes == 0)  _MapAttributes();
    if (idx < 0 || idx >= m_nAttributes)  return _T("");
-   return m_owner->m_pstrXML + m_aAttributes[idx].iName;
+   return m_owner->m_xml + m_aAttributes[idx].iName;
 }
 
 const TCHAR* CMarkupNode::GetAttributeValue(int idx)
@@ -94,7 +94,7 @@ const TCHAR* CMarkupNode::GetAttributeValue(int idx)
    if (m_owner == NULL)  return NULL;
    if (m_nAttributes == 0)  _MapAttributes();
    if (idx < 0 || idx >= m_nAttributes)  return _T("");
-   return m_owner->m_pstrXML + m_aAttributes[idx].iValue;
+   return m_owner->m_xml + m_aAttributes[idx].iValue;
 }
 
 const TCHAR* CMarkupNode::GetAttributeValue(const TCHAR* name)
@@ -102,7 +102,7 @@ const TCHAR* CMarkupNode::GetAttributeValue(const TCHAR* name)
    if (m_owner == NULL)  return NULL;
    if (m_nAttributes == 0)  _MapAttributes();
    for (int i = 0; i < m_nAttributes; i++)  {
-      if (_tcscmp(m_owner->m_pstrXML + m_aAttributes[i].iName, name) == 0)  return m_owner->m_pstrXML + m_aAttributes[i].iValue;
+      if (_tcscmp(m_owner->m_xml + m_aAttributes[i].iName, name) == 0)  return m_owner->m_xml + m_aAttributes[i].iValue;
    }
    return _T("");
 }
@@ -112,7 +112,7 @@ bool CMarkupNode::GetAttributeValue(int idx, TCHAR* value, SIZE_T cchMax)
    if (m_owner == NULL)  return false;
    if (m_nAttributes == 0)  _MapAttributes();
    if (idx < 0 || idx >= m_nAttributes)  return false;
-   _tcsncpy(value, m_owner->m_pstrXML + m_aAttributes[idx].iValue, cchMax);
+   _tcsncpy(value, m_owner->m_xml + m_aAttributes[idx].iValue, cchMax);
    return true;
 }
 
@@ -121,8 +121,8 @@ bool CMarkupNode::GetAttributeValue(const TCHAR* name, TCHAR* value, SIZE_T cchM
    if (m_owner == NULL)  return false;
    if (m_nAttributes == 0)  _MapAttributes();
    for (int i = 0; i < m_nAttributes; i++)  {
-      if (_tcscmp(m_owner->m_pstrXML + m_aAttributes[i].iName, name) == 0)  {
-         _tcsncpy(value, m_owner->m_pstrXML + m_aAttributes[i].iValue, cchMax);
+      if (_tcscmp(m_owner->m_xml + m_aAttributes[i].iName, name) == 0)  {
+         _tcsncpy(value, m_owner->m_xml + m_aAttributes[i].iValue, cchMax);
          return true;
       }
    }
@@ -148,7 +148,7 @@ bool CMarkupNode::HasAttribute(const TCHAR* name)
    if (m_owner == NULL)  return false;
    if (m_nAttributes == 0)  _MapAttributes();
    for (int i = 0; i < m_nAttributes; i++)  {
-      if (_tcscmp(m_owner->m_pstrXML + m_aAttributes[i].iName, name) == 0)  return true;
+      if (_tcscmp(m_owner->m_xml + m_aAttributes[i].iName, name) == 0)  return true;
    }
    return false;
 }
@@ -156,28 +156,28 @@ bool CMarkupNode::HasAttribute(const TCHAR* name)
 void CMarkupNode::_MapAttributes()
 {
    m_nAttributes = 0;
-   const TCHAR* pstr = m_owner->m_pstrXML + m_owner->m_pElements[m_pos].iStart;
-   const TCHAR* pstrEnd = m_owner->m_pstrXML + m_owner->m_pElements[m_pos].iData;
+   const TCHAR* pstr = m_owner->m_xml + m_owner->m_pElements[m_pos].iStart;
+   const TCHAR* pstrEnd = m_owner->m_xml + m_owner->m_pElements[m_pos].iData;
    pstr += _tcslen(pstr) + 1;
    while (pstr < pstrEnd)  {
       m_owner->_SkipWhitespace(pstr);
-      m_aAttributes[m_nAttributes].iName = pstr - m_owner->m_pstrXML;
+      m_aAttributes[m_nAttributes].iName = pstr - m_owner->m_xml;
       pstr += _tcslen(pstr) + 1;
       if (*pstr++ != '\"' && *pstr++ != '\'')  return;
-      m_aAttributes[m_nAttributes++].iValue = pstr - m_owner->m_pstrXML;
+      m_aAttributes[m_nAttributes++].iValue = pstr - m_owner->m_xml;
       if (m_nAttributes >= MAX_XML_ATTRIBUTES)  return;
       pstr += _tcslen(pstr) + 1;
    }
 }
 
 
-CMarkup::CMarkup(const TCHAR* pstrXML)
+CMarkup::CMarkup(const TCHAR* xml)
 {
-   m_pstrXML = NULL;
+   m_xml = NULL;
    m_pElements = NULL;
    m_nElements = 0;
    m_bPreserveWhitespace = false;
-   if (pstrXML != NULL)  Load(pstrXML);
+   if (xml != NULL)  Load(xml);
 }
 
 CMarkup::~CMarkup()
@@ -195,12 +195,12 @@ void CMarkup::SetPreserveWhitespace(bool bPreserve)
    m_bPreserveWhitespace = bPreserve;
 }
 
-bool CMarkup::Load(const TCHAR* pstrXML)
+bool CMarkup::Load(const TCHAR* xml)
 {
    Release();
-   SIZE_T cbLen = (_tcslen(pstrXML) + 1) * sizeof(TCHAR);
-   m_pstrXML = static_cast<TCHAR*>(malloc(cbLen));
-   ::CopyMemory(m_pstrXML, pstrXML, cbLen);
+   SIZE_T cbLen = (_tcslen(xml) + 1) * sizeof(TCHAR);
+   m_xml = static_cast<TCHAR*>(malloc(cbLen));
+   ::CopyMemory(m_xml, xml, cbLen);
    bool bRes = _Parse();
    if (!bRes)  Release();
    return bRes;
@@ -219,10 +219,10 @@ bool CMarkup::LoadFromFile(const TCHAR* pstrFilename)
    ::CloseHandle(hFile);
    return false;
 #else
-   m_pstrXML = static_cast<TCHAR*>(malloc(dwSize + 1));
-   ::ReadFile(hFile, m_pstrXML, dwSize, &dwRead, NULL);
+   m_xml = static_cast<TCHAR*>(malloc(dwSize + 1));
+   ::ReadFile(hFile, m_xml, dwSize, &dwRead, NULL);
    ::CloseHandle(hFile);
-   m_pstrXML[dwSize] = '\0';
+   m_xml[dwSize] = '\0';
 #endif // _UNICODE
    if (dwRead != dwSize)  {
       Release();
@@ -235,16 +235,16 @@ bool CMarkup::LoadFromFile(const TCHAR* pstrFilename)
 
 void CMarkup::Release()
 {
-   if (m_pstrXML != NULL)  free(m_pstrXML);
+   if (m_xml != NULL)  free(m_xml);
    if (m_pElements != NULL)  free(m_pElements);
-   m_pstrXML = NULL;
+   m_xml = NULL;
    m_pElements = NULL;
    m_nElements;
 }
 
-void CMarkup::GetLastErrorMessage(TCHAR* pstrMessage, SIZE_T cchMax) const
+void CMarkup::GetLastErrorMessage(TCHAR* msg, SIZE_T cchMax) const
 {
-   _tcsncpy(pstrMessage, m_szErrorMsg, cchMax);
+   _tcsncpy(msg, m_szErrorMsg, cchMax);
 }
 
 void CMarkup::GetLastErrorLocation(TCHAR* pstrSource, SIZE_T cchMax) const
@@ -263,8 +263,8 @@ bool CMarkup::_Parse()
    _ReserveElement(); // Reserve index 0 for errors
    ::ZeroMemory(m_szErrorMsg, sizeof(m_szErrorMsg));
    ::ZeroMemory(m_szErrorXML, sizeof(m_szErrorXML));
-   TCHAR* pstrXML = m_pstrXML;
-   return _Parse(pstrXML, 0);
+   TCHAR* xml = m_xml;
+   return _Parse(xml, 0);
 }
 
 bool CMarkup::_Parse(TCHAR*& txt, ULONG iParent)
@@ -287,7 +287,7 @@ bool CMarkup::_Parse(TCHAR*& txt, ULONG iParent)
       // Fill out element structure
       XMLELEMENT* pEl = _ReserveElement();
       ULONG pos = pEl - m_pElements;
-      pEl->iStart = txt - m_pstrXML;
+      pEl->iStart = txt - m_xml;
       pEl->iParent = iParent;
       pEl->iNext = pEl->iChild = 0;
       if (iPrevious != 0)  m_pElements[iPrevious].iNext = pos;
@@ -303,7 +303,7 @@ bool CMarkup::_Parse(TCHAR*& txt, ULONG iParent)
       _SkipWhitespace(txt);
       if (txt[0] == '/' && txt[1] == '>') 
       {
-         pEl->iData = txt - m_pstrXML;
+         pEl->iData = txt - m_xml;
          *txt = '\0';
          txt += 2;
       }
@@ -311,7 +311,7 @@ bool CMarkup::_Parse(TCHAR*& txt, ULONG iParent)
       {
          if (*txt != '>')  return _Failed(_T("Expected start-tag closing"), txt);
          // Parse node data
-         pEl->iData = ++txt - m_pstrXML;
+         pEl->iData = ++txt - m_xml;
          TCHAR* pstrDest = txt;
          if (!_ParseData(txt, pstrDest, '<'))  return false;
          // Determine type of next element

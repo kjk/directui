@@ -14,7 +14,7 @@ public:
 class UILIB_API CDialogBuilder
 {
 public:
-   CControlUI* Create(const TCHAR* pstrXML, IDialogBuilderCallback* pCallback = NULL);
+   CControlUI* Create(const TCHAR* xml, IDialogBuilderCallback* pCallback = NULL);
    CControlUI* CreateFromResource(UINT nRes, IDialogBuilderCallback* pCallback = NULL);
 
 private:

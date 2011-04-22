@@ -47,7 +47,7 @@ typedef struct tagFINDSHORTCUT
 typedef struct tagTIMERINFO
 {
    CControlUI* pSender;
-   UINT nLocalID;
+   UINT localID;
    HWND hWnd;
    UINT uWinTimer;
 } TIMERINFO;
@@ -596,7 +596,7 @@ bool CPaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LR
             if (pTimer->hWnd == m_hWndPaint && pTimer->uWinTimer == LOWORD(wParam))  {
                TEventUI event = { 0 };
                event.Type = UIEVENT_TIMER;
-               event.wParam = pTimer->nLocalID;
+               event.wParam = pTimer->localID;
                event.dwTimestamp = ::GetTickCount();
                pTimer->pSender->Event(event);
                break;
@@ -1022,7 +1022,7 @@ void CPaintManagerUI::SetFocus(CControlUI* ctrl)
    }
 }
 
-bool CPaintManagerUI::SetTimer(CControlUI* ctrl, UINT nTimerID, UINT uElapse)
+bool CPaintManagerUI::SetTimer(CControlUI* ctrl, UINT timerID, UINT uElapse)
 {
    ASSERT(ctrl!=NULL);
    ASSERT(uElapse>0);
@@ -1032,19 +1032,19 @@ bool CPaintManagerUI::SetTimer(CControlUI* ctrl, UINT nTimerID, UINT uElapse)
    if (pTimer == NULL)  return FALSE;
    pTimer->hWnd = m_hWndPaint;
    pTimer->pSender = ctrl;
-   pTimer->nLocalID = nTimerID;
+   pTimer->localID = timerID;
    pTimer->uWinTimer = m_uTimerID;
    return m_aTimers.Add(pTimer);
 }
 
-bool CPaintManagerUI::KillTimer(CControlUI* ctrl, UINT nTimerID)
+bool CPaintManagerUI::KillTimer(CControlUI* ctrl, UINT timerID)
 {
    ASSERT(ctrl!=NULL);
    for (int i = 0; i< m_aTimers.GetSize(); i++)  {
       TIMERINFO* pTimer = static_cast<TIMERINFO*>(m_aTimers[i]);
       if (pTimer->pSender == ctrl
           && pTimer->hWnd == m_hWndPaint
-          && pTimer->nLocalID == nTimerID) 
+          && pTimer->localID == timerID) 
       {
          ::KillTimer(pTimer->hWnd, pTimer->uWinTimer);
          delete pTimer;
@@ -1132,11 +1132,11 @@ bool CPaintManagerUI::RemoveMessageFilter(IMessageFilterUI* pFilter)
    return false;
 }
 
-void CPaintManagerUI::SendNotify(CControlUI* ctrl, const TCHAR* pstrMessage, WPARAM wParam /*= 0*/, LPARAM lParam /*= 0*/)
+void CPaintManagerUI::SendNotify(CControlUI* ctrl, const TCHAR* msg, WPARAM wParam /*= 0*/, LPARAM lParam /*= 0*/)
 {
    TNotifyUI Msg;
    Msg.pSender = ctrl;
-   Msg.sType = pstrMessage;
+   Msg.sType = msg;
    Msg.wParam = 0;
    Msg.lParam = 0;
    SendNotify(Msg);
