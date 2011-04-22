@@ -52,8 +52,7 @@ typedef struct tagTIMERINFO
    UINT uWinTimer;
 } TIMERINFO;
 
-
-CAnimationSpooler m_anim;
+AnimationSpooler m_anim;
 HPEN m_hPens[UICOLOR__LAST] = { 0 };
 HFONT m_hFonts[UIFONT__LAST] = { 0 };
 HBRUSH m_hBrushes[UICOLOR__LAST] = { 0 };
@@ -65,11 +64,9 @@ HIMAGELIST m_himgIcons24 = NULL;
 HIMAGELIST m_himgIcons32 = NULL;
 HIMAGELIST m_himgIcons50 = NULL;
 
-
 HINSTANCE PaintManagerUI::m_hInstance = NULL;
 HINSTANCE PaintManagerUI::m_hLangInst = NULL;
 CStdPtrArray PaintManagerUI::m_aPreMessages;
-
 
 PaintManagerUI::PaintManagerUI() :
    m_hWndPaint(NULL),
@@ -971,9 +968,9 @@ bool PaintManagerUI::TranslateMessage(const MSG* pMsg)
    return false;
 }
 
-bool PaintManagerUI::AddAnimJob(const CAnimJobUI& job)
+bool PaintManagerUI::AddAnimJob(const AnimJobUI& job)
 {
-   CAnimJobUI* pJob = new CAnimJobUI(job);
+   AnimJobUI* pJob = new AnimJobUI(job);
    if (pJob == NULL)  return false;
    ::InvalidateRect(m_hWndPaint, NULL, FALSE);
    return m_anim.AddJob(pJob);

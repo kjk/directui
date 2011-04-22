@@ -450,14 +450,14 @@ const TCHAR* DialogCanvasUI::GetClass() const
    return _T("DialogCanvasUI");
 }
 
-CTabFolderCanvasUI::CTabFolderCanvasUI()
+TabFolderCanvasUI::TabFolderCanvasUI()
 {
    SetInset(CSize(0, 0));
    COLORREF clrColor1;
    m_manager->GetThemeColorPair(UICOLOR_TAB_FOLDER_NORMAL, clrColor1, m_clrBack);
 }
 
-const TCHAR* CTabFolderCanvasUI::GetClass() const
+const TCHAR* TabFolderCanvasUI::GetClass() const
 {
    return _T("TabFolderCanvasUI");
 }

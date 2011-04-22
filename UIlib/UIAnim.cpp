@@ -14,12 +14,12 @@
    #define PI 3.1415926535897932384626433832795029L
 #endif
 
-CAnimJobUI::CAnimJobUI(const CAnimJobUI& src)
+AnimJobUI::AnimJobUI(const AnimJobUI& src)
 {   
    *this = src;
 }
 
-CAnimJobUI::CAnimJobUI(UITYPE_ANIM AnimType, DWORD dwStartTick, DWORD dwDuration, COLORREF clrBack, COLORREF clrKey, RECT rcFrom, int xtrans, int ytrans, int ztrans, int alpha, FLOAT zrot)
+AnimJobUI::AnimJobUI(UITYPE_ANIM AnimType, DWORD dwStartTick, DWORD dwDuration, COLORREF clrBack, COLORREF clrKey, RECT rcFrom, int xtrans, int ytrans, int ztrans, int alpha, FLOAT zrot)
 {
    this->AnimType = AnimType;
    this->dwStartTick = dwStartTick;
@@ -35,7 +35,7 @@ CAnimJobUI::CAnimJobUI(UITYPE_ANIM AnimType, DWORD dwStartTick, DWORD dwDuration
    data.plot.iInterpolate = INTERPOLATE_COS;
 }
 
-CAnimationSpooler::CAnimationSpooler() :
+AnimationSpooler::AnimationSpooler() :
    m_hWnd(NULL),
    m_bIsAnimating(false),
    m_bIsInitialized(false),
@@ -48,12 +48,12 @@ CAnimationSpooler::CAnimationSpooler() :
    ::ZeroMemory(m_p3DTextures, sizeof(m_p3DTextures));
 }
 
-CAnimationSpooler::~CAnimationSpooler()
+AnimationSpooler::~AnimationSpooler()
 {
    Term();
 }
 
-bool CAnimationSpooler::Init(HWND hWnd)
+bool AnimationSpooler::Init(HWND hWnd)
 {
    ASSERT(::IsWindow(hWnd));
    if (m_bIsInitialized)  return true;
@@ -139,11 +139,11 @@ bool CAnimationSpooler::Init(HWND hWnd)
    return true;
 }
 
-void CAnimationSpooler::Term()
+void AnimationSpooler::Term()
 {
    // Get rid of the animation jobs
    int i;
-   for (i = 0; i < m_aJobs.GetSize(); i++)  delete static_cast<CAnimJobUI*>(m_aJobs[i]);
+   for (i = 0; i < m_aJobs.GetSize(); i++)  delete static_cast<AnimJobUI*>(m_aJobs[i]);
    m_aJobs.Empty();
    // Release Direct3D references
    for (i = 0; i < m_nBuffers; i++)  {
@@ -162,22 +162,22 @@ void CAnimationSpooler::Term()
    m_bIsInitialized = false;
 }
 
-bool CAnimationSpooler::AddJob(CAnimJobUI* pJob)
+bool AnimationSpooler::AddJob(AnimJobUI* pJob)
 {
    return m_aJobs.Add(pJob);
 }
 
-bool CAnimationSpooler::IsAnimating() const
+bool AnimationSpooler::IsAnimating() const
 {
    return m_bIsAnimating;
 }
 
-bool CAnimationSpooler::IsJobScheduled() const
+bool AnimationSpooler::IsJobScheduled() const
 {
    return m_aJobs.GetSize() > 0 && !m_bIsAnimating;
 }
 
-bool CAnimationSpooler::PrepareAnimation(HWND hWnd)
+bool AnimationSpooler::PrepareAnimation(HWND hWnd)
 {
    if (!m_bIsInitialized)  return false;
    // Release old image of window
@@ -198,7 +198,7 @@ bool CAnimationSpooler::PrepareAnimation(HWND hWnd)
    m_p3DBackSurface->ReleaseDC(hDC);
    // Allow each job to prepare its 3D objects
    for (int i = 0; i < m_aJobs.GetSize(); i++)  {
-      CAnimJobUI* pJob = static_cast<CAnimJobUI*>(m_aJobs[i]);
+      AnimJobUI* pJob = static_cast<AnimJobUI*>(m_aJobs[i]);
       switch( pJob->AnimType)  {
       case UIANIMTYPE_FLAT:
          if (!PrepareJob_Flat(pJob))  return false;
@@ -208,14 +208,14 @@ bool CAnimationSpooler::PrepareAnimation(HWND hWnd)
    // Assign start time
    DWORD dwTick = ::timeGetTime();
    for (int j = 0; j < m_aJobs.GetSize(); j++)  {
-      CAnimJobUI* pJob = static_cast<CAnimJobUI*>(m_aJobs[j]);
+      AnimJobUI* pJob = static_cast<AnimJobUI*>(m_aJobs[j]);
       pJob->dwStartTick += dwTick;
    }
    m_bIsAnimating = true;
    return true;
 }
 
-bool CAnimationSpooler::Render()
+bool AnimationSpooler::Render()
 {
    if (!m_bIsAnimating)  return false;
    if (!m_bIsInitialized)  return false;
@@ -234,7 +234,7 @@ bool CAnimationSpooler::Render()
    int nAnimated = 0;
    DWORD dwTick = ::timeGetTime();
    for (int i = 0; i < m_aJobs.GetSize(); i++)  {
-      const CAnimJobUI* pJob = static_cast<CAnimJobUI*>(m_aJobs[i]);
+      const AnimJobUI* pJob = static_cast<AnimJobUI*>(m_aJobs[i]);
       if (dwTick < pJob->dwStartTick)  continue;
       DWORD dwTickNow = MIN(dwTick, pJob->dwStartTick + pJob->dwDuration);
       switch( pJob->AnimType)  {
@@ -251,7 +251,7 @@ bool CAnimationSpooler::Render()
    return true;
 }
 
-void CAnimationSpooler::CancelJobs()
+void AnimationSpooler::CancelJobs()
 {
    Term();
 }
@@ -267,7 +267,7 @@ static double CosineInterpolate(double y1, double y2, double mu)
    return y1 * (1.0 - mu2) + y2 * mu2;
 }
 
-COLORREF CAnimationSpooler::TranslateColor(LPDIRECT3DSURFACE9 pSurface, COLORREF clrColor) const
+COLORREF AnimationSpooler::TranslateColor(LPDIRECT3DSURFACE9 pSurface, COLORREF clrColor) const
 {
    ASSERT(pSurface);
    if (clrColor == CLR_INVALID)  return clrColor;
@@ -284,7 +284,7 @@ COLORREF CAnimationSpooler::TranslateColor(LPDIRECT3DSURFACE9 pSurface, COLORREF
    return clrColor;
 }
 
-bool CAnimationSpooler::SetColorKey(LPDIRECT3DTEXTURE9 pTexture, LPDIRECT3DSURFACE9 pSurface, int iTexSize, COLORREF clrColorKey)
+bool AnimationSpooler::SetColorKey(LPDIRECT3DTEXTURE9 pTexture, LPDIRECT3DSURFACE9 pSurface, int iTexSize, COLORREF clrColorKey)
 {
    ASSERT(pTexture);
    ASSERT(pSurface);
@@ -331,7 +331,7 @@ bool CAnimationSpooler::SetColorKey(LPDIRECT3DTEXTURE9 pTexture, LPDIRECT3DSURFA
    return false;
 }
 
-bool CAnimationSpooler::PrepareJob_Flat(CAnimJobUI* pJob)
+bool AnimationSpooler::PrepareJob_Flat(AnimJobUI* pJob)
 {
    // Determine actual colorkey
    pJob->data.plot.clrKey = TranslateColor(m_p3DBackSurface, pJob->data.plot.clrKey);
@@ -419,13 +419,13 @@ bool CAnimationSpooler::PrepareJob_Flat(CAnimJobUI* pJob)
    return true;
 }
 
-bool CAnimationSpooler::RenderJob_Flat(const CAnimJobUI* pJob, LPDIRECT3DSURFACE9 /*pSurface*/, DWORD dwTick)
+bool AnimationSpooler::RenderJob_Flat(const AnimJobUI* pJob, LPDIRECT3DSURFACE9 /*pSurface*/, DWORD dwTick)
 {
    RECT rc = pJob->data.plot.rcFrom;
    FLOAT mu = (FLOAT)(pJob->dwStartTick + pJob->dwDuration - dwTick) / (FLOAT) pJob->dwDuration;
    FLOAT scale1 = 0.0;
-   if (pJob->data.plot.iInterpolate == CAnimJobUI::INTERPOLATE_LINEAR)  scale1 = (FLOAT) LinearInterpolate(0.0, 1.0, mu);
-   if (pJob->data.plot.iInterpolate == CAnimJobUI::INTERPOLATE_COS)  scale1 = (FLOAT) CosineInterpolate(0.0, 1.0, mu);
+   if (pJob->data.plot.iInterpolate == AnimJobUI::INTERPOLATE_LINEAR)  scale1 = (FLOAT) LinearInterpolate(0.0, 1.0, mu);
+   if (pJob->data.plot.iInterpolate == AnimJobUI::INTERPOLATE_COS)  scale1 = (FLOAT) CosineInterpolate(0.0, 1.0, mu);
    FLOAT scale2 = 1.0f - scale1;
    D3DVECTOR ptCenter = { rc.left + ((rc.right - rc.left) / 2.0f), rc.top + ((rc.bottom - rc.top) / 2.0f) };
    FLOAT xtrans = (FLOAT) pJob->data.plot.mFrom.xtrans * scale1;

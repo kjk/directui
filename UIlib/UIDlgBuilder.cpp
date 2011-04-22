@@ -3,17 +3,17 @@
 #include "UIDlgBuilder.h"
 
 
-ControlUI* CDialogBuilder::Create(const TCHAR* xml, IDialogBuilderCallback* pCallback /*= NULL*/)
+ControlUI* DialogBuilder::Create(const TCHAR* xml, IDialogBuilderCallback* pCallback /*= NULL*/)
 {
    m_pCallback = pCallback;
    if (!m_xml.Load(xml))  return NULL;
    // NOTE: The root element is actually discarded since the _Parse() methods is
    //       parsing children and attaching to the current node.
-   CMarkupNode root = m_xml.GetRoot();
+   MarkupNode root = m_xml.GetRoot();
    return _Parse(&root);
 }
 
-ControlUI* CDialogBuilder::CreateFromResource(UINT nRes, IDialogBuilderCallback* pCallback /*= NULL*/)
+ControlUI* DialogBuilder::CreateFromResource(UINT nRes, IDialogBuilderCallback* pCallback /*= NULL*/)
 {
    HRSRC hResource = ::FindResource(PaintManagerUI::GetResourceInstance(), MAKEINTRESOURCE(nRes), _T("XML"));
    if (hResource == NULL)  return NULL;
@@ -29,12 +29,12 @@ ControlUI* CDialogBuilder::CreateFromResource(UINT nRes, IDialogBuilderCallback*
    return Create(sXML, pCallback);
 }
 
-ControlUI* CDialogBuilder::_Parse(CMarkupNode* root, ControlUI* parent)
+ControlUI* DialogBuilder::_Parse(MarkupNode* root, ControlUI* parent)
 {
    DialogLayoutUI* pStretched = NULL;
    IContainerUI* pContainer = NULL;
    ControlUI* pReturn = NULL;
-   for (CMarkupNode node = root->GetChild() ; node.IsValid(); node = node.GetSibling())  {
+   for (MarkupNode node = root->GetChild() ; node.IsValid(); node = node.GetSibling())  {
       const TCHAR* pstrClass = node.GetName();
       SIZE_T cchLen = _tcslen(pstrClass);
       ControlUI* ctrl = NULL;
@@ -91,25 +91,25 @@ ControlUI* CDialogBuilder::_Parse(CMarkupNode* root, ControlUI* parent)
       case 14:
          if (_tcscmp(pstrClass, _T("VerticalLayout")) == 0)         ctrl = new VerticalLayoutUI;
          else if (_tcscmp(pstrClass, _T("SingleLineEdit")) == 0)    ctrl = new SingleLineEditUI;
-         else if (_tcscmp(pstrClass, _T("SingleLinePick")) == 0)    ctrl = new CSingleLinePickUI;
+         else if (_tcscmp(pstrClass, _T("SingleLinePick")) == 0)    ctrl = new SingleLinePickUI;
          else if (_tcscmp(pstrClass, _T("NavigatorPanel")) == 0)    ctrl = new NavigatorPanelUI;
-         else if (_tcscmp(pstrClass, _T("ListHeaderItem")) == 0)    ctrl = new CListHeaderItemUI;
-         else if (_tcscmp(pstrClass, _T("GreyTextHeader")) == 0)    ctrl = new CGreyTextHeaderUI;
+         else if (_tcscmp(pstrClass, _T("ListHeaderItem")) == 0)    ctrl = new ListHeaderItemUI;
+         else if (_tcscmp(pstrClass, _T("GreyTextHeader")) == 0)    ctrl = new GreyTextHeaderUI;
          break;
       case 15:
-         if (_tcscmp(pstrClass, _T("ListTextElement")) == 0)        ctrl = new CListTextElementUI;
+         if (_tcscmp(pstrClass, _T("ListTextElement")) == 0)        ctrl = new ListTextElementUI;
          else if (_tcscmp(pstrClass, _T("NavigatorButton")) == 0)   ctrl = new NavigatorButtonUI;      
-         else if (_tcscmp(pstrClass, _T("TabFolderCanvas")) == 0)   ctrl = new CTabFolderCanvasUI;      
+         else if (_tcscmp(pstrClass, _T("TabFolderCanvas")) == 0)   ctrl = new TabFolderCanvasUI;      
          break;
       case 16:
-         if (_tcscmp(pstrClass, _T("ListHeaderShadow")) == 0)       ctrl = new CListHeaderShadowUI; 
+         if (_tcscmp(pstrClass, _T("ListHeaderShadow")) == 0)       ctrl = new ListHeaderShadowUI; 
          else if (_tcscmp(pstrClass, _T("HorizontalLayout")) == 0)  ctrl = new HorizontalLayoutUI;
-         else if (_tcscmp(pstrClass, _T("ListLabelElement")) == 0)  ctrl = new CListLabelElementUI;
+         else if (_tcscmp(pstrClass, _T("ListLabelElement")) == 0)  ctrl = new ListLabelElementUI;
          else if (_tcscmp(pstrClass, _T("SearchTitlePanel")) == 0)  ctrl = new SearchTitlePanelUI;
          break;
       case 17:
          if (_tcscmp(pstrClass, _T("ToolbarTitlePanel")) == 0)   ctrl = new ToolbarTitlePanelUI;
-         else if (_tcscmp(pstrClass, _T("ListExpandElement")) == 0)  ctrl = new CListExpandElementUI;
+         else if (_tcscmp(pstrClass, _T("ListExpandElement")) == 0)  ctrl = new ListExpandElementUI;
          break;
       }
       // User-supplied control factory

@@ -25,7 +25,7 @@ LRESULT CStandardPageWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
    if (uMsg == WM_CREATE)  {     
       m_pm.Init(m_hWnd);
-      CDialogBuilder builder;
+      DialogBuilder builder;
       ControlUI* root = builder.Create(GetDialogResource());
       ASSERT(root && "Failed to parse XML");
       m_pm.AttachDialog(root);
@@ -104,13 +104,13 @@ void CStartPageWnd::OnPrepareAnimation()
 {
    COLORREF clrBack = m_pm.GetThemeColor(UICOLOR_WINDOW_BACKGROUND);
    RECT rcCtrl = m_pm.FindControl(_T("link_registers"))->GetPos();
-   m_pm.AddAnimJob(CAnimJobUI(UIANIMTYPE_FLAT, 0, 350, clrBack, clrBack, CRect(rcCtrl.left, rcCtrl.top, rcCtrl.left + 50, rcCtrl.top + 50), 40, 0, 4, 255, 0.3f));
+   m_pm.AddAnimJob(AnimJobUI(UIANIMTYPE_FLAT, 0, 350, clrBack, clrBack, CRect(rcCtrl.left, rcCtrl.top, rcCtrl.left + 50, rcCtrl.top + 50), 40, 0, 4, 255, 0.3f));
    rcCtrl = m_pm.FindControl(_T("link_systems"))->GetPos();
-   m_pm.AddAnimJob(CAnimJobUI(UIANIMTYPE_FLAT, 200, 350, clrBack, clrBack, CRect(rcCtrl.left, rcCtrl.top, rcCtrl.left + 50, rcCtrl.top + 50), 40, 0, 4, 255, 0.3f));
+   m_pm.AddAnimJob(AnimJobUI(UIANIMTYPE_FLAT, 200, 350, clrBack, clrBack, CRect(rcCtrl.left, rcCtrl.top, rcCtrl.left + 50, rcCtrl.top + 50), 40, 0, 4, 255, 0.3f));
    rcCtrl = m_pm.FindControl(_T("link_configure"))->GetPos();
-   m_pm.AddAnimJob(CAnimJobUI(UIANIMTYPE_FLAT, 100, 350, clrBack, clrBack, CRect(rcCtrl.left, rcCtrl.top, rcCtrl.left + 50, rcCtrl.top + 50), 40, 0, 4, 255, 0.3f));
+   m_pm.AddAnimJob(AnimJobUI(UIANIMTYPE_FLAT, 100, 350, clrBack, clrBack, CRect(rcCtrl.left, rcCtrl.top, rcCtrl.left + 50, rcCtrl.top + 50), 40, 0, 4, 255, 0.3f));
    rcCtrl = m_pm.FindControl(_T("link_reports"))->GetPos();
-   m_pm.AddAnimJob(CAnimJobUI(UIANIMTYPE_FLAT, 250, 350, clrBack, clrBack, CRect(rcCtrl.left, rcCtrl.top, rcCtrl.left + 50, rcCtrl.top + 50), 40, 0, 4, 255, 0.3f));
+   m_pm.AddAnimJob(AnimJobUI(UIANIMTYPE_FLAT, 250, 350, clrBack, clrBack, CRect(rcCtrl.left, rcCtrl.top, rcCtrl.left + 50, rcCtrl.top + 50), 40, 0, 4, 255, 0.3f));
 }
 
 void CStartPageWnd::Init()
@@ -187,7 +187,7 @@ void CConfigurePageWnd::OnPrepareAnimation()
 {
    COLORREF clrBack = m_pm.GetThemeColor(UICOLOR_TITLE_BACKGROUND);
    const RECT rcCtrl = m_pm.FindControl(_T("titlepanel"))->GetPos();
-   m_pm.AddAnimJob(CAnimJobUI(UIANIMTYPE_FLAT, 0, 300, clrBack, CLR_INVALID, rcCtrl, 140, 0, 5, 200, 0.1f));
+   m_pm.AddAnimJob(AnimJobUI(UIANIMTYPE_FLAT, 0, 300, clrBack, CLR_INVALID, rcCtrl, 140, 0, 5, 200, 0.1f));
 }
 
 
@@ -249,7 +249,7 @@ void CRegistersPageWnd::OnPrepareAnimation()
 {
    ListUI* pList = static_cast<ListUI*>(m_pm.FindControl(_T("list")));
    pList->SetTextCallback(this);                                          // We want GetItemText for items
-   for (int i = 0; i < 1000; i++)  pList->Add(new CListTextElementUI);    // We want 1000 items in list
+   for (int i = 0; i < 1000; i++)  pList->Add(new ListTextElementUI);    // We want 1000 items in list
 }
 
 const TCHAR* CRegistersPageWnd::GetItemText(ControlUI* ctrl, int idx, int iSubItem)
@@ -367,7 +367,7 @@ void CSystemsPageWnd::OnPrepareAnimation()
 
 void CSystemsPageWnd::OnExpandItem(ControlUI* ctrl)
 {
-   CListExpandElementUI* item = static_cast<CListExpandElementUI*>(ctrl);
+   ListExpandElementUI* item = static_cast<ListExpandElementUI*>(ctrl);
    // Add slowly...
    TextPanelUI* pText = new TextPanelUI();
    CStdString sText;
@@ -427,7 +427,7 @@ const TCHAR* CReportsPageWnd::GetDialogResource() const
 void CReportsPageWnd::OnPrepareAnimation()
 {
    const RECT rcCtrl = m_pm.FindControl(_T("titlepanel"))->GetPos();
-   m_pm.AddAnimJob(CAnimJobUI(UIANIMTYPE_FLAT, 0, 300, CLR_INVALID, CLR_INVALID, rcCtrl, 0, 0, -2, -200, 0.0f));
+   m_pm.AddAnimJob(AnimJobUI(UIANIMTYPE_FLAT, 0, 300, CLR_INVALID, CLR_INVALID, rcCtrl, 0, 0, -2, -200, 0.0f));
 }
 
 
@@ -598,7 +598,7 @@ const TCHAR* CEditPageWnd::GetDialogResource() const
 void CEditPageWnd::OnPrepareAnimation()
 {
    const RECT rcCtrl = m_pm.FindControl(_T("warning"))->GetPos();
-   m_pm.AddAnimJob(CAnimJobUI(UIANIMTYPE_FLAT, 0, 300, CLR_INVALID, CLR_INVALID, rcCtrl, 0, 0, -2, -200, 0.0f));
+   m_pm.AddAnimJob(AnimJobUI(UIANIMTYPE_FLAT, 0, 300, CLR_INVALID, CLR_INVALID, rcCtrl, 0, 0, -2, -200, 0.0f));
 }
 
 

@@ -18,11 +18,11 @@ public:
    T* m_p;
 };
 
-class CAnimationSpooler
+class AnimationSpooler
 {
 public:
-   CAnimationSpooler();
-   ~CAnimationSpooler();
+   AnimationSpooler();
+   ~AnimationSpooler();
 
    enum { MAX_BUFFERS = 40 };
 
@@ -33,7 +33,7 @@ public:
 
    bool IsAnimating() const;
    bool IsJobScheduled() const;
-   bool AddJob(CAnimJobUI* pJob);
+   bool AddJob(AnimJobUI* pJob);
 
 protected:
    void Term();
@@ -41,8 +41,8 @@ protected:
    COLORREF TranslateColor(LPDIRECT3DSURFACE9 pSurface, COLORREF clr) const;
    bool SetColorKey(LPDIRECT3DTEXTURE9 pTexture, LPDIRECT3DSURFACE9 pSurface, int iTexSize, COLORREF clrColorKey);
 
-   bool PrepareJob_Flat(CAnimJobUI* pJob);
-   bool RenderJob_Flat(const CAnimJobUI* pJob, LPDIRECT3DSURFACE9 pSurface, DWORD dwTick);
+   bool PrepareJob_Flat(AnimJobUI* pJob);
+   bool RenderJob_Flat(const AnimJobUI* pJob, LPDIRECT3DSURFACE9 pSurface, DWORD dwTick);
 
 protected:
    struct CUSTOMVERTEX 

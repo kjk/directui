@@ -9,16 +9,16 @@ public:
    virtual ControlUI* CreateControl(const TCHAR* pstrClass) = 0;
 };
 
-class UILIB_API CDialogBuilder
+class UILIB_API DialogBuilder
 {
 public:
    ControlUI* Create(const TCHAR* xml, IDialogBuilderCallback* pCallback = NULL);
    ControlUI* CreateFromResource(UINT nRes, IDialogBuilderCallback* pCallback = NULL);
 
 private:
-   ControlUI* _Parse(CMarkupNode* root, ControlUI* parent = NULL);
+   ControlUI* _Parse(MarkupNode* root, ControlUI* parent = NULL);
 
-   CMarkup m_xml;
+   MarkupParser m_xml;
    IDialogBuilderCallback* m_pCallback;
 };
 

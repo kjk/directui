@@ -250,7 +250,6 @@ public:
    virtual LRESULT MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, bool& bHandled) = 0;
 };
 
-
 class UILIB_API PaintManagerUI
 {
 public:
@@ -303,7 +302,7 @@ public:
    bool AddMessageFilter(IMessageFilterUI* filter);
    bool RemoveMessageFilter(IMessageFilterUI* filter);
 
-   bool AddAnimJob(const CAnimJobUI& job);
+   bool AddAnimJob(const AnimJobUI& job);
    bool AddPostPaintBlit(const TPostPaintUI& job);
 
    ControlUI* FindControl(POINT pt) const;

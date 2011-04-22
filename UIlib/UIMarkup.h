@@ -3,16 +3,16 @@
 
 #pragma once
 
-class CMarkup;
-class CMarkupNode;
+class MarkupParser;
+class MarkupNode;
 
 
-class UILIB_API CMarkup
+class UILIB_API MarkupParser
 {
-friend CMarkupNode;
+friend MarkupNode;
 public:
-   CMarkup(const TCHAR* xml = NULL);
-   ~CMarkup();
+   MarkupParser(const TCHAR* xml = NULL);
+   ~MarkupParser();
 
    bool Load(const TCHAR* xml);
    bool LoadFromFile(const TCHAR* fileName);
@@ -23,7 +23,7 @@ public:
    void GetLastErrorMessage(TCHAR* msg, SIZE_T cchMax) const;
    void GetLastErrorLocation(TCHAR* pstrSource, SIZE_T cchMax) const;
 
-   CMarkupNode GetRoot();
+   MarkupNode GetRoot();
 
 private:
    typedef struct tagXMLELEMENT
@@ -58,20 +58,20 @@ private:
 };
 
 
-class UILIB_API CMarkupNode
+class UILIB_API MarkupNode
 {
-friend CMarkup;
+friend MarkupParser;
 private:
-   CMarkupNode();
-   CMarkupNode(CMarkup* owner, int pos);
+   MarkupNode();
+   MarkupNode(MarkupParser* owner, int pos);
 
 public:
    bool IsValid() const;
 
-   CMarkupNode GetParent();
-   CMarkupNode GetSibling();
-   CMarkupNode GetChild();
-   CMarkupNode GetChild(const TCHAR* name);
+   MarkupNode GetParent();
+   MarkupNode GetSibling();
+   MarkupNode GetChild();
+   MarkupNode GetChild(const TCHAR* name);
 
    bool HasSiblings() const;
    bool HasChildren() const;
@@ -101,7 +101,7 @@ private:
    int m_pos;
    int m_nAttributes;
    XMLATTRIBUTE m_aAttributes[MAX_XML_ATTRIBUTES];
-   CMarkup* m_owner;
+   MarkupParser* m_owner;
 };
 
 

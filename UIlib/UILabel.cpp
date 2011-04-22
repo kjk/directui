@@ -52,17 +52,17 @@ void LabelPanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
    CBlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcText, m_txt, UICOLOR_EDIT_TEXT_NORMAL, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE | m_uTextStyle);
 }
 
-const TCHAR* CGreyTextHeaderUI::GetClass() const
+const TCHAR* GreyTextHeaderUI::GetClass() const
 {
    return _T("GreyTextHeaderUI");
 }
 
-SIZE CGreyTextHeaderUI::EstimateSize(SIZE /*szAvailable*/)
+SIZE GreyTextHeaderUI::EstimateSize(SIZE /*szAvailable*/)
 {
    return CSize(0, 12 + m_manager->GetThemeFontInfo(UIFONT_BOLD).tmHeight + 12);
 }
 
-void CGreyTextHeaderUI::DoPaint(HDC hDC, const RECT& /*rcPaint*/)
+void GreyTextHeaderUI::DoPaint(HDC hDC, const RECT& /*rcPaint*/)
 {
    COLORREF clrDarkText = m_manager->GetThemeColor(UICOLOR_DIALOG_TEXT_DARK);
    RECT rcLine = { m_rcItem.left, m_rcItem.bottom - 6, m_rcItem.right, m_rcItem.bottom - 5 };

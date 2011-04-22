@@ -22,17 +22,17 @@ void TitleShadowUI::DoPaint(HDC hDC, const RECT& /*rcPaint*/)
 }
 
 
-const TCHAR* CListHeaderShadowUI::GetClass() const
+const TCHAR* ListHeaderShadowUI::GetClass() const
 {
    return _T("ListHeaderShadowUI");
 }
 
-SIZE CListHeaderShadowUI::EstimateSize(SIZE /*szAvailable*/)
+SIZE ListHeaderShadowUI::EstimateSize(SIZE /*szAvailable*/)
 {
    return CSize(0, 3);
 }
 
-void CListHeaderShadowUI::DoPaint(HDC hDC, const RECT& /*rcPaint*/)
+void ListHeaderShadowUI::DoPaint(HDC hDC, const RECT& /*rcPaint*/)
 {
    COLORREF clrBack1, clrBack2;
    m_manager->GetThemeColorPair(UICOLOR_HEADER_BACKGROUND, clrBack1, clrBack2);

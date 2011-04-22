@@ -2,12 +2,12 @@
 #include "StdAfx.h"
 #include "UIActiveX.h"
 
-class CActiveXCtrl;
+class ActiveXCtrl;
 
-class CActiveXWnd : public WindowWnd
+class ActiveXWnd : public WindowWnd
 {
 public:
-   HWND Init(CActiveXCtrl* owner, HWND hWndParent);
+   HWND Init(ActiveXCtrl* owner, HWND hWndParent);
 
    const TCHAR* GetWindowClassName() const;
    void OnFinalMessage(HWND hWnd);
@@ -24,17 +24,17 @@ protected:
    LRESULT OnPaint(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
 protected:
-   CActiveXCtrl* m_owner;
+   ActiveXCtrl* m_owner;
 };
 
-class CActiveXEnum : public IEnumUnknown
+class ActiveXEnum : public IEnumUnknown
 {
 public:
-   CActiveXEnum(IUnknown* pUnk) : m_pUnk(pUnk), m_dwRef(1), m_pos(0)
+   ActiveXEnum(IUnknown* pUnk) : m_pUnk(pUnk), m_dwRef(1), m_pos(0)
    {
       m_pUnk->AddRef();
    }
-   ~CActiveXEnum()
+   ~ActiveXEnum()
    {
       m_pUnk->Release();
    }
@@ -86,13 +86,13 @@ public:
    }
 };
 
-class CActiveXFrameWnd : public IOleInPlaceFrame
+class ActiveXFrameWnd : public IOleInPlaceFrame
 {
 public:
-   CActiveXFrameWnd(ActiveXUI* owner) : m_dwRef(1), m_owner(owner), m_pActiveObject(NULL)
+   ActiveXFrameWnd(ActiveXUI* owner) : m_dwRef(1), m_owner(owner), m_pActiveObject(NULL)
    {
    }
-   ~CActiveXFrameWnd()
+   ~ActiveXFrameWnd()
    {
       if (m_pActiveObject != NULL)  m_pActiveObject->Release();
    }
@@ -180,7 +180,7 @@ public:
    }
 };
 
-class CActiveXCtrl :
+class ActiveXCtrl :
    public IOleClientSite,
    public IOleInPlaceSiteWindowless,
    public IOleControlSite,
@@ -188,10 +188,10 @@ class CActiveXCtrl :
    public IOleContainer
 {
 friend ActiveXUI;
-friend CActiveXWnd;
+friend ActiveXWnd;
 public:
-   CActiveXCtrl();
-   ~CActiveXCtrl();
+   ActiveXCtrl();
+   ~ActiveXCtrl();
 
    // IUnknown
    STDMETHOD_(ULONG,AddRef)();
@@ -267,7 +267,7 @@ protected:
 protected:
    LONG m_dwRef;
    ActiveXUI* m_owner;
-   CActiveXWnd* m_win;
+   ActiveXWnd* m_win;
    IUnknown* m_pUnkSite;
    IViewObject* m_pViewObject;
    IOleInPlaceObjectWindowless* m_pInPlaceObject;
@@ -280,7 +280,7 @@ protected:
 };
 
 
-CActiveXCtrl::CActiveXCtrl() : 
+ActiveXCtrl::ActiveXCtrl() : 
    m_dwRef(1), 
    m_owner(NULL), 
    m_win(NULL),
@@ -296,7 +296,7 @@ CActiveXCtrl::CActiveXCtrl() :
 {
 }
 
-CActiveXCtrl::~CActiveXCtrl()
+ActiveXCtrl::~ActiveXCtrl()
 {
    if (m_win != NULL)  ::DestroyWindow(*m_win);
    if (m_pUnkSite != NULL)  m_pUnkSite->Release();
@@ -304,7 +304,7 @@ CActiveXCtrl::~CActiveXCtrl()
    if (m_pInPlaceObject != NULL)  m_pInPlaceObject->Release();
 }
 
-STDMETHODIMP CActiveXCtrl::QueryInterface(REFIID riid, LPVOID *ppvObject)
+STDMETHODIMP ActiveXCtrl::QueryInterface(REFIID riid, LPVOID *ppvObject)
 {
    *ppvObject = NULL;
    if (riid == IID_IUnknown)                        *ppvObject = static_cast<IOleWindow*>(this);
@@ -320,21 +320,21 @@ STDMETHODIMP CActiveXCtrl::QueryInterface(REFIID riid, LPVOID *ppvObject)
    return *ppvObject == NULL ? E_NOINTERFACE : S_OK;
 }
 
-STDMETHODIMP_(ULONG) CActiveXCtrl::AddRef()
+STDMETHODIMP_(ULONG) ActiveXCtrl::AddRef()
 {
    return ++m_dwRef;
 }
 
-STDMETHODIMP_(ULONG) CActiveXCtrl::Release()
+STDMETHODIMP_(ULONG) ActiveXCtrl::Release()
 {
    LONG lRef = --m_dwRef;
    if (lRef == 0)  delete this;
    return lRef;
 }
 
-STDMETHODIMP CActiveXCtrl::SetSite(IUnknown *pUnkSite)
+STDMETHODIMP ActiveXCtrl::SetSite(IUnknown *pUnkSite)
 {
-   TRACE("AX: CActiveXCtrl::SetSite");
+   TRACE("AX: ActiveXCtrl::SetSite");
    if (m_pUnkSite != NULL)  {
       m_pUnkSite->Release();
       m_pUnkSite = NULL;
@@ -346,31 +346,31 @@ STDMETHODIMP CActiveXCtrl::SetSite(IUnknown *pUnkSite)
    return S_OK;
 }
 
-STDMETHODIMP CActiveXCtrl::GetSite(REFIID riid, LPVOID* ppvSite)
+STDMETHODIMP ActiveXCtrl::GetSite(REFIID riid, LPVOID* ppvSite)
 {
-   TRACE("AX: CActiveXCtrl::GetSite");
+   TRACE("AX: ActiveXCtrl::GetSite");
    if (ppvSite == NULL)  return E_POINTER;
    *ppvSite = NULL;
    if (m_pUnkSite == NULL)  return E_FAIL;
    return m_pUnkSite->QueryInterface(riid, ppvSite);
 }
 
-STDMETHODIMP CActiveXCtrl::SaveObject(void)
+STDMETHODIMP ActiveXCtrl::SaveObject(void)
 {
-   TRACE("AX: CActiveXCtrl::SaveObject");
+   TRACE("AX: ActiveXCtrl::SaveObject");
    return E_NOTIMPL;
 }
 
-STDMETHODIMP CActiveXCtrl::GetMoniker(DWORD dwAssign, DWORD dwWhichMoniker, IMoniker** ppmk)
+STDMETHODIMP ActiveXCtrl::GetMoniker(DWORD dwAssign, DWORD dwWhichMoniker, IMoniker** ppmk)
 {
-   TRACE("AX: CActiveXCtrl::GetMoniker");
+   TRACE("AX: ActiveXCtrl::GetMoniker");
    if (ppmk != NULL)  *ppmk = NULL;
    return E_NOTIMPL;
 }
 
-STDMETHODIMP CActiveXCtrl::GetContainer(IOleContainer** ppContainer)
+STDMETHODIMP ActiveXCtrl::GetContainer(IOleContainer** ppContainer)
 {
-   TRACE("AX: CActiveXCtrl::GetContainer");
+   TRACE("AX: ActiveXCtrl::GetContainer");
    if (ppContainer == NULL)  return E_POINTER;
    *ppContainer = NULL;
    HRESULT Hr = E_NOTIMPL;
@@ -379,9 +379,9 @@ STDMETHODIMP CActiveXCtrl::GetContainer(IOleContainer** ppContainer)
    return Hr;
 }
 
-STDMETHODIMP CActiveXCtrl::ShowObject(void)
+STDMETHODIMP ActiveXCtrl::ShowObject(void)
 {
-   TRACE("AX: CActiveXCtrl::ShowObject");
+   TRACE("AX: ActiveXCtrl::ShowObject");
    if (m_owner == NULL)  return E_UNEXPECTED;
    HDC hDC = ::GetDC(m_owner->m_hwndHost);
    if (hDC == NULL)  return E_FAIL;
@@ -390,59 +390,59 @@ STDMETHODIMP CActiveXCtrl::ShowObject(void)
    return S_OK;
 }
 
-STDMETHODIMP CActiveXCtrl::OnShowWindow(BOOL fShow)
+STDMETHODIMP ActiveXCtrl::OnShowWindow(BOOL fShow)
 {
-   TRACE("AX: CActiveXCtrl::OnShowWindow");
+   TRACE("AX: ActiveXCtrl::OnShowWindow");
    return E_NOTIMPL;
 }
 
-STDMETHODIMP CActiveXCtrl::RequestNewObjectLayout(void)
+STDMETHODIMP ActiveXCtrl::RequestNewObjectLayout(void)
 {
-   TRACE("AX: CActiveXCtrl::RequestNewObjectLayout");
+   TRACE("AX: ActiveXCtrl::RequestNewObjectLayout");
    return E_NOTIMPL;
 }
 
-STDMETHODIMP CActiveXCtrl::CanWindowlessActivate(void)
+STDMETHODIMP ActiveXCtrl::CanWindowlessActivate(void)
 {
-   TRACE("AX: CActiveXCtrl::CanWindowlessActivate");
+   TRACE("AX: ActiveXCtrl::CanWindowlessActivate");
    return S_OK;  // Yes, we can!!
 }
 
-STDMETHODIMP CActiveXCtrl::GetCapture(void)
+STDMETHODIMP ActiveXCtrl::GetCapture(void)
 {
-   TRACE("AX: CActiveXCtrl::GetCapture");
+   TRACE("AX: ActiveXCtrl::GetCapture");
    if (m_owner == NULL)  return E_UNEXPECTED;
    return m_bCaptured ? S_OK : S_FALSE;
 }
 
-STDMETHODIMP CActiveXCtrl::SetCapture(BOOL fCapture)
+STDMETHODIMP ActiveXCtrl::SetCapture(BOOL fCapture)
 {
-   TRACE("AX: CActiveXCtrl::SetCapture");
+   TRACE("AX: ActiveXCtrl::SetCapture");
    if (m_owner == NULL)  return E_UNEXPECTED;
    m_bCaptured = (fCapture == TRUE);
    if (fCapture)  ::SetCapture(m_owner->m_hwndHost); else ::ReleaseCapture();
    return S_OK;
 }
 
-STDMETHODIMP CActiveXCtrl::GetFocus(void)
+STDMETHODIMP ActiveXCtrl::GetFocus(void)
 {
-   TRACE("AX: CActiveXCtrl::GetFocus");
+   TRACE("AX: ActiveXCtrl::GetFocus");
    if (m_owner == NULL)  return E_UNEXPECTED;
    return m_bFocused ? S_OK : S_FALSE;
 }
 
-STDMETHODIMP CActiveXCtrl::SetFocus(BOOL fFocus)
+STDMETHODIMP ActiveXCtrl::SetFocus(BOOL fFocus)
 {
-   TRACE("AX: CActiveXCtrl::SetFocus");
+   TRACE("AX: ActiveXCtrl::SetFocus");
    if (m_owner == NULL)  return E_UNEXPECTED;
    if (fFocus)  m_owner->SetFocus();
    m_bFocused = (fFocus == TRUE);
    return S_OK;
 }
 
-STDMETHODIMP CActiveXCtrl::GetDC(LPCRECT pRect, DWORD grfFlags, HDC* phDC)
+STDMETHODIMP ActiveXCtrl::GetDC(LPCRECT pRect, DWORD grfFlags, HDC* phDC)
 {
-   TRACE("AX: CActiveXCtrl::GetDC");
+   TRACE("AX: ActiveXCtrl::GetDC");
    if (phDC == NULL)  return E_POINTER;
    if (m_owner == NULL)  return E_UNEXPECTED;
    *phDC = ::GetDC(m_owner->m_hwndHost);
@@ -454,52 +454,52 @@ STDMETHODIMP CActiveXCtrl::GetDC(LPCRECT pRect, DWORD grfFlags, HDC* phDC)
    return S_OK;
 }
 
-STDMETHODIMP CActiveXCtrl::ReleaseDC(HDC hDC)
+STDMETHODIMP ActiveXCtrl::ReleaseDC(HDC hDC)
 {
-   TRACE("AX: CActiveXCtrl::ReleaseDC");
+   TRACE("AX: ActiveXCtrl::ReleaseDC");
    if (m_owner == NULL)  return E_UNEXPECTED;
    ::ReleaseDC(m_owner->m_hwndHost, hDC);
    return S_OK;
 }
 
-STDMETHODIMP CActiveXCtrl::InvalidateRect(LPCRECT pRect, BOOL fErase)
+STDMETHODIMP ActiveXCtrl::InvalidateRect(LPCRECT pRect, BOOL fErase)
 {
-   TRACE("AX: CActiveXCtrl::InvalidateRect");
+   TRACE("AX: ActiveXCtrl::InvalidateRect");
    if (m_owner == NULL)  return E_UNEXPECTED;
    if (m_owner->m_hwndHost == NULL)  return E_FAIL;
    return ::InvalidateRect(m_owner->m_hwndHost, pRect, fErase) ? S_OK : E_FAIL;
 }
 
-STDMETHODIMP CActiveXCtrl::InvalidateRgn(HRGN hRGN, BOOL fErase)
+STDMETHODIMP ActiveXCtrl::InvalidateRgn(HRGN hRGN, BOOL fErase)
 {
-   TRACE("AX: CActiveXCtrl::InvalidateRgn");
+   TRACE("AX: ActiveXCtrl::InvalidateRgn");
    if (m_owner == NULL)  return E_UNEXPECTED;
    return ::InvalidateRgn(m_owner->m_hwndHost, hRGN, fErase) ? S_OK : E_FAIL;
 }
 
-STDMETHODIMP CActiveXCtrl::ScrollRect(INT dx, INT dy, LPCRECT pRectScroll, LPCRECT pRectClip)
+STDMETHODIMP ActiveXCtrl::ScrollRect(INT dx, INT dy, LPCRECT pRectScroll, LPCRECT pRectClip)
 {
-   TRACE("AX: CActiveXCtrl::ScrollRect");
+   TRACE("AX: ActiveXCtrl::ScrollRect");
    return S_OK;
 }
 
-STDMETHODIMP CActiveXCtrl::AdjustRect(LPRECT prc)
+STDMETHODIMP ActiveXCtrl::AdjustRect(LPRECT prc)
 {
-   TRACE("AX: CActiveXCtrl::AdjustRect");
+   TRACE("AX: ActiveXCtrl::AdjustRect");
    return S_OK;
 }
 
-STDMETHODIMP CActiveXCtrl::OnDefWindowMessage(UINT msg, WPARAM wParam, LPARAM lParam, LRESULT* plResult)
+STDMETHODIMP ActiveXCtrl::OnDefWindowMessage(UINT msg, WPARAM wParam, LPARAM lParam, LRESULT* plResult)
 {
-   TRACE("AX: CActiveXCtrl::OnDefWindowMessage");
+   TRACE("AX: ActiveXCtrl::OnDefWindowMessage");
    if (m_owner == NULL)  return E_UNEXPECTED;
    *plResult = ::DefWindowProc(m_owner->m_hwndHost, msg, wParam, lParam);
    return S_OK;
 }
 
-STDMETHODIMP CActiveXCtrl::OnInPlaceActivateEx(BOOL* pfNoRedraw, DWORD dwFlags)        
+STDMETHODIMP ActiveXCtrl::OnInPlaceActivateEx(BOOL* pfNoRedraw, DWORD dwFlags)        
 {
-   TRACE("AX: CActiveXCtrl::OnInPlaceActivateEx");
+   TRACE("AX: ActiveXCtrl::OnInPlaceActivateEx");
    ASSERT(m_pInPlaceObject==NULL);
    if (m_owner == NULL)  return E_UNEXPECTED;
    if (m_owner->m_pUnk == NULL)  return E_UNEXPECTED;
@@ -527,9 +527,9 @@ STDMETHODIMP CActiveXCtrl::OnInPlaceActivateEx(BOOL* pfNoRedraw, DWORD dwFlags)
    return Hr;
 }
 
-STDMETHODIMP CActiveXCtrl::OnInPlaceDeactivateEx(BOOL fNoRedraw)       
+STDMETHODIMP ActiveXCtrl::OnInPlaceDeactivateEx(BOOL fNoRedraw)       
 {
-   TRACE("AX: CActiveXCtrl::OnInPlaceDeactivateEx");
+   TRACE("AX: ActiveXCtrl::OnInPlaceDeactivateEx");
    m_bInPlaceActive = false;
    if (m_pInPlaceObject != NULL)  {
       m_pInPlaceObject->Release();
@@ -542,40 +542,40 @@ STDMETHODIMP CActiveXCtrl::OnInPlaceDeactivateEx(BOOL fNoRedraw)
    return S_OK;
 }
 
-STDMETHODIMP CActiveXCtrl::RequestUIActivate(void)
+STDMETHODIMP ActiveXCtrl::RequestUIActivate(void)
 {
-   TRACE("AX: CActiveXCtrl::RequestUIActivate");
+   TRACE("AX: ActiveXCtrl::RequestUIActivate");
    return S_OK;
 }
 
-STDMETHODIMP CActiveXCtrl::CanInPlaceActivate(void)       
+STDMETHODIMP ActiveXCtrl::CanInPlaceActivate(void)       
 {
-   TRACE("AX: CActiveXCtrl::CanInPlaceActivate");
+   TRACE("AX: ActiveXCtrl::CanInPlaceActivate");
    return S_OK;
 }
 
-STDMETHODIMP CActiveXCtrl::OnInPlaceActivate(void)
+STDMETHODIMP ActiveXCtrl::OnInPlaceActivate(void)
 {
-   TRACE("AX: CActiveXCtrl::OnInPlaceActivate");
+   TRACE("AX: ActiveXCtrl::OnInPlaceActivate");
    BOOL bDummy = FALSE;
    return OnInPlaceActivateEx(&bDummy, 0);
 }
 
-STDMETHODIMP CActiveXCtrl::OnUIActivate(void)
+STDMETHODIMP ActiveXCtrl::OnUIActivate(void)
 {
-   TRACE("AX: CActiveXCtrl::OnUIActivate");
+   TRACE("AX: ActiveXCtrl::OnUIActivate");
    m_bUIActivated = true;
    return S_OK;
 }
 
-STDMETHODIMP CActiveXCtrl::GetWindowContext(IOleInPlaceFrame** ppFrame, IOleInPlaceUIWindow** ppDoc, LPRECT lprcPosRect, LPRECT lprcClipRect, LPOLEINPLACEFRAMEINFO lpFrameInfo)
+STDMETHODIMP ActiveXCtrl::GetWindowContext(IOleInPlaceFrame** ppFrame, IOleInPlaceUIWindow** ppDoc, LPRECT lprcPosRect, LPRECT lprcClipRect, LPOLEINPLACEFRAMEINFO lpFrameInfo)
 {
-   TRACE("AX: CActiveXCtrl::GetWindowContext");
+   TRACE("AX: ActiveXCtrl::GetWindowContext");
    if (ppDoc == NULL)  return E_POINTER;
    if (ppFrame == NULL)  return E_POINTER;
    if (lprcPosRect == NULL)  return E_POINTER;
    if (lprcClipRect == NULL)  return E_POINTER;
-   *ppFrame = new CActiveXFrameWnd(m_owner);
+   *ppFrame = new ActiveXFrameWnd(m_owner);
    *ppDoc = NULL;
    ACCEL ac = { 0 };
    HACCEL hac = ::CreateAcceleratorTable(&ac, 1);
@@ -587,46 +587,46 @@ STDMETHODIMP CActiveXCtrl::GetWindowContext(IOleInPlaceFrame** ppFrame, IOleInPl
    return S_OK;
 }
 
-STDMETHODIMP CActiveXCtrl::Scroll(SIZE scrollExtant)
+STDMETHODIMP ActiveXCtrl::Scroll(SIZE scrollExtant)
 {
-   TRACE("AX: CActiveXCtrl::Scroll");
+   TRACE("AX: ActiveXCtrl::Scroll");
    return E_NOTIMPL;
 }
 
-STDMETHODIMP CActiveXCtrl::OnUIDeactivate(BOOL fUndoable)
+STDMETHODIMP ActiveXCtrl::OnUIDeactivate(BOOL fUndoable)
 {
-   TRACE("AX: CActiveXCtrl::OnUIDeactivate");
+   TRACE("AX: ActiveXCtrl::OnUIDeactivate");
    m_bUIActivated = false;
    return S_OK;
 }
 
-STDMETHODIMP CActiveXCtrl::OnInPlaceDeactivate(void)
+STDMETHODIMP ActiveXCtrl::OnInPlaceDeactivate(void)
 {
-   TRACE("AX: CActiveXCtrl::OnInPlaceDeactivate");
+   TRACE("AX: ActiveXCtrl::OnInPlaceDeactivate");
    return OnInPlaceDeactivateEx(TRUE);
 }
 
-STDMETHODIMP CActiveXCtrl::DiscardUndoState(void)
+STDMETHODIMP ActiveXCtrl::DiscardUndoState(void)
 {
-   TRACE("AX: CActiveXCtrl::DiscardUndoState");
+   TRACE("AX: ActiveXCtrl::DiscardUndoState");
    return E_NOTIMPL;
 }
 
-STDMETHODIMP CActiveXCtrl::DeactivateAndUndo(void)
+STDMETHODIMP ActiveXCtrl::DeactivateAndUndo(void)
 {
-   TRACE("AX: CActiveXCtrl::DeactivateAndUndo");
+   TRACE("AX: ActiveXCtrl::DeactivateAndUndo");
    return E_NOTIMPL;
 }
 
-STDMETHODIMP CActiveXCtrl::OnPosRectChange(LPCRECT lprcPosRect)
+STDMETHODIMP ActiveXCtrl::OnPosRectChange(LPCRECT lprcPosRect)
 {
-   TRACE("AX: CActiveXCtrl::OnPosRectChange");
+   TRACE("AX: ActiveXCtrl::OnPosRectChange");
    return E_NOTIMPL;
 }
 
-STDMETHODIMP CActiveXCtrl::GetWindow(HWND* phwnd)
+STDMETHODIMP ActiveXCtrl::GetWindow(HWND* phwnd)
 {
-   TRACE("AX: CActiveXCtrl::GetWindow");
+   TRACE("AX: ActiveXCtrl::GetWindow");
    if (m_owner == NULL)  return E_UNEXPECTED;
    if (m_owner->m_hwndHost == NULL)  CreateActiveXWnd();
    if (m_owner->m_hwndHost == NULL)  return E_FAIL;
@@ -634,90 +634,90 @@ STDMETHODIMP CActiveXCtrl::GetWindow(HWND* phwnd)
    return S_OK;
 }
 
-STDMETHODIMP CActiveXCtrl::ContextSensitiveHelp(BOOL fEnterMode)
+STDMETHODIMP ActiveXCtrl::ContextSensitiveHelp(BOOL fEnterMode)
 {
-   TRACE("AX: CActiveXCtrl::ContextSensitiveHelp");
+   TRACE("AX: ActiveXCtrl::ContextSensitiveHelp");
    return S_OK;
 }
 
-STDMETHODIMP CActiveXCtrl::OnControlInfoChanged(void)      
+STDMETHODIMP ActiveXCtrl::OnControlInfoChanged(void)      
 {
-   TRACE("AX: CActiveXCtrl::OnControlInfoChanged");
+   TRACE("AX: ActiveXCtrl::OnControlInfoChanged");
    return S_OK;
 }
 
-STDMETHODIMP CActiveXCtrl::LockInPlaceActive(BOOL fLock)       
+STDMETHODIMP ActiveXCtrl::LockInPlaceActive(BOOL fLock)       
 {
-   TRACE("AX: CActiveXCtrl::LockInPlaceActive");
+   TRACE("AX: ActiveXCtrl::LockInPlaceActive");
    return S_OK;
 }
 
-STDMETHODIMP CActiveXCtrl::GetExtendedControl(IDispatch** ppDisp)        
+STDMETHODIMP ActiveXCtrl::GetExtendedControl(IDispatch** ppDisp)        
 {
-   TRACE("AX: CActiveXCtrl::GetExtendedControl");
+   TRACE("AX: ActiveXCtrl::GetExtendedControl");
    if (ppDisp == NULL)  return E_POINTER;   
    if (m_owner == NULL)  return E_UNEXPECTED;
    if (m_owner->m_pUnk == NULL)  return E_UNEXPECTED;
    return m_owner->m_pUnk->QueryInterface(IID_IDispatch, (LPVOID*) ppDisp);
 }
 
-STDMETHODIMP CActiveXCtrl::TransformCoords(POINTL* pPtlHimetric, POINTF* pPtfContainer, DWORD dwFlags)       
+STDMETHODIMP ActiveXCtrl::TransformCoords(POINTL* pPtlHimetric, POINTF* pPtfContainer, DWORD dwFlags)       
 {
-   TRACE("AX: CActiveXCtrl::TransformCoords");
+   TRACE("AX: ActiveXCtrl::TransformCoords");
    return S_OK;
 }
 
-STDMETHODIMP CActiveXCtrl::TranslateAccelerator(MSG *pMsg, DWORD grfModifiers)
+STDMETHODIMP ActiveXCtrl::TranslateAccelerator(MSG *pMsg, DWORD grfModifiers)
 {
-   TRACE("AX: CActiveXCtrl::TranslateAccelerator");
+   TRACE("AX: ActiveXCtrl::TranslateAccelerator");
    return S_FALSE;
 }
 
-STDMETHODIMP CActiveXCtrl::OnFocus(BOOL fGotFocus)
+STDMETHODIMP ActiveXCtrl::OnFocus(BOOL fGotFocus)
 {
-   TRACE("AX: CActiveXCtrl::OnFocus");
+   TRACE("AX: ActiveXCtrl::OnFocus");
    m_bFocused = (fGotFocus == TRUE);
    return S_OK;
 }
 
-STDMETHODIMP CActiveXCtrl::ShowPropertyFrame(void)
+STDMETHODIMP ActiveXCtrl::ShowPropertyFrame(void)
 {
-   TRACE("AX: CActiveXCtrl::ShowPropertyFrame");
+   TRACE("AX: ActiveXCtrl::ShowPropertyFrame");
    return E_NOTIMPL;
 }
 
-STDMETHODIMP CActiveXCtrl::EnumObjects(DWORD grfFlags, IEnumUnknown** ppenum)
+STDMETHODIMP ActiveXCtrl::EnumObjects(DWORD grfFlags, IEnumUnknown** ppenum)
 {
-   TRACE("AX: CActiveXCtrl::EnumObjects");
+   TRACE("AX: ActiveXCtrl::EnumObjects");
    if (ppenum == NULL)  return E_POINTER;
    if (m_owner == NULL)  return E_UNEXPECTED;
-   *ppenum = new CActiveXEnum(m_owner->m_pUnk);
+   *ppenum = new ActiveXEnum(m_owner->m_pUnk);
    return S_OK;
 }
 
-STDMETHODIMP CActiveXCtrl::LockContainer(BOOL fLock)
+STDMETHODIMP ActiveXCtrl::LockContainer(BOOL fLock)
 {
-   TRACE("AX: CActiveXCtrl::LockContainer");
+   TRACE("AX: ActiveXCtrl::LockContainer");
    m_bLocked = fLock != FALSE;
    return S_OK;
 }
 
-STDMETHODIMP CActiveXCtrl::ParseDisplayName(IBindCtx *pbc, LPOLESTR pszDisplayName, ULONG* pchEaten, IMoniker** ppmkOut)
+STDMETHODIMP ActiveXCtrl::ParseDisplayName(IBindCtx *pbc, LPOLESTR pszDisplayName, ULONG* pchEaten, IMoniker** ppmkOut)
 {
-   TRACE("AX: CActiveXCtrl::ParseDisplayName");
+   TRACE("AX: ActiveXCtrl::ParseDisplayName");
    return E_NOTIMPL;
 }
 
-HRESULT CActiveXCtrl::CreateActiveXWnd()
+HRESULT ActiveXCtrl::CreateActiveXWnd()
 {
    if (m_win != NULL)  return S_OK;
-   m_win = new CActiveXWnd;
+   m_win = new ActiveXWnd;
    if (m_win == NULL)  return E_OUTOFMEMORY;
    m_owner->m_hwndHost = m_win->Init(this, m_owner->GetManager()->GetPaintWindow());
    return S_OK;
 }
 
-HWND CActiveXWnd::Init(CActiveXCtrl* owner, HWND hWndParent)
+HWND ActiveXWnd::Init(ActiveXCtrl* owner, HWND hWndParent)
 {
    m_owner = owner;
    UINT uStyle = WS_CHILD | WS_VISIBLE | WS_CLIPCHILDREN | WS_CLIPSIBLINGS;
@@ -725,17 +725,17 @@ HWND CActiveXWnd::Init(CActiveXCtrl* owner, HWND hWndParent)
    return m_hWnd;
 }
 
-const TCHAR* CActiveXWnd::GetWindowClassName() const
+const TCHAR* ActiveXWnd::GetWindowClassName() const
 {
    return _T("ActiveXWnd");
 }
 
-void CActiveXWnd::OnFinalMessage(HWND hWnd)
+void ActiveXWnd::OnFinalMessage(HWND hWnd)
 {
    delete this;
 }
 
-void CActiveXWnd::DoVerb(LONG iVerb)
+void ActiveXWnd::DoVerb(LONG iVerb)
 {
    if (m_owner == NULL)  return;
    if (m_owner->m_owner == NULL)  return;
@@ -749,7 +749,7 @@ void CActiveXWnd::DoVerb(LONG iVerb)
    pUnk->DoVerb(iVerb, NULL, pOleClientSite, 0, m_hWnd, &m_owner->m_owner->GetPos());
 }
 
-LRESULT CActiveXWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
+LRESULT ActiveXWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
    LRESULT lRes;
    BOOL bHandled = TRUE;
@@ -766,13 +766,13 @@ LRESULT CActiveXWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
    return lRes;
 }
 
-LRESULT CActiveXWnd::OnEraseBkgnd(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+LRESULT ActiveXWnd::OnEraseBkgnd(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
    if (m_owner->m_pViewObject == NULL)  bHandled = FALSE;
    return 1;
 }
 
-LRESULT CActiveXWnd::OnMouseActivate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+LRESULT ActiveXWnd::OnMouseActivate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
    IOleObject* pUnk = NULL;
    m_owner->m_owner->GetControl(IID_IOleObject, (LPVOID*) &pUnk);
@@ -786,7 +786,7 @@ LRESULT CActiveXWnd::OnMouseActivate(UINT uMsg, WPARAM wParam, LPARAM lParam, BO
    return 0;
 }
 
-LRESULT CActiveXWnd::OnSetFocus(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+LRESULT ActiveXWnd::OnSetFocus(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
    bHandled = FALSE;
    m_owner->m_bFocused = true;
@@ -794,14 +794,14 @@ LRESULT CActiveXWnd::OnSetFocus(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& b
    return 0;
 }
 
-LRESULT CActiveXWnd::OnKillFocus(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+LRESULT ActiveXWnd::OnKillFocus(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
    bHandled = FALSE;
    m_owner->m_bFocused = false;
    return 0;
 }
 
-LRESULT CActiveXWnd::OnPaint(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+LRESULT ActiveXWnd::OnPaint(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
    PAINTSTRUCT ps = { 0 };
    ::BeginPaint(m_hWnd, &ps);
@@ -1006,7 +1006,7 @@ bool ActiveXUI::DelayedControlCreation()
    pOleControl->Release();
    if (m_pUnk == NULL)  return false;
    // Create the host too
-   m_ctrl = new CActiveXCtrl();
+   m_ctrl = new ActiveXCtrl();
    m_ctrl->m_owner = this;
    // More control creation stuff
    DWORD dwMiscStatus = 0;

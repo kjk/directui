@@ -11,11 +11,11 @@ typedef enum
    UIANIMTYPE_SWIPE,
 } UITYPE_ANIM;
 
-class UILIB_API CAnimJobUI
+class UILIB_API AnimJobUI
 {
 public:
-   CAnimJobUI(const CAnimJobUI& src);
-   CAnimJobUI(UITYPE_ANIM AnimType, DWORD dwStartTick, DWORD dwDuration, COLORREF clrBack, COLORREF clrKey, RECT rcFrom, int xtrans, int ytrans, int ztrans, int alpha, float zrot);
+   AnimJobUI(const AnimJobUI& src);
+   AnimJobUI(UITYPE_ANIM AnimType, DWORD dwStartTick, DWORD dwDuration, COLORREF clrBack, COLORREF clrKey, RECT rcFrom, int xtrans, int ytrans, int ztrans, int alpha, float zrot);
 
    typedef enum
    {

@@ -64,7 +64,6 @@ public:
    virtual void DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle) = 0;
 };
 
-
 class UILIB_API ListElementUI : public ControlUI, public IListItemUI
 {
 public:
@@ -106,10 +105,10 @@ public:
    void DoPaint(HDC hDC, const RECT& rcPaint);
 };
 
-class UILIB_API CListHeaderItemUI : public ControlUI
+class UILIB_API ListHeaderItemUI : public ControlUI
 {
 public:
-   CListHeaderItemUI();
+   ListHeaderItemUI();
 
    const TCHAR* GetClass() const;
    UINT GetControlFlags() const;
@@ -192,10 +191,10 @@ protected:
    TListInfoUI m_ListInfo;
 };
 
-class UILIB_API CListLabelElementUI : public ListElementUI
+class UILIB_API ListLabelElementUI : public ListElementUI
 {
 public:
-   CListLabelElementUI();
+   ListLabelElementUI();
 
    const TCHAR* GetClass() const;
 
@@ -216,10 +215,10 @@ protected:
    UINT m_uButtonState;
 };
 
-class UILIB_API CListTextElementUI : public CListLabelElementUI
+class UILIB_API ListTextElementUI : public ListLabelElementUI
 {
 public:
-   CListTextElementUI();
+   ListTextElementUI();
 
    const TCHAR* GetClass() const;
    UINT GetControlFlags() const;
@@ -239,11 +238,11 @@ protected:
    IListUI* m_owner;
 };
 
-class UILIB_API CListExpandElementUI : public CListTextElementUI, public IContainerUI
+class UILIB_API ListExpandElementUI : public ListTextElementUI, public IContainerUI
 {
 public:
-   CListExpandElementUI();
-   virtual ~CListExpandElementUI();
+   ListExpandElementUI();
+   virtual ~ListExpandElementUI();
 
    const TCHAR* GetClass() const;
 
@@ -271,6 +270,5 @@ protected:
    int m_cyExpanded;
    ContainerUI* m_pContainer;
 };
-
 
 #endif // !defined(AFX_UILIST_H__20060218_929F_BDFF_55AA_0080AD509054__INCLUDED_)

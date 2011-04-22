@@ -133,39 +133,39 @@ void ListHeaderUI::DoPaint(HDC hDC, const RECT& rcPaint)
 }
 
 
-CListHeaderItemUI::CListHeaderItemUI() : m_uDragState(0)
+ListHeaderItemUI::ListHeaderItemUI() : m_uDragState(0)
 {
 }
 
-const TCHAR* CListHeaderItemUI::GetClass() const
+const TCHAR* ListHeaderItemUI::GetClass() const
 {
    return _T("ListHeaderItemUI");
 }
 
-void CListHeaderItemUI::SetText(const TCHAR* txt)
+void ListHeaderItemUI::SetText(const TCHAR* txt)
 {
    m_txt = txt;
    UpdateLayout();
 }
 
-void CListHeaderItemUI::SetWidth(int cxWidth)
+void ListHeaderItemUI::SetWidth(int cxWidth)
 {
    m_cxWidth = cxWidth;
    UpdateLayout();
 }
 
-void CListHeaderItemUI::SetAttribute(const TCHAR* name, const TCHAR* value)
+void ListHeaderItemUI::SetAttribute(const TCHAR* name, const TCHAR* value)
 {
    if (_tcscmp(name, _T("width")) == 0)  SetWidth(_ttol(value));
    else ControlUI::SetAttribute(name, value);
 }
 
-UINT CListHeaderItemUI::GetControlFlags() const
+UINT ListHeaderItemUI::GetControlFlags() const
 {
    return UIFLAG_SETCURSOR;
 }
 
-void CListHeaderItemUI::Event(TEventUI& event)
+void ListHeaderItemUI::Event(TEventUI& event)
 {
    if (event.Type == UIEVENT_BUTTONDOWN && IsEnabled()) 
    {
@@ -212,12 +212,12 @@ void CListHeaderItemUI::Event(TEventUI& event)
    ControlUI::Event(event);
 }
 
-SIZE CListHeaderItemUI::EstimateSize(SIZE /*szAvailable*/)
+SIZE ListHeaderItemUI::EstimateSize(SIZE /*szAvailable*/)
 {
    return CSize(m_cxWidth, 14 + m_manager->GetThemeFontInfo(UIFONT_NORMAL).tmHeight);
 }
 
-void CListHeaderItemUI::DoPaint(HDC hDC, const RECT& rcPaint)
+void ListHeaderItemUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
    // Paint text (with some indent)
    RECT rcMessage = m_rcItem;
@@ -234,7 +234,7 @@ void CListHeaderItemUI::DoPaint(HDC hDC, const RECT& rcPaint)
    CBlueRenderEngineUI::DoPaintLine(hDC, m_manager, rc2, UICOLOR_STANDARD_WHITE);
 }
 
-RECT CListHeaderItemUI::GetThumbRect(RECT rc) const
+RECT ListHeaderItemUI::GetThumbRect(RECT rc) const
 {
    return CRect(rc.right - 4, rc.top, rc.right, rc.bottom - 3);
 }
@@ -571,28 +571,28 @@ void ListUI::SetTextCallback(IListCallbackUI* pCallback)
 }
 
 
-CListLabelElementUI::CListLabelElementUI() : m_cxWidth(0), m_uTextStyle(DT_VCENTER | DT_NOPREFIX | DT_END_ELLIPSIS), m_uButtonState(0)
+ListLabelElementUI::ListLabelElementUI() : m_cxWidth(0), m_uTextStyle(DT_VCENTER | DT_NOPREFIX | DT_END_ELLIPSIS), m_uButtonState(0)
 {
 }
 
-const TCHAR* CListLabelElementUI::GetClass() const
+const TCHAR* ListLabelElementUI::GetClass() const
 {
    return _T("ListLabelElementUI");
 }
 
-void CListLabelElementUI::SetWidth(int cx)
+void ListLabelElementUI::SetWidth(int cx)
 {
    m_cxWidth = cx;
    Invalidate();
 }
 
-void CListLabelElementUI::SetTextStyle(UINT uStyle)
+void ListLabelElementUI::SetTextStyle(UINT uStyle)
 {
    m_uTextStyle = uStyle;
    Invalidate();
 }
 
-void CListLabelElementUI::Event(TEventUI& event)
+void ListLabelElementUI::Event(TEventUI& event)
 {
    if (event.Type == UIEVENT_BUTTONDOWN && IsEnabled()) 
    {
@@ -614,7 +614,7 @@ void CListLabelElementUI::Event(TEventUI& event)
    ListElementUI::Event(event);
 }
 
-void CListLabelElementUI::SetAttribute(const TCHAR* name, const TCHAR* value)
+void ListLabelElementUI::SetAttribute(const TCHAR* name, const TCHAR* value)
 {
    if (_tcscmp(name, _T("width")) == 0)  {
       SetWidth(_ttoi(value));
@@ -626,17 +626,17 @@ void CListLabelElementUI::SetAttribute(const TCHAR* name, const TCHAR* value)
    else ListElementUI::SetAttribute(name, value);
 }
 
-SIZE CListLabelElementUI::EstimateSize(SIZE /*szAvailable*/)
+SIZE ListLabelElementUI::EstimateSize(SIZE /*szAvailable*/)
 {
    return CSize(m_cxWidth, m_manager->GetThemeFontInfo(UIFONT_NORMAL).tmHeight + 8);
 }
 
-void CListLabelElementUI::DoPaint(HDC hDC, const RECT& rcPaint)
+void ListLabelElementUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
    DrawItem(hDC, GetPos(), 0);
 }
 
-void CListLabelElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uDrawStyle)
+void ListLabelElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uDrawStyle)
 {
    UITYPE_COLOR iTextColor = UICOLOR_CONTROL_TEXT_NORMAL;
    UITYPE_COLOR iBackColor = UICOLOR__INVALID;
@@ -675,28 +675,28 @@ void CListLabelElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uDrawStyle)
 }
 
 
-CListTextElementUI::CListTextElementUI() : m_cyItem(0), m_nLinks(0), m_owner(NULL)
+ListTextElementUI::ListTextElementUI() : m_cyItem(0), m_nLinks(0), m_owner(NULL)
 {
    ::ZeroMemory(&m_rcLinks, sizeof(m_rcLinks));
 }
 
-const TCHAR* CListTextElementUI::GetClass() const
+const TCHAR* ListTextElementUI::GetClass() const
 {
    return _T("ListTextElementUI");
 }
 
-UINT CListTextElementUI::GetControlFlags() const
+UINT ListTextElementUI::GetControlFlags() const
 {
    return UIFLAG_WANTRETURN | (m_nLinks > 0 ? UIFLAG_SETCURSOR : 0);
 }
 
-void CListTextElementUI::SetOwner(ControlUI* owner)
+void ListTextElementUI::SetOwner(ControlUI* owner)
 {
    ListElementUI::SetOwner(owner);
    m_owner = static_cast<IListUI*>(owner->GetInterface("List"));
 }
 
-void CListTextElementUI::Event(TEventUI& event)
+void ListTextElementUI::Event(TEventUI& event)
 {
    // When you hover over a link
    if (event.Type == UIEVENT_SETCURSOR)  {
@@ -709,10 +709,10 @@ void CListTextElementUI::Event(TEventUI& event)
    }
    if (m_nLinks > 0 && event.Type == UIEVENT_MOUSEMOVE)  Invalidate();
    if (m_nLinks > 0 && event.Type == UIEVENT_MOUSELEAVE)  Invalidate();
-   CListLabelElementUI::Event(event);
+   ListLabelElementUI::Event(event);
 }
 
-SIZE CListTextElementUI::EstimateSize(SIZE szAvailable)
+SIZE ListTextElementUI::EstimateSize(SIZE szAvailable)
 {
    if (m_owner == NULL)  return CSize();
    // We calculate the item height only once, because it will not wrap on the
@@ -727,12 +727,12 @@ SIZE CListTextElementUI::EstimateSize(SIZE szAvailable)
    return CSize(m_cxWidth, m_cyItem + 9);
 }
 
-void CListTextElementUI::DoPaint(HDC hDC, const RECT& rcPaint)
+void ListTextElementUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
    DrawItem(hDC, m_rcItem, 0);
 }
 
-void CListTextElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
+void ListTextElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
 {
    ASSERT(m_owner);
    if (m_owner == NULL)  return;
@@ -773,21 +773,21 @@ void CListTextElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
 }
 
 
-CListExpandElementUI::CListExpandElementUI() : m_bExpanded(false), m_cyExpanded(0), m_pContainer(NULL)
+ListExpandElementUI::ListExpandElementUI() : m_bExpanded(false), m_cyExpanded(0), m_pContainer(NULL)
 {
 }
 
-CListExpandElementUI::~CListExpandElementUI()
+ListExpandElementUI::~ListExpandElementUI()
 {
    delete m_pContainer;
 }
 
-const TCHAR* CListExpandElementUI::GetClass() const
+const TCHAR* ListExpandElementUI::GetClass() const
 {
    return _T("ListExpandElementUI");
 }
 
-bool CListExpandElementUI::Expand(bool bExpand)
+bool ListExpandElementUI::Expand(bool bExpand)
 {
    ASSERT(m_owner);
    if (m_owner == NULL)  return false;  
@@ -813,12 +813,12 @@ bool CListExpandElementUI::Expand(bool bExpand)
    return true;
 }
 
-bool CListExpandElementUI::IsExpanded() const
+bool ListExpandElementUI::IsExpanded() const
 {
    return m_bExpanded;
 }
 
-void CListExpandElementUI::Event(TEventUI& event)
+void ListExpandElementUI::Event(TEventUI& event)
 {
    if (event.Type == UIEVENT_BUTTONUP) 
    {
@@ -838,10 +838,10 @@ void CListExpandElementUI::Event(TEventUI& event)
          return;
       }
    }
-   CListTextElementUI::Event(event);
+   ListTextElementUI::Event(event);
 }
 
-SIZE CListExpandElementUI::EstimateSize(SIZE szAvailable)
+SIZE ListExpandElementUI::EstimateSize(SIZE szAvailable)
 {
    if (m_owner == NULL)  return CSize();
    // We calculate the item height only once, because it will not wrap on the
@@ -864,48 +864,48 @@ SIZE CListExpandElementUI::EstimateSize(SIZE szAvailable)
    return CSize(m_cxWidth, cyItem + m_cyExpanded + 1);
 }
 
-void CListExpandElementUI::SetPos(RECT rc)
+void ListExpandElementUI::SetPos(RECT rc)
 {
    if (m_pContainer != NULL)  {
       RECT rcSubItems = { rc.left + 14, rc.top + m_cyItem, rc.right - 8, rc.bottom - 6 };
       m_pContainer->SetPos(rcSubItems);
    }
-   CListTextElementUI::SetPos(rc);
+   ListTextElementUI::SetPos(rc);
 }
 
-bool CListExpandElementUI::Add(ControlUI* ctrl)
+bool ListExpandElementUI::Add(ControlUI* ctrl)
 {
    ASSERT(m_pContainer);
    if (m_pContainer == NULL)  return false;
    return m_pContainer->Add(ctrl);
 }
 
-bool CListExpandElementUI::Remove(ControlUI* ctrl)
+bool ListExpandElementUI::Remove(ControlUI* ctrl)
 {
    ASSERT(!"Not supported yet");
    return false; 
 }
 
-void CListExpandElementUI::RemoveAll()
+void ListExpandElementUI::RemoveAll()
 {
    if (m_pContainer != NULL)  m_pContainer->RemoveAll();
 }
 
-ControlUI* CListExpandElementUI::GetItem(int idx) const
+ControlUI* ListExpandElementUI::GetItem(int idx) const
 {
    if (m_pContainer == NULL)  return NULL;
    return m_pContainer->GetItem(idx);
 }
 
-int CListExpandElementUI::GetCount() const
+int ListExpandElementUI::GetCount() const
 {
    if (m_pContainer == NULL)  return 0;
    return m_pContainer->GetCount();
 }
 
-void CListExpandElementUI::DoPaint(HDC hDC, const RECT& rcPaint)
+void ListExpandElementUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
-   CListTextElementUI::DoPaint(hDC, rcPaint);
+   ListTextElementUI::DoPaint(hDC, rcPaint);
    // Paint the expanded items?
    if (m_bExpanded && m_pContainer != NULL)  {
       // Paint gradient box for the items
@@ -921,21 +921,21 @@ void CListExpandElementUI::DoPaint(HDC hDC, const RECT& rcPaint)
    }
 }
 
-void CListExpandElementUI::SetManager(PaintManagerUI* manager, ControlUI* parent)
+void ListExpandElementUI::SetManager(PaintManagerUI* manager, ControlUI* parent)
 {
    if (m_pContainer != NULL)  m_pContainer->SetManager(manager, parent);
-   CListTextElementUI::SetManager(manager, parent);
+   ListTextElementUI::SetManager(manager, parent);
 }
 
-ControlUI* CListExpandElementUI::FindControl(FINDCONTROLPROC Proc, void* data, UINT uFlags)
+ControlUI* ListExpandElementUI::FindControl(FINDCONTROLPROC Proc, void* data, UINT uFlags)
 {
    ControlUI* pResult = NULL;
    if (m_pContainer != NULL)  pResult = m_pContainer->FindControl(Proc, data, uFlags);
-   if (pResult == NULL)  pResult = CListTextElementUI::FindControl(Proc, data, uFlags);
+   if (pResult == NULL)  pResult = ListTextElementUI::FindControl(Proc, data, uFlags);
    return pResult;
 }
 
-void CListExpandElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
+void ListExpandElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
 {
    ASSERT(m_owner);
    if (m_owner == NULL)  return;

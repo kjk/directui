@@ -2,23 +2,23 @@
 #include "StdAfx.h"
 #include "UICombo.h"
 
-CSingleLinePickUI::CSingleLinePickUI() : m_cxWidth(0), m_nLinks(0), m_uButtonState(0)
+SingleLinePickUI::SingleLinePickUI() : m_cxWidth(0), m_nLinks(0), m_uButtonState(0)
 {
    ::ZeroMemory(&m_rcLinks, sizeof(m_rcLinks));
    ::ZeroMemory(&m_rcButton, sizeof(m_rcButton));
 }
 
-const TCHAR* CSingleLinePickUI::GetClass() const
+const TCHAR* SingleLinePickUI::GetClass() const
 {
    return _T("SinglePrettyEditUI");
 }
 
-UINT CSingleLinePickUI::GetControlFlags() const
+UINT SingleLinePickUI::GetControlFlags() const
 {
    return UIFLAG_SETCURSOR | UIFLAG_TABSTOP;
 }
 
-void CSingleLinePickUI::Event(TEventUI& event)
+void SingleLinePickUI::Event(TEventUI& event)
 {
    if (event.Type == UIEVENT_SETCURSOR) 
    {
@@ -70,13 +70,13 @@ void CSingleLinePickUI::Event(TEventUI& event)
    ControlUI::Event(event);
 }
 
-void CSingleLinePickUI::SetWidth(int cxWidth)
+void SingleLinePickUI::SetWidth(int cxWidth)
 {
    m_cxWidth = cxWidth;
    UpdateLayout();
 }
 
-SIZE CSingleLinePickUI::EstimateSize(SIZE /*szAvailable*/)
+SIZE SingleLinePickUI::EstimateSize(SIZE /*szAvailable*/)
 {
    SIZE sz = { 0, 12 + m_manager->GetThemeFontInfo(UIFONT_NORMAL).tmHeight };
    if (m_cxWidth > 0)  {
@@ -90,7 +90,7 @@ SIZE CSingleLinePickUI::EstimateSize(SIZE /*szAvailable*/)
    return sz;
 }
 
-void CSingleLinePickUI::DoPaint(HDC hDC, const RECT& rcPaint)
+void SingleLinePickUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
    int cy = m_rcItem.bottom - m_rcItem.top;
    ::SetRect(&m_rcButton, m_rcItem.right - cy, m_rcItem.top, m_rcItem.right, m_rcItem.bottom);

@@ -5,10 +5,10 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-class UILIB_API CSingleLinePickUI : public ControlUI
+class UILIB_API SingleLinePickUI : public ControlUI
 {
 public:
-   CSingleLinePickUI();
+   SingleLinePickUI();
 
    void SetWidth(int cxWidth);
 

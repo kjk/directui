@@ -128,10 +128,10 @@ public:
 };
 
 
-class UILIB_API CTabFolderCanvasUI : public CanvasUI
+class UILIB_API TabFolderCanvasUI : public CanvasUI
 {
 public:
-   CTabFolderCanvasUI();
+   TabFolderCanvasUI();
    const TCHAR* GetClass() const;
 };
 

@@ -15,7 +15,7 @@ public:
 };
 
 
-class UILIB_API CListHeaderShadowUI : public ControlUI
+class UILIB_API ListHeaderShadowUI : public ControlUI
 {
 public:
    const TCHAR* GetClass() const;

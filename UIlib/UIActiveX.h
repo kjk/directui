@@ -3,12 +3,12 @@
 
 #pragma once
 
-class CActiveXCtrl;
+class ActiveXCtrl;
 struct IOleObject;
 
 class UILIB_API ActiveXUI : public ControlUI, public IMessageFilterUI
 {
-friend CActiveXCtrl;
+friend ActiveXCtrl;
 public:
    ActiveXUI();
    virtual ~ActiveXUI();
@@ -38,7 +38,7 @@ protected:
    CLSID m_clsid;
    bool m_bCreated;
    IOleObject* m_pUnk;
-   CActiveXCtrl* m_ctrl;
+   ActiveXCtrl* m_ctrl;
    HWND m_hwndHost;
    SIZE m_szFixed;
 };
