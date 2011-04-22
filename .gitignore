@@ -1,5 +1,7 @@
 *.user
 *.ncb
 *.suo
+*.sdf
+*.opensdf
 dbg/
 rel/
