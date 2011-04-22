@@ -6,7 +6,7 @@
 #endif // _MSC_VER > 1000
 
 
-class UILIB_API CTitleShadowUI : public ControlUI
+class UILIB_API TitleShadowUI : public ControlUI
 {
 public:
    const TCHAR* GetClass() const;
@@ -24,7 +24,7 @@ public:
 };
 
 
-class UILIB_API CSeparatorLineUI : public ControlUI
+class UILIB_API SeparatorLineUI : public ControlUI
 {
 public:
    const TCHAR* GetClass() const;

@@ -3,12 +3,12 @@
 #include "UIEdit.h"
 
 
-class CSingleLineEditWnd : public CWindowWnd
+class SingleLineEditWnd : public WindowWnd
 {
 public:
-   CSingleLineEditWnd();
+   SingleLineEditWnd();
 
-   void Init(CSingleLineEditUI* owner);
+   void Init(SingleLineEditUI* owner);
 
    const TCHAR* GetWindowClassName() const;
    const TCHAR* GetSuperClassName() const;
@@ -19,15 +19,15 @@ public:
    LRESULT OnEditChanged(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
 protected:
-   CSingleLineEditUI* m_owner;
+   SingleLineEditUI* m_owner;
 };
 
 
-CSingleLineEditWnd::CSingleLineEditWnd() : m_owner(NULL)
+SingleLineEditWnd::SingleLineEditWnd() : m_owner(NULL)
 {
 }
 
-void CSingleLineEditWnd::Init(CSingleLineEditUI* owner)
+void SingleLineEditWnd::Init(SingleLineEditUI* owner)
 {
    CRect rcPos = owner->GetPos();
    rcPos.Deflate(1, 3);
@@ -44,42 +44,42 @@ void CSingleLineEditWnd::Init(CSingleLineEditUI* owner)
    m_owner = owner;
 }
 
-const TCHAR* CSingleLineEditWnd::GetWindowClassName() const
+const TCHAR* SingleLineEditWnd::GetWindowClassName() const
 {
    return _T("SingleLineEditWnd");
 }
 
-const TCHAR* CSingleLineEditWnd::GetSuperClassName() const
+const TCHAR* SingleLineEditWnd::GetSuperClassName() const
 {
    return WC_EDIT;
 }
 
-void CSingleLineEditWnd::OnFinalMessage(HWND /*hWnd*/)
+void SingleLineEditWnd::OnFinalMessage(HWND /*hWnd*/)
 {
    // Clear reference and die
    m_owner->m_win = NULL;
    delete this;
 }
 
-LRESULT CSingleLineEditWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
+LRESULT SingleLineEditWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
    LRESULT lRes = 0;
    BOOL bHandled = TRUE;
    if (uMsg == WM_KILLFOCUS)  lRes = OnKillFocus(uMsg, wParam, lParam, bHandled);
    else if (uMsg == OCM_COMMAND && GET_WM_COMMAND_CMD(wParam, lParam) == EN_CHANGE)  lRes = OnEditChanged(uMsg, wParam, lParam, bHandled);
    else bHandled = FALSE;
-   if (!bHandled)  return CWindowWnd::HandleMessage(uMsg, wParam, lParam);
+   if (!bHandled)  return WindowWnd::HandleMessage(uMsg, wParam, lParam);
    return lRes;
 }
 
-LRESULT CSingleLineEditWnd::OnKillFocus(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+LRESULT SingleLineEditWnd::OnKillFocus(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
    LRESULT lRes = ::DefWindowProc(m_hWnd, uMsg, wParam, lParam);
    PostMessage(WM_CLOSE);
    return lRes;
 }
 
-LRESULT CSingleLineEditWnd::OnEditChanged(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
+LRESULT SingleLineEditWnd::OnEditChanged(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
    if (m_owner == NULL)  return 0;
    // Copy text back
@@ -93,21 +93,21 @@ LRESULT CSingleLineEditWnd::OnEditChanged(UINT /*uMsg*/, WPARAM /*wParam*/, LPAR
 }
 
 
-CSingleLineEditUI::CSingleLineEditUI() : m_win(NULL), m_uEditStyle(ES_AUTOHSCROLL), m_bReadOnly(false)
+SingleLineEditUI::SingleLineEditUI() : m_win(NULL), m_uEditStyle(ES_AUTOHSCROLL), m_bReadOnly(false)
 {
 }
 
-const TCHAR* CSingleLineEditUI::GetClass() const
+const TCHAR* SingleLineEditUI::GetClass() const
 {
    return _T("SingleLineEditUI");
 }
 
-UINT CSingleLineEditUI::GetControlFlags() const
+UINT SingleLineEditUI::GetControlFlags() const
 {
    return UIFLAG_SETCURSOR | UIFLAG_TABSTOP;
 }
 
-void CSingleLineEditUI::Event(TEventUI& event)
+void SingleLineEditUI::Event(TEventUI& event)
 {
    if (event.Type == UIEVENT_SETCURSOR) 
    {
@@ -123,7 +123,7 @@ void CSingleLineEditUI::Event(TEventUI& event)
    if (event.Type == UIEVENT_SETFOCUS)  
    {
       if (IsEnabled())  {
-         m_win = new CSingleLineEditWnd();
+         m_win = new SingleLineEditWnd();
          ASSERT(m_win);
          m_win->Init(this);
       }
@@ -132,7 +132,7 @@ void CSingleLineEditUI::Event(TEventUI& event)
    {
       // FIX: In the case of window having lost focus, editor is gone, but
       //      we don't get another SetFocus when we click on the control again.
-      m_win = new CSingleLineEditWnd();
+      m_win = new SingleLineEditWnd();
       ASSERT(m_win);
       m_win->Init(this);
       return;
@@ -140,36 +140,36 @@ void CSingleLineEditUI::Event(TEventUI& event)
    ControlUI::Event(event);
 }
 
-void CSingleLineEditUI::SetText(const TCHAR* txt)
+void SingleLineEditUI::SetText(const TCHAR* txt)
 {
    m_txt = txt;
    if (m_manager != NULL)  m_manager->SendNotify(this, _T("changed"));
    Invalidate();
 }
 
-void CSingleLineEditUI::SetReadOnly(bool bReadOnly)
+void SingleLineEditUI::SetReadOnly(bool bReadOnly)
 {
    m_bReadOnly = bReadOnly;
    Invalidate();
 }
 
-bool CSingleLineEditUI::IsReadOnly() const
+bool SingleLineEditUI::IsReadOnly() const
 {
    return m_bReadOnly;
 }
 
-void CSingleLineEditUI::SetEditStyle(UINT uStyle)
+void SingleLineEditUI::SetEditStyle(UINT uStyle)
 {
    m_uEditStyle = uStyle;
    Invalidate();
 }
 
-SIZE CSingleLineEditUI::EstimateSize(SIZE /*szAvailable*/)
+SIZE SingleLineEditUI::EstimateSize(SIZE /*szAvailable*/)
 {
    return CSize(0, 12 + m_manager->GetThemeFontInfo(UIFONT_NORMAL).tmHeight);
 }
 
-void CSingleLineEditUI::DoPaint(HDC hDC, const RECT& /*rcPaint*/)
+void SingleLineEditUI::DoPaint(HDC hDC, const RECT& /*rcPaint*/)
 {
    UINT uState = 0;
    if (IsFocused())  uState |= UISTATE_FOCUSED;
@@ -178,10 +178,10 @@ void CSingleLineEditUI::DoPaint(HDC hDC, const RECT& /*rcPaint*/)
    CBlueRenderEngineUI::DoPaintEditBox(hDC, m_manager, m_rcItem, m_txt, uState, m_uEditStyle, false);
 }
 
-class CMultiLineEditWnd : public CWindowWnd
+class MultiLineEditWnd : public WindowWnd
 {
 public:
-   void Init(CMultiLineEditUI* owner);
+   void Init(MultiLineEditUI* owner);
 
    const TCHAR* GetWindowClassName() const;
    const TCHAR* GetSuperClassName() const;
@@ -191,11 +191,11 @@ public:
    LRESULT OnEditChanged(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
 protected:
-   CMultiLineEditUI* m_owner;
+   MultiLineEditUI* m_owner;
 };
 
 
-void CMultiLineEditWnd::Init(CMultiLineEditUI* owner)
+void MultiLineEditWnd::Init(MultiLineEditUI* owner)
 {
    RECT rcPos = owner->GetPos();
    ::InflateRect(&rcPos, -1, -3);
@@ -210,33 +210,33 @@ void CMultiLineEditWnd::Init(CMultiLineEditUI* owner)
    m_owner = owner;
 }
 
-const TCHAR* CMultiLineEditWnd::GetWindowClassName() const
+const TCHAR* MultiLineEditWnd::GetWindowClassName() const
 {
    return _T("MultiLineEditWnd");
 }
 
-const TCHAR* CMultiLineEditWnd::GetSuperClassName() const
+const TCHAR* MultiLineEditWnd::GetSuperClassName() const
 {
    return WC_EDIT;
 }
 
-void CMultiLineEditWnd::OnFinalMessage(HWND /*hWnd*/)
+void MultiLineEditWnd::OnFinalMessage(HWND /*hWnd*/)
 {
    m_owner->m_win = NULL;
    delete this;
 }
 
-LRESULT CMultiLineEditWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
+LRESULT MultiLineEditWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
    LRESULT lRes = 0;
    BOOL bHandled = TRUE;
    if (uMsg == OCM_COMMAND && GET_WM_COMMAND_CMD(wParam, lParam) == EN_CHANGE)  lRes = OnEditChanged(uMsg, wParam, lParam, bHandled);
    else bHandled = FALSE;
-   if (!bHandled)  return CWindowWnd::HandleMessage(uMsg, wParam, lParam);
+   if (!bHandled)  return WindowWnd::HandleMessage(uMsg, wParam, lParam);
    return lRes;
 }
 
-LRESULT CMultiLineEditWnd::OnEditChanged(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
+LRESULT MultiLineEditWnd::OnEditChanged(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
    if (m_owner == NULL)  return 0;
    // Copy text back
@@ -250,33 +250,33 @@ LRESULT CMultiLineEditWnd::OnEditChanged(UINT /*uMsg*/, WPARAM /*wParam*/, LPARA
 }
 
 
-CMultiLineEditUI::CMultiLineEditUI() : m_win(NULL)
+MultiLineEditUI::MultiLineEditUI() : m_win(NULL)
 {
 }
 
-CMultiLineEditUI::~CMultiLineEditUI()
+MultiLineEditUI::~MultiLineEditUI()
 {
    if (m_win != NULL && ::IsWindow(*m_win))  m_win->Close();
 }
 
-void CMultiLineEditUI::Init()
+void MultiLineEditUI::Init()
 {
-   m_win = new CMultiLineEditWnd();
+   m_win = new MultiLineEditWnd();
    ASSERT(m_win);
    m_win->Init(this);
 }
 
-const TCHAR* CMultiLineEditUI::GetClass() const
+const TCHAR* MultiLineEditUI::GetClass() const
 {
    return _T("MultiLineEditUI");
 }
 
-UINT CMultiLineEditUI::GetControlFlags() const
+UINT MultiLineEditUI::GetControlFlags() const
 {
    return UIFLAG_TABSTOP;
 }
 
-void CMultiLineEditUI::SetText(const TCHAR* txt)
+void MultiLineEditUI::SetText(const TCHAR* txt)
 {
    m_txt = txt;
    if (m_win != NULL)  SetWindowText(*m_win, txt);
@@ -284,7 +284,7 @@ void CMultiLineEditUI::SetText(const TCHAR* txt)
    Invalidate();
 }
 
-CStdString CMultiLineEditUI::GetText() const
+CStdString MultiLineEditUI::GetText() const
 {
    if (m_win != NULL)  {
       int cchLen = ::GetWindowTextLength(*m_win) + 1;
@@ -296,35 +296,35 @@ CStdString CMultiLineEditUI::GetText() const
    return m_txt;
 }
 
-void CMultiLineEditUI::SetVisible(bool bVisible)
+void MultiLineEditUI::SetVisible(bool bVisible)
 {
    ControlUI::SetVisible(bVisible);
    if (m_win != NULL)  ::ShowWindow(*m_win, bVisible ? SW_SHOWNOACTIVATE : SW_HIDE);
 }
 
-void CMultiLineEditUI::SetEnabled(bool bEnabled)
+void MultiLineEditUI::SetEnabled(bool bEnabled)
 {
    ControlUI::SetEnabled(bEnabled);
    if (m_win != NULL)  ::EnableWindow(*m_win, bEnabled == true);
 }
 
-void CMultiLineEditUI::SetReadOnly(bool bReadOnly)
+void MultiLineEditUI::SetReadOnly(bool bReadOnly)
 {
    if (m_win != NULL)  Edit_SetReadOnly(*m_win, bReadOnly == true);
    Invalidate();
 }
 
-bool CMultiLineEditUI::IsReadOnly() const
+bool MultiLineEditUI::IsReadOnly() const
 {
    return (GetWindowStyle(*m_win) & ES_READONLY) != 0;
 }
 
-SIZE CMultiLineEditUI::EstimateSize(SIZE /*szAvailable*/)
+SIZE MultiLineEditUI::EstimateSize(SIZE /*szAvailable*/)
 {
    return CSize(m_rcItem);
 }
 
-void CMultiLineEditUI::SetPos(RECT rc)
+void MultiLineEditUI::SetPos(RECT rc)
 {
    if (m_win != NULL)  {
       CRect rcEdit = rc;
@@ -334,12 +334,12 @@ void CMultiLineEditUI::SetPos(RECT rc)
    ControlUI::SetPos(rc);
 }
 
-void CMultiLineEditUI::SetPos(int left, int top, int right, int bottom)
+void MultiLineEditUI::SetPos(int left, int top, int right, int bottom)
 {
    SetPos(CRect(left, top, right, bottom));
 }
 
-void CMultiLineEditUI::Event(TEventUI& event)
+void MultiLineEditUI::Event(TEventUI& event)
 {
    if (event.Type == UIEVENT_WINDOWSIZE) 
    {
@@ -352,7 +352,7 @@ void CMultiLineEditUI::Event(TEventUI& event)
    ControlUI::Event(event);
 }
 
-void CMultiLineEditUI::DoPaint(HDC hDC, const RECT& /*rcPaint*/)
+void MultiLineEditUI::DoPaint(HDC hDC, const RECT& /*rcPaint*/)
 {
    UINT uState = 0;
    if (IsFocused())  uState |= UISTATE_FOCUSED;

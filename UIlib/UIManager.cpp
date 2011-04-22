@@ -66,12 +66,12 @@ HIMAGELIST m_himgIcons32 = NULL;
 HIMAGELIST m_himgIcons50 = NULL;
 
 
-HINSTANCE CPaintManagerUI::m_hInstance = NULL;
-HINSTANCE CPaintManagerUI::m_hLangInst = NULL;
-CStdPtrArray CPaintManagerUI::m_aPreMessages;
+HINSTANCE PaintManagerUI::m_hInstance = NULL;
+HINSTANCE PaintManagerUI::m_hLangInst = NULL;
+CStdPtrArray PaintManagerUI::m_aPreMessages;
 
 
-CPaintManagerUI::CPaintManagerUI() :
+PaintManagerUI::PaintManagerUI() :
    m_hWndPaint(NULL),
    m_hDcPaint(NULL),
    m_hDcOffscreen(NULL),
@@ -221,7 +221,7 @@ CPaintManagerUI::CPaintManagerUI() :
    m_SystemMetrics.cxvscroll = (INT) ::GetSystemMetrics(SM_CXVSCROLL);
 }
 
-CPaintManagerUI::~CPaintManagerUI()
+PaintManagerUI::~PaintManagerUI()
 {
    // Delete the control-tree structures
    int i;
@@ -237,7 +237,7 @@ CPaintManagerUI::~CPaintManagerUI()
    m_aPreMessages.Remove(m_aPreMessages.Find(this));
 }
 
-void CPaintManagerUI::Init(HWND hWnd)
+void PaintManagerUI::Init(HWND hWnd)
 {
    ASSERT(::IsWindow(hWnd));
    // Remember the window context we came from
@@ -247,57 +247,57 @@ void CPaintManagerUI::Init(HWND hWnd)
    m_aPreMessages.Add(this);
 }
 
-HINSTANCE CPaintManagerUI::GetResourceInstance()
+HINSTANCE PaintManagerUI::GetResourceInstance()
 {
    return m_hInstance;
 }
 
-HINSTANCE CPaintManagerUI::GetLanguageInstance()
+HINSTANCE PaintManagerUI::GetLanguageInstance()
 {
    return m_hLangInst;
 }
 
-void CPaintManagerUI::SetResourceInstance(HINSTANCE hInst)
+void PaintManagerUI::SetResourceInstance(HINSTANCE hInst)
 {
    m_hInstance = hInst;
    if (m_hLangInst == NULL)  m_hLangInst = hInst;
 }
 
-void CPaintManagerUI::SetLanguageInstance(HINSTANCE hInst)
+void PaintManagerUI::SetLanguageInstance(HINSTANCE hInst)
 {
    m_hLangInst = hInst;
 }
 
-HWND CPaintManagerUI::GetPaintWindow() const
+HWND PaintManagerUI::GetPaintWindow() const
 {
    return m_hWndPaint;
 }
 
-HDC CPaintManagerUI::GetPaintDC() const
+HDC PaintManagerUI::GetPaintDC() const
 {
    return m_hDcPaint;
 }
 
-POINT CPaintManagerUI::GetMousePos() const
+POINT PaintManagerUI::GetMousePos() const
 {
    return m_ptLastMousePos;
 }
 
-SIZE CPaintManagerUI::GetClientSize() const
+SIZE PaintManagerUI::GetClientSize() const
 {
    RECT rcClient = { 0 };
    ::GetClientRect(m_hWndPaint, &rcClient);
    return CSize(rcClient.right - rcClient.left, rcClient.bottom - rcClient.top);
 }
 
-void CPaintManagerUI::SetMinMaxInfo(int cx, int cy)
+void PaintManagerUI::SetMinMaxInfo(int cx, int cy)
 {
    ASSERT(cx>=0 && cy>=0);
    m_szMinWindow.cx = cx;
    m_szMinWindow.cy = cy;
 }
 
-bool CPaintManagerUI::PreMessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT& /*lRes*/)
+bool PaintManagerUI::PreMessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT& /*lRes*/)
 {
    switch( uMsg)  {
    case WM_KEYDOWN:
@@ -365,7 +365,7 @@ bool CPaintManagerUI::PreMessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam,
    return false;
 }
 
-bool CPaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT& lRes)
+bool PaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT& lRes)
 {
 #ifdef _DEBUG
    switch( uMsg)  {
@@ -884,18 +884,18 @@ bool CPaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LR
    return false;
 }
 
-void CPaintManagerUI::UpdateLayout()
+void PaintManagerUI::UpdateLayout()
 {
    m_bResizeNeeded = true;
    ::InvalidateRect(m_hWndPaint, NULL, FALSE);
 }
 
-void CPaintManagerUI::Invalidate(RECT rcItem)
+void PaintManagerUI::Invalidate(RECT rcItem)
 {
    ::InvalidateRect(m_hWndPaint, &rcItem, FALSE);
 }
 
-bool CPaintManagerUI::AttachDialog(ControlUI* ctrl)
+bool PaintManagerUI::AttachDialog(ControlUI* ctrl)
 {
    ASSERT(::IsWindow(m_hWndPaint));
    // Reset any previous attachment
@@ -921,7 +921,7 @@ bool CPaintManagerUI::AttachDialog(ControlUI* ctrl)
    return InitControls(ctrl);
 }
 
-bool CPaintManagerUI::InitControls(ControlUI* ctrl, ControlUI* parent /*= NULL*/)
+bool PaintManagerUI::InitControls(ControlUI* ctrl, ControlUI* parent /*= NULL*/)
 {
    ASSERT(ctrl);
    if (ctrl == NULL)  return false;
@@ -932,7 +932,7 @@ bool CPaintManagerUI::InitControls(ControlUI* ctrl, ControlUI* parent /*= NULL*/
    return true;
 }
 
-void CPaintManagerUI::ReapObjects(ControlUI* ctrl)
+void PaintManagerUI::ReapObjects(ControlUI* ctrl)
 {
    if (ctrl == m_pEventKey)  m_pEventKey = NULL;
    if (ctrl == m_pEventHover)  m_pEventHover = NULL;
@@ -941,18 +941,18 @@ void CPaintManagerUI::ReapObjects(ControlUI* ctrl)
    //m_aNameHash.Empty();
 }
 
-void CPaintManagerUI::MessageLoop()
+void PaintManagerUI::MessageLoop()
 {
    MSG msg = { 0 };
    while (::GetMessage(&msg, NULL, 0, 0))  {
-      if (!CPaintManagerUI::TranslateMessage(&msg))  {
+      if (!PaintManagerUI::TranslateMessage(&msg))  {
          ::TranslateMessage(&msg);
          ::DispatchMessage(&msg);
       }
    }
 }
 
-bool CPaintManagerUI::TranslateMessage(const MSG* pMsg)
+bool PaintManagerUI::TranslateMessage(const MSG* pMsg)
 {
    // Pretranslate Message takes care of system-wide messages, such as
    // tabbing and shortcut key-combos. We'll look for all messages for
@@ -961,7 +961,7 @@ bool CPaintManagerUI::TranslateMessage(const MSG* pMsg)
    UINT uStyle = GetWindowStyle(pMsg->hwnd);
    LRESULT lRes = 0;
    for (int i = 0; i < m_aPreMessages.GetSize(); i++)  {
-      CPaintManagerUI* pT = static_cast<CPaintManagerUI*>(m_aPreMessages[i]);
+      PaintManagerUI* pT = static_cast<PaintManagerUI*>(m_aPreMessages[i]);
       if (pMsg->hwnd == pT->GetPaintWindow()
          || (hwndParent == pT->GetPaintWindow() && ((uStyle & WS_CHILD) != 0))) 
       {
@@ -971,7 +971,7 @@ bool CPaintManagerUI::TranslateMessage(const MSG* pMsg)
    return false;
 }
 
-bool CPaintManagerUI::AddAnimJob(const CAnimJobUI& job)
+bool PaintManagerUI::AddAnimJob(const CAnimJobUI& job)
 {
    CAnimJobUI* pJob = new CAnimJobUI(job);
    if (pJob == NULL)  return false;
@@ -979,17 +979,17 @@ bool CPaintManagerUI::AddAnimJob(const CAnimJobUI& job)
    return m_anim.AddJob(pJob);
 }
 
-bool CPaintManagerUI::AddPostPaintBlit(const TPostPaintUI& job)
+bool PaintManagerUI::AddPostPaintBlit(const TPostPaintUI& job)
 {
    return m_aPostPaint.Add(&job);
 }
 
-ControlUI* CPaintManagerUI::GetFocus() const
+ControlUI* PaintManagerUI::GetFocus() const
 {
    return m_focus;
 }
 
-void CPaintManagerUI::SetFocus(ControlUI* ctrl)
+void PaintManagerUI::SetFocus(ControlUI* ctrl)
 {
    // Paint manager window has focus?
    if (::GetFocus() != m_hWndPaint)  ::SetFocus(m_hWndPaint);
@@ -1022,7 +1022,7 @@ void CPaintManagerUI::SetFocus(ControlUI* ctrl)
    }
 }
 
-bool CPaintManagerUI::SetTimer(ControlUI* ctrl, UINT timerID, UINT uElapse)
+bool PaintManagerUI::SetTimer(ControlUI* ctrl, UINT timerID, UINT uElapse)
 {
    ASSERT(ctrl!=NULL);
    ASSERT(uElapse>0);
@@ -1037,7 +1037,7 @@ bool CPaintManagerUI::SetTimer(ControlUI* ctrl, UINT timerID, UINT uElapse)
    return m_aTimers.Add(pTimer);
 }
 
-bool CPaintManagerUI::KillTimer(ControlUI* ctrl, UINT timerID)
+bool PaintManagerUI::KillTimer(ControlUI* ctrl, UINT timerID)
 {
    ASSERT(ctrl!=NULL);
    for (int i = 0; i< m_aTimers.GetSize(); i++)  {
@@ -1054,7 +1054,7 @@ bool CPaintManagerUI::KillTimer(ControlUI* ctrl, UINT timerID)
    return false;
 }
 
-bool CPaintManagerUI::SetNextTabControl(bool bForward)
+bool PaintManagerUI::SetNextTabControl(bool bForward)
 {
    // If we're in the process of restructuring the layout we can delay the
    // focus calulation until the next repaint.
@@ -1085,28 +1085,28 @@ bool CPaintManagerUI::SetNextTabControl(bool bForward)
    return true;
 }
 
-TSystemSettingsUI CPaintManagerUI::GetSystemSettings() const
+TSystemSettingsUI PaintManagerUI::GetSystemSettings() const
 {
    return m_SystemConfig;
 }
 
-void CPaintManagerUI::SetSystemSettings(const TSystemSettingsUI Config)
+void PaintManagerUI::SetSystemSettings(const TSystemSettingsUI Config)
 {
    m_SystemConfig = Config;
 }
 
-TSystemMetricsUI CPaintManagerUI::GetSystemMetrics() const
+TSystemMetricsUI PaintManagerUI::GetSystemMetrics() const
 {
    return m_SystemMetrics;
 }
 
-bool CPaintManagerUI::AddNotifier(INotifyUI* pNotifier)
+bool PaintManagerUI::AddNotifier(INotifyUI* pNotifier)
 {
    ASSERT(m_aNotifiers.Find(pNotifier)<0);
    return m_aNotifiers.Add(pNotifier);
 }
 
-bool CPaintManagerUI::RemoveNotifier(INotifyUI* pNotifier)
+bool PaintManagerUI::RemoveNotifier(INotifyUI* pNotifier)
 {
    for (int i = 0; i < m_aNotifiers.GetSize(); i++)  {
       if (static_cast<INotifyUI*>(m_aNotifiers[i]) == pNotifier)  {
@@ -1116,13 +1116,13 @@ bool CPaintManagerUI::RemoveNotifier(INotifyUI* pNotifier)
    return false;
 }
 
-bool CPaintManagerUI::AddMessageFilter(IMessageFilterUI* filter)
+bool PaintManagerUI::AddMessageFilter(IMessageFilterUI* filter)
 {
    ASSERT(m_aMessageFilters.Find(filter)<0);
    return m_aMessageFilters.Add(filter);
 }
 
-bool CPaintManagerUI::RemoveMessageFilter(IMessageFilterUI* filter)
+bool PaintManagerUI::RemoveMessageFilter(IMessageFilterUI* filter)
 {
    for (int i = 0; i < m_aMessageFilters.GetSize(); i++)  {
       if (static_cast<IMessageFilterUI*>(m_aMessageFilters[i]) == filter)  {
@@ -1132,7 +1132,7 @@ bool CPaintManagerUI::RemoveMessageFilter(IMessageFilterUI* filter)
    return false;
 }
 
-void CPaintManagerUI::SendNotify(ControlUI* ctrl, const TCHAR* msg, WPARAM wParam /*= 0*/, LPARAM lParam /*= 0*/)
+void PaintManagerUI::SendNotify(ControlUI* ctrl, const TCHAR* msg, WPARAM wParam /*= 0*/, LPARAM lParam /*= 0*/)
 {
    TNotifyUI Msg;
    Msg.pSender = ctrl;
@@ -1142,7 +1142,7 @@ void CPaintManagerUI::SendNotify(ControlUI* ctrl, const TCHAR* msg, WPARAM wPara
    SendNotify(Msg);
 }
 
-void CPaintManagerUI::SendNotify(TNotifyUI& Msg)
+void PaintManagerUI::SendNotify(TNotifyUI& Msg)
 {
    // Pre-fill some standard members
    Msg.ptMouse = m_ptLastMousePos;
@@ -1155,14 +1155,14 @@ void CPaintManagerUI::SendNotify(TNotifyUI& Msg)
    }
 }
 
-HFONT CPaintManagerUI::GetThemeFont(UITYPE_FONT Index) const
+HFONT PaintManagerUI::GetThemeFont(UITYPE_FONT Index) const
 {
    if (Index <= UIFONT__FIRST || Index >= UIFONT__LAST)  return NULL;
    if (m_hFonts[Index] == NULL)  m_hFonts[Index] = ::CreateFontIndirect(&m_aLogFonts[Index]);
    return m_hFonts[Index];
 }
 
-HICON CPaintManagerUI::GetThemeIcon(int idx, int cxySize) const
+HICON PaintManagerUI::GetThemeIcon(int idx, int cxySize) const
 {
    if (m_himgIcons16 == NULL)  {
       m_himgIcons16 = ImageList_LoadImage(m_hInstance, MAKEINTRESOURCE(IDB_ICONS16), 16, 0, RGB(255,0,255), IMAGE_BITMAP, LR_CREATEDIBSECTION);
@@ -1177,21 +1177,21 @@ HICON CPaintManagerUI::GetThemeIcon(int idx, int cxySize) const
    return NULL;
 }
 
-HPEN CPaintManagerUI::GetThemePen(UITYPE_COLOR Index) const
+HPEN PaintManagerUI::GetThemePen(UITYPE_COLOR Index) const
 {
    if (Index <= UICOLOR__FIRST || Index >= UICOLOR__LAST)  return NULL;
    if (m_hPens[Index] == NULL)  m_hPens[Index] = ::CreatePen(PS_SOLID, 1, m_clrColors[Index][0]);
    return m_hPens[Index];
 }
 
-HBRUSH CPaintManagerUI::GetThemeBrush(UITYPE_COLOR Index) const
+HBRUSH PaintManagerUI::GetThemeBrush(UITYPE_COLOR Index) const
 {
    if (Index <= UICOLOR__FIRST || Index >= UICOLOR__LAST)  return NULL;
    if (m_hBrushes[Index] == NULL)  m_hBrushes[Index] = ::CreateSolidBrush(m_clrColors[Index][0]);
    return m_hBrushes[Index];
 }
 
-const TEXTMETRIC& CPaintManagerUI::GetThemeFontInfo(UITYPE_FONT Index) const
+const TEXTMETRIC& PaintManagerUI::GetThemeFontInfo(UITYPE_FONT Index) const
 {
    if (Index <= UIFONT__FIRST || Index >= UIFONT__LAST)  return m_aTextMetrics[0];
    if (m_aTextMetrics[Index].tmHeight == 0)  {
@@ -1202,13 +1202,13 @@ const TEXTMETRIC& CPaintManagerUI::GetThemeFontInfo(UITYPE_FONT Index) const
    return m_aTextMetrics[Index];
 }
 
-COLORREF CPaintManagerUI::GetThemeColor(UITYPE_COLOR Index) const
+COLORREF PaintManagerUI::GetThemeColor(UITYPE_COLOR Index) const
 {
    if (Index <= UICOLOR__FIRST || Index >= UICOLOR__LAST)  return RGB(0,0,0);
    return m_clrColors[Index][0];
 }
 
-bool CPaintManagerUI::GetThemeColorPair(UITYPE_COLOR Index, COLORREF& clr1, COLORREF& clr2) const
+bool PaintManagerUI::GetThemeColorPair(UITYPE_COLOR Index, COLORREF& clr1, COLORREF& clr2) const
 {
    if (Index <= UICOLOR__FIRST || Index >= UICOLOR__LAST)  return false;
    clr1 = m_clrColors[Index][0];
@@ -1216,7 +1216,7 @@ bool CPaintManagerUI::GetThemeColorPair(UITYPE_COLOR Index, COLORREF& clr1, COLO
    return true;
 }
 
-ControlUI* CPaintManagerUI::FindControl(const TCHAR* name)
+ControlUI* PaintManagerUI::FindControl(const TCHAR* name)
 {
    ASSERT(m_root);
    // First time here? Build hash array...
@@ -1238,20 +1238,20 @@ ControlUI* CPaintManagerUI::FindControl(const TCHAR* name)
    return NULL;
 }
 
-ControlUI* CPaintManagerUI::FindControl(POINT pt) const
+ControlUI* PaintManagerUI::FindControl(POINT pt) const
 {
    ASSERT(m_root);
    return m_root->FindControl(__FindControlFromPoint, &pt, UIFIND_VISIBLE | UIFIND_HITTEST);
 }
 
-ControlUI* CALLBACK CPaintManagerUI::__FindControlFromCount(ControlUI* /*pThis*/, void* data)
+ControlUI* CALLBACK PaintManagerUI::__FindControlFromCount(ControlUI* /*pThis*/, void* data)
 {
    int* pnCount = static_cast<int*>(data);
    (*pnCount)++;
    return NULL;  // Count all controls
 }
 
-ControlUI* CALLBACK CPaintManagerUI::__FindControlFromTab(ControlUI* pThis, void* data)
+ControlUI* CALLBACK PaintManagerUI::__FindControlFromTab(ControlUI* pThis, void* data)
 {
    FINDTABINFO* pInfo = static_cast<FINDTABINFO*>(data);
    if (pInfo->focus == pThis)  {
@@ -1265,9 +1265,9 @@ ControlUI* CALLBACK CPaintManagerUI::__FindControlFromTab(ControlUI* pThis, void
    return NULL;  // Examine all controls
 }
 
-ControlUI* CALLBACK CPaintManagerUI::__FindControlFromNameHash(ControlUI* pThis, void* data)
+ControlUI* CALLBACK PaintManagerUI::__FindControlFromNameHash(ControlUI* pThis, void* data)
 {
-   CPaintManagerUI* manager = static_cast<CPaintManagerUI*>(data);
+   PaintManagerUI* manager = static_cast<PaintManagerUI*>(data);
    // No name?
    const CStdString& sName = pThis->GetName();
    if (sName.IsEmpty())  return NULL;
@@ -1283,7 +1283,7 @@ ControlUI* CALLBACK CPaintManagerUI::__FindControlFromNameHash(ControlUI* pThis,
    return NULL; // Attempt to add all controls
 }
 
-ControlUI* CALLBACK CPaintManagerUI::__FindControlFromShortcut(ControlUI* pThis, void* data)
+ControlUI* CALLBACK PaintManagerUI::__FindControlFromShortcut(ControlUI* pThis, void* data)
 {
    FINDSHORTCUT* pFS = static_cast<FINDSHORTCUT*>(data);
    if (pFS->ch == toupper(pThis->GetShortcut()))  pFS->bPickNext = true;
@@ -1291,7 +1291,7 @@ ControlUI* CALLBACK CPaintManagerUI::__FindControlFromShortcut(ControlUI* pThis,
    return pFS->bPickNext ? pThis : NULL;
 }
 
-ControlUI* CALLBACK CPaintManagerUI::__FindControlFromPoint(ControlUI* pThis, void* data)
+ControlUI* CALLBACK PaintManagerUI::__FindControlFromPoint(ControlUI* pThis, void* data)
 {
    LPPOINT pPoint = static_cast<LPPOINT>(data);
    return ::PtInRect(&pThis->GetPos(), *pPoint) ? pThis : NULL;
@@ -1409,12 +1409,12 @@ void ControlUI::Init()
 {
 }
 
-CPaintManagerUI* ControlUI::GetManager() const
+PaintManagerUI* ControlUI::GetManager() const
 {
    return m_manager;
 }
 
-void ControlUI::SetManager(CPaintManagerUI* manager, ControlUI* parent)
+void ControlUI::SetManager(PaintManagerUI* manager, ControlUI* parent)
 {
    bool bInit = m_manager == NULL;
    m_manager = manager;

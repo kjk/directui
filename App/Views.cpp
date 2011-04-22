@@ -35,7 +35,7 @@ LRESULT CStandardPageWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
    }
    LRESULT lRes = 0;
    if (m_pm.MessageHandler(uMsg, wParam, lParam, lRes))  return lRes;
-   return CWindowWnd::HandleMessage(uMsg, wParam, lParam);
+   return WindowWnd::HandleMessage(uMsg, wParam, lParam);
 }
 
 void CStandardPageWnd::Init()

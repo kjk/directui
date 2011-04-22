@@ -5,15 +5,13 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
+class SingleLineEditWnd;
 
-class CSingleLineEditWnd;
-
-
-class UILIB_API CSingleLineEditUI : public ControlUI
+class UILIB_API SingleLineEditUI : public ControlUI
 {
-friend CSingleLineEditWnd;
+friend SingleLineEditWnd;
 public:
-   CSingleLineEditUI();
+   SingleLineEditUI();
 
    const TCHAR* GetClass() const;
    UINT GetControlFlags() const;
@@ -30,22 +28,20 @@ public:
    void DoPaint(HDC hDC, const RECT& rcPaint);
 
 protected:
-   CSingleLineEditWnd* m_win;
+   SingleLineEditWnd* m_win;
 
    bool m_bReadOnly;
    UINT m_uEditStyle;
 };
 
+class MultiLineEditWnd;
 
-class CMultiLineEditWnd;
-
-
-class UILIB_API CMultiLineEditUI : public ControlUI
+class UILIB_API MultiLineEditUI : public ControlUI
 {
-friend CMultiLineEditWnd;
+friend MultiLineEditWnd;
 public:
-   CMultiLineEditUI();
-   ~CMultiLineEditUI();
+   MultiLineEditUI();
+   ~MultiLineEditUI();
 
    const TCHAR* GetClass() const;
    UINT GetControlFlags() const;
@@ -69,7 +65,7 @@ public:
    void DoPaint(HDC hDC, const RECT& rcPaint);
 
 protected:
-   CMultiLineEditWnd* m_win;
+   MultiLineEditWnd* m_win;
 };
 
 

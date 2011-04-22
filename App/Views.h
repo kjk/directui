@@ -5,8 +5,7 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-
-class CStandardPageWnd : public CWindowWnd, public INotifyUI
+class CStandardPageWnd : public WindowWnd, public INotifyUI
 {
 public:
    UINT GetClassStyle() const;
@@ -19,7 +18,7 @@ public:
    virtual const TCHAR* GetDialogResource() const = 0;
 
 public:
-   CPaintManagerUI m_pm;
+   PaintManagerUI m_pm;
 };
 
 class CStartPageWnd : public CStandardPageWnd

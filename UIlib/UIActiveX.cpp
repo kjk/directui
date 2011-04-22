@@ -4,7 +4,7 @@
 
 class CActiveXCtrl;
 
-class CActiveXWnd : public CWindowWnd
+class CActiveXWnd : public WindowWnd
 {
 public:
    HWND Init(CActiveXCtrl* owner, HWND hWndParent);
@@ -762,7 +762,7 @@ LRESULT CActiveXWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
    default:
       bHandled = FALSE;
    }
-   if (!bHandled)  return CWindowWnd::HandleMessage(uMsg, wParam, lParam);
+   if (!bHandled)  return WindowWnd::HandleMessage(uMsg, wParam, lParam);
    return lRes;
 }
 

@@ -143,7 +143,6 @@ typedef enum
    UICOLOR__INVALID,
 } UITYPE_COLOR;
 
-
 // Styles for the DoPaintFrame() helper
 #define UIFRAME_ROUND        0x00000001
 #define UIFRAME_FOCUS        0x00000002
@@ -190,7 +189,6 @@ typedef enum
 #define UISTATE_CHECKED      0x00000020
 #define UISTATE_READONLY     0x00000040
 #define UISTATE_CAPTURED     0x00000080
-
 
 // Structure for notifications from the system
 // to the control implementation.
@@ -253,11 +251,11 @@ public:
 };
 
 
-class UILIB_API CPaintManagerUI
+class UILIB_API PaintManagerUI
 {
 public:
-   CPaintManagerUI();
-   ~CPaintManagerUI();
+   PaintManagerUI();
+   ~PaintManagerUI();
 
 public:
    void Init(HWND hWnd);
@@ -406,8 +404,8 @@ public:
 
    virtual ControlUI* FindControl(FINDCONTROLPROC Proc, void* data, UINT uFlags);
 
-   virtual CPaintManagerUI* GetManager() const;
-   virtual void SetManager(CPaintManagerUI* manager, ControlUI* parent);
+   virtual PaintManagerUI* GetManager() const;
+   virtual void SetManager(PaintManagerUI* manager, ControlUI* parent);
 
    virtual RECT GetPos() const;
    virtual void SetPos(RECT rc);
@@ -428,7 +426,7 @@ public:
    virtual void DoPaint(HDC hDC, const RECT& rcPaint) = 0;
 
 protected:
-   CPaintManagerUI* m_manager;
+   PaintManagerUI* m_manager;
    ControlUI* m_parent;
    TCHAR m_chShortcut;
    CStdString m_sName;

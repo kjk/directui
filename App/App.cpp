@@ -7,7 +7,7 @@
 #include "Views.h"
 
 
-class CFrameWindowWnd : public CWindowWnd, public INotifyUI
+class CFrameWindowWnd : public WindowWnd, public INotifyUI
 {
 public:
    CFrameWindowWnd() : m_hWndClient(NULL) { };
@@ -48,7 +48,7 @@ public:
          ::EndPaint(m_hWnd, &ps);
          return 0;
       }
-      return CWindowWnd::HandleMessage(uMsg, wParam, lParam);
+      return WindowWnd::HandleMessage(uMsg, wParam, lParam);
    }
 
    void _CreatePage(CStdString sName)
@@ -86,7 +86,7 @@ protected:
 
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*lpCmdLine*/, int nCmdShow)
 {
-   CPaintManagerUI::SetResourceInstance(hInstance);
+   PaintManagerUI::SetResourceInstance(hInstance);
 
    HRESULT Hr = ::CoInitialize(NULL);
    if (FAILED(Hr))  return 0;
@@ -97,7 +97,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*l
    if (pFrame == NULL)  return 0;
    pFrame->Create(NULL, "Test", UI_WNDSTYLE_FRAME, WS_EX_WINDOWEDGE);
 
-   CPaintManagerUI::MessageLoop();
+   PaintManagerUI::MessageLoop();
 
    ::CoUninitialize();
    return 0;

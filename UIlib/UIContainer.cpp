@@ -259,7 +259,7 @@ void ContainerUI::SetAttribute(const TCHAR* name, const TCHAR* value)
    else ControlUI::SetAttribute(name, value);
 }
 
-void ContainerUI::SetManager(CPaintManagerUI* manager, ControlUI* parent)
+void ContainerUI::SetManager(PaintManagerUI* manager, ControlUI* parent)
 {
    for (int it = 0; it < m_items.GetSize(); it++)  {
       static_cast<ControlUI*>(m_items[it])->SetManager(manager, this);
@@ -403,49 +403,49 @@ void CanvasUI::SetAttribute(const TCHAR* name, const TCHAR* value)
 }
 
 
-CWindowCanvasUI::CWindowCanvasUI()
+WindowCanvasUI::WindowCanvasUI()
 {
    SetInset(CSize(10, 10));
    m_clrBack = m_manager->GetThemeColor(UICOLOR_WINDOW_BACKGROUND);
 }
 
-const TCHAR* CWindowCanvasUI::GetClass() const
+const TCHAR* WindowCanvasUI::GetClass() const
 {
    return _T("WindowCanvasUI");
 }
 
 
-CControlCanvasUI::CControlCanvasUI()
+ControlCanvasUI::ControlCanvasUI()
 {
    SetInset(CSize(0, 0));
    m_clrBack = m_manager->GetThemeColor(UICOLOR_CONTROL_BACKGROUND_NORMAL);
 }
 
-const TCHAR* CControlCanvasUI::GetClass() const
+const TCHAR* ControlCanvasUI::GetClass() const
 {
    return _T("ControlCanvasUI");
 }
 
 
-CWhiteCanvasUI::CWhiteCanvasUI()
+WhiteCanvasUI::WhiteCanvasUI()
 {
    SetInset(CSize(0, 0));
    m_clrBack = m_manager->GetThemeColor(UICOLOR_STANDARD_WHITE);
 }
 
-const TCHAR* CWhiteCanvasUI::GetClass() const
+const TCHAR* WhiteCanvasUI::GetClass() const
 {
    return _T("WhiteCanvasUI");
 }
 
 
-CDialogCanvasUI::CDialogCanvasUI()
+DialogCanvasUI::DialogCanvasUI()
 {
    SetInset(CSize(10, 10));
    m_clrBack = m_manager->GetThemeColor(UICOLOR_DIALOG_BACKGROUND);
 }
 
-const TCHAR* CDialogCanvasUI::GetClass() const
+const TCHAR* DialogCanvasUI::GetClass() const
 {
    return _T("DialogCanvasUI");
 }
@@ -642,23 +642,23 @@ void TileLayoutUI::SetPos(RECT rc)
 }
 
 
-CDialogLayoutUI::CDialogLayoutUI() : m_bFirstResize(true), m_aModes(sizeof(STRETCHMODE))
+DialogLayoutUI::DialogLayoutUI() : m_bFirstResize(true), m_aModes(sizeof(STRETCHMODE))
 {
    ::ZeroMemory(&m_rcDialog, sizeof(m_rcDialog));
 }
 
-const TCHAR* CDialogLayoutUI::GetClass() const
+const TCHAR* DialogLayoutUI::GetClass() const
 {
    return _T("DialogLayoutUI");
 }
 
-void* CDialogLayoutUI::GetInterface(const TCHAR* name)
+void* DialogLayoutUI::GetInterface(const TCHAR* name)
 {
    if (_tcscmp(name, _T("DialogLayout")) == 0)  return this;
    return ContainerUI::GetInterface(name);
 }
 
-void CDialogLayoutUI::SetStretchMode(ControlUI* ctrl, UINT uMode)
+void DialogLayoutUI::SetStretchMode(ControlUI* ctrl, UINT uMode)
 {
    STRETCHMODE mode;
    mode.ctrl = ctrl;
@@ -667,13 +667,13 @@ void CDialogLayoutUI::SetStretchMode(ControlUI* ctrl, UINT uMode)
    m_aModes.Add(&mode);
 }
 
-SIZE CDialogLayoutUI::EstimateSize(SIZE szAvailable)
+SIZE DialogLayoutUI::EstimateSize(SIZE szAvailable)
 {
    RecalcArea();
    return CSize(m_rcDialog.right - m_rcDialog.left, m_rcDialog.bottom - m_rcDialog.top);
 }
 
-void CDialogLayoutUI::SetPos(RECT rc)
+void DialogLayoutUI::SetPos(RECT rc)
 {
    m_rcItem = rc;
    RecalcArea();
@@ -722,7 +722,7 @@ void CDialogLayoutUI::SetPos(RECT rc)
    }
 }
 
-void CDialogLayoutUI::RecalcArea()
+void DialogLayoutUI::RecalcArea()
 {
    if (!m_bFirstResize)  return;
    // Add the remaining control to the list

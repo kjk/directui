@@ -284,7 +284,7 @@ ListUI::ListUI() : m_pCallback(NULL), m_curSel(-1), m_iExpandedItem(-1)
    m_pHeader = new ListHeaderUI;
    m_pFooter = new ListFooterUI;
 
-   CWhiteCanvasUI* pWhite = new CWhiteCanvasUI;
+   WhiteCanvasUI* pWhite = new WhiteCanvasUI;
    pWhite->Add(m_pList);
 
    m_pFooter->Add(new LabelPanelUI);
@@ -921,7 +921,7 @@ void CListExpandElementUI::DoPaint(HDC hDC, const RECT& rcPaint)
    }
 }
 
-void CListExpandElementUI::SetManager(CPaintManagerUI* manager, ControlUI* parent)
+void CListExpandElementUI::SetManager(PaintManagerUI* manager, ControlUI* parent)
 {
    if (m_pContainer != NULL)  m_pContainer->SetManager(manager, parent);
    CListTextElementUI::SetManager(manager, parent);

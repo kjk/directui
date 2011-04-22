@@ -15,15 +15,15 @@ ControlUI* CDialogBuilder::Create(const TCHAR* xml, IDialogBuilderCallback* pCal
 
 ControlUI* CDialogBuilder::CreateFromResource(UINT nRes, IDialogBuilderCallback* pCallback /*= NULL*/)
 {
-   HRSRC hResource = ::FindResource(CPaintManagerUI::GetResourceInstance(), MAKEINTRESOURCE(nRes), _T("XML"));
+   HRSRC hResource = ::FindResource(PaintManagerUI::GetResourceInstance(), MAKEINTRESOURCE(nRes), _T("XML"));
    if (hResource == NULL)  return NULL;
-   HGLOBAL hGlobal = ::LoadResource(CPaintManagerUI::GetResourceInstance(), hResource);
+   HGLOBAL hGlobal = ::LoadResource(PaintManagerUI::GetResourceInstance(), hResource);
    if (hGlobal == NULL)  {
       FreeResource(hResource);
       return NULL;
    }
    CStdString sXML;
-   sXML.Assign(static_cast<LPCSTR>(::LockResource(hGlobal)), ::SizeofResource(CPaintManagerUI::GetResourceInstance(), hResource));
+   sXML.Assign(static_cast<LPCSTR>(::LockResource(hGlobal)), ::SizeofResource(PaintManagerUI::GetResourceInstance(), hResource));
    sXML.Replace(_T("\\n"), _T("\n"));
    ::FreeResource(hResource);
    return Create(sXML, pCallback);
@@ -31,7 +31,7 @@ ControlUI* CDialogBuilder::CreateFromResource(UINT nRes, IDialogBuilderCallback*
 
 ControlUI* CDialogBuilder::_Parse(CMarkupNode* root, ControlUI* parent)
 {
-   CDialogLayoutUI* pStretched = NULL;
+   DialogLayoutUI* pStretched = NULL;
    IContainerUI* pContainer = NULL;
    ControlUI* pReturn = NULL;
    for (CMarkupNode node = root->GetChild() ; node.IsValid(); node = node.GetSibling())  {
@@ -72,25 +72,25 @@ ControlUI* CDialogBuilder::_Parse(CMarkupNode* root, ControlUI* parent)
          break;
       case 11:
          if (_tcscmp(pstrClass, _T("ToolGripper")) == 0)            ctrl = new ToolGripperUI;
-         else if (_tcscmp(pstrClass, _T("WhiteCanvas")) == 0)       ctrl = new CWhiteCanvasUI;
-         else if (_tcscmp(pstrClass, _T("TitleShadow")) == 0)       ctrl = new CTitleShadowUI;
+         else if (_tcscmp(pstrClass, _T("WhiteCanvas")) == 0)       ctrl = new WhiteCanvasUI;
+         else if (_tcscmp(pstrClass, _T("TitleShadow")) == 0)       ctrl = new TitleShadowUI;
          break;
       case 12:
-         if (_tcscmp(pstrClass, _T("WindowCanvas")) == 0)           ctrl = new CWindowCanvasUI;
-         else if (_tcscmp(pstrClass, _T("DialogCanvas")) == 0)      ctrl = new CDialogCanvasUI;
-         else if (_tcscmp(pstrClass, _T("DialogLayout")) == 0)      ctrl = new CDialogLayoutUI;
+         if (_tcscmp(pstrClass, _T("WindowCanvas")) == 0)           ctrl = new WindowCanvasUI;
+         else if (_tcscmp(pstrClass, _T("DialogCanvas")) == 0)      ctrl = new DialogCanvasUI;
+         else if (_tcscmp(pstrClass, _T("DialogLayout")) == 0)      ctrl = new DialogLayoutUI;
          else if (_tcscmp(pstrClass, _T("PaddingPanel")) == 0)      ctrl = new PaddingPanelUI;
          else if (_tcscmp(pstrClass, _T("WarningPanel")) == 0)      ctrl = new WarningPanelUI;
          break;
       case 13:
-         if (_tcscmp(pstrClass, _T("SeparatorLine")) == 0)          ctrl = new CSeparatorLineUI;
-         else if (_tcscmp(pstrClass, _T("ControlCanvas")) == 0)     ctrl = new CControlCanvasUI;
-         else if (_tcscmp(pstrClass, _T("MultiLineEdit")) == 0)     ctrl = new CMultiLineEditUI;
+         if (_tcscmp(pstrClass, _T("SeparatorLine")) == 0)          ctrl = new SeparatorLineUI;
+         else if (_tcscmp(pstrClass, _T("ControlCanvas")) == 0)     ctrl = new ControlCanvasUI;
+         else if (_tcscmp(pstrClass, _T("MultiLineEdit")) == 0)     ctrl = new MultiLineEditUI;
          else if (_tcscmp(pstrClass, _T("ToolSeparator")) == 0)     ctrl = new ToolSeparatorUI;
          break;
       case 14:
          if (_tcscmp(pstrClass, _T("VerticalLayout")) == 0)         ctrl = new VerticalLayoutUI;
-         else if (_tcscmp(pstrClass, _T("SingleLineEdit")) == 0)    ctrl = new CSingleLineEditUI;
+         else if (_tcscmp(pstrClass, _T("SingleLineEdit")) == 0)    ctrl = new SingleLineEditUI;
          else if (_tcscmp(pstrClass, _T("SingleLinePick")) == 0)    ctrl = new CSingleLinePickUI;
          else if (_tcscmp(pstrClass, _T("NavigatorPanel")) == 0)    ctrl = new NavigatorPanelUI;
          else if (_tcscmp(pstrClass, _T("ListHeaderItem")) == 0)    ctrl = new CListHeaderItemUI;
@@ -140,7 +140,7 @@ ControlUI* CDialogBuilder::_Parse(CMarkupNode* root, ControlUI* parent)
          }
          // Very custom attributes
          if (node.GetAttributeValue(_T("stretch"), szValue, cchLen))  {
-            if (pStretched == NULL)  pStretched = static_cast<CDialogLayoutUI*>(parent->GetInterface(_T("DialogLayout")));
+            if (pStretched == NULL)  pStretched = static_cast<DialogLayoutUI*>(parent->GetInterface(_T("DialogLayout")));
             ASSERT(pStretched);
             if (pStretched == NULL)  return NULL;
             UINT uMode = 0;

@@ -252,7 +252,7 @@ public:
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
 
-   void SetManager(CPaintManagerUI* manager, ControlUI* parent);
+   void SetManager(PaintManagerUI* manager, ControlUI* parent);
    ControlUI* FindControl(FINDCONTROLPROC Proc, void* data, UINT uFlags);
 
    ControlUI* GetItem(int idx) const;

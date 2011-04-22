@@ -3,17 +3,17 @@
 #include "UIDecoration.h"
 
 
-const TCHAR* CTitleShadowUI::GetClass() const
+const TCHAR* TitleShadowUI::GetClass() const
 {
    return _T("TitleShadowUI");
 }
 
-SIZE CTitleShadowUI::EstimateSize(SIZE /*szAvailable*/)
+SIZE TitleShadowUI::EstimateSize(SIZE /*szAvailable*/)
 {
    return CSize(0, 3);
 }
 
-void CTitleShadowUI::DoPaint(HDC hDC, const RECT& /*rcPaint*/)
+void TitleShadowUI::DoPaint(HDC hDC, const RECT& /*rcPaint*/)
 {
    COLORREF clrBack1 = m_manager->GetThemeColor(UICOLOR_TITLE_BACKGROUND);
    COLORREF clrBack2 = m_manager->GetThemeColor(UICOLOR_DIALOG_BACKGROUND);
@@ -62,17 +62,17 @@ void FadedLineUI::DoPaint(HDC hDC, const RECT& /*rcPaint*/)
 }
 
 
-const TCHAR* CSeparatorLineUI::GetClass() const
+const TCHAR* SeparatorLineUI::GetClass() const
 {
    return _T("SeparatorLineUI");
 }
 
-SIZE CSeparatorLineUI::EstimateSize(SIZE /*szAvailable*/)
+SIZE SeparatorLineUI::EstimateSize(SIZE /*szAvailable*/)
 {
    return CSize(0, 12);
 }
 
-void CSeparatorLineUI::DoPaint(HDC hDC, const RECT& /*rcPaint*/)
+void SeparatorLineUI::DoPaint(HDC hDC, const RECT& /*rcPaint*/)
 {
    RECT rc1 = { m_rcItem.left, m_rcItem.top + 3, m_rcItem.right - 1, m_rcItem.top + 3 };
    CBlueRenderEngineUI::DoPaintLine(hDC, m_manager, rc1, UICOLOR_EDIT_TEXT_DISABLED);

@@ -3,7 +3,7 @@
 
 #pragma once
 
-class CPaintManagerUI;
+class PaintManagerUI;
 
 
 #define UI_WNDSTYLE_CONTAINER  (0)
@@ -124,10 +124,10 @@ protected:
    int m_nAllocated;
 };
 
-class UILIB_API CWindowWnd
+class UILIB_API WindowWnd
 {
 public:
-   CWindowWnd();
+   WindowWnd();
 
    HWND GetHWND() const;
    operator HWND() const;

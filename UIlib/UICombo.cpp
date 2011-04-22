@@ -117,7 +117,7 @@ void CSingleLinePickUI::DoPaint(HDC hDC, const RECT& rcPaint)
 }
 
 
-class CDropDownWnd : public CWindowWnd
+class CDropDownWnd : public WindowWnd
 {
 public:
    void Init(DropDownUI* owner);
@@ -127,7 +127,7 @@ public:
    LRESULT HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 public:
-   CPaintManagerUI m_pm;
+   PaintManagerUI m_pm;
    DropDownUI* m_owner;
    int m_iOldSel;
 };
@@ -169,7 +169,7 @@ LRESULT CDropDownWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
       // The trick is to add the items to the new container. Their owner gets
       // reassigned by this operation - which is why it is important to reassign
       // the items back to the righfull owner/manager when the window closes.
-      CControlCanvasUI* win = new CControlCanvasUI;
+      ControlCanvasUI* win = new ControlCanvasUI;
       VerticalLayoutUI* pLayout = new VerticalLayoutUI;
       for (int i = 0; i < m_owner->GetCount(); i++)  pLayout->Add(static_cast<ControlUI*>(m_owner->GetItem(i)));
       pLayout->SetAutoDestroy(false);
@@ -207,7 +207,7 @@ LRESULT CDropDownWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
    }
    LRESULT lRes = 0;
    if (m_pm.MessageHandler(uMsg, wParam, lParam, lRes))  return lRes;
-   return CWindowWnd::HandleMessage(uMsg, wParam, lParam);
+   return WindowWnd::HandleMessage(uMsg, wParam, lParam);
 }
 
 

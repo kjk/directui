@@ -50,7 +50,7 @@ public:
 
    void SetAttribute(const TCHAR* name, const TCHAR* value);
 
-   void SetManager(CPaintManagerUI* manager, ControlUI* parent);
+   void SetManager(PaintManagerUI* manager, ControlUI* parent);
    ControlUI* FindControl(FINDCONTROLPROC Proc, void* data, UINT uFlags);
 
    virtual int GetScrollPos() const;
@@ -96,34 +96,34 @@ protected:
 };
 
 
-class UILIB_API CWindowCanvasUI : public CanvasUI
+class UILIB_API WindowCanvasUI : public CanvasUI
 {
 public:
-   CWindowCanvasUI();
+   WindowCanvasUI();
    const TCHAR* GetClass() const;
 };
 
 
-class UILIB_API CControlCanvasUI : public CanvasUI
+class UILIB_API ControlCanvasUI : public CanvasUI
 {
 public:
-   CControlCanvasUI();
+   ControlCanvasUI();
    const TCHAR* GetClass() const;
 };
 
 
-class UILIB_API CWhiteCanvasUI : public CanvasUI
+class UILIB_API WhiteCanvasUI : public CanvasUI
 {
 public:
-   CWhiteCanvasUI();
+   WhiteCanvasUI();
    const TCHAR* GetClass() const;
 };
 
 
-class UILIB_API CDialogCanvasUI : public CanvasUI
+class UILIB_API DialogCanvasUI : public CanvasUI
 {
 public:
-   CDialogCanvasUI();
+   DialogCanvasUI();
    const TCHAR* GetClass() const;
 };
 
@@ -176,10 +176,10 @@ protected:
 };
 
 
-class UILIB_API CDialogLayoutUI : public ContainerUI
+class UILIB_API DialogLayoutUI : public ContainerUI
 {
 public:
-   CDialogLayoutUI();
+   DialogLayoutUI();
 
    const TCHAR* GetClass() const;
    void* GetInterface(const TCHAR* name);
