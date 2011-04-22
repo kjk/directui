@@ -673,7 +673,8 @@ StdString::StdString(const StdString& src) : m_pstr(m_buf)
 
 StdString::~StdString()
 {
-   free(m_pstr);
+   if (m_buf != m_pstr)
+      free(m_pstr);
 }
 
 StdString StdString::RES(UINT nRes)

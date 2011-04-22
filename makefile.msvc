@@ -72,8 +72,10 @@ LIBS = $(LIBS) kernel32.lib user32.lib gdi32.lib advapi32.lib comdlg32.lib \
 	comctl32.lib shell32.lib gdiplus.lib ole32.lib ws2_32.lib wininet.lib winmm.lib
 
 LD = link.exe
-LDFLAGS = $(LDFLAGS) /nologo /DEBUG /opt:ref /opt:icf /machine:x86
-LDFLAGS = $(LDFLAGS) /SUBSYSTEM:WINDOWS
+LDFLAGS = $(LDFLAGS) /nologo /DEBUG /machine:x86 /SUBSYSTEM:WINDOWS
+!if "$(CFG)"=="rel"
+LDFLAGS = $(LDFLAGS) /opt:ref /opt:icf
+!endif
 
 TA_RES = $(OTA)TestApp.res
 TA_MANIFEST = $(OTA)\TestApp.manifest.res
