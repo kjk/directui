@@ -57,7 +57,7 @@ HPEN m_hPens[UICOLOR__LAST] = { 0 };
 HFONT m_hFonts[UIFONT__LAST] = { 0 };
 HBRUSH m_hBrushes[UICOLOR__LAST] = { 0 };
 LOGFONT m_aLogFonts[UIFONT__LAST] = { 0 };
-COLORREF m_clrColors[UICOLOR__LAST][2] = { 0 };
+COLORREF m_colors[UICOLOR__LAST][2] = { 0 };
 TEXTMETRIC m_aTextMetrics[UIFONT__LAST] = { 0 };
 HIMAGELIST m_himgIcons16 = NULL;
 HIMAGELIST m_himgIcons24 = NULL;
@@ -74,18 +74,18 @@ PaintManagerUI::PaintManagerUI() :
    m_hDcOffscreen(NULL),
    m_hbmpOffscreen(NULL),
    m_hwndTooltip(NULL),
-   m_uTimerID(0x1000),
+   m_timerID(0x1000),
    m_root(NULL),
    m_focus(NULL),
-   m_pEventHover(NULL),
-   m_pEventClick(NULL),
-   m_pEventKey(NULL),
-   m_bFirstLayout(true),
-   m_bFocusNeeded(false),
-   m_bResizeNeeded(false),
-   m_bMouseTracking(false),
-   m_bOffscreenPaint(true),
-   m_aPostPaint(sizeof(TPostPaintUI))
+   m_eventHover(NULL),
+   m_eventClick(NULL),
+   m_eventKey(NULL),
+   m_firstLayout(true),
+   m_focusNeeded(false),
+   m_resizeNeeded(false),
+   m_mouseTracking(false),
+   m_offscreenPaint(true),
+   m_postPaint(sizeof(TPostPaintUI))
 {
    if (m_hFonts[1] == NULL)  
    {
@@ -113,92 +113,92 @@ PaintManagerUI::PaintManagerUI() :
       m_aLogFonts[UIFONT_LINK] = lfLink;
 
       // Fill the color table
-      m_clrColors[UICOLOR_WINDOW_BACKGROUND][0]            = RGB(239,239,235);
-      m_clrColors[UICOLOR_DIALOG_BACKGROUND][0]            = RGB(238,238,238);
-      m_clrColors[UICOLOR_DIALOG_TEXT_NORMAL][0]           = RGB(0,0,0);
-      m_clrColors[UICOLOR_DIALOG_TEXT_DARK][0]             = RGB(96,96,80);
-      m_clrColors[UICOLOR_TITLE_BACKGROUND][0]             = RGB(114,136,172);
-      m_clrColors[UICOLOR_TITLE_TEXT][0]                   = RGB(255,255,255);
-      m_clrColors[UICOLOR_TITLE_BORDER_LIGHT][0]           = RGB(171,192,231);
-      m_clrColors[UICOLOR_TITLE_BORDER_DARK][0]            = RGB(0,55,122);
-      m_clrColors[UICOLOR_BUTTON_BACKGROUND_NORMAL][0]     = RGB(250,250,252);
-       m_clrColors[UICOLOR_BUTTON_BACKGROUND_NORMAL][1]    = RGB(215,215,227);
-      m_clrColors[UICOLOR_BUTTON_BACKGROUND_DISABLED][0]   = RGB(248,248,248);
-       m_clrColors[UICOLOR_BUTTON_BACKGROUND_DISABLED][1]  = RGB(214,214,214);
-      m_clrColors[UICOLOR_BUTTON_BACKGROUND_PUSHED][0]     = RGB(215,215,227);
-       m_clrColors[UICOLOR_BUTTON_BACKGROUND_PUSHED][1]    = RGB(250,250,252);
-      m_clrColors[UICOLOR_BUTTON_TEXT_NORMAL][0]           = RGB(0,0,0);
-      m_clrColors[UICOLOR_BUTTON_TEXT_PUSHED][0]           = RGB(0,0,20);
-      m_clrColors[UICOLOR_BUTTON_TEXT_DISABLED][0]         = RGB(204,204,204);
-      m_clrColors[UICOLOR_BUTTON_BORDER_LIGHT][0]          = RGB(123,158,189);
-      m_clrColors[UICOLOR_BUTTON_BORDER_DARK][0]           = RGB(123,158,189);
-      m_clrColors[UICOLOR_BUTTON_BORDER_DISABLED][0]       = RGB(204,204,204);
-      m_clrColors[UICOLOR_BUTTON_BORDER_FOCUS][0]          = RGB(140,140,140);
-      m_clrColors[UICOLOR_TOOL_BACKGROUND_NORMAL][0]       = RGB(114,136,172);
-      m_clrColors[UICOLOR_TOOL_BACKGROUND_DISABLED][0]     = RGB(100,121,156);
-      m_clrColors[UICOLOR_TOOL_BACKGROUND_HOVER][0]        = RGB(100,121,156);
-      m_clrColors[UICOLOR_TOOL_BACKGROUND_PUSHED][0]       = RGB(80,101,136);
-      m_clrColors[UICOLOR_TOOL_BORDER_NORMAL][0]           = RGB(0,55,122);
-      m_clrColors[UICOLOR_TOOL_BORDER_DISABLED][0]         = RGB(0,55,122);
-      m_clrColors[UICOLOR_TOOL_BORDER_HOVER][0]            = RGB(0,55,122);
-      m_clrColors[UICOLOR_TOOL_BORDER_PUSHED][0]           = RGB(0,55,122);
-      m_clrColors[UICOLOR_EDIT_BACKGROUND_DISABLED][0]     = RGB(255,251,255);
-      m_clrColors[UICOLOR_EDIT_BACKGROUND_READONLY][0]     = RGB(255,251,255);
-      m_clrColors[UICOLOR_EDIT_BACKGROUND_NORMAL][0]       = RGB(255,255,255);
-      m_clrColors[UICOLOR_EDIT_BACKGROUND_HOVER][0]        = RGB(255,251,255);
-      m_clrColors[UICOLOR_EDIT_TEXT_NORMAL][0]             = RGB(0,0,0);
-      m_clrColors[UICOLOR_EDIT_TEXT_DISABLED][0]           = RGB(167,166,170);
-      m_clrColors[UICOLOR_EDIT_TEXT_READONLY][0]           = RGB(167,166,170);      
-      m_clrColors[UICOLOR_NAVIGATOR_BACKGROUND][0]         = RGB(229,217,213);
-       m_clrColors[UICOLOR_NAVIGATOR_BACKGROUND][1]        = RGB(201,199,187);
-      m_clrColors[UICOLOR_NAVIGATOR_TEXT_NORMAL][0]        = RGB(102,102,102);
-      m_clrColors[UICOLOR_NAVIGATOR_TEXT_SELECTED][0]      = RGB(0,0,0);
-      m_clrColors[UICOLOR_NAVIGATOR_TEXT_PUSHED][0]        = RGB(0,0,0);       
-      m_clrColors[UICOLOR_NAVIGATOR_BORDER_NORMAL][0]      = RGB(131,133,116);
-      m_clrColors[UICOLOR_NAVIGATOR_BORDER_SELECTED][0]    = RGB(159,160,144);
-      m_clrColors[UICOLOR_NAVIGATOR_BUTTON_HOVER][0]       = RGB(200,200,200);
-      m_clrColors[UICOLOR_NAVIGATOR_BUTTON_PUSHED][0]      = RGB(184,184,183);
-      m_clrColors[UICOLOR_NAVIGATOR_BUTTON_SELECTED][0]    = RGB(238,238,238);
-      m_clrColors[UICOLOR_TAB_BACKGROUND_NORMAL][0]        = RGB(255,251,255);
-      m_clrColors[UICOLOR_TAB_FOLDER_NORMAL][0]            = RGB(255,251,255);
-       m_clrColors[UICOLOR_TAB_FOLDER_NORMAL][1]           = RGB(233,231,215);
-      m_clrColors[UICOLOR_TAB_FOLDER_SELECTED][0]          = RGB(255,251,255);
-      m_clrColors[UICOLOR_TAB_BORDER][0]                   = RGB(148,166,181);
-      m_clrColors[UICOLOR_TAB_TEXT_NORMAL][0]              = RGB(0,0,0);
-      m_clrColors[UICOLOR_TAB_TEXT_SELECTED][0]            = RGB(0,0,0);
-      m_clrColors[UICOLOR_TAB_TEXT_DISABLED][0]            = RGB(0,0,0);      
-      m_clrColors[UICOLOR_HEADER_BACKGROUND][0]            = RGB(233,231,215);
-       m_clrColors[UICOLOR_HEADER_BACKGROUND][1]           = RGB(150,150,147);
-      m_clrColors[UICOLOR_HEADER_BORDER][0]                = RGB(218,219,201);
-      m_clrColors[UICOLOR_HEADER_SEPARATOR][0]             = RGB(197,193,177);
-      m_clrColors[UICOLOR_HEADER_TEXT][0]                  = RGB(0,0,0);
-      m_clrColors[UICOLOR_TASK_BACKGROUND][0]              = RGB(230,243,255);
-       m_clrColors[UICOLOR_TASK_BACKGROUND][1]             = RGB(255,255,255);
-      m_clrColors[UICOLOR_TASK_BORDER][0]                  = RGB(140,158,198);
-      m_clrColors[UICOLOR_TASK_CAPTION][0]                 = RGB(140,158,198);
-      m_clrColors[UICOLOR_TASK_TEXT][0]                    = RGB(65,65,110);
-      m_clrColors[UICOLOR_LINK_TEXT_NORMAL][0]             = RGB(0,0,255);
-      m_clrColors[UICOLOR_LINK_TEXT_HOVER][0]              = RGB(0,0,100);
-      m_clrColors[UICOLOR_CONTROL_BACKGROUND_NORMAL][0]    = RGB(255,255,255);
-      m_clrColors[UICOLOR_CONTROL_BACKGROUND_SELECTED][0]  = RGB(173,195,231);
-      m_clrColors[UICOLOR_CONTROL_BACKGROUND_READONLY][0]  = RGB(255,255,255);
-      m_clrColors[UICOLOR_CONTROL_BACKGROUND_DISABLED][0]  = RGB(255,255,255);
-      m_clrColors[UICOLOR_CONTROL_BACKGROUND_HOVER][0]     = RGB(233,245,255);
-      m_clrColors[UICOLOR_CONTROL_BACKGROUND_SORTED][0]    = RGB(242,242,246);
-      m_clrColors[UICOLOR_CONTROL_BACKGROUND_EXPANDED][0]  = RGB(255,255,255);
-       m_clrColors[UICOLOR_CONTROL_BACKGROUND_EXPANDED][1] = RGB(236,242,255);
-      m_clrColors[UICOLOR_CONTROL_BORDER_NORMAL][0]        = RGB(123,158,189);
-      m_clrColors[UICOLOR_CONTROL_BORDER_SELECTED][0]      = RGB(123,158,189);
-      m_clrColors[UICOLOR_CONTROL_BORDER_DISABLED][0]      = RGB(204,204,204);
-      m_clrColors[UICOLOR_CONTROL_TEXT_NORMAL][0]          = RGB(0,0,0);
-      m_clrColors[UICOLOR_CONTROL_TEXT_SELECTED][0]        = RGB(0,0,0);
-      m_clrColors[UICOLOR_CONTROL_TEXT_DISABLED][0]        = RGB(204,204,204);
-      m_clrColors[UICOLOR_STANDARD_BLACK][0]               = RGB(0,0,0);
-      m_clrColors[UICOLOR_STANDARD_YELLOW][0]              = RGB(255,255,204);
-      m_clrColors[UICOLOR_STANDARD_RED][0]                 = RGB(255,204,204);
-      m_clrColors[UICOLOR_STANDARD_GREY][0]                = RGB(145,146,119);
-      m_clrColors[UICOLOR_STANDARD_LIGHTGREY][0]           = RGB(195,196,179);
-      m_clrColors[UICOLOR_STANDARD_WHITE][0]               = RGB(255,255,255);
+      m_colors[UICOLOR_WINDOW_BACKGROUND][0]            = RGB(239,239,235);
+      m_colors[UICOLOR_DIALOG_BACKGROUND][0]            = RGB(238,238,238);
+      m_colors[UICOLOR_DIALOG_TEXT_NORMAL][0]           = RGB(0,0,0);
+      m_colors[UICOLOR_DIALOG_TEXT_DARK][0]             = RGB(96,96,80);
+      m_colors[UICOLOR_TITLE_BACKGROUND][0]             = RGB(114,136,172);
+      m_colors[UICOLOR_TITLE_TEXT][0]                   = RGB(255,255,255);
+      m_colors[UICOLOR_TITLE_BORDER_LIGHT][0]           = RGB(171,192,231);
+      m_colors[UICOLOR_TITLE_BORDER_DARK][0]            = RGB(0,55,122);
+      m_colors[UICOLOR_BUTTON_BACKGROUND_NORMAL][0]     = RGB(250,250,252);
+       m_colors[UICOLOR_BUTTON_BACKGROUND_NORMAL][1]    = RGB(215,215,227);
+      m_colors[UICOLOR_BUTTON_BACKGROUND_DISABLED][0]   = RGB(248,248,248);
+       m_colors[UICOLOR_BUTTON_BACKGROUND_DISABLED][1]  = RGB(214,214,214);
+      m_colors[UICOLOR_BUTTON_BACKGROUND_PUSHED][0]     = RGB(215,215,227);
+       m_colors[UICOLOR_BUTTON_BACKGROUND_PUSHED][1]    = RGB(250,250,252);
+      m_colors[UICOLOR_BUTTON_TEXT_NORMAL][0]           = RGB(0,0,0);
+      m_colors[UICOLOR_BUTTON_TEXT_PUSHED][0]           = RGB(0,0,20);
+      m_colors[UICOLOR_BUTTON_TEXT_DISABLED][0]         = RGB(204,204,204);
+      m_colors[UICOLOR_BUTTON_BORDER_LIGHT][0]          = RGB(123,158,189);
+      m_colors[UICOLOR_BUTTON_BORDER_DARK][0]           = RGB(123,158,189);
+      m_colors[UICOLOR_BUTTON_BORDER_DISABLED][0]       = RGB(204,204,204);
+      m_colors[UICOLOR_BUTTON_BORDER_FOCUS][0]          = RGB(140,140,140);
+      m_colors[UICOLOR_TOOL_BACKGROUND_NORMAL][0]       = RGB(114,136,172);
+      m_colors[UICOLOR_TOOL_BACKGROUND_DISABLED][0]     = RGB(100,121,156);
+      m_colors[UICOLOR_TOOL_BACKGROUND_HOVER][0]        = RGB(100,121,156);
+      m_colors[UICOLOR_TOOL_BACKGROUND_PUSHED][0]       = RGB(80,101,136);
+      m_colors[UICOLOR_TOOL_BORDER_NORMAL][0]           = RGB(0,55,122);
+      m_colors[UICOLOR_TOOL_BORDER_DISABLED][0]         = RGB(0,55,122);
+      m_colors[UICOLOR_TOOL_BORDER_HOVER][0]            = RGB(0,55,122);
+      m_colors[UICOLOR_TOOL_BORDER_PUSHED][0]           = RGB(0,55,122);
+      m_colors[UICOLOR_EDIT_BACKGROUND_DISABLED][0]     = RGB(255,251,255);
+      m_colors[UICOLOR_EDIT_BACKGROUND_READONLY][0]     = RGB(255,251,255);
+      m_colors[UICOLOR_EDIT_BACKGROUND_NORMAL][0]       = RGB(255,255,255);
+      m_colors[UICOLOR_EDIT_BACKGROUND_HOVER][0]        = RGB(255,251,255);
+      m_colors[UICOLOR_EDIT_TEXT_NORMAL][0]             = RGB(0,0,0);
+      m_colors[UICOLOR_EDIT_TEXT_DISABLED][0]           = RGB(167,166,170);
+      m_colors[UICOLOR_EDIT_TEXT_READONLY][0]           = RGB(167,166,170);      
+      m_colors[UICOLOR_NAVIGATOR_BACKGROUND][0]         = RGB(229,217,213);
+       m_colors[UICOLOR_NAVIGATOR_BACKGROUND][1]        = RGB(201,199,187);
+      m_colors[UICOLOR_NAVIGATOR_TEXT_NORMAL][0]        = RGB(102,102,102);
+      m_colors[UICOLOR_NAVIGATOR_TEXT_SELECTED][0]      = RGB(0,0,0);
+      m_colors[UICOLOR_NAVIGATOR_TEXT_PUSHED][0]        = RGB(0,0,0);       
+      m_colors[UICOLOR_NAVIGATOR_BORDER_NORMAL][0]      = RGB(131,133,116);
+      m_colors[UICOLOR_NAVIGATOR_BORDER_SELECTED][0]    = RGB(159,160,144);
+      m_colors[UICOLOR_NAVIGATOR_BUTTON_HOVER][0]       = RGB(200,200,200);
+      m_colors[UICOLOR_NAVIGATOR_BUTTON_PUSHED][0]      = RGB(184,184,183);
+      m_colors[UICOLOR_NAVIGATOR_BUTTON_SELECTED][0]    = RGB(238,238,238);
+      m_colors[UICOLOR_TAB_BACKGROUND_NORMAL][0]        = RGB(255,251,255);
+      m_colors[UICOLOR_TAB_FOLDER_NORMAL][0]            = RGB(255,251,255);
+       m_colors[UICOLOR_TAB_FOLDER_NORMAL][1]           = RGB(233,231,215);
+      m_colors[UICOLOR_TAB_FOLDER_SELECTED][0]          = RGB(255,251,255);
+      m_colors[UICOLOR_TAB_BORDER][0]                   = RGB(148,166,181);
+      m_colors[UICOLOR_TAB_TEXT_NORMAL][0]              = RGB(0,0,0);
+      m_colors[UICOLOR_TAB_TEXT_SELECTED][0]            = RGB(0,0,0);
+      m_colors[UICOLOR_TAB_TEXT_DISABLED][0]            = RGB(0,0,0);      
+      m_colors[UICOLOR_HEADER_BACKGROUND][0]            = RGB(233,231,215);
+       m_colors[UICOLOR_HEADER_BACKGROUND][1]           = RGB(150,150,147);
+      m_colors[UICOLOR_HEADER_BORDER][0]                = RGB(218,219,201);
+      m_colors[UICOLOR_HEADER_SEPARATOR][0]             = RGB(197,193,177);
+      m_colors[UICOLOR_HEADER_TEXT][0]                  = RGB(0,0,0);
+      m_colors[UICOLOR_TASK_BACKGROUND][0]              = RGB(230,243,255);
+       m_colors[UICOLOR_TASK_BACKGROUND][1]             = RGB(255,255,255);
+      m_colors[UICOLOR_TASK_BORDER][0]                  = RGB(140,158,198);
+      m_colors[UICOLOR_TASK_CAPTION][0]                 = RGB(140,158,198);
+      m_colors[UICOLOR_TASK_TEXT][0]                    = RGB(65,65,110);
+      m_colors[UICOLOR_LINK_TEXT_NORMAL][0]             = RGB(0,0,255);
+      m_colors[UICOLOR_LINK_TEXT_HOVER][0]              = RGB(0,0,100);
+      m_colors[UICOLOR_CONTROL_BACKGROUND_NORMAL][0]    = RGB(255,255,255);
+      m_colors[UICOLOR_CONTROL_BACKGROUND_SELECTED][0]  = RGB(173,195,231);
+      m_colors[UICOLOR_CONTROL_BACKGROUND_READONLY][0]  = RGB(255,255,255);
+      m_colors[UICOLOR_CONTROL_BACKGROUND_DISABLED][0]  = RGB(255,255,255);
+      m_colors[UICOLOR_CONTROL_BACKGROUND_HOVER][0]     = RGB(233,245,255);
+      m_colors[UICOLOR_CONTROL_BACKGROUND_SORTED][0]    = RGB(242,242,246);
+      m_colors[UICOLOR_CONTROL_BACKGROUND_EXPANDED][0]  = RGB(255,255,255);
+       m_colors[UICOLOR_CONTROL_BACKGROUND_EXPANDED][1] = RGB(236,242,255);
+      m_colors[UICOLOR_CONTROL_BORDER_NORMAL][0]        = RGB(123,158,189);
+      m_colors[UICOLOR_CONTROL_BORDER_SELECTED][0]      = RGB(123,158,189);
+      m_colors[UICOLOR_CONTROL_BORDER_DISABLED][0]      = RGB(204,204,204);
+      m_colors[UICOLOR_CONTROL_TEXT_NORMAL][0]          = RGB(0,0,0);
+      m_colors[UICOLOR_CONTROL_TEXT_SELECTED][0]        = RGB(0,0,0);
+      m_colors[UICOLOR_CONTROL_TEXT_DISABLED][0]        = RGB(204,204,204);
+      m_colors[UICOLOR_STANDARD_BLACK][0]               = RGB(0,0,0);
+      m_colors[UICOLOR_STANDARD_YELLOW][0]              = RGB(255,255,204);
+      m_colors[UICOLOR_STANDARD_RED][0]                 = RGB(255,204,204);
+      m_colors[UICOLOR_STANDARD_GREY][0]                = RGB(145,146,119);
+      m_colors[UICOLOR_STANDARD_LIGHTGREY][0]           = RGB(195,196,179);
+      m_colors[UICOLOR_STANDARD_WHITE][0]               = RGB(255,255,255);
 
       // Boot Windows Common Controls (for the ToolTip control)
       ::InitCommonControls();
@@ -222,10 +222,10 @@ PaintManagerUI::~PaintManagerUI()
 {
    // Delete the control-tree structures
    int i;
-   for (i = 0; i < m_aDelayedCleanup.GetSize(); i++)  delete static_cast<ControlUI*>(m_aDelayedCleanup[i]);
+   for (i = 0; i < m_delayedCleanup.GetSize(); i++)  delete static_cast<ControlUI*>(m_delayedCleanup[i]);
    delete m_root;
    // Release other collections
-   for (i = 0; i < m_aTimers.GetSize(); i++)  delete static_cast<TIMERINFO*>(m_aTimers[i]);
+   for (i = 0; i < m_timers.GetSize(); i++)  delete static_cast<TIMERINFO*>(m_timers[i]);
    // Reset other parts...
    if (m_hwndTooltip != NULL)  ::DestroyWindow(m_hwndTooltip);
    if (m_hDcOffscreen != NULL)  ::DeleteDC(m_hDcOffscreen);
@@ -377,10 +377,10 @@ bool PaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRE
    // Not ready yet?
    if (m_hWndPaint == NULL)  return false;
    // Cycle through listeners
-   for (int i = 0; i < m_aMessageFilters.GetSize(); i++)  
+   for (int i = 0; i < m_messageFilters.GetSize(); i++)  
    {
       bool bHandled = false;
-      LRESULT lResult = static_cast<IMessageFilterUI*>(m_aMessageFilters[i])->MessageHandler(uMsg, wParam, lParam, bHandled);
+      LRESULT lResult = static_cast<IMessageFilterUI*>(m_messageFilters[i])->MessageHandler(uMsg, wParam, lParam, bHandled);
       if (bHandled)  {
          lRes = lResult;
          return true;
@@ -391,8 +391,8 @@ bool PaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRE
    case WM_APP + 1:
       {
          // Delayed control-tree cleanup. See AttachDialog() for details.
-         for (int i = 0; i < m_aDelayedCleanup.GetSize(); i++)  delete static_cast<ControlUI*>(m_aDelayedCleanup[i]);
-         m_aDelayedCleanup.Empty();
+         for (int i = 0; i < m_delayedCleanup.GetSize(); i++)  delete static_cast<ControlUI*>(m_delayedCleanup[i]);
+         m_delayedCleanup.Empty();
       }
       break;
    case WM_CLOSE:
@@ -401,15 +401,15 @@ bool PaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRE
          TEventUI event = { 0 };
          event.ptMouse = m_ptLastMousePos;
          event.dwTimestamp = ::GetTickCount();
-         if (m_pEventHover != NULL)  {
+         if (m_eventHover != NULL)  {
             event.Type = UIEVENT_MOUSELEAVE;
-            event.pSender = m_pEventHover;
-            m_pEventHover->Event(event);
+            event.pSender = m_eventHover;
+            m_eventHover->Event(event);
          }
-         if (m_pEventClick != NULL)  {
+         if (m_eventClick != NULL)  {
             event.Type = UIEVENT_BUTTONUP;
-            event.pSender = m_pEventClick;
-            m_pEventClick->Event(event);
+            event.pSender = m_eventClick;
+            m_eventClick->Event(event);
          }
          SetFocus(NULL);
          // Hmmph, the usual Windows tricks to avoid
@@ -433,19 +433,19 @@ bool PaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRE
          // This is the time where we layout the controls on the form.
          // We delay this even from the WM_SIZE messages since resizing can be
          // a very expensize operation.
-         if (m_bResizeNeeded)  {
+         if (m_resizeNeeded)  {
             RECT rcClient = { 0 };
             ::GetClientRect(m_hWndPaint, &rcClient);
             if (!::IsRectEmpty(&rcClient))  {
                HDC hDC = ::CreateCompatibleDC(m_hDcPaint);
                m_root->SetPos(rcClient);
                ::DeleteDC(hDC);
-               m_bResizeNeeded = false;
+               m_resizeNeeded = false;
                // We'll want to notify the window when it is first initialized
                // with the correct layout. The window form would take the time
                // to submit swipes/animations.
-               if (m_bFirstLayout)  {
-                  m_bFirstLayout = false;
+               if (m_firstLayout)  {
+                  m_firstLayout = false;
                   SendNotify(m_root, _T("windowinit"));
                }
             }
@@ -456,7 +456,7 @@ bool PaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRE
             m_hbmpOffscreen = NULL;
          }
          // Set focus to first control?
-         if (m_bFocusNeeded)  {
+         if (m_focusNeeded)  {
             SetNextTabControl();
          }
          //
@@ -487,7 +487,7 @@ bool PaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRE
          {
             // Standard painting of control-tree - no 3D animation now.
             // Prepare offscreen bitmap?
-            if (m_bOffscreenPaint && m_hbmpOffscreen == NULL) 
+            if (m_offscreenPaint && m_hbmpOffscreen == NULL) 
             {
                RECT rcClient = { 0 };
                ::GetClientRect(m_hWndPaint, &rcClient);
@@ -499,7 +499,7 @@ bool PaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRE
             // Begin Windows paint
             PAINTSTRUCT ps = { 0 };
             ::BeginPaint(m_hWndPaint, &ps);
-            if (m_bOffscreenPaint) 
+            if (m_offscreenPaint) 
             {
                // We have an offscreen device to paint on for flickerfree display.
                HBITMAP hOldBitmap = (HBITMAP) ::SelectObject(m_hDcOffscreen, m_hbmpOffscreen);
@@ -508,11 +508,11 @@ bool PaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRE
                m_root->DoPaint(m_hDcOffscreen, ps.rcPaint);
                ::RestoreDC(m_hDcOffscreen, iSaveDC);
                // Draw alpha bitmaps on top?
-               for (int i = 0; i < m_aPostPaint.GetSize(); i++)  {
-                  TPostPaintUI* pBlit = static_cast<TPostPaintUI*>(m_aPostPaint[i]);
+               for (int i = 0; i < m_postPaint.GetSize(); i++)  {
+                  TPostPaintUI* pBlit = static_cast<TPostPaintUI*>(m_postPaint[i]);
                   BlueRenderEngineUI::DoPaintAlphaBitmap(m_hDcOffscreen, this, pBlit->hBitmap, pBlit->rc, pBlit->iAlpha);
                }
-               m_aPostPaint.Empty();
+               m_postPaint.Empty();
                // Blit offscreen bitmap back to display
                ::BitBlt(ps.hdc, 
                   ps.rcPaint.left, 
@@ -538,7 +538,7 @@ bool PaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRE
       }
       // If any of the painting requested a resize again, we'll need
       // to invalidate the entire window once more.
-      if (m_bResizeNeeded)  ::InvalidateRect(m_hWndPaint, NULL, FALSE);
+      if (m_resizeNeeded)  ::InvalidateRect(m_hWndPaint, NULL, FALSE);
       return true;
    case WM_PRINTCLIENT:
       {
@@ -583,13 +583,13 @@ bool PaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRE
             m_focus->Event(event);
          }
          if (m_anim.IsAnimating())  m_anim.CancelJobs();
-         m_bResizeNeeded = true;
+         m_resizeNeeded = true;
       }
       return true;
    case WM_TIMER:
       {
-         for (int i = 0; i < m_aTimers.GetSize(); i++)  {
-            const TIMERINFO* pTimer = static_cast<TIMERINFO*>(m_aTimers[i]);
+         for (int i = 0; i < m_timers.GetSize(); i++)  {
+            const TIMERINFO* pTimer = static_cast<TIMERINFO*>(m_timers[i]);
             if (pTimer->hWnd == m_hWndPaint && pTimer->uWinTimer == LOWORD(wParam))  {
                TEventUI event = { 0 };
                event.Type = UIEVENT_TIMER;
@@ -603,57 +603,57 @@ bool PaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRE
       break;
    case WM_MOUSEHOVER:
       {
-         m_bMouseTracking = false;
+         m_mouseTracking = false;
          POINT pt = { GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam) };
          ControlUI* pHover = FindControl(pt);
          if (pHover == NULL)  break;
          // Generate mouse hover event
-         if (m_pEventHover != NULL)  {
+         if (m_eventHover != NULL)  {
             TEventUI event = { 0 };
             event.ptMouse = pt;
             event.Type = UIEVENT_MOUSEHOVER;
             event.pSender = pHover;
             event.dwTimestamp = ::GetTickCount();
-            m_pEventHover->Event(event);
+            m_eventHover->Event(event);
          }
          // Create tooltip information
          StdString sToolTip = pHover->GetToolTip();
          if (sToolTip.IsEmpty())  return true;
          sToolTip.ProcessResourceTokens();
-         ::ZeroMemory(&m_ToolTip, sizeof(TOOLINFO));
-         m_ToolTip.cbSize = sizeof(TOOLINFO);
-         m_ToolTip.uFlags = TTF_IDISHWND;
-         m_ToolTip.hwnd = m_hWndPaint;
-         m_ToolTip.uId = (UINT) m_hWndPaint;
-         m_ToolTip.hinst = m_hInstance;
-         m_ToolTip.lpszText = const_cast<TCHAR*>( (const TCHAR*) sToolTip) ;
-         m_ToolTip.rect = pHover->GetPos();
+         ::ZeroMemory(&m_toolTip, sizeof(TOOLINFO));
+         m_toolTip.cbSize = sizeof(TOOLINFO);
+         m_toolTip.uFlags = TTF_IDISHWND;
+         m_toolTip.hwnd = m_hWndPaint;
+         m_toolTip.uId = (UINT) m_hWndPaint;
+         m_toolTip.hinst = m_hInstance;
+         m_toolTip.lpszText = const_cast<TCHAR*>( (const TCHAR*) sToolTip) ;
+         m_toolTip.rect = pHover->GetPos();
          if (m_hwndTooltip == NULL)  {
             m_hwndTooltip = ::CreateWindowEx(0, TOOLTIPS_CLASS, NULL, WS_POPUP | TTS_NOPREFIX | TTS_ALWAYSTIP, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, m_hWndPaint, NULL, m_hInstance, NULL);
-            ::SendMessage(m_hwndTooltip, TTM_ADDTOOL, 0, (LPARAM) &m_ToolTip);
+            ::SendMessage(m_hwndTooltip, TTM_ADDTOOL, 0, (LPARAM) &m_toolTip);
          }
-         ::SendMessage(m_hwndTooltip, TTM_SETTOOLINFO, 0, (LPARAM) &m_ToolTip);
-         ::SendMessage(m_hwndTooltip, TTM_TRACKACTIVATE, TRUE, (LPARAM) &m_ToolTip);
+         ::SendMessage(m_hwndTooltip, TTM_SETTOOLINFO, 0, (LPARAM) &m_toolTip);
+         ::SendMessage(m_hwndTooltip, TTM_TRACKACTIVATE, TRUE, (LPARAM) &m_toolTip);
       }
       return true;
    case WM_MOUSELEAVE:
       {
-         if (m_hwndTooltip != NULL)  ::SendMessage(m_hwndTooltip, TTM_TRACKACTIVATE, FALSE, (LPARAM) &m_ToolTip);
-         if (m_bMouseTracking)  ::SendMessage(m_hWndPaint, WM_MOUSEMOVE, 0, (LPARAM) -1);
-         m_bMouseTracking = false;
+         if (m_hwndTooltip != NULL)  ::SendMessage(m_hwndTooltip, TTM_TRACKACTIVATE, FALSE, (LPARAM) &m_toolTip);
+         if (m_mouseTracking)  ::SendMessage(m_hWndPaint, WM_MOUSEMOVE, 0, (LPARAM) -1);
+         m_mouseTracking = false;
       }
       break;
    case WM_MOUSEMOVE:
       {
          // Start tracking this entire window again...
-         if (!m_bMouseTracking)  {
+         if (!m_mouseTracking)  {
             TRACKMOUSEEVENT tme = { 0 };
             tme.cbSize = sizeof(TRACKMOUSEEVENT);
             tme.dwFlags = TME_HOVER | TME_LEAVE;
             tme.hwndTrack = m_hWndPaint;
             tme.dwHoverTime = m_hwndTooltip == NULL ? 1000UL : (DWORD) ::SendMessage(m_hwndTooltip, TTM_GETDELAYTIME, TTDT_INITIAL, 0L);
             _TrackMouseEvent(&tme);
-            m_bMouseTracking = true;
+            m_mouseTracking = true;
          }
          // Generate the appropriate mouse messages
          POINT pt = { GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam) };
@@ -663,23 +663,23 @@ bool PaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRE
          TEventUI event = { 0 };
          event.ptMouse = pt;
          event.dwTimestamp = ::GetTickCount();
-         if (pNewHover != m_pEventHover && m_pEventHover != NULL)  {
+         if (pNewHover != m_eventHover && m_eventHover != NULL)  {
             event.Type = UIEVENT_MOUSELEAVE;
             event.pSender = pNewHover;
-            m_pEventHover->Event(event);
-            m_pEventHover = NULL;
-            if (m_hwndTooltip != NULL)  ::SendMessage(m_hwndTooltip, TTM_TRACKACTIVATE, FALSE, (LPARAM) &m_ToolTip);
+            m_eventHover->Event(event);
+            m_eventHover = NULL;
+            if (m_hwndTooltip != NULL)  ::SendMessage(m_hwndTooltip, TTM_TRACKACTIVATE, FALSE, (LPARAM) &m_toolTip);
          }
-         if (pNewHover != m_pEventHover && pNewHover != NULL)  {
+         if (pNewHover != m_eventHover && pNewHover != NULL)  {
             event.Type = UIEVENT_MOUSEENTER;
-            event.pSender = m_pEventHover;
+            event.pSender = m_eventHover;
             pNewHover->Event(event);
-            m_pEventHover = pNewHover;
+            m_eventHover = pNewHover;
          }
-         if (m_pEventClick != NULL)  {
+         if (m_eventClick != NULL)  {
             event.Type = UIEVENT_MOUSEMOVE;
             event.pSender = NULL;
-            m_pEventClick->Event(event);
+            m_eventClick->Event(event);
          }
          else if (pNewHover != NULL)  {
             event.Type = UIEVENT_MOUSEMOVE;
@@ -699,7 +699,7 @@ bool PaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRE
          ControlUI* ctrl = FindControl(pt);
          if (ctrl == NULL)  break;
          if (ctrl->GetManager() != this)  break;
-         m_pEventClick = ctrl;
+         m_eventClick = ctrl;
          ctrl->SetFocus();
          TEventUI event = { 0 };
          event.Type = UIEVENT_BUTTONDOWN;
@@ -719,7 +719,7 @@ bool PaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRE
       {
          POINT pt = { GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam) };
          m_ptLastMousePos = pt;
-         if (m_pEventClick == NULL)  break;
+         if (m_eventClick == NULL)  break;
          ::ReleaseCapture();
          TEventUI event = { 0 };
          event.Type = UIEVENT_BUTTONUP;
@@ -728,8 +728,8 @@ bool PaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRE
          event.ptMouse = pt;
          event.wKeyState = wParam;
          event.dwTimestamp = ::GetTickCount();
-         m_pEventClick->Event(event);
-         m_pEventClick = NULL;
+         m_eventClick->Event(event);
+         m_eventClick = NULL;
       }
       break;
    case WM_LBUTTONDBLCLK:
@@ -745,7 +745,7 @@ bool PaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRE
          event.wKeyState = wParam;
          event.dwTimestamp = ::GetTickCount();
          ctrl->Event(event);
-         m_pEventClick = ctrl;
+         m_eventClick = ctrl;
          // We always capture the mouse
          ::SetCapture(m_hWndPaint);
       }
@@ -772,20 +772,20 @@ bool PaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRE
          event.wKeyState = MapKeyState();
          event.dwTimestamp = ::GetTickCount();
          m_focus->Event(event);
-         m_pEventKey = m_focus;
+         m_eventKey = m_focus;
       }
       break;
    case WM_KEYUP:
       {
-         if (m_pEventKey == NULL)  break;
+         if (m_eventKey == NULL)  break;
          TEventUI event = { 0 };
          event.Type = UIEVENT_KEYUP;
          event.chKey = wParam;
          event.ptMouse = m_ptLastMousePos;
          event.wKeyState = MapKeyState();
          event.dwTimestamp = ::GetTickCount();
-         m_pEventKey->Event(event);
-         m_pEventKey = NULL;
+         m_eventKey->Event(event);
+         m_eventKey = NULL;
       }
       break;
    case WM_SETCURSOR:
@@ -883,7 +883,7 @@ bool PaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRE
 
 void PaintManagerUI::UpdateLayout()
 {
-   m_bResizeNeeded = true;
+   m_resizeNeeded = true;
    ::InvalidateRect(m_hWndPaint, NULL, FALSE);
 }
 
@@ -897,23 +897,23 @@ bool PaintManagerUI::AttachDialog(ControlUI* ctrl)
    ASSERT(::IsWindow(m_hWndPaint));
    // Reset any previous attachment
    SetFocus(NULL);
-   m_pEventKey = NULL;
-   m_pEventHover = NULL;
-   m_pEventClick = NULL;
-   m_aNameHash.Empty();
+   m_eventKey = NULL;
+   m_eventHover = NULL;
+   m_eventClick = NULL;
+   m_nameHash.Empty();
    // Remove the existing control-tree. We might have gotten inside this function as
    // a result of an event fired or similar, so we cannot just delete the objects and
    // pull the internal memory of the calling code. We'll delay the cleanup.
    if (m_root != NULL)  {
-      m_aDelayedCleanup.Add(m_root);
+      m_delayedCleanup.Add(m_root);
       ::PostMessage(m_hWndPaint, WM_APP + 1, 0, 0L);
    }
    // Set the dialog root element
    m_root = ctrl;
    // Go ahead...
-   m_bResizeNeeded = true;
-   m_bFirstLayout = true;
-   m_bFocusNeeded = true;
+   m_resizeNeeded = true;
+   m_firstLayout = true;
+   m_focusNeeded = true;
    // Initiate all control
    return InitControls(ctrl);
 }
@@ -925,17 +925,17 @@ bool PaintManagerUI::InitControls(ControlUI* ctrl, ControlUI* parent /*= NULL*/)
    ctrl->SetManager(this, parent != NULL ? parent : ctrl->GetParent());
    // We're usually initializing the control after adding some more of them to the tree,
    // and thus this would be a good time to request the name-map rebuilt.
-   m_aNameHash.Empty();
+   m_nameHash.Empty();
    return true;
 }
 
 void PaintManagerUI::ReapObjects(ControlUI* ctrl)
 {
-   if (ctrl == m_pEventKey)  m_pEventKey = NULL;
-   if (ctrl == m_pEventHover)  m_pEventHover = NULL;
-   if (ctrl == m_pEventClick)  m_pEventClick = NULL;
+   if (ctrl == m_eventKey)  m_eventKey = NULL;
+   if (ctrl == m_eventHover)  m_eventHover = NULL;
+   if (ctrl == m_eventClick)  m_eventClick = NULL;
    // TODO: Do something with name-hash-map
-   //m_aNameHash.Empty();
+   //m_nameHash.Empty();
 }
 
 void PaintManagerUI::MessageLoop()
@@ -978,7 +978,7 @@ bool PaintManagerUI::AddAnimJob(const AnimJobUI& job)
 
 bool PaintManagerUI::AddPostPaintBlit(const TPostPaintUI& job)
 {
-   return m_aPostPaint.Add(&job);
+   return m_postPaint.Add(&job);
 }
 
 ControlUI* PaintManagerUI::GetFocus() const
@@ -1023,29 +1023,29 @@ bool PaintManagerUI::SetTimer(ControlUI* ctrl, UINT timerID, UINT uElapse)
 {
    ASSERT(ctrl!=NULL);
    ASSERT(uElapse>0);
-   m_uTimerID = (++m_uTimerID) % 0xFF;
-   if (!::SetTimer(m_hWndPaint, m_uTimerID, uElapse, NULL))  return FALSE;
+   m_timerID = (++m_timerID) % 0xFF;
+   if (!::SetTimer(m_hWndPaint, m_timerID, uElapse, NULL))  return FALSE;
    TIMERINFO* pTimer = new TIMERINFO;
    if (pTimer == NULL)  return FALSE;
    pTimer->hWnd = m_hWndPaint;
    pTimer->pSender = ctrl;
    pTimer->localID = timerID;
-   pTimer->uWinTimer = m_uTimerID;
-   return m_aTimers.Add(pTimer);
+   pTimer->uWinTimer = m_timerID;
+   return m_timers.Add(pTimer);
 }
 
 bool PaintManagerUI::KillTimer(ControlUI* ctrl, UINT timerID)
 {
    ASSERT(ctrl!=NULL);
-   for (int i = 0; i< m_aTimers.GetSize(); i++)  {
-      TIMERINFO* pTimer = static_cast<TIMERINFO*>(m_aTimers[i]);
+   for (int i = 0; i< m_timers.GetSize(); i++)  {
+      TIMERINFO* pTimer = static_cast<TIMERINFO*>(m_timers[i]);
       if (pTimer->pSender == ctrl
           && pTimer->hWnd == m_hWndPaint
           && pTimer->localID == timerID) 
       {
          ::KillTimer(pTimer->hWnd, pTimer->uWinTimer);
          delete pTimer;
-         return m_aTimers.Remove(i);
+         return m_timers.Remove(i);
       }
    }
    return false;
@@ -1055,8 +1055,8 @@ bool PaintManagerUI::SetNextTabControl(bool bForward)
 {
    // If we're in the process of restructuring the layout we can delay the
    // focus calulation until the next repaint.
-   if (m_bResizeNeeded && bForward)  {
-      m_bFocusNeeded = true;
+   if (m_resizeNeeded && bForward)  {
+      m_focusNeeded = true;
       ::InvalidateRect(m_hWndPaint, NULL, FALSE);
       return true;
    }
@@ -1078,7 +1078,7 @@ bool PaintManagerUI::SetNextTabControl(bool bForward)
       }
    }
    if (ctrl != NULL)  SetFocus(ctrl);
-   m_bFocusNeeded = false;
+   m_focusNeeded = false;
    return true;
 }
 
@@ -1099,15 +1099,15 @@ TSystemMetricsUI PaintManagerUI::GetSystemMetrics() const
 
 bool PaintManagerUI::AddNotifier(INotifyUI* pNotifier)
 {
-   ASSERT(m_aNotifiers.Find(pNotifier)<0);
-   return m_aNotifiers.Add(pNotifier);
+   ASSERT(m_notifiers.Find(pNotifier)<0);
+   return m_notifiers.Add(pNotifier);
 }
 
 bool PaintManagerUI::RemoveNotifier(INotifyUI* pNotifier)
 {
-   for (int i = 0; i < m_aNotifiers.GetSize(); i++)  {
-      if (static_cast<INotifyUI*>(m_aNotifiers[i]) == pNotifier)  {
-         return m_aNotifiers.Remove(i);
+   for (int i = 0; i < m_notifiers.GetSize(); i++)  {
+      if (static_cast<INotifyUI*>(m_notifiers[i]) == pNotifier)  {
+         return m_notifiers.Remove(i);
       }
    }
    return false;
@@ -1115,15 +1115,15 @@ bool PaintManagerUI::RemoveNotifier(INotifyUI* pNotifier)
 
 bool PaintManagerUI::AddMessageFilter(IMessageFilterUI* filter)
 {
-   ASSERT(m_aMessageFilters.Find(filter)<0);
-   return m_aMessageFilters.Add(filter);
+   ASSERT(m_messageFilters.Find(filter)<0);
+   return m_messageFilters.Add(filter);
 }
 
 bool PaintManagerUI::RemoveMessageFilter(IMessageFilterUI* filter)
 {
-   for (int i = 0; i < m_aMessageFilters.GetSize(); i++)  {
-      if (static_cast<IMessageFilterUI*>(m_aMessageFilters[i]) == filter)  {
-         return m_aMessageFilters.Remove(i);
+   for (int i = 0; i < m_messageFilters.GetSize(); i++)  {
+      if (static_cast<IMessageFilterUI*>(m_messageFilters[i]) == filter)  {
+         return m_messageFilters.Remove(i);
       }
    }
    return false;
@@ -1147,16 +1147,16 @@ void PaintManagerUI::SendNotify(TNotifyUI& Msg)
    // Allow sender control to react
    Msg.pSender->Notify(Msg);
    // Send to all listeners
-   for (int i = 0; i < m_aNotifiers.GetSize(); i++)  {
-      static_cast<INotifyUI*>(m_aNotifiers[i])->Notify(Msg);
+   for (int i = 0; i < m_notifiers.GetSize(); i++)  {
+      static_cast<INotifyUI*>(m_notifiers[i])->Notify(Msg);
    }
 }
 
-HFONT PaintManagerUI::GetThemeFont(UITYPE_FONT Index) const
+HFONT PaintManagerUI::GetThemeFont(UITYPE_FONT idx) const
 {
-   if (Index <= UIFONT__FIRST || Index >= UIFONT__LAST)  return NULL;
-   if (m_hFonts[Index] == NULL)  m_hFonts[Index] = ::CreateFontIndirect(&m_aLogFonts[Index]);
-   return m_hFonts[Index];
+   if (idx <= UIFONT__FIRST || idx >= UIFONT__LAST)  return NULL;
+   if (m_hFonts[idx] == NULL)  m_hFonts[idx] = ::CreateFontIndirect(&m_aLogFonts[idx]);
+   return m_hFonts[idx];
 }
 
 HICON PaintManagerUI::GetThemeIcon(int idx, int cxySize) const
@@ -1174,42 +1174,42 @@ HICON PaintManagerUI::GetThemeIcon(int idx, int cxySize) const
    return NULL;
 }
 
-HPEN PaintManagerUI::GetThemePen(UITYPE_COLOR Index) const
+HPEN PaintManagerUI::GetThemePen(UITYPE_COLOR idx) const
 {
-   if (Index <= UICOLOR__FIRST || Index >= UICOLOR__LAST)  return NULL;
-   if (m_hPens[Index] == NULL)  m_hPens[Index] = ::CreatePen(PS_SOLID, 1, m_clrColors[Index][0]);
-   return m_hPens[Index];
+   if (idx <= UICOLOR__FIRST || idx >= UICOLOR__LAST)  return NULL;
+   if (m_hPens[idx] == NULL)  m_hPens[idx] = ::CreatePen(PS_SOLID, 1, m_colors[idx][0]);
+   return m_hPens[idx];
 }
 
-HBRUSH PaintManagerUI::GetThemeBrush(UITYPE_COLOR Index) const
+HBRUSH PaintManagerUI::GetThemeBrush(UITYPE_COLOR idx) const
 {
-   if (Index <= UICOLOR__FIRST || Index >= UICOLOR__LAST)  return NULL;
-   if (m_hBrushes[Index] == NULL)  m_hBrushes[Index] = ::CreateSolidBrush(m_clrColors[Index][0]);
-   return m_hBrushes[Index];
+   if (idx <= UICOLOR__FIRST || idx >= UICOLOR__LAST)  return NULL;
+   if (m_hBrushes[idx] == NULL)  m_hBrushes[idx] = ::CreateSolidBrush(m_colors[idx][0]);
+   return m_hBrushes[idx];
 }
 
-const TEXTMETRIC& PaintManagerUI::GetThemeFontInfo(UITYPE_FONT Index) const
+const TEXTMETRIC& PaintManagerUI::GetThemeFontInfo(UITYPE_FONT idx) const
 {
-   if (Index <= UIFONT__FIRST || Index >= UIFONT__LAST)  return m_aTextMetrics[0];
-   if (m_aTextMetrics[Index].tmHeight == 0)  {
-      HFONT hOldFont = (HFONT) ::SelectObject(m_hDcPaint, GetThemeFont(Index));
-      ::GetTextMetrics(m_hDcPaint, &m_aTextMetrics[Index]);
+   if (idx <= UIFONT__FIRST || idx >= UIFONT__LAST)  return m_aTextMetrics[0];
+   if (m_aTextMetrics[idx].tmHeight == 0)  {
+      HFONT hOldFont = (HFONT) ::SelectObject(m_hDcPaint, GetThemeFont(idx));
+      ::GetTextMetrics(m_hDcPaint, &m_aTextMetrics[idx]);
       ::SelectObject(m_hDcPaint, hOldFont);
    }
-   return m_aTextMetrics[Index];
+   return m_aTextMetrics[idx];
 }
 
-COLORREF PaintManagerUI::GetThemeColor(UITYPE_COLOR Index) const
+COLORREF PaintManagerUI::GetThemeColor(UITYPE_COLOR idx) const
 {
-   if (Index <= UICOLOR__FIRST || Index >= UICOLOR__LAST)  return RGB(0,0,0);
-   return m_clrColors[Index][0];
+   if (idx <= UICOLOR__FIRST || idx >= UICOLOR__LAST)  return RGB(0,0,0);
+   return m_colors[idx][0];
 }
 
-bool PaintManagerUI::GetThemeColorPair(UITYPE_COLOR Index, COLORREF& clr1, COLORREF& clr2) const
+bool PaintManagerUI::GetThemeColorPair(UITYPE_COLOR idx, COLORREF& clr1, COLORREF& clr2) const
 {
-   if (Index <= UICOLOR__FIRST || Index >= UICOLOR__LAST)  return false;
-   clr1 = m_clrColors[Index][0];
-   clr2 = m_clrColors[Index][1];
+   if (idx <= UICOLOR__FIRST || idx >= UICOLOR__LAST)  return false;
+   clr1 = m_colors[idx][0];
+   clr2 = m_colors[idx][1];
    return true;
 }
 
@@ -1217,18 +1217,18 @@ ControlUI* PaintManagerUI::FindControl(const TCHAR* name)
 {
    ASSERT(m_root);
    // First time here? Build hash array...
-   if (m_aNameHash.GetSize() == 0)  {
+   if (m_nameHash.GetSize() == 0)  {
       int nCount = 0;
       m_root->FindControl(__FindControlFromCount, &nCount, UIFIND_ALL);
-      m_aNameHash.Resize(nCount + (nCount / 10));
+      m_nameHash.Resize(nCount + (nCount / 10));
       m_root->FindControl(__FindControlFromNameHash, this, UIFIND_ALL);
    }
    // Find name in the hash array
    int nCount = 0;
-   int nSize = m_aNameHash.GetSize();
+   int nSize = m_nameHash.GetSize();
    int iNameHash = (int) (GetNameHash(name) % nSize);
-   while (m_aNameHash[iNameHash] != NULL)  {
-      if (static_cast<ControlUI*>(m_aNameHash[iNameHash])->GetName() == name)  return static_cast<ControlUI*>(m_aNameHash[iNameHash]);
+   while (m_nameHash[iNameHash] != NULL)  {
+      if (static_cast<ControlUI*>(m_nameHash[iNameHash])->GetName() == name)  return static_cast<ControlUI*>(m_nameHash[iNameHash]);
       iNameHash = (iNameHash + 1) % nSize;
       if (++nCount >= nSize)  break;
    }
@@ -1270,13 +1270,13 @@ ControlUI* CALLBACK PaintManagerUI::__FindControlFromNameHash(ControlUI* pThis, 
    if (sName.IsEmpty())  return NULL;
    // Add this control to the hash list
    int nCount = 0;
-   int nSize = manager->m_aNameHash.GetSize();
+   int nSize = manager->m_nameHash.GetSize();
    int iNameHash = (int) (GetNameHash(sName) % nSize);
-   while (manager->m_aNameHash[iNameHash] != NULL)  {
+   while (manager->m_nameHash[iNameHash] != NULL)  {
       iNameHash = (iNameHash + 1) % nSize;
       if (++nCount == nSize)  return NULL;
    }
-   manager->m_aNameHash.SetAt(iNameHash, pThis);
+   manager->m_nameHash.SetAt(iNameHash, pThis);
    return NULL; // Attempt to add all controls
 }
 

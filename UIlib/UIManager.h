@@ -274,13 +274,13 @@ public:
    static void SetResourceInstance(HINSTANCE hInst);
    static void SetLanguageInstance(HINSTANCE hInst);
 
-   HPEN GetThemePen(UITYPE_COLOR Index) const;
-   HFONT GetThemeFont(UITYPE_FONT Index) const;
-   HBRUSH GetThemeBrush(UITYPE_COLOR Index) const;
-   COLORREF GetThemeColor(UITYPE_COLOR Index) const;
-   HICON GetThemeIcon(int Index, int cxySize) const;
-   const TEXTMETRIC& GetThemeFontInfo(UITYPE_FONT Index) const;
-   bool GetThemeColorPair(UITYPE_COLOR Index, COLORREF& clr1, COLORREF& clr2) const;
+   HPEN GetThemePen(UITYPE_COLOR idx) const;
+   HFONT GetThemeFont(UITYPE_FONT idx) const;
+   HBRUSH GetThemeBrush(UITYPE_COLOR idx) const;
+   COLORREF GetThemeColor(UITYPE_COLOR idx) const;
+   HICON GetThemeIcon(int idx, int cxySize) const;
+   const TEXTMETRIC& GetThemeFontInfo(UITYPE_FONT idx) const;
+   bool GetThemeColorPair(UITYPE_COLOR idx, COLORREF& clr1, COLORREF& clr2) const;
 
    bool AttachDialog(ControlUI* ctrl);
    bool InitControls(ControlUI* ctrl, ControlUI* parent = NULL);
@@ -331,33 +331,33 @@ private:
    HDC m_hDcOffscreen;
    HBITMAP m_hbmpOffscreen;
    HWND m_hwndTooltip;
-   TOOLINFO m_ToolTip;
+   TOOLINFO m_toolTip;
    //
    ControlUI* m_root;
    ControlUI* m_focus;
-   ControlUI* m_pEventHover;
-   ControlUI* m_pEventClick;
-   ControlUI* m_pEventKey;
+   ControlUI* m_eventHover;
+   ControlUI* m_eventClick;
+   ControlUI* m_eventKey;
    //
    POINT m_ptLastMousePos;
    SIZE m_szMinWindow;
    UINT m_uMsgMouseWheel;
-   UINT m_uTimerID;
-   bool m_bFirstLayout;
-   bool m_bResizeNeeded;
-   bool m_bFocusNeeded;
-   bool m_bOffscreenPaint;
-   bool m_bMouseTracking;
+   UINT m_timerID;
+   bool m_firstLayout;
+   bool m_resizeNeeded;
+   bool m_focusNeeded;
+   bool m_offscreenPaint;
+   bool m_mouseTracking;
    //
    TSystemMetricsUI m_SystemMetrics;
    TSystemSettingsUI m_SystemConfig;
    //
-   StdPtrArray m_aNotifiers;
-   StdPtrArray m_aNameHash;
-   StdPtrArray m_aTimers;
-   StdValArray m_aPostPaint;
-   StdPtrArray m_aMessageFilters;
-   StdPtrArray m_aDelayedCleanup;
+   StdPtrArray m_notifiers;
+   StdPtrArray m_nameHash;
+   StdPtrArray m_timers;
+   StdValArray m_postPaint;
+   StdPtrArray m_messageFilters;
+   StdPtrArray m_delayedCleanup;
    //
    static HINSTANCE m_hLangInst;
    static HINSTANCE m_hInstance;

@@ -35,10 +35,10 @@ void BlueRenderEngineUI::DoFillRect(HDC hDC, PaintManagerUI* manager, RECT rcIte
    DoFillRect(hDC, manager, rcItem, manager->GetThemeColor(Color));
 }
 
-void BlueRenderEngineUI::DoFillRect(HDC hDC, PaintManagerUI* manager, RECT rcItem, COLORREF clrFill)
+void BlueRenderEngineUI::DoFillRect(HDC hDC, PaintManagerUI* manager, RECT rcItem, COLORREF colFill)
 {
    ASSERT(::GetObjectType(hDC)==OBJ_DC || ::GetObjectType(hDC)==OBJ_MEMDC);
-   ::SetBkColor(hDC, clrFill);
+   ::SetBkColor(hDC, colFill);
    ::ExtTextOut(hDC, 0, 0, ETO_OPAQUE, &rcItem, NULL, 0, NULL);
 }
 

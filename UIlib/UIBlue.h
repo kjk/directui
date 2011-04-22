@@ -17,7 +17,7 @@ class UILIB_API BlueRenderEngineUI
 {
 public:
    static void DoFillRect(HDC hDC, PaintManagerUI* manager, RECT rc, UITYPE_COLOR Color);
-   static void DoFillRect(HDC hDC, PaintManagerUI* manager, RECT rc, COLORREF clrFill);
+   static void DoFillRect(HDC hDC, PaintManagerUI* manager, RECT rc, COLORREF colFill);
    static void DoPaintLine(HDC hDC, PaintManagerUI* manager, RECT rc, UITYPE_COLOR Color);
    static void DoPaintRectangle(HDC hDC, PaintManagerUI* manager, RECT rcItem, UITYPE_COLOR Border, UITYPE_COLOR Fill);
    static void DoPaintPanel(HDC hDC, PaintManagerUI* manager, RECT rc);
