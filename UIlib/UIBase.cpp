@@ -476,12 +476,12 @@ StdPtrArray::StdPtrArray(int iPreallocSize) : m_ppVoid(NULL), m_nCount(0), m_nAl
 
 StdPtrArray::~StdPtrArray()
 {
-   if (m_ppVoid != NULL)  free(m_ppVoid);
+   free(m_ppVoid);
 }
 
 void StdPtrArray::Empty()
 {
-   if (m_ppVoid != NULL)  free(m_ppVoid);
+   free(m_ppVoid);
    m_ppVoid = NULL;
    m_nCount = m_nAllocated = 0;
 }
@@ -583,7 +583,7 @@ StdValArray::StdValArray(int iElementSize, int iPreallocSize /*= 0*/) :
 
 StdValArray::~StdValArray()
 {
-   if (m_pVoid != NULL)  free(m_pVoid);
+   free(m_pVoid);
 }
 
 void StdValArray::Empty()
@@ -673,7 +673,7 @@ StdString::StdString(const StdString& src) : m_pstr(m_buf)
 
 StdString::~StdString()
 {
-   if (m_pstr != m_buf)  free(m_pstr);
+   free(m_pstr);
 }
 
 StdString StdString::RES(UINT nRes)

@@ -235,8 +235,8 @@ bool MarkupParser::LoadFromFile(const TCHAR* fileName)
 
 void MarkupParser::Release()
 {
-   if (m_xml != NULL)  free(m_xml);
-   if (m_elements != NULL)  free(m_elements);
+   free(m_xml);
+   free(m_elements);
    m_xml = NULL;
    m_elements = NULL;
    m_nElements;
