@@ -387,17 +387,17 @@ public:
 #endif
    virtual void SetText(const char* txt);
 
-   virtual StdString GetToolTip() const;
+           StdString GetToolTip() const;
 #ifdef UNICODE
-   virtual void SetToolTip(const TCHAR* txt);
+           void SetToolTip(const TCHAR* txt);
 #endif
-   virtual void SetToolTip(const char* txt);
+           void SetToolTip(const char* txt);
 
-   virtual TCHAR GetShortcut() const;
-   virtual void SetShortcut(TCHAR ch);
+           TCHAR GetShortcut() const;
+           void SetShortcut(TCHAR ch);
 
-   virtual UINT_PTR GetTag() const;
-   virtual void SetTag(UINT_PTR pTag);
+           UINT_PTR GetTag() const;
+           void SetTag(UINT_PTR pTag);
 
    virtual void SetFocus();
 
@@ -409,7 +409,7 @@ public:
 
    virtual ControlUI* FindControl(FINDCONTROLPROC Proc, void* data, UINT uFlags);
 
-   virtual PaintManagerUI* GetManager() const;
+           PaintManagerUI* GetManager() const;
    virtual void SetManager(PaintManagerUI* manager, ControlUI* parent);
 
    virtual RECT GetPos() const;

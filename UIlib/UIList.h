@@ -248,7 +248,7 @@ public:
    void DoPaint(HDC hDC, const RECT& rcPaint);
 
    void SetManager(PaintManagerUI* manager, ControlUI* parent);
-   ControlUI* FindControl(FINDCONTROLPROC Proc, void* data, UINT uFlags);
+   virtual ControlUI* FindControl(FINDCONTROLPROC Proc, void* data, UINT uFlags);
 
    ControlUI* GetItem(int idx) const;
    int GetCount() const;
