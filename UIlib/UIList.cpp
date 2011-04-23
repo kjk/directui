@@ -657,7 +657,7 @@ void ListLabelElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uDrawStyle)
       iTextColor = UICOLOR_CONTROL_TEXT_NORMAL;
       iBackColor = UICOLOR_CONTROL_BACKGROUND_HOVER;
    }
-   if (!m_bEnabled)  {
+   if (!m_enabled)  {
       iTextColor = UICOLOR_CONTROL_TEXT_DISABLED;
       iBackColor = UICOLOR_CONTROL_BACKGROUND_DISABLED;
    }

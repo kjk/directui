@@ -98,15 +98,15 @@ void ContainerUI::SetHeight(int cy)
    m_cxyFixed.cy = cy;
 }
 
-void ContainerUI::SetVisible(bool bVisible)
+void ContainerUI::SetVisible(bool visible)
 {
    // Hide possible scrollbar control
-   if (m_hwndScroll != NULL)  ::ShowScrollBar(m_hwndScroll, SB_CTL, bVisible);
+   if (m_hwndScroll != NULL)  ::ShowScrollBar(m_hwndScroll, SB_CTL, visible);
    // Hide children as well
    for (int it = 0; it < m_items.GetSize(); it++)  {
-      static_cast<ControlUI*>(m_items[it])->SetVisible(bVisible);
+      static_cast<ControlUI*>(m_items[it])->SetVisible(visible);
    }
-   ControlUI::SetVisible(bVisible);
+   ControlUI::SetVisible(visible);
 }
 
 void ContainerUI::Event(TEventUI& event)

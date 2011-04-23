@@ -17,7 +17,7 @@ public:
    void Notify(TNotifyUI& msg)
    {
       if (msg.sType == _T("click") || msg.sType == _T("link"))
-         _CreatePage(msg.pSender->GetName().GetData());
+         _CreatePage(msg.pSender->GetName());
       if (msg.sType == _T("itemactivate"))
          _CreatePage("page_search");
    }

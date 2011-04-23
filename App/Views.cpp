@@ -96,13 +96,13 @@ const char* StartPageWnd::GetDialogResource() const
 void StartPageWnd::OnPrepareAnimation()
 {
    COLORREF clrBack = m_pm.GetThemeColor(UICOLOR_WINDOW_BACKGROUND);
-   RECT rcCtrl = m_pm.FindControl(_T("link_registers"))->GetPos();
+   RECT rcCtrl = m_pm.FindControl("link_registers")->GetPos();
    m_pm.AddAnimJob(AnimJobUI(UIANIMTYPE_FLAT, 0, 350, clrBack, clrBack, CRect(rcCtrl.left, rcCtrl.top, rcCtrl.left + 50, rcCtrl.top + 50), 40, 0, 4, 255, 0.3f));
-   rcCtrl = m_pm.FindControl(_T("link_systems"))->GetPos();
+   rcCtrl = m_pm.FindControl("link_systems")->GetPos();
    m_pm.AddAnimJob(AnimJobUI(UIANIMTYPE_FLAT, 200, 350, clrBack, clrBack, CRect(rcCtrl.left, rcCtrl.top, rcCtrl.left + 50, rcCtrl.top + 50), 40, 0, 4, 255, 0.3f));
-   rcCtrl = m_pm.FindControl(_T("link_configure"))->GetPos();
+   rcCtrl = m_pm.FindControl("link_configure")->GetPos();
    m_pm.AddAnimJob(AnimJobUI(UIANIMTYPE_FLAT, 100, 350, clrBack, clrBack, CRect(rcCtrl.left, rcCtrl.top, rcCtrl.left + 50, rcCtrl.top + 50), 40, 0, 4, 255, 0.3f));
-   rcCtrl = m_pm.FindControl(_T("link_reports"))->GetPos();
+   rcCtrl = m_pm.FindControl("link_reports")->GetPos();
    m_pm.AddAnimJob(AnimJobUI(UIANIMTYPE_FLAT, 250, 350, clrBack, clrBack, CRect(rcCtrl.left, rcCtrl.top, rcCtrl.left + 50, rcCtrl.top + 50), 40, 0, 4, 255, 0.3f));
 }
 
@@ -175,7 +175,7 @@ const char* ConfigurePageWnd::GetDialogResource() const
 void ConfigurePageWnd::OnPrepareAnimation()
 {
    COLORREF clrBack = m_pm.GetThemeColor(UICOLOR_TITLE_BACKGROUND);
-   const RECT rcCtrl = m_pm.FindControl(_T("titlepanel"))->GetPos();
+   const RECT rcCtrl = m_pm.FindControl("titlepanel")->GetPos();
    m_pm.AddAnimJob(AnimJobUI(UIANIMTYPE_FLAT, 0, 300, clrBack, CLR_INVALID, rcCtrl, 140, 0, 5, 200, 0.1f));
 }
 
@@ -232,7 +232,7 @@ const char* RegistersPageWnd::GetDialogResource() const
 
 void RegistersPageWnd::OnPrepareAnimation()
 {
-   ListUI* pList = static_cast<ListUI*>(m_pm.FindControl(_T("list")));
+   ListUI* pList = static_cast<ListUI*>(m_pm.FindControl("list"));
    pList->SetTextCallback(this);                                          // We want GetItemText for items
    for (int i = 0; i < 1000; i++)  pList->Add(new ListTextElementUI);    // We want 1000 items in list
 }
@@ -343,7 +343,7 @@ int SystemsPageWnd::CompareItem(ControlUI* pList, ControlUI* item1, ControlUI* i
 
 void SystemsPageWnd::OnPrepareAnimation()
 {
-   ListUI* pList = static_cast<ListUI*>(m_pm.FindControl(_T("list")));
+   ListUI* pList = static_cast<ListUI*>(m_pm.FindControl("list"));
    pList->SetTextCallback(this);  // List will call our GetItemText()
 }
 
@@ -404,7 +404,7 @@ const char* ReportsPageWnd::GetDialogResource() const
 
 void ReportsPageWnd::OnPrepareAnimation()
 {
-   const RECT rcCtrl = m_pm.FindControl(_T("titlepanel"))->GetPos();
+   const RECT rcCtrl = m_pm.FindControl("titlepanel")->GetPos();
    m_pm.AddAnimJob(AnimJobUI(UIANIMTYPE_FLAT, 0, 300, CLR_INVALID, CLR_INVALID, rcCtrl, 0, 0, -2, -200, 0.0f));
 }
 
@@ -422,11 +422,11 @@ void SearchPageWnd::Notify(TNotifyUI& msg)
 {
    if (msg.sType == _T("click"))  
    {
-      if (msg.pSender->GetName() == _T("ok"))  {
+      if (str::Eq(msg.pSender->GetName(), "ok"))  {
          StandardPageWnd* win = new EditPageWnd;
          win->Create(m_hWnd, NULL, UI_WNDSTYLE_FRAME, 0L);
       }
-      if (msg.pSender->GetName() == _T("cancel"))  Close();
+      if (str::Eq(msg.pSender->GetName(), "cancel")) Close();
    }
    StandardPageWnd::Notify(msg);
 }
@@ -484,8 +484,8 @@ void EditPageWnd::Init()
 
 void EditPageWnd::Notify(TNotifyUI& msg)
 {
-   if (msg.sType == _T("click") && msg.pSender->GetName() == _T("cancel"))  Close();
-   if (msg.sType == _T("link") && msg.pSender->GetName() == _T("warning"))  {
+   if (msg.sType == _T("click") && str::Eq(msg.pSender->GetName(), "cancel"))  Close();
+   if (msg.sType == _T("link") && str::Eq(msg.pSender->GetName(), "warning"))  {
       PopupWnd* pPopup = new PopupWnd;
       pPopup->Create(m_hWnd, _T(""), UI_WNDSTYLE_DIALOG, UI_WNDSTYLE_EX_DIALOG, 0, 0, 0, 0, NULL);
       pPopup->ShowModal();
@@ -567,7 +567,7 @@ const char* EditPageWnd::GetDialogResource() const
    
 void EditPageWnd::OnPrepareAnimation()
 {
-   const RECT rcCtrl = m_pm.FindControl(_T("warning"))->GetPos();
+   const RECT rcCtrl = m_pm.FindControl("warning")->GetPos();
    m_pm.AddAnimJob(AnimJobUI(UIANIMTYPE_FLAT, 0, 300, CLR_INVALID, CLR_INVALID, rcCtrl, 0, 0, -2, -200, 0.0f));
 }
 

@@ -5,11 +5,12 @@
 
 #include <zmouse.h>
 
-static UINT GetNameHash(const TCHAR* name)
+static UINT GetNameHash(const char* name)
 {
    UINT i = 0;
-   SIZE_T len = _tcslen(name);
-   while (len-- > 0)  i = (i << 5) + i + name[len];
+   while (*name) {
+      i = (i << 5) + i + *name++;
+   }
    return i;
 }
 
@@ -310,7 +311,7 @@ bool PaintManagerUI::PreMessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, 
          // If there are controls named "ok" or "cancel" they
          // will be activated on keypress.
          if (wParam == VK_RETURN)  {
-            ControlUI* ctrl = FindControl(_T("ok"));
+            ControlUI* ctrl = FindControl("ok");
             if (ctrl != NULL && m_focus != ctrl)  {
                if (m_focus == NULL || (m_focus->GetControlFlags() & UIFLAG_WANTRETURN) == 0)  {
                   ctrl->Activate();
@@ -319,7 +320,7 @@ bool PaintManagerUI::PreMessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, 
             }
          }
          if (wParam == VK_ESCAPE)  {
-            ControlUI* ctrl = FindControl(_T("cancel"));
+            ControlUI* ctrl = FindControl("cancel");
             if (ctrl != NULL)  {
                ctrl->Activate();
                return true;
@@ -1213,7 +1214,7 @@ bool PaintManagerUI::GetThemeColorPair(UITYPE_COLOR idx, COLORREF& clr1, COLORRE
    return true;
 }
 
-ControlUI* PaintManagerUI::FindControl(const TCHAR* name)
+ControlUI* PaintManagerUI::FindControl(const char* name)
 {
    ASSERT(m_root);
    // First time here? Build hash array...
@@ -1228,7 +1229,9 @@ ControlUI* PaintManagerUI::FindControl(const TCHAR* name)
    int nSize = m_nameHash.GetSize();
    int iNameHash = (int) (GetNameHash(name) % nSize);
    while (m_nameHash[iNameHash] != NULL)  {
-      if (static_cast<ControlUI*>(m_nameHash[iNameHash])->GetName() == name)  return static_cast<ControlUI*>(m_nameHash[iNameHash]);
+      const char *ctrlName = static_cast<ControlUI*>(m_nameHash[iNameHash])->GetName();
+      if (str::Eq(ctrlName, name))
+         return static_cast<ControlUI*>(m_nameHash[iNameHash]);
       iNameHash = (iNameHash + 1) % nSize;
       if (++nCount >= nSize)  break;
    }
@@ -1266,12 +1269,12 @@ ControlUI* CALLBACK PaintManagerUI::__FindControlFromNameHash(ControlUI* pThis, 
 {
    PaintManagerUI* manager = static_cast<PaintManagerUI*>(data);
    // No name?
-   const StdString& sName = pThis->GetName();
-   if (sName.IsEmpty())  return NULL;
+   const char *name = pThis->GetName();
+   if (NULL == name)  return NULL;
    // Add this control to the hash list
    int nCount = 0;
    int nSize = manager->m_nameHash.GetSize();
-   int iNameHash = (int) (GetNameHash(sName) % nSize);
+   int iNameHash = (int) (GetNameHash(name) % nSize);
    while (manager->m_nameHash[iNameHash] != NULL)  {
       iNameHash = (iNameHash + 1) % nSize;
       if (++nCount == nSize)  return NULL;
@@ -1297,11 +1300,11 @@ ControlUI* CALLBACK PaintManagerUI::__FindControlFromPoint(ControlUI* pThis, voi
 ControlUI::ControlUI() : 
    m_manager(NULL), 
    m_parent(NULL), 
-   m_pTag(NULL),
+   m_tag(NULL),
    m_chShortcut('\0'),
-   m_bVisible(true), 
-   m_bFocused(false),
-   m_bEnabled(true)
+   m_visible(true), 
+   m_focused(false),
+   m_enabled(true)
 {
    ::ZeroMemory(&m_rcItem, sizeof(RECT));
 }
@@ -1309,21 +1312,22 @@ ControlUI::ControlUI() :
 ControlUI::~ControlUI()
 {
    if (m_manager != NULL)  m_manager->ReapObjects(this);
+   free((void*)m_name);
 }
 
 bool ControlUI::IsVisible() const
 {
-   return m_bVisible;
+   return m_visible;
 }
 
 bool ControlUI::IsEnabled() const
 {
-   return m_bEnabled;
+   return m_enabled;
 }
 
 bool ControlUI::IsFocused() const
 {
-   return m_bFocused;
+   return m_focused;
 }
 
 UINT ControlUI::GetControlFlags() const
@@ -1331,16 +1335,16 @@ UINT ControlUI::GetControlFlags() const
    return 0;
 }
 
-void ControlUI::SetVisible(bool bVisible)
+void ControlUI::SetVisible(bool visible)
 {
-   if (m_bVisible == bVisible)  return;
-   m_bVisible = bVisible;
+   if (m_visible == visible)  return;
+   m_visible = visible;
    if (m_manager != NULL)  m_manager->UpdateLayout();
 }
 
-void ControlUI::SetEnabled(bool bEnabled)
+void ControlUI::SetEnabled(bool enabled)
 {
-   m_bEnabled = bEnabled;
+   m_enabled = enabled;
    Invalidate();
 }
 
@@ -1393,17 +1397,17 @@ void ControlUI::SetText(const char* txt)
 
 UINT_PTR ControlUI::GetTag() const
 {
-   return m_pTag;
+   return m_tag;
 }
 
 void ControlUI::SetTag(UINT_PTR pTag)
 {
-   m_pTag = pTag;
+   m_tag = pTag;
 }
 
 void ControlUI::SetToolTip(const TCHAR* txt)
 {
-   m_sToolTip = txt;
+   m_toolTip = txt;
 }
 
 #ifdef UNICODE
@@ -1416,7 +1420,7 @@ void ControlUI::SetToolTip(const char* txt)
 
 StdString ControlUI::GetToolTip() const
 {
-   return m_sToolTip;
+   return m_toolTip;
 }
 
 void ControlUI::Init()
@@ -1436,23 +1440,15 @@ void ControlUI::SetManager(PaintManagerUI* manager, ControlUI* parent)
    if (bInit)  Init();
 }
 
-StdString ControlUI::GetName() const
+const char* ControlUI::GetName() const
 {
-   return m_sName;
+   return m_name;
 }
 
-void ControlUI::SetName(const TCHAR* name)
-{
-   m_sName = name;
-}
-
-#ifdef UNICODE
 void ControlUI::SetName(const char* name)
 {
-   ASSERT(0);
-   // TODO: write me
+   str::Replace(m_name, name);
 }
-#endif
 
 void* ControlUI::GetInterface(const TCHAR* name)
 {
@@ -1501,13 +1497,13 @@ void ControlUI::Event(TEventUI& event)
    }
    if (event.Type == UIEVENT_SETFOCUS)  
    {
-      m_bFocused = true;
+      m_focused = true;
       Invalidate();
       return;
    }
    if (event.Type == UIEVENT_KILLFOCUS)  
    {
-      m_bFocused = false;
+      m_focused = false;
       Invalidate();
       return;
    }

@@ -296,16 +296,16 @@ StdString MultiLineEditUI::GetText() const
    return m_txt;
 }
 
-void MultiLineEditUI::SetVisible(bool bVisible)
+void MultiLineEditUI::SetVisible(bool visible)
 {
-   ControlUI::SetVisible(bVisible);
-   if (m_win != NULL)  ::ShowWindow(*m_win, bVisible ? SW_SHOWNOACTIVATE : SW_HIDE);
+   ControlUI::SetVisible(visible);
+   if (m_win != NULL)  ::ShowWindow(*m_win, visible ? SW_SHOWNOACTIVATE : SW_HIDE);
 }
 
-void MultiLineEditUI::SetEnabled(bool bEnabled)
+void MultiLineEditUI::SetEnabled(bool enabled)
 {
-   ControlUI::SetEnabled(bEnabled);
-   if (m_win != NULL)  ::EnableWindow(*m_win, bEnabled == true);
+   ControlUI::SetEnabled(enabled);
+   if (m_win != NULL)  ::EnableWindow(*m_win, enabled == true);
 }
 
 void MultiLineEditUI::SetReadOnly(bool bReadOnly)

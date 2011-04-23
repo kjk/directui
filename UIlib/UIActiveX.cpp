@@ -272,7 +272,7 @@ protected:
    IViewObject* m_pViewObject;
    IOleInPlaceObjectWindowless* m_pInPlaceObject;
    bool m_bLocked;
-   bool m_bFocused;
+   bool m_focused;
    bool m_bCaptured;
    bool m_bUIActivated;
    bool m_bInPlaceActive;
@@ -288,7 +288,7 @@ ActiveXCtrl::ActiveXCtrl() :
    m_pViewObject(NULL),
    m_pInPlaceObject(NULL),
    m_bLocked(false), 
-   m_bFocused(false),
+   m_focused(false),
    m_bCaptured(false),
    m_bWindowless(true),
    m_bUIActivated(false),
@@ -428,7 +428,7 @@ STDMETHODIMP ActiveXCtrl::GetFocus(void)
 {
    TRACE("AX: ActiveXCtrl::GetFocus");
    if (m_owner == NULL)  return E_UNEXPECTED;
-   return m_bFocused ? S_OK : S_FALSE;
+   return m_focused ? S_OK : S_FALSE;
 }
 
 STDMETHODIMP ActiveXCtrl::SetFocus(BOOL fFocus)
@@ -436,7 +436,7 @@ STDMETHODIMP ActiveXCtrl::SetFocus(BOOL fFocus)
    TRACE("AX: ActiveXCtrl::SetFocus");
    if (m_owner == NULL)  return E_UNEXPECTED;
    if (fFocus)  m_owner->SetFocus();
-   m_bFocused = (fFocus == TRUE);
+   m_focused = (fFocus == TRUE);
    return S_OK;
 }
 
@@ -676,7 +676,7 @@ STDMETHODIMP ActiveXCtrl::TranslateAccelerator(MSG *pMsg, DWORD grfModifiers)
 STDMETHODIMP ActiveXCtrl::OnFocus(BOOL fGotFocus)
 {
    TRACE("AX: ActiveXCtrl::OnFocus");
-   m_bFocused = (fGotFocus == TRUE);
+   m_focused = (fGotFocus == TRUE);
    return S_OK;
 }
 
@@ -789,7 +789,7 @@ LRESULT ActiveXWnd::OnMouseActivate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOO
 LRESULT ActiveXWnd::OnSetFocus(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
    bHandled = FALSE;
-   m_owner->m_bFocused = true;
+   m_owner->m_focused = true;
    if (!m_owner->m_bUIActivated)  DoVerb(OLEIVERB_UIACTIVATE);
    return 0;
 }
@@ -797,7 +797,7 @@ LRESULT ActiveXWnd::OnSetFocus(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bH
 LRESULT ActiveXWnd::OnKillFocus(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
    bHandled = FALSE;
-   m_owner->m_bFocused = false;
+   m_owner->m_focused = false;
    return 0;
 }
 
@@ -915,7 +915,7 @@ LRESULT ActiveXUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, bool&
    else if (uMsg >= WM_KEYFIRST && uMsg <= WM_KEYLAST) 
    {
       // Keyboard messages just go when we have focus
-      if (!m_ctrl->m_bFocused)  return 0;
+      if (!m_ctrl->m_focused)  return 0;
    }
    else
    {

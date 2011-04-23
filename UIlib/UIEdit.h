@@ -47,8 +47,8 @@ public:
    StdString GetText() const;
    void SetText(const TCHAR* txt);
 
-   virtual void SetEnabled(bool bEnabled);
-   virtual void SetVisible(bool bVisible);
+   virtual void SetEnabled(bool enabled);
+   virtual void SetVisible(bool visible);
 
    void SetReadOnly(bool bReadOnly);
    //TODO: this was declared but not implemented

@@ -28,7 +28,7 @@ public:
    void RemoveAll();
 
    virtual void Event(TEventUI& event);
-   void SetVisible(bool bVisible);
+   void SetVisible(bool visible);
 
    virtual void SetInset(SIZE szInset);
    virtual void SetInset(RECT rcInset);

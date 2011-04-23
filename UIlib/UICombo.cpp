@@ -417,7 +417,7 @@ void DropDownUI::DoPaint(HDC hDC, const RECT& rcPaint)
       IListItemUI* pElement = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
       if (pElement != NULL)  {
          // Render item with specific draw-style
-         pElement->DrawItem(hDC, rcText, UIDRAWSTYLE_INPLACE | (m_bFocused ? UIDRAWSTYLE_FOCUS : 0));
+         pElement->DrawItem(hDC, rcText, UIDRAWSTYLE_INPLACE | (m_focused ? UIDRAWSTYLE_FOCUS : 0));
       }
       else {
          // Allow non-listitems to render as well.

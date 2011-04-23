@@ -304,7 +304,7 @@ public:
    bool AddPostPaintBlit(const TPostPaintUI& job);
 
    ControlUI* FindControl(POINT pt) const;
-   ControlUI* FindControl(const TCHAR* name);
+   ControlUI* FindControl(const char* name);
 
    static void MessageLoop();
    static bool TranslateMessage(const MSG* pMsg);
@@ -371,11 +371,9 @@ public:
    virtual ~ControlUI();
 
 public:
-   virtual StdString GetName() const;
-#ifdef UNICODE
-   virtual void SetName(const TCHAR* name);
-#endif
-   virtual void SetName(const char* name);
+   const char* GetName() const;
+   void        SetName(const char* name);
+
    virtual void* GetInterface(const TCHAR* name);
 
    virtual bool Activate();
@@ -404,7 +402,7 @@ public:
            bool IsVisible() const;
            bool IsEnabled() const;
            bool IsFocused() const;
-   virtual void SetVisible(bool bVisible = true);
+   virtual void SetVisible(bool visible = true);
    virtual void SetEnabled(bool bEnable = true);
 
    virtual ControlUI* FindControl(FINDCONTROLPROC Proc, void* data, UINT uFlags);
@@ -431,19 +429,18 @@ public:
    virtual void DoPaint(HDC hDC, const RECT& rcPaint) = 0;
 
 protected:
-   PaintManagerUI* m_manager;
-   ControlUI* m_parent;
-   TCHAR m_chShortcut;
-   StdString m_sName;
-   StdString m_txt;
-   StdString m_sToolTip;
-   UINT_PTR m_pTag;
-   RECT m_rcItem;
-   bool m_bVisible;
-   bool m_bEnabled;
-   bool m_bFocused;
+   PaintManagerUI*  m_manager;
+   ControlUI*       m_parent;
+   TCHAR            m_chShortcut;
+   const char*      m_name;
+   StdString        m_txt;
+   StdString        m_toolTip;
+   UINT_PTR         m_tag;
+   RECT             m_rcItem;
+   bool             m_visible;
+   bool             m_enabled;
+   bool             m_focused;
 };
-
 
 #endif // !defined(AFX_UICONTROLS_H__20050423_DB94_1D69_A896_0080AD509054__INCLUDED_)
 

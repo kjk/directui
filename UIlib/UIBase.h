@@ -49,6 +49,14 @@ inline bool EqN(const char *s1, const char *s2, size_t len) {
     return 0 == strncmp(s1, s2, len);
 }
 
+inline void Replace(const char*& s, const char *replacement) {
+    free((void*)s);
+    if (NULL != replacement)
+        s = str::Dup(replacement);
+    else
+        s = NULL;
+}
+
 }
 
 // auto-free memory for arbitrary malloc()ed memory of type T*
