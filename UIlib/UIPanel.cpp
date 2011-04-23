@@ -7,9 +7,9 @@ NavigatorPanelUI::NavigatorPanelUI() : m_curSel(-1)
 {
 }
 
-const TCHAR* NavigatorPanelUI::GetClass() const
+const char* NavigatorPanelUI::GetClass() const
 {
-   return _T("NavigatorPanelUI");
+   return "NavigatorPanelUI";
 }
 
 void* NavigatorPanelUI::GetInterface(const TCHAR* name)
@@ -77,9 +77,9 @@ NavigatorButtonUI::NavigatorButtonUI() : m_uButtonState(0)
 {
 }
 
-const TCHAR* NavigatorButtonUI::GetClass() const
+const char* NavigatorButtonUI::GetClass() const
 {
-   return _T("NavigatorButton");
+   return "NavigatorButton";
 }
 
 void NavigatorButtonUI::Event(TEventUI& event)
@@ -179,9 +179,9 @@ TaskPanelUI::~TaskPanelUI()
    if (m_manager != NULL)  m_manager->KillTimer(this, FADE_TIMERID);
 }
 
-const TCHAR* TaskPanelUI::GetClass() const
+const char* TaskPanelUI::GetClass() const
 {
-   return _T("TaskPanelUI");
+   return "TaskPanelUI";
 }
 
 SIZE TaskPanelUI::EstimateSize(SIZE szAvailable)
@@ -263,9 +263,9 @@ SearchTitlePanelUI::SearchTitlePanelUI() : m_iconIdx(-1)
    SetInset(CSize(0, 0));
 }
 
-const TCHAR* SearchTitlePanelUI::GetClass() const
+const char* SearchTitlePanelUI::GetClass() const
 {
-   return _T("SearchTitlePanelUI");
+   return "SearchTitlePanelUI";
 }
 
 void SearchTitlePanelUI::SetImage(int idx)
@@ -334,9 +334,9 @@ void PaddingPanelUI::SetAttribute(const char* name, const char* value)
    else ControlUI::SetAttribute(name, value);
 }
 
-const TCHAR* PaddingPanelUI::GetClass() const
+const char* PaddingPanelUI::GetClass() const
 {
-   return _T("PaddingPanel");
+   return "PaddingPanel";
 }
 
 SIZE PaddingPanelUI::EstimateSize(SIZE szAvailable)
@@ -392,9 +392,9 @@ void ImagePanelUI::SetAttribute(const char* name, const char* value)
    else ControlUI::SetAttribute(name, value);
 }
 
-const TCHAR* ImagePanelUI::GetClass() const
+const char* ImagePanelUI::GetClass() const
 {
-   return _T("ImagePanel");
+   return "ImagePanel";
 }
 
 SIZE ImagePanelUI::EstimateSize(SIZE szAvailable)
@@ -414,9 +414,9 @@ TextPanelUI::TextPanelUI() : m_nLinks(0), m_uButtonState(0), m_TextColor(UICOLOR
    ::ZeroMemory(m_rcLinks, sizeof(m_rcLinks));
 }
 
-const TCHAR* TextPanelUI::GetClass() const
+const char* TextPanelUI::GetClass() const
 {
-   return _T("TextPanelUI");
+   return "TextPanelUI";
 }
 
 bool TextPanelUI::Activate()
@@ -502,9 +502,9 @@ WarningPanelUI::WarningPanelUI() : m_BackColor(UICOLOR_STANDARD_YELLOW)
 {
 }
 
-const TCHAR* WarningPanelUI::GetClass() const
+const char* WarningPanelUI::GetClass() const
 {
-   return _T("WarningPanelUI");
+   return "WarningPanelUI";
 }
 
 void WarningPanelUI::SetWarningType(UINT uType)

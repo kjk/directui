@@ -18,9 +18,9 @@ ContainerUI::~ContainerUI()
    RemoveAll();
 }
 
-const TCHAR* ContainerUI::GetClass() const
+const char* ContainerUI::GetClass() const
 {
-   return _T("ContainerUI");
+   return "ContainerUI";
 }
 
 void* ContainerUI::GetInterface(const TCHAR* name)
@@ -344,9 +344,9 @@ CanvasUI::~CanvasUI()
    if (m_hBitmap != NULL)  ::DeleteObject(m_hBitmap);
 }
 
-const TCHAR* CanvasUI::GetClass() const
+const char* CanvasUI::GetClass() const
 {
-   return _T("CanvasUI");
+   return "CanvasUI";
 }
 
 bool CanvasUI::SetWatermark(UINT iBitmapRes, int iOrientation)
@@ -409,9 +409,9 @@ WindowCanvasUI::WindowCanvasUI()
    m_clrBack = m_manager->GetThemeColor(UICOLOR_WINDOW_BACKGROUND);
 }
 
-const TCHAR* WindowCanvasUI::GetClass() const
+const char* WindowCanvasUI::GetClass() const
 {
-   return _T("WindowCanvasUI");
+   return "WindowCanvasUI";
 }
 
 ControlCanvasUI::ControlCanvasUI()
@@ -420,9 +420,9 @@ ControlCanvasUI::ControlCanvasUI()
    m_clrBack = m_manager->GetThemeColor(UICOLOR_CONTROL_BACKGROUND_NORMAL);
 }
 
-const TCHAR* ControlCanvasUI::GetClass() const
+const char* ControlCanvasUI::GetClass() const
 {
-   return _T("ControlCanvasUI");
+   return "ControlCanvasUI";
 }
 
 WhiteCanvasUI::WhiteCanvasUI()
@@ -431,9 +431,9 @@ WhiteCanvasUI::WhiteCanvasUI()
    m_clrBack = m_manager->GetThemeColor(UICOLOR_STANDARD_WHITE);
 }
 
-const TCHAR* WhiteCanvasUI::GetClass() const
+const char* WhiteCanvasUI::GetClass() const
 {
-   return _T("WhiteCanvasUI");
+   return "WhiteCanvasUI";
 }
 
 DialogCanvasUI::DialogCanvasUI()
@@ -442,9 +442,9 @@ DialogCanvasUI::DialogCanvasUI()
    m_clrBack = m_manager->GetThemeColor(UICOLOR_DIALOG_BACKGROUND);
 }
 
-const TCHAR* DialogCanvasUI::GetClass() const
+const char* DialogCanvasUI::GetClass() const
 {
-   return _T("DialogCanvasUI");
+   return "DialogCanvasUI";
 }
 
 TabFolderCanvasUI::TabFolderCanvasUI()
@@ -454,18 +454,18 @@ TabFolderCanvasUI::TabFolderCanvasUI()
    m_manager->GetThemeColorPair(UICOLOR_TAB_FOLDER_NORMAL, clrColor1, m_clrBack);
 }
 
-const TCHAR* TabFolderCanvasUI::GetClass() const
+const char* TabFolderCanvasUI::GetClass() const
 {
-   return _T("TabFolderCanvasUI");
+   return "TabFolderCanvasUI";
 }
 
 VerticalLayoutUI::VerticalLayoutUI() : m_cyNeeded(0)
 {
 }
 
-const TCHAR* VerticalLayoutUI::GetClass() const
+const char* VerticalLayoutUI::GetClass() const
 {
-   return _T("VertialLayoutUI");
+   return "VertialLayoutUI";
 }
 
 void VerticalLayoutUI::SetPos(RECT rc)
@@ -521,9 +521,9 @@ HorizontalLayoutUI::HorizontalLayoutUI()
 {
 }
 
-const TCHAR* HorizontalLayoutUI::GetClass() const
+const char* HorizontalLayoutUI::GetClass() const
 {
-   return _T("HorizontalLayoutUI");
+   return "HorizontalLayoutUI";
 }
 
 void HorizontalLayoutUI::SetPos(RECT rc)
@@ -574,9 +574,9 @@ TileLayoutUI::TileLayoutUI() : m_nColumns(2), m_cyNeeded(0)
    SetInset(CSize(10, 10));
 }
 
-const TCHAR* TileLayoutUI::GetClass() const
+const char* TileLayoutUI::GetClass() const
 {
-   return _T("TileLayoutUI");
+   return "TileLayoutUI";
 }
 
 void TileLayoutUI::SetColumns(int nCols)
@@ -643,9 +643,9 @@ DialogLayoutUI::DialogLayoutUI() : m_bFirstResize(true), m_aModes(sizeof(STRETCH
    ::ZeroMemory(&m_rcDialog, sizeof(m_rcDialog));
 }
 
-const TCHAR* DialogLayoutUI::GetClass() const
+const char* DialogLayoutUI::GetClass() const
 {
-   return _T("DialogLayoutUI");
+   return "DialogLayoutUI";
 }
 
 void* DialogLayoutUI::GetInterface(const TCHAR* name)

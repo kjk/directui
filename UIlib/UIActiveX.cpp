@@ -819,9 +819,9 @@ ActiveXUI::~ActiveXUI()
    ReleaseControl();
 }
 
-const TCHAR* ActiveXUI::GetClass() const
+const char* ActiveXUI::GetClass() const
 {
-   return _T("ActiveXUI");
+   return "ActiveXUI";
 }
 
 SIZE ActiveXUI::EstimateSize(SIZE szAvailable)

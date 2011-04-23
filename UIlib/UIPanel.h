@@ -12,7 +12,7 @@ public:
    enum { FADE_TIMERID = 10 };
    enum { FADE_DELAY = 500UL };
 
-   const TCHAR* GetClass() const;
+   const char* GetClass() const;
 
    void Event(TEventUI& event);
    void SetPos(RECT rc);
@@ -30,7 +30,7 @@ class UILIB_API NavigatorPanelUI : public VerticalLayoutUI, public IListOwnerUI
 public:
    NavigatorPanelUI();
 
-   const TCHAR* GetClass() const;   
+   const char* GetClass() const;   
    void* GetInterface(const TCHAR* name);
 
    bool Add(ControlUI* ctrl);
@@ -52,7 +52,7 @@ class UILIB_API NavigatorButtonUI : public ListElementUI
 public:
    NavigatorButtonUI();
 
-   const TCHAR* GetClass() const;
+   const char* GetClass() const;
    void Event(TEventUI& event);
    
    SIZE EstimateSize(SIZE szAvailable);
@@ -70,7 +70,7 @@ class UILIB_API SearchTitlePanelUI : public HorizontalLayoutUI
 public:
    SearchTitlePanelUI();
 
-   const TCHAR* GetClass() const;
+   const char* GetClass() const;
 
    void SetImage(int idx);
 
@@ -88,7 +88,7 @@ public:
    PaddingPanelUI();
    PaddingPanelUI(int cx, int cy);
 
-   const TCHAR* GetClass() const;
+   const char* GetClass() const;
 
    void SetWidth(int cx);
    void SetHeight(int cy);
@@ -107,7 +107,7 @@ public:
    ImagePanelUI();
    virtual ~ImagePanelUI();
 
-   const TCHAR* GetClass() const;
+   const char* GetClass() const;
 
    bool SetImage(const char* pstrImage);
    void SetWidth(int cx);
@@ -127,7 +127,7 @@ class UILIB_API TextPanelUI : public LabelPanelUI
 public:
    TextPanelUI();
 
-   const TCHAR* GetClass() const;
+   const char* GetClass() const;
    UINT GetControlFlags() const;
 
    bool Activate();
@@ -154,7 +154,7 @@ class UILIB_API WarningPanelUI : public TextPanelUI
 public:
    WarningPanelUI();
 
-   const TCHAR* GetClass() const;
+   const char* GetClass() const;
 
    void SetWarningType(UINT uType);
 

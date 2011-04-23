@@ -3,9 +3,9 @@
 #include "UIDecoration.h"
 
 
-const TCHAR* TitleShadowUI::GetClass() const
+const char* TitleShadowUI::GetClass() const
 {
-   return _T("TitleShadowUI");
+   return "TitleShadowUI";
 }
 
 SIZE TitleShadowUI::EstimateSize(SIZE /*szAvailable*/)
@@ -22,9 +22,9 @@ void TitleShadowUI::DoPaint(HDC hDC, const RECT& /*rcPaint*/)
 }
 
 
-const TCHAR* ListHeaderShadowUI::GetClass() const
+const char* ListHeaderShadowUI::GetClass() const
 {
-   return _T("ListHeaderShadowUI");
+   return "ListHeaderShadowUI";
 }
 
 SIZE ListHeaderShadowUI::EstimateSize(SIZE /*szAvailable*/)
@@ -41,9 +41,9 @@ void ListHeaderShadowUI::DoPaint(HDC hDC, const RECT& /*rcPaint*/)
 }
 
 
-const TCHAR* FadedLineUI::GetClass() const
+const char* FadedLineUI::GetClass() const
 {
-   return _T("FadedLineUI");
+   return "FadedLineUI";
 }
 
 SIZE FadedLineUI::EstimateSize(SIZE /*szAvailable*/)
@@ -62,9 +62,9 @@ void FadedLineUI::DoPaint(HDC hDC, const RECT& /*rcPaint*/)
 }
 
 
-const TCHAR* SeparatorLineUI::GetClass() const
+const char* SeparatorLineUI::GetClass() const
 {
-   return _T("SeparatorLineUI");
+   return "SeparatorLineUI";
 }
 
 SIZE SeparatorLineUI::EstimateSize(SIZE /*szAvailable*/)

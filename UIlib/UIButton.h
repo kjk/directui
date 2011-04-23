@@ -6,7 +6,7 @@ class UILIB_API ButtonUI : public ControlUI
 public:
    ButtonUI();
 
-   const TCHAR* GetClass() const;
+   const char* GetClass() const;
    UINT GetControlFlags() const;
 
    bool Activate();
@@ -35,7 +35,7 @@ class UILIB_API OptionUI : public ControlUI
 public:
    OptionUI();
 
-   const TCHAR* GetClass() const;
+   const char* GetClass() const;
    UINT GetControlFlags() const;
 
    bool Activate();

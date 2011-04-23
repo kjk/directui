@@ -6,9 +6,9 @@ LabelPanelUI::LabelPanelUI() : m_cxWidth(0), m_uTextStyle(DT_VCENTER)
 {
 }
 
-const TCHAR* LabelPanelUI::GetClass() const
+const char* LabelPanelUI::GetClass() const
 {
-   return _T("LabelPanelUI");
+   return "LabelPanelUI";
 }
 
 void LabelPanelUI::SetText(const TCHAR* txt)
@@ -52,9 +52,9 @@ void LabelPanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
    BlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcText, m_txt, UICOLOR_EDIT_TEXT_NORMAL, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE | m_uTextStyle);
 }
 
-const TCHAR* GreyTextHeaderUI::GetClass() const
+const char* GreyTextHeaderUI::GetClass() const
 {
-   return _T("GreyTextHeaderUI");
+   return "GreyTextHeaderUI";
 }
 
 SIZE GreyTextHeaderUI::EstimateSize(SIZE /*szAvailable*/)

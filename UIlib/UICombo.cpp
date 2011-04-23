@@ -8,9 +8,9 @@ SingleLinePickUI::SingleLinePickUI() : m_cxWidth(0), m_nLinks(0), m_uButtonState
    ::ZeroMemory(&m_rcButton, sizeof(m_rcButton));
 }
 
-const TCHAR* SingleLinePickUI::GetClass() const
+const char* SingleLinePickUI::GetClass() const
 {
-   return _T("SinglePrettyEditUI");
+   return "SinglePrettyEditUI";
 }
 
 UINT SingleLinePickUI::GetControlFlags() const
@@ -218,9 +218,9 @@ DropDownUI::DropDownUI() :
    ::ZeroMemory(&m_rcButton, sizeof(RECT));
 }
 
-const TCHAR* DropDownUI::GetClass() const
+const char* DropDownUI::GetClass() const
 {
-   return _T("DropDownUI");
+   return "DropDownUI";
 }
 
 void* DropDownUI::GetInterface(const TCHAR* name)

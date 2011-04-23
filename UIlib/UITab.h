@@ -8,7 +8,7 @@ class UILIB_API TabFolderUI : public ContainerUI, public IListOwnerUI
 public:
    TabFolderUI();
 
-   const TCHAR* GetClass() const;
+   const char* GetClass() const;
 
    void Init();
 
@@ -36,7 +36,7 @@ class UILIB_API TabPageUI : public ContainerUI
 {
 public:
    TabPageUI();
-   const TCHAR* GetClass() const;
+   const char* GetClass() const;
 
    bool Activate();
 };

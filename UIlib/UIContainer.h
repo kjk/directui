@@ -18,7 +18,7 @@ public:
    virtual ~ContainerUI();
 
 public:
-   const TCHAR* GetClass() const;
+   const char* GetClass() const;
    LPVOID GetInterface(const TCHAR* name);
 
    ControlUI* GetItem(int idx) const;
@@ -74,7 +74,7 @@ public:
    CanvasUI();
    virtual ~CanvasUI();
 
-   const TCHAR* GetClass() const;
+   const char* GetClass() const;
 
    bool SetWatermark(UINT iBitmapRes, int iOrientation = HTBOTTOMRIGHT);
    bool SetWatermark(const char* pstrBitmap, int iOrientation = HTBOTTOMRIGHT);
@@ -95,7 +95,7 @@ class UILIB_API WindowCanvasUI : public CanvasUI
 {
 public:
    WindowCanvasUI();
-   const TCHAR* GetClass() const;
+   const char* GetClass() const;
 };
 
 
@@ -103,7 +103,7 @@ class UILIB_API ControlCanvasUI : public CanvasUI
 {
 public:
    ControlCanvasUI();
-   const TCHAR* GetClass() const;
+   const char* GetClass() const;
 };
 
 
@@ -111,7 +111,7 @@ class UILIB_API WhiteCanvasUI : public CanvasUI
 {
 public:
    WhiteCanvasUI();
-   const TCHAR* GetClass() const;
+   const char* GetClass() const;
 };
 
 
@@ -119,7 +119,7 @@ class UILIB_API DialogCanvasUI : public CanvasUI
 {
 public:
    DialogCanvasUI();
-   const TCHAR* GetClass() const;
+   const char* GetClass() const;
 };
 
 
@@ -127,7 +127,7 @@ class UILIB_API TabFolderCanvasUI : public CanvasUI
 {
 public:
    TabFolderCanvasUI();
-   const TCHAR* GetClass() const;
+   const char* GetClass() const;
 };
 
 
@@ -136,7 +136,7 @@ class UILIB_API VerticalLayoutUI : public ContainerUI
 public:
    VerticalLayoutUI();
 
-   const TCHAR* GetClass() const;
+   const char* GetClass() const;
    void SetPos(RECT rc);
 
 protected:
@@ -150,7 +150,7 @@ class UILIB_API HorizontalLayoutUI : public ContainerUI
 public:
    HorizontalLayoutUI();
 
-   const TCHAR* GetClass() const;
+   const char* GetClass() const;
    void SetPos(RECT rc);
 };
 
@@ -160,7 +160,7 @@ class UILIB_API TileLayoutUI : public ContainerUI
 public:
    TileLayoutUI();
 
-   const TCHAR* GetClass() const;
+   const char* GetClass() const;
 
    void SetPos(RECT rc);
    void SetColumns(int nCols);
@@ -176,7 +176,7 @@ class UILIB_API DialogLayoutUI : public ContainerUI
 public:
    DialogLayoutUI();
 
-   const TCHAR* GetClass() const;
+   const char* GetClass() const;
    void* GetInterface(const TCHAR* name);
 
    void SetStretchMode(ControlUI* ctrl, UINT uMode);

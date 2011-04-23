@@ -426,7 +426,7 @@ public:
    virtual void SetAttribute(const char* name, const char* value);
    ControlUI* ApplyAttributeList(const char* attrList);
 
-   virtual const TCHAR* GetClass() const = 0;
+   virtual const char* GetClass() const = 0;
    virtual SIZE EstimateSize(SIZE szAvailable) = 0;
    virtual void DoPaint(HDC hDC, const RECT& rcPaint) = 0;
 

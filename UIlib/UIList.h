@@ -94,7 +94,7 @@ class UILIB_API ListHeaderUI : public HorizontalLayoutUI
 public:
    ListHeaderUI();
 
-   const TCHAR* GetClass() const;
+   const char* GetClass() const;
    void* GetInterface(const TCHAR* name);
 
    SIZE EstimateSize(SIZE szAvailable);
@@ -106,7 +106,7 @@ class UILIB_API ListHeaderItemUI : public ControlUI
 public:
    ListHeaderItemUI();
 
-   const TCHAR* GetClass() const;
+   const char* GetClass() const;
    UINT GetControlFlags() const;
    
    void SetText(const TCHAR* txt);
@@ -132,7 +132,7 @@ class UILIB_API ListFooterUI : public HorizontalLayoutUI
 public:
    ListFooterUI();
 
-   const TCHAR* GetClass() const;
+   const char* GetClass() const;
    void* GetInterface(const TCHAR* name);
 
    SIZE EstimateSize(SIZE szAvailable);
@@ -144,7 +144,7 @@ class UILIB_API ListUI : public VerticalLayoutUI, public IListUI
 public:
    ListUI();
 
-   const TCHAR* GetClass() const;
+   const char* GetClass() const;
    UINT GetControlFlags() const;
    void* GetInterface(const TCHAR* name);
 
@@ -192,7 +192,7 @@ class UILIB_API ListLabelElementUI : public ListElementUI
 public:
    ListLabelElementUI();
 
-   const TCHAR* GetClass() const;
+   const char* GetClass() const;
 
    void SetWidth(int cxWidth);
    void SetTextStyle(UINT uStyle);
@@ -216,7 +216,7 @@ class UILIB_API ListTextElementUI : public ListLabelElementUI
 public:
    ListTextElementUI();
 
-   const TCHAR* GetClass() const;
+   const char* GetClass() const;
    UINT GetControlFlags() const;
 
    void SetOwner(ControlUI* owner);
@@ -240,7 +240,7 @@ public:
    ListExpandElementUI();
    virtual ~ListExpandElementUI();
 
-   const TCHAR* GetClass() const;
+   const char* GetClass() const;
 
    void SetPos(RECT rc);
    void Event(TEventUI& event);

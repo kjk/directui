@@ -9,7 +9,7 @@ friend SingleLineEditWnd;
 public:
    SingleLineEditUI();
 
-   const TCHAR* GetClass() const;
+   const char* GetClass() const;
    UINT GetControlFlags() const;
 
    void SetText(const TCHAR* txt);
@@ -39,7 +39,7 @@ public:
    MultiLineEditUI();
    ~MultiLineEditUI();
 
-   const TCHAR* GetClass() const;
+   const char* GetClass() const;
    UINT GetControlFlags() const;
 
    void Init();

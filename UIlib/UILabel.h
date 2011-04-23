@@ -6,7 +6,7 @@ class UILIB_API LabelPanelUI : public ControlUI
 public:
    LabelPanelUI();
 
-   const TCHAR* GetClass() const;
+   const char* GetClass() const;
 
    void SetText(const TCHAR* txt);
 
@@ -25,7 +25,7 @@ protected:
 class UILIB_API GreyTextHeaderUI : public ControlUI
 {
 public:
-   const TCHAR* GetClass() const;
+   const char* GetClass() const;
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
 };

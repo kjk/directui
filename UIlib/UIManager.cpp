@@ -1284,7 +1284,7 @@ ControlUI* CALLBACK PaintManagerUI::__FindControlFromShortcut(ControlUI* pThis, 
 {
    FINDSHORTCUT* pFS = static_cast<FINDSHORTCUT*>(data);
    if (pFS->ch == toupper(pThis->GetShortcut()))  pFS->bPickNext = true;
-   if (_tcsstr(pThis->GetClass(), _T("Label")) != NULL)  return NULL;   // Labels never get focus!
+   if (str::Find(pThis->GetClass(), "Label") != NULL)  return NULL;   // Labels never get focus!
    return pFS->bPickNext ? pThis : NULL;
 }
 

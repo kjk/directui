@@ -2,10 +2,9 @@
 #include "StdAfx.h"
 #include "UIBlue.h"
 
-
-const TCHAR* StatusbarUI::GetClass() const
+const char* StatusbarUI::GetClass() const
 {
-   return _T("StatusbarUI");
+   return "StatusbarUI";
 }
 
 SIZE StatusbarUI::EstimateSize(SIZE /*szAvailable*/)
@@ -27,9 +26,9 @@ ToolbarTitlePanelUI::ToolbarTitlePanelUI() : m_iPadding(6)
 {
 }
 
-const TCHAR* ToolbarTitlePanelUI::GetClass() const
+const char* ToolbarTitlePanelUI::GetClass() const
 {
-   return _T("ToolbarTitlePanelUI");
+   return "ToolbarTitlePanelUI";
 }
 
 SIZE ToolbarTitlePanelUI::EstimateSize(SIZE szAvailable)
@@ -58,9 +57,9 @@ ToolbarUI::ToolbarUI()
    SetPadding(2);
 }
 
-const TCHAR* ToolbarUI::GetClass() const
+const char* ToolbarUI::GetClass() const
 {
-   return _T("ToolbarUI");
+   return "ToolbarUI";
 }
 
 SIZE ToolbarUI::EstimateSize(SIZE /*szAvailable*/)
@@ -78,9 +77,9 @@ ToolButtonUI::ToolButtonUI()
 {
 }
 
-const TCHAR* ToolButtonUI::GetClass() const
+const char* ToolButtonUI::GetClass() const
 {
-   return _T("ToolButtonUI");
+   return "ToolButtonUI";
 }
 
 void ToolButtonUI::DoPaint(HDC hDC, const RECT& rcPaint)
@@ -91,9 +90,9 @@ void ToolButtonUI::DoPaint(HDC hDC, const RECT& rcPaint)
    BlueRenderEngineUI::DoPaintToolbarButton(hDC, m_manager, m_rcItem, m_txt, m_szPadding, m_uButtonState | uState);
 }
 
-const TCHAR* ToolSeparatorUI::GetClass() const
+const char* ToolSeparatorUI::GetClass() const
 {
-   return _T("ToolSeparatorUI");
+   return "ToolSeparatorUI";
 }
 
 SIZE ToolSeparatorUI::EstimateSize(SIZE /*szAvailable*/)
@@ -109,9 +108,9 @@ void ToolSeparatorUI::DoPaint(HDC hDC, const RECT& rcPaint)
    BlueRenderEngineUI::DoPaintLine(hDC, m_manager, rc2, UICOLOR_TITLE_BORDER_LIGHT);
 }
 
-const TCHAR* ToolGripperUI::GetClass() const
+const char* ToolGripperUI::GetClass() const
 {
-   return _T("ToolGripperUI");
+   return "ToolGripperUI";
 }
 
 SIZE ToolGripperUI::EstimateSize(SIZE /*szAvailable*/)

@@ -8,7 +8,7 @@ class UILIB_API ToolbarUI : public HorizontalLayoutUI
 public:
    ToolbarUI();
 
-   const TCHAR* GetClass() const;
+   const char* GetClass() const;
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
 };
@@ -20,7 +20,7 @@ public:
 
    void SetPadding(int iPadding);
 
-   const TCHAR* GetClass() const;   
+   const char* GetClass() const;   
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
 
@@ -31,7 +31,7 @@ protected:
 class UILIB_API ToolSeparatorUI : public ControlUI
 {
 public:
-   const TCHAR* GetClass() const;
+   const char* GetClass() const;
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
 };
@@ -39,7 +39,7 @@ public:
 class UILIB_API ToolGripperUI : public ControlUI
 {
 public:
-   const TCHAR* GetClass() const;
+   const char* GetClass() const;
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
 };
@@ -49,7 +49,7 @@ class UILIB_API ToolButtonUI : public ButtonUI
 public:
    ToolButtonUI();
 
-   const TCHAR* GetClass() const;
+   const char* GetClass() const;
 
    void DoPaint(HDC hDC, const RECT& rcPaint);
 };
@@ -57,7 +57,7 @@ public:
 class UILIB_API StatusbarUI : public ContainerUI
 {
 public:
-   const TCHAR* GetClass() const;
+   const char* GetClass() const;
 
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);

@@ -9,9 +9,9 @@ ButtonUI::ButtonUI() : m_cxWidth(0), m_uButtonState(0), m_uTextStyle(DT_SINGLELI
    m_szPadding.cy = 0;
 }
 
-const TCHAR* ButtonUI::GetClass() const
+const char* ButtonUI::GetClass() const
 {
-   return _T("ButtonUI");
+   return "ButtonUI";
 }
 
 UINT ButtonUI::GetControlFlags() const
@@ -121,9 +121,9 @@ OptionUI::OptionUI() : m_cxWidth(0), m_uButtonState(0), m_uStyle(DT_LEFT), m_bSe
 {
 }
 
-const TCHAR* OptionUI::GetClass() const
+const char* OptionUI::GetClass() const
 {
-   return _T("OptionUI");
+   return "OptionUI";
 }
 
 UINT OptionUI::GetControlFlags() const

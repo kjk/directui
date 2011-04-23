@@ -8,9 +8,9 @@ TabFolderUI::TabFolderUI() : m_curSel(-1), m_curPage(NULL), m_tabAreas(sizeof(RE
    m_chShortcut = VK_NEXT;
 }
 
-const TCHAR* TabFolderUI::GetClass() const
+const char* TabFolderUI::GetClass() const
 {
-   return _T("TabFolderUI");
+   return "TabFolderUI";
 }
 
 void TabFolderUI::Init()
@@ -139,9 +139,9 @@ TabPageUI::TabPageUI()
    SetInset(CSize(6, 6));
 }
 
-const TCHAR* TabPageUI::GetClass() const
+const char* TabPageUI::GetClass() const
 {
-   return _T("TabPageUI");
+   return "TabPageUI";
 }
 
 bool TabPageUI::Activate()

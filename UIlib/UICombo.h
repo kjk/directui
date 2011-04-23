@@ -8,7 +8,7 @@ public:
 
    void SetWidth(int cxWidth);
 
-   const TCHAR* GetClass() const;
+   const char* GetClass() const;
    UINT GetControlFlags() const;
    void Event(TEventUI& event);
 
@@ -28,7 +28,7 @@ class UILIB_API DropDownUI : public ContainerUI, public IListOwnerUI
 public:
    DropDownUI();
 
-   const TCHAR* GetClass() const;
+   const char* GetClass() const;
    void* GetInterface(const TCHAR* name);
    
    void Init();

@@ -92,11 +92,11 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*l
    HRESULT Hr = ::CoInitialize(NULL);
    if (FAILED(Hr))  return 0;
 
-   if (::LoadLibraryA("d3d9.dll") == NULL)  ::MessageBox(NULL, "Denne applikation vises bedst med DirectX 9 installeret!", "Test", MB_ICONINFORMATION);
+   if (::LoadLibraryA("d3d9.dll") == NULL)  ::MessageBoxA(NULL, "Denne applikation vises bedst med DirectX 9 installeret!", "Test", MB_ICONINFORMATION);
 
    FrameWindowWnd* pFrame = new FrameWindowWnd();
    if (pFrame == NULL)  return 0;
-   pFrame->Create(NULL, "Test", UI_WNDSTYLE_FRAME, WS_EX_WINDOWEDGE);
+   pFrame->Create(NULL, _T("Test"), UI_WNDSTYLE_FRAME, WS_EX_WINDOWEDGE);
 
    PaintManagerUI::MessageLoop();
 

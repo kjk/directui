@@ -4,7 +4,7 @@
 class UILIB_API TitleShadowUI : public ControlUI
 {
 public:
-   const TCHAR* GetClass() const;
+   const char* GetClass() const;
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
 };
@@ -12,7 +12,7 @@ public:
 class UILIB_API ListHeaderShadowUI : public ControlUI
 {
 public:
-   const TCHAR* GetClass() const;
+   const char* GetClass() const;
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
 };
@@ -20,7 +20,7 @@ public:
 class UILIB_API SeparatorLineUI : public ControlUI
 {
 public:
-   const TCHAR* GetClass() const;
+   const char* GetClass() const;
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
 };
@@ -28,7 +28,7 @@ public:
 class UILIB_API FadedLineUI : public ControlUI
 {
 public:
-   const TCHAR* GetClass() const;
+   const char* GetClass() const;
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
 };

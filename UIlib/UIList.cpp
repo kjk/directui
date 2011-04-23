@@ -103,9 +103,9 @@ ListHeaderUI::ListHeaderUI()
    SetInset(CSize(0, 0));
 }
 
-const TCHAR* ListHeaderUI::GetClass() const
+const char* ListHeaderUI::GetClass() const
 {
-   return _T("ListHeaderUI");
+   return "ListHeaderUI";
 }
 
 void* ListHeaderUI::GetInterface(const TCHAR* name)
@@ -136,9 +136,9 @@ ListHeaderItemUI::ListHeaderItemUI() : m_uDragState(0)
 {
 }
 
-const TCHAR* ListHeaderItemUI::GetClass() const
+const char* ListHeaderItemUI::GetClass() const
 {
-   return _T("ListHeaderItemUI");
+   return "ListHeaderItemUI";
 }
 
 void ListHeaderItemUI::SetText(const TCHAR* txt)
@@ -247,9 +247,9 @@ ListFooterUI::ListFooterUI()
    Add(pPadding);
 }
 
-const TCHAR* ListFooterUI::GetClass() const
+const char* ListFooterUI::GetClass() const
 {
-   return _T("ListFooterUI");
+   return "ListFooterUI";
 }
 
 void* ListFooterUI::GetInterface(const TCHAR* name)
@@ -298,9 +298,9 @@ ListUI::ListUI() : m_cb(NULL), m_curSel(-1), m_expandedItem(-1)
    ::ZeroMemory(&m_listInfo, sizeof(TListInfoUI));
 }
 
-const TCHAR* ListUI::GetClass() const
+const char* ListUI::GetClass() const
 {
-   return _T("ListUI");
+   return "ListUI";
 }
 
 UINT ListUI::GetControlFlags() const
@@ -323,8 +323,8 @@ bool ListUI::Add(ControlUI* ctrl)
    if (ctrl->GetInterface(_T("ListHeader")) != NULL)  return VerticalLayoutUI::Add(ctrl);
    if (ctrl->GetInterface(_T("ListFooter")) != NULL)  return VerticalLayoutUI::Add(ctrl);
    // We also need to recognize header sub-items
-   if (_tcsstr(ctrl->GetClass(), _T("Header")) != NULL)  return m_header->Add(ctrl);
-   if (_tcsstr(ctrl->GetClass(), _T("Footer")) != NULL)  return m_footer->Add(ctrl);
+   if (str::Find(ctrl->GetClass(), "Header") != NULL)  return m_header->Add(ctrl);
+   if (str::Find(ctrl->GetClass(), "Footer") != NULL)  return m_footer->Add(ctrl);
    // The list items should know about us
    IListItemUI* listItem = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
    if (listItem != NULL)  {
@@ -574,9 +574,9 @@ ListLabelElementUI::ListLabelElementUI() : m_cxWidth(0), m_uTextStyle(DT_VCENTER
 {
 }
 
-const TCHAR* ListLabelElementUI::GetClass() const
+const char* ListLabelElementUI::GetClass() const
 {
-   return _T("ListLabelElementUI");
+   return "ListLabelElementUI";
 }
 
 void ListLabelElementUI::SetWidth(int cx)
@@ -679,9 +679,9 @@ ListTextElementUI::ListTextElementUI() : m_cyItem(0), m_nLinks(0), m_owner(NULL)
    ::ZeroMemory(&m_rcLinks, sizeof(m_rcLinks));
 }
 
-const TCHAR* ListTextElementUI::GetClass() const
+const char* ListTextElementUI::GetClass() const
 {
-   return _T("ListTextElementUI");
+   return "ListTextElementUI";
 }
 
 UINT ListTextElementUI::GetControlFlags() const
@@ -781,9 +781,9 @@ ListExpandElementUI::~ListExpandElementUI()
    delete m_pContainer;
 }
 
-const TCHAR* ListExpandElementUI::GetClass() const
+const char* ListExpandElementUI::GetClass() const
 {
-   return _T("ListExpandElementUI");
+   return "ListExpandElementUI";
 }
 
 bool ListExpandElementUI::Expand(bool bExpand)

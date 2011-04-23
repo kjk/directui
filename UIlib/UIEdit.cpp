@@ -97,9 +97,9 @@ SingleLineEditUI::SingleLineEditUI() : m_win(NULL), m_uEditStyle(ES_AUTOHSCROLL)
 {
 }
 
-const TCHAR* SingleLineEditUI::GetClass() const
+const char* SingleLineEditUI::GetClass() const
 {
-   return _T("SingleLineEditUI");
+   return "SingleLineEditUI";
 }
 
 UINT SingleLineEditUI::GetControlFlags() const
@@ -266,9 +266,9 @@ void MultiLineEditUI::Init()
    m_win->Init(this);
 }
 
-const TCHAR* MultiLineEditUI::GetClass() const
+const char* MultiLineEditUI::GetClass() const
 {
-   return _T("MultiLineEditUI");
+   return "MultiLineEditUI";
 }
 
 UINT MultiLineEditUI::GetControlFlags() const
