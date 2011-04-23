@@ -1542,27 +1542,37 @@ void ControlUI::SetAttribute(const char* name, const char* value)
    else if (str::Eq(name, "shortcut"))  SetShortcut(value[0]);
 }
 
-ControlUI* ControlUI::ApplyAttributeList(const char* pstrList)
+// handle xml attribute lists in the form:
+// foo="value of foo",bar="value of bar"
+ControlUI* ControlUI::ApplyAttributeList(const char* attrList)
 {
    ASSERT(0);
-   // TODO: write me
-#if 0
-   StdString sItem;
-   StdString sValue;
-   while (*pstrList != '\0')  {
-      sItem.Empty();
-      sValue.Empty();
-      while (*pstrList != '\0' && *pstrList != '=')  sItem += *pstrList++;
-      ASSERT(*pstrList=='=');
-      if (*pstrList++ != '=')  return this;
-      ASSERT(*pstrList=='\"');
-      if (*pstrList++ != '\"')  return this;
-      while (*pstrList != '\0' && *pstrList != '\"')  sValue += *pstrList++;
-      ASSERT(*pstrList=='\"');
-      if (*pstrList++ != '\"')  return this;
-      SetAttribute(sItem, sValue);
-      if (*pstrList++ != ',')  return this;
+   char *s = str::Dup(attrList);
+   char *name, *value;
+   while (*s)  {
+      while (*s == ' ')
+        ++s;
+      name= s;
+      while (*s && *s != '=')
+         ++s;
+      ASSERT(*s=='=');
+      if (*s++ != '=')
+         break;
+      s[-1] = 0; // zero-out '='
+      ASSERT(*s=='\"');
+      if (*s++ != '\"')
+         break;
+      value = s;
+      while (*s && *s != '\"')
+         ++s;
+      ASSERT(*s=='\"');
+      if (*s++ != '\"')
+         break;
+      s[-1] = 0; // zero-out '"'
+      SetAttribute(name, value);
+      if (*s++ != ',')
+        break;
    }
-#endif
+   free(s);
    return this;
 }

@@ -424,7 +424,7 @@ public:
    virtual void Notify(TNotifyUI& msg);
 
    virtual void SetAttribute(const char* name, const char* value);
-   ControlUI* ApplyAttributeList(const char* pstrList);
+   ControlUI* ApplyAttributeList(const char* attrList);
 
    virtual const TCHAR* GetClass() const = 0;
    virtual SIZE EstimateSize(SIZE szAvailable) = 0;

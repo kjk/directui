@@ -40,6 +40,7 @@ inline void *memdup(void *data, size_t len)
 namespace str {
 
 inline size_t Len(const char *s) { return strlen(s); }
+inline char * Dup(const char *s) { return _strdup(s); }
 inline bool Eq(const char *s1, const char *s2) { return 0 == strcmp(s1, s2); }
 inline const char * Find(const char *s, const char *find) {
     return strstr(s, find);
@@ -49,6 +50,28 @@ inline bool EqN(const char *s1, const char *s2, size_t len) {
 }
 
 }
+
+// auto-free memory for arbitrary malloc()ed memory of type T*
+template <typename T>
+class ScopedMem
+{
+    T *obj;
+public:
+    ScopedMem() : obj(NULL) {}
+    explicit ScopedMem(T* obj) : obj(obj) {}
+    ~ScopedMem() { free((void*)obj); }
+    void Set(T *o) {
+        free((void*)obj);
+        obj = o;
+    }
+    T *Get() const { return obj; }
+    T *StealData() {
+        T *tmp = obj;
+        obj = NULL;
+        return tmp;
+    }
+    operator T*() const { return obj; }
+};
 
 class UILIB_API CRect : public tagRECT
 {
