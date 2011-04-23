@@ -16,7 +16,7 @@ public:
    void SetWidth(int cxWidth);
    void SetPadding(int cx, int cy);
 
-   void Event(TEventUI& event);
+   virtual void Event(TEventUI& event);
 
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
@@ -44,7 +44,7 @@ public:
    void SetCheck(bool bSelected);
    void SetWidth(int cxWidth);
    
-   void Event(TEventUI& event);
+   virtual void Event(TEventUI& event);
 
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);

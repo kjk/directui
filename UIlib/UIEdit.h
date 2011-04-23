@@ -18,7 +18,7 @@ public:
    void SetReadOnly(bool bReadOnly);
    bool IsReadOnly() const;
 
-   void Event(TEventUI& event);
+   virtual void Event(TEventUI& event);
 
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
@@ -47,13 +47,15 @@ public:
    StdString GetText() const;
    void SetText(const TCHAR* txt);
 
-   void SetEnabled(bool bEnabled);
-   void SetVisible(bool bVisible);
+   virtual void SetEnabled(bool bEnabled);
+   virtual void SetVisible(bool bVisible);
+
    void SetReadOnly(bool bReadOnly);
-   void SetFocus(bool bReadOnly);
+   //TODO: this was declared but not implemented
+   //virtual void SetFocus(bool bReadOnly);
    bool IsReadOnly() const;
 
-   void Event(TEventUI& event);
+   virtual void Event(TEventUI& event);
 
    SIZE EstimateSize(SIZE szAvailable);
    void SetPos(RECT rc);

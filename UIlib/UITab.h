@@ -17,7 +17,7 @@ public:
    int GetCurSel() const;
    bool SelectItem(int idx);
 
-   void Event(TEventUI& Event);
+   virtual void Event(TEventUI& Event);
 
    void SetPos(RECT rc);
    void DoPaint(HDC hDC, const RECT& rcPaint);

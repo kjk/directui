@@ -27,7 +27,7 @@ public:
    bool Remove(ControlUI* ctrl);
    void RemoveAll();
 
-   void Event(TEventUI& event);
+   virtual void Event(TEventUI& event);
    void SetVisible(bool bVisible);
 
    virtual void SetInset(SIZE szInset);

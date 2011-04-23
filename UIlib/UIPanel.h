@@ -14,7 +14,7 @@ public:
 
    const char* GetClass() const;
 
-   void Event(TEventUI& event);
+   virtual void Event(TEventUI& event);
    void SetPos(RECT rc);
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
@@ -38,7 +38,7 @@ public:
    int GetCurSel() const;
    bool SelectItem(int idx);
 
-   void Event(TEventUI& event);
+   virtual void Event(TEventUI& event);
 
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
@@ -53,7 +53,7 @@ public:
    NavigatorButtonUI();
 
    const char* GetClass() const;
-   void Event(TEventUI& event);
+   virtual void Event(TEventUI& event);
    
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
@@ -135,7 +135,7 @@ public:
    void SetTextColor(UITYPE_COLOR TextColor);
    void SetBkColor(UITYPE_COLOR BackColor);
 
-   void Event(TEventUI& event);
+   virtual void Event(TEventUI& event);
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
 

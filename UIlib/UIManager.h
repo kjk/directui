@@ -401,9 +401,9 @@ public:
 
    virtual void SetFocus();
 
-   virtual bool IsVisible() const;
-   virtual bool IsEnabled() const;
-   virtual bool IsFocused() const;
+           bool IsVisible() const;
+           bool IsEnabled() const;
+           bool IsFocused() const;
    virtual void SetVisible(bool bVisible = true);
    virtual void SetEnabled(bool bEnable = true);
 

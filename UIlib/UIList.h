@@ -80,7 +80,7 @@ public:
 
    bool Activate();
 
-   void Event(TEventUI& event);
+   virtual void Event(TEventUI& event);
    void SetAttribute(const char* name, const char* value);
 
 protected:
@@ -111,7 +111,7 @@ public:
    
    void SetText(const TCHAR* txt);
 
-   void Event(TEventUI& event);
+   virtual void Event(TEventUI& event);
 
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
@@ -171,7 +171,7 @@ public:
    bool ExpandItem(int idx, bool bExpand = true);
 
    void SetPos(RECT rc);
-   void Event(TEventUI& event);
+   virtual void Event(TEventUI& event);
    void SetAttribute(const char* name, const char* value);
 
    IListCallbackUI* GetTextCallback() const;
@@ -197,7 +197,7 @@ public:
    void SetWidth(int cxWidth);
    void SetTextStyle(UINT uStyle);
 
-   void Event(TEventUI& event);
+   virtual void Event(TEventUI& event);
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
 
@@ -221,7 +221,7 @@ public:
 
    void SetOwner(ControlUI* owner);
 
-   void Event(TEventUI& event);
+   virtual void Event(TEventUI& event);
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
 
@@ -243,7 +243,7 @@ public:
    const char* GetClass() const;
 
    void SetPos(RECT rc);
-   void Event(TEventUI& event);
+   virtual void Event(TEventUI& event);
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
 

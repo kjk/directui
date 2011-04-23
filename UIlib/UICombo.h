@@ -10,7 +10,7 @@ public:
 
    const char* GetClass() const;
    UINT GetControlFlags() const;
-   void Event(TEventUI& event);
+   virtual void Event(TEventUI& event);
 
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
@@ -49,7 +49,7 @@ public:
    bool Activate();
 
    void SetPos(RECT rc);
-   void Event(TEventUI& event);
+   virtual void Event(TEventUI& event);
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
 
