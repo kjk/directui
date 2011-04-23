@@ -23,7 +23,7 @@ LRESULT StandardPageWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
    if (uMsg == WM_CREATE)  {     
       m_pm.Init(m_hWnd);
       DialogBuilder builder;
-      ControlUI* root = builder.Create(GetDialogResource());
+      ControlUI* root = builder.CreateFromXml(GetDialogResourceXml());
       ASSERT(root && "Failed to parse XML");
       m_pm.AttachDialog(root);
       m_pm.AddNotifier(this);
@@ -53,7 +53,7 @@ const TCHAR* StartPageWnd::GetWindowClassName() const
    return _T("UIStart"); 
 }
 
-const char* StartPageWnd::GetDialogResource() const 
+const char* StartPageWnd::GetDialogResourceXml() const 
 { 
    return "<Dialog>"
       "<HorizontalLayout>"
@@ -115,7 +115,7 @@ const TCHAR* ConfigurePageWnd::GetWindowClassName() const
    return _T("UIConfigure"); 
 }
 
-const char* ConfigurePageWnd::GetDialogResource() const 
+const char* ConfigurePageWnd::GetDialogResourceXml() const 
 { 
    return "<Dialog>"
       "<HorizontalLayout>"
@@ -184,7 +184,7 @@ const TCHAR* RegistersPageWnd::GetWindowClassName() const
    return _T("UIRegisters"); 
 }
 
-const char* RegistersPageWnd::GetDialogResource() const 
+const char* RegistersPageWnd::GetDialogResourceXml() const 
 { 
    return "<Dialog>"
       "<HorizontalLayout>"
@@ -261,7 +261,7 @@ const TCHAR* SystemsPageWnd::GetWindowClassName() const
    return _T("UISystems"); 
 }
 
-const char* SystemsPageWnd::GetDialogResource() const 
+const char* SystemsPageWnd::GetDialogResourceXml() const 
 { 
    return "<Dialog>"
       "<HorizontalLayout>"
@@ -366,7 +366,7 @@ const TCHAR* ReportsPageWnd::GetWindowClassName() const
    return _T("UIReports"); 
 }
 
-const char* ReportsPageWnd::GetDialogResource() const 
+const char* ReportsPageWnd::GetDialogResourceXml() const 
 { 
    return "<Dialog>"
       "<HorizontalLayout>"
@@ -431,7 +431,7 @@ void SearchPageWnd::Notify(TNotifyUI& msg)
    StandardPageWnd::Notify(msg);
 }
 
-const char* SearchPageWnd::GetDialogResource() const 
+const char* SearchPageWnd::GetDialogResourceXml() const 
 { 
    return "<Dialog caption=\"Search Page\" >"
       "<VerticalLayout>"
@@ -493,7 +493,7 @@ void EditPageWnd::Notify(TNotifyUI& msg)
    StandardPageWnd::Notify(msg);
 }
 
-const char* EditPageWnd::GetDialogResource() const 
+const char* EditPageWnd::GetDialogResourceXml() const 
 { 
    return "<Dialog caption=\"Rediger Person\" >"
       "<VerticalLayout>"
@@ -593,7 +593,7 @@ void PopupWnd::Notify(TNotifyUI& msg)
    StandardPageWnd::Notify(msg);
 }
 
-const char* PopupWnd::GetDialogResource() const 
+const char* PopupWnd::GetDialogResourceXml() const 
 { 
    return "<Dialog>"
       "<VerticalLayout>"

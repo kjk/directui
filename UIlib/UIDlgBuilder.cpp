@@ -3,17 +3,17 @@
 #include "UIDlgBuilder.h"
 
 
-ControlUI* DialogBuilder::Create(const char* xml, IDialogBuilderCallback* cb /*= NULL*/)
+ControlUI* DialogBuilder::CreateFromXml(const char* xml, IDialogBuilderCallback* cb /*= NULL*/)
 {
    m_cb = cb;
    if (!m_xml.Load(xml))  return NULL;
    // NOTE: The root element is actually discarded since the _Parse() methods is
    //       parsing children and attaching to the current node.
    MarkupNode root = m_xml.GetRoot();
-   return _Parse(&root);
+   return _ParseXml(&root);
 }
 
-ControlUI* DialogBuilder::CreateFromResource(UINT nRes, IDialogBuilderCallback* cb /*= NULL*/)
+ControlUI* DialogBuilder::CreateFromXmlResource(UINT nRes, IDialogBuilderCallback* cb /*= NULL*/)
 {
    ASSERT(0); // TODO: not tested
    HINSTANCE hinst = PaintManagerUI::GetResourceInstance();
@@ -30,10 +30,10 @@ ControlUI* DialogBuilder::CreateFromResource(UINT nRes, IDialogBuilderCallback* 
    //TODO: write me
    //str::Replace(s, "\\n", "\n");
    FreeResource(hResource);
-   return Create(s, cb);
+   return CreateFromXml(s, cb);
 }
 
-ControlUI *CreateKnown(const char *cls)
+static ControlUI *CreateKnown(const char *cls)
 {
     switch (str::Len(cls))  {
     case 4:
@@ -112,7 +112,7 @@ ControlUI *CreateKnown(const char *cls)
     return NULL;
 }
 
-ControlUI* DialogBuilder::_Parse(MarkupNode* root, ControlUI* parent)
+ControlUI* DialogBuilder::_ParseXml(MarkupNode* root, ControlUI* parent)
 {
    DialogLayoutUI* pStretched = NULL;
    IContainerUI* pContainer = NULL;
@@ -129,7 +129,7 @@ ControlUI* DialogBuilder::_Parse(MarkupNode* root, ControlUI* parent)
       if (ctrl == NULL)  return NULL;
       // Add children
       if (node.HasChildren())  {
-         _Parse(&node, ctrl);
+         _ParseXml(&node, ctrl);
       }
       // Attach to parent
       if (parent != NULL)  {

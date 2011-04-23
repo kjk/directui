@@ -10,11 +10,11 @@ public:
 class UILIB_API DialogBuilder
 {
 public:
-   ControlUI* Create(const char* xml, IDialogBuilderCallback* cb = NULL);
-   ControlUI* CreateFromResource(UINT nRes, IDialogBuilderCallback* cb = NULL);
+   ControlUI* CreateFromXml(const char* xml, IDialogBuilderCallback* cb = NULL);
+   ControlUI* CreateFromXmlResource(UINT nRes, IDialogBuilderCallback* cb = NULL);
 
 private:
-   ControlUI* _Parse(MarkupNode* root, ControlUI* parent = NULL);
+   ControlUI* _ParseXml(MarkupNode* root, ControlUI* parent = NULL);
 
    MarkupParser m_xml;
    IDialogBuilderCallback* m_cb;
