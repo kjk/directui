@@ -277,25 +277,25 @@ void ListFooterUI::DoPaint(HDC hDC, const RECT& rcPaint)
 }
 
 
-ListUI::ListUI() : m_cb(NULL), m_curSel(-1), m_iExpandedItem(-1)
+ListUI::ListUI() : m_cb(NULL), m_curSel(-1), m_expandedItem(-1)
 {
-   m_pList = new VerticalLayoutUI;
-   m_pHeader = new ListHeaderUI;
-   m_pFooter = new ListFooterUI;
+   m_list = new VerticalLayoutUI;
+   m_header = new ListHeaderUI;
+   m_footer = new ListFooterUI;
 
    WhiteCanvasUI* pWhite = new WhiteCanvasUI;
-   pWhite->Add(m_pList);
+   pWhite->Add(m_list);
 
-   m_pFooter->Add(new LabelPanelUI);
-   m_pFooter->Add(new PaddingPanelUI);
+   m_footer->Add(new LabelPanelUI);
+   m_footer->Add(new PaddingPanelUI);
 
-   Add(m_pHeader);
+   Add(m_header);
    VerticalLayoutUI::Add(pWhite);
-   Add(m_pFooter);
+   Add(m_footer);
 
-   m_pList->EnableScrollBar();
+   m_list->EnableScrollBar();
 
-   ::ZeroMemory(&m_ListInfo, sizeof(TListInfoUI));
+   ::ZeroMemory(&m_listInfo, sizeof(TListInfoUI));
 }
 
 const TCHAR* ListUI::GetClass() const
@@ -323,15 +323,15 @@ bool ListUI::Add(ControlUI* ctrl)
    if (ctrl->GetInterface(_T("ListHeader")) != NULL)  return VerticalLayoutUI::Add(ctrl);
    if (ctrl->GetInterface(_T("ListFooter")) != NULL)  return VerticalLayoutUI::Add(ctrl);
    // We also need to recognize header sub-items
-   if (_tcsstr(ctrl->GetClass(), _T("Header")) != NULL)  return m_pHeader->Add(ctrl);
-   if (_tcsstr(ctrl->GetClass(), _T("Footer")) != NULL)  return m_pFooter->Add(ctrl);
+   if (_tcsstr(ctrl->GetClass(), _T("Header")) != NULL)  return m_header->Add(ctrl);
+   if (_tcsstr(ctrl->GetClass(), _T("Footer")) != NULL)  return m_footer->Add(ctrl);
    // The list items should know about us
    IListItemUI* listItem = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
    if (listItem != NULL)  {
       listItem->SetOwner(this);
       listItem->SetIndex(GetCount());
    }
-   return m_pList->Add(ctrl);
+   return m_list->Add(ctrl);
 }
 
 bool ListUI::Remove(ControlUI* ctrl)
@@ -343,43 +343,43 @@ bool ListUI::Remove(ControlUI* ctrl)
 void ListUI::RemoveAll()
 {
    m_curSel = -1;
-   m_iExpandedItem = -1;
-   m_pList->RemoveAll();
+   m_expandedItem = -1;
+   m_list->RemoveAll();
 }
 
 ControlUI* ListUI::GetItem(int idx) const
 {
-   return m_pList->GetItem(idx);
+   return m_list->GetItem(idx);
 }
 
 int ListUI::GetCount() const
 {
-   return m_pList->GetCount();
+   return m_list->GetCount();
 }
 
 void ListUI::SetPos(RECT rc)
 {
    VerticalLayoutUI::SetPos(rc);
-   if (m_pHeader == NULL)  return;
+   if (m_header == NULL)  return;
    // Determine general list information and the size of header columns
-   m_ListInfo.Text = UICOLOR_CONTROL_TEXT_NORMAL;
-   m_ListInfo.Background = UICOLOR__INVALID;
-   m_ListInfo.SelText = UICOLOR_CONTROL_TEXT_SELECTED;
-   m_ListInfo.SelBackground = UICOLOR_CONTROL_BACKGROUND_SELECTED;
-   m_ListInfo.HotText = UICOLOR_CONTROL_TEXT_NORMAL;
-   m_ListInfo.HotBackground = UICOLOR_CONTROL_BACKGROUND_HOVER;   
-   m_ListInfo.nColumns = MIN(m_pHeader->GetCount(), UILIST_MAX_COLUMNS);
+   m_listInfo.Text = UICOLOR_CONTROL_TEXT_NORMAL;
+   m_listInfo.Background = UICOLOR__INVALID;
+   m_listInfo.SelText = UICOLOR_CONTROL_TEXT_SELECTED;
+   m_listInfo.SelBackground = UICOLOR_CONTROL_BACKGROUND_SELECTED;
+   m_listInfo.HotText = UICOLOR_CONTROL_TEXT_NORMAL;
+   m_listInfo.HotBackground = UICOLOR_CONTROL_BACKGROUND_HOVER;   
+   m_listInfo.nColumns = MIN(m_header->GetCount(), UILIST_MAX_COLUMNS);
    // The header/columns may or may not be visible at runtime. In either case
    // we should determine the correct dimensions...
-   if (m_pHeader->IsVisible())  {
-      for (int i = 0; i < m_ListInfo.nColumns; i++)  m_ListInfo.rcColumn[i] = m_pHeader->GetItem(i)->GetPos();
+   if (m_header->IsVisible())  {
+      for (int i = 0; i < m_listInfo.nColumns; i++)  m_listInfo.rcColumn[i] = m_header->GetItem(i)->GetPos();
    }
    else {
       RECT rcCol = { rc.left, 0, rc.left, 0 };
-      for (int i = 0; i < m_ListInfo.nColumns; i++)  {
-         SIZE sz = m_pHeader->GetItem(i)->EstimateSize(CSize(rc.right - rc.left, rc.bottom - rc.top));
+      for (int i = 0; i < m_listInfo.nColumns; i++)  {
+         SIZE sz = m_header->GetItem(i)->EstimateSize(CSize(rc.right - rc.left, rc.bottom - rc.top));
          rcCol.right += sz.cx;
-         m_ListInfo.rcColumn[i] = rcCol;
+         m_listInfo.rcColumn[i] = rcCol;
          ::OffsetRect(&rcCol, sz.cx, 0);
       }
    }
@@ -439,17 +439,17 @@ void ListUI::Event(TEventUI& event)
 
 ListHeaderUI* ListUI::GetHeader() const
 {
-   return m_pHeader;
+   return m_header;
 }
 
 ListFooterUI* ListUI::GetFooter() const
 {
-   return m_pFooter;
+   return m_footer;
 }
 
 ContainerUI* ListUI::GetList() const
 {
-   return m_pList;
+   return m_list;
 }
 
 int ListUI::GetCurSel() const
@@ -492,24 +492,24 @@ bool ListUI::SelectItem(int idx)
 
 const TListInfoUI* ListUI::GetListInfo() const
 {
-   return &m_ListInfo;
+   return &m_listInfo;
 }
 
-void ListUI::SetExpanding(bool bExpandable)
+void ListUI::SetExpanding(bool expandable)
 {
-   m_ListInfo.bExpandable = bExpandable;
+   m_listInfo.expandable = expandable;
 }
 
 bool ListUI::ExpandItem(int idx, bool bExpand /*= true*/)
 {
-   if (!m_ListInfo.bExpandable)  return false;
-   if (m_iExpandedItem >= 0)  {
-      ControlUI* ctrl = GetItem(m_iExpandedItem);
+   if (!m_listInfo.expandable)  return false;
+   if (m_expandedItem >= 0)  {
+      ControlUI* ctrl = GetItem(m_expandedItem);
       if (ctrl != NULL)  {
          IListItemUI* item = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
          if (item != NULL)  item->Expand(false);
       }
-      m_iExpandedItem = -1;
+      m_expandedItem = -1;
    }
    if (bExpand)  {
       ControlUI* ctrl = GetItem(idx);
@@ -517,9 +517,9 @@ bool ListUI::ExpandItem(int idx, bool bExpand /*= true*/)
       if (!ctrl->IsVisible())  return false;
       IListItemUI* item = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
       if (item == NULL)  return false;
-      m_iExpandedItem = idx;
+      m_expandedItem = idx;
       if (!item->Expand(true))  {
-         m_iExpandedItem = -1;
+         m_expandedItem = -1;
          return false;
       }
    }
@@ -529,15 +529,15 @@ bool ListUI::ExpandItem(int idx, bool bExpand /*= true*/)
 
 int ListUI::GetExpandedItem() const
 {
-   return m_iExpandedItem;
+   return m_expandedItem;
 }
 
 void ListUI::EnsureVisible(int idx)
 {
    if (m_curSel < 0)  return;
-   RECT rcItem = m_pList->GetItem(idx)->GetPos();
-   RECT rcList = m_pList->GetPos();
-   int pos = m_pList->GetScrollPos();
+   RECT rcItem = m_list->GetItem(idx)->GetPos();
+   RECT rcList = m_list->GetPos();
+   int pos = m_list->GetScrollPos();
    if (rcItem.top >= rcList.top && rcItem.bottom < rcList.bottom)  return;
    int dx = 0;
    if (rcItem.top < rcList.top)  dx = rcItem.top - rcList.top;
@@ -548,7 +548,7 @@ void ListUI::EnsureVisible(int idx)
 void ListUI::Scroll(int dx, int dy)
 {
    if (dx == 0 && dy == 0)  return;
-   m_pList->SetScrollPos(m_pList->GetScrollPos() + dy);
+   m_list->SetScrollPos(m_list->GetScrollPos() + dy);
 }
 
 void ListUI::SetAttribute(const char* name, const char* value)
@@ -824,7 +824,7 @@ void ListExpandElementUI::Event(TEventUI& event)
       if (m_owner == NULL)  return;
       const TListInfoUI* pInfo = m_owner->GetListInfo();
       RECT rcExpander = { m_rcItem.left, m_rcItem.top, m_rcItem.left + 20, m_rcItem.bottom };;
-      if (pInfo->bExpandable && ::PtInRect(&rcExpander, event.ptMouse))  Expand(!m_bExpanded);
+      if (pInfo->expandable && ::PtInRect(&rcExpander, event.ptMouse))  Expand(!m_bExpanded);
    }
    if (event.Type == UIEVENT_KEYDOWN) 
    {
@@ -970,7 +970,7 @@ void ListExpandElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
       const TCHAR* txt = cb->GetItemText(this, m_idx, i);
       // If list control is expandable then we'll automaticially draw
       // the expander-box at the first column.
-      if (i == 0 && pInfo->bExpandable)  {
+      if (i == 0 && pInfo->expandable)  {
          sColText = (m_bExpanded ? _T("<i 14> ") : _T("<i 13> "));
          sColText += txt;
          txt = sColText;

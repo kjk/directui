@@ -16,7 +16,7 @@ typedef struct tagTListInfoUI
    UITYPE_COLOR SelBackground;
    UITYPE_COLOR HotText;
    UITYPE_COLOR HotBackground;
-   bool bExpandable;
+   bool expandable;
 } TListInfoUI;
 
 class IListCallbackUI
@@ -165,7 +165,7 @@ public:
    void EnsureVisible(int idx);
    void Scroll(int dx, int dy);
 
-   void SetExpanding(bool bExpandable);
+   void SetExpanding(bool expandable);
 
    int GetExpandedItem() const;
    bool ExpandItem(int idx, bool bExpand = true);
@@ -179,12 +179,12 @@ public:
 
 protected:
    int m_curSel;
-   int m_iExpandedItem;
+   int m_expandedItem;
    IListCallbackUI* m_cb;
-   VerticalLayoutUI* m_pList;
-   ListHeaderUI* m_pHeader;
-   ListFooterUI* m_pFooter;
-   TListInfoUI m_ListInfo;
+   VerticalLayoutUI* m_list;
+   ListHeaderUI* m_header;
+   ListFooterUI* m_footer;
+   TListInfoUI m_listInfo;
 };
 
 class UILIB_API ListLabelElementUI : public ListElementUI
