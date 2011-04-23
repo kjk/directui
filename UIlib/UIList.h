@@ -42,7 +42,7 @@ public:
    virtual ContainerUI* GetList() const = 0;
    virtual const TListInfoUI* GetListInfo() const = 0;
    virtual IListCallbackUI* GetTextCallback() const = 0;
-   virtual void SetTextCallback(IListCallbackUI* pCallback) = 0;
+   virtual void SetTextCallback(IListCallbackUI* cb) = 0;
    virtual bool ExpandItem(int idx, bool bExpand = true) = 0;
    virtual int GetExpandedItem() const = 0;
 };
@@ -175,12 +175,12 @@ public:
    void SetAttribute(const char* name, const char* value);
 
    IListCallbackUI* GetTextCallback() const;
-   void SetTextCallback(IListCallbackUI* pCallback);
+   void SetTextCallback(IListCallbackUI* cb);
 
 protected:
    int m_curSel;
    int m_iExpandedItem;
-   IListCallbackUI* m_pCallback;
+   IListCallbackUI* m_cb;
    VerticalLayoutUI* m_pList;
    ListHeaderUI* m_pHeader;
    ListFooterUI* m_pFooter;

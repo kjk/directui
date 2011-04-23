@@ -277,7 +277,7 @@ void ListFooterUI::DoPaint(HDC hDC, const RECT& rcPaint)
 }
 
 
-ListUI::ListUI() : m_pCallback(NULL), m_curSel(-1), m_iExpandedItem(-1)
+ListUI::ListUI() : m_cb(NULL), m_curSel(-1), m_iExpandedItem(-1)
 {
    m_pList = new VerticalLayoutUI;
    m_pHeader = new ListHeaderUI;
@@ -561,12 +561,12 @@ void ListUI::SetAttribute(const char* name, const char* value)
 
 IListCallbackUI* ListUI::GetTextCallback() const
 {
-   return m_pCallback;
+   return m_cb;
 }
 
-void ListUI::SetTextCallback(IListCallbackUI* pCallback)
+void ListUI::SetTextCallback(IListCallbackUI* cb)
 {
-   m_pCallback = pCallback;
+   m_cb = cb;
 }
 
 
@@ -753,16 +753,16 @@ void ListTextElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
    if (iBackColor != UICOLOR__INVALID)  {
       BlueRenderEngineUI::DoFillRect(hDC, m_manager, m_rcItem, iBackColor);
    }
-   IListCallbackUI* pCallback = m_owner->GetTextCallback();
-   ASSERT(pCallback);
-   if (pCallback == NULL)  return;
+   IListCallbackUI* cb = m_owner->GetTextCallback();
+   ASSERT(cb);
+   if (cb == NULL)  return;
    m_nLinks = 0;
    int nLinks = dimof(m_rcLinks);
    for (int i = 0; i < pInfo->nColumns; i++) 
    {
       // Paint text
       RECT rcItem = { pInfo->rcColumn[i].left, m_rcItem.top, pInfo->rcColumn[i].right, m_rcItem.bottom - 1 };
-      const TCHAR* txt = pCallback->GetItemText(this, m_idx, i);
+      const TCHAR* txt = cb->GetItemText(this, m_idx, i);
       ::InflateRect(&rcItem, -4, 0);
       BlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcItem, txt, iTextColor, UICOLOR__INVALID, m_rcLinks, nLinks, DT_SINGLELINE | m_uTextStyle);
       if (nLinks > 0)  m_nLinks = nLinks, nLinks = 0; else nLinks = dimof(m_rcLinks);
@@ -957,9 +957,9 @@ void ListExpandElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
       RECT rcItem = { m_rcItem.left, m_rcItem.top, m_rcItem.right, m_rcItem.top + m_cyItem };
       BlueRenderEngineUI::DoFillRect(hDC, m_manager, rcItem, iBackColor);
    }
-   IListCallbackUI* pCallback = m_owner->GetTextCallback();
-   ASSERT(pCallback);
-   if (pCallback == NULL)  return;
+   IListCallbackUI* cb = m_owner->GetTextCallback();
+   ASSERT(cb);
+   if (cb == NULL)  return;
    m_nLinks = 0;
    StdString sColText;
    int nLinks = dimof(m_rcLinks);
@@ -967,7 +967,7 @@ void ListExpandElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
    {
       // Paint text
       RECT rcItem = { pInfo->rcColumn[i].left, m_rcItem.top, pInfo->rcColumn[i].right, m_rcItem.top + m_cyItem };
-      const TCHAR* txt = pCallback->GetItemText(this, m_idx, i);
+      const TCHAR* txt = cb->GetItemText(this, m_idx, i);
       // If list control is expandable then we'll automaticially draw
       // the expander-box at the first column.
       if (i == 0 && pInfo->bExpandable)  {

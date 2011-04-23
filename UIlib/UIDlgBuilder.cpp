@@ -3,9 +3,9 @@
 #include "UIDlgBuilder.h"
 
 
-ControlUI* DialogBuilder::Create(const char* xml, IDialogBuilderCallback* pCallback /*= NULL*/)
+ControlUI* DialogBuilder::Create(const char* xml, IDialogBuilderCallback* cb /*= NULL*/)
 {
-   m_pCallback = pCallback;
+   m_cb = cb;
    if (!m_xml.Load(xml))  return NULL;
    // NOTE: The root element is actually discarded since the _Parse() methods is
    //       parsing children and attaching to the current node.
@@ -13,7 +13,7 @@ ControlUI* DialogBuilder::Create(const char* xml, IDialogBuilderCallback* pCallb
    return _Parse(&root);
 }
 
-ControlUI* DialogBuilder::CreateFromResource(UINT nRes, IDialogBuilderCallback* pCallback /*= NULL*/)
+ControlUI* DialogBuilder::CreateFromResource(UINT nRes, IDialogBuilderCallback* cb /*= NULL*/)
 {
    ASSERT(0); // TODO: not tested
    HINSTANCE hinst = PaintManagerUI::GetResourceInstance();
@@ -30,7 +30,7 @@ ControlUI* DialogBuilder::CreateFromResource(UINT nRes, IDialogBuilderCallback* 
    //TODO: write me
    //str::Replace(s, "\\n", "\n");
    FreeResource(hResource);
-   return Create(s, pCallback);
+   return Create(s, cb);
 }
 
 ControlUI *CreateKnown(const char *cls)
@@ -122,8 +122,8 @@ ControlUI* DialogBuilder::_Parse(MarkupNode* root, ControlUI* parent)
 
       ControlUI* ctrl = CreateKnown(cls);
       // User-supplied control factory
-      if (ctrl == NULL && m_pCallback != NULL)  {
-         ctrl = m_pCallback->CreateControl(cls);
+      if (ctrl == NULL && m_cb != NULL)  {
+         ctrl = m_cb->CreateControl(cls);
       }
       ASSERT(ctrl);
       if (ctrl == NULL)  return NULL;
