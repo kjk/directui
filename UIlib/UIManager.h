@@ -190,7 +190,7 @@ typedef enum
 
 // Structure for notifications from the system
 // to the control implementation.
-typedef struct tagTEventUI
+typedef struct
 {
    int Type;
    ControlUI* pSender;
@@ -203,18 +203,18 @@ typedef struct tagTEventUI
 } TEventUI;
 
 // Structure for notifications to the outside world
-typedef struct tagTNotifyUI 
+typedef struct 
 {
-   StdString sType;
-   ControlUI* pSender;
-   DWORD dwTimestamp;
-   POINT ptMouse;
-   WPARAM wParam;
-   LPARAM lParam;
+   const char*  type;
+   ControlUI*   pSender;
+   DWORD        dwTimestamp;
+   POINT        ptMouse;
+   WPARAM       wParam;
+   LPARAM       lParam;
 } TNotifyUI;
 
 // Structure for adding alpha bitmaps on top of the window
-typedef struct tagTPostPaintUI
+typedef struct
 {
    HBITMAP hBitmap;
    RECT rc;
@@ -222,14 +222,14 @@ typedef struct tagTPostPaintUI
 } TPostPaintUI;
 
 // System settings
-typedef struct tagTSystemSettingsUI
+typedef struct
 {
    bool bShowKeyboardCues;
    bool bScrollLists;
 } TSystemSettingsUI;
 
 // Various system settings
-typedef struct tagTSystemMetricsUI
+typedef struct
 {
    INT cxvscroll;
 } TSystemMetricsUI;
@@ -295,7 +295,7 @@ public:
    bool AddNotifier(INotifyUI* ctrl);
    bool RemoveNotifier(INotifyUI* ctrl);   
    void SendNotify(TNotifyUI& Msg);
-   void SendNotify(ControlUI* ctrl, const TCHAR* msg, WPARAM wParam = 0, LPARAM lParam = 0);
+   void SendNotify(ControlUI* ctrl, const char* msg, WPARAM wParam = 0, LPARAM lParam = 0);
 
    bool AddMessageFilter(IMessageFilterUI* filter);
    bool RemoveMessageFilter(IMessageFilterUI* filter);

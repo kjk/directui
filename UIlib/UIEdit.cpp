@@ -143,7 +143,7 @@ void SingleLineEditUI::Event(TEventUI& event)
 void SingleLineEditUI::SetText(const TCHAR* txt)
 {
    m_txt = txt;
-   if (m_manager != NULL)  m_manager->SendNotify(this, _T("changed"));
+   if (m_manager != NULL)  m_manager->SendNotify(this, "changed");
    Invalidate();
 }
 
@@ -245,7 +245,7 @@ LRESULT MultiLineEditWnd::OnEditChanged(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM
    ASSERT(pstr);
    ::GetWindowText(m_hWnd, pstr, cchLen);
    m_owner->m_txt = pstr;
-   m_owner->GetManager()->SendNotify(m_owner, _T("changed"));
+   m_owner->GetManager()->SendNotify(m_owner, "changed");
    return 0;
 }
 
@@ -280,7 +280,7 @@ void MultiLineEditUI::SetText(const TCHAR* txt)
 {
    m_txt = txt;
    if (m_win != NULL)  SetWindowText(*m_win, txt);
-   if (m_manager != NULL)  m_manager->SendNotify(this, _T("changed"));
+   if (m_manager != NULL)  m_manager->SendNotify(this, "changed");
    Invalidate();
 }
 

@@ -41,7 +41,7 @@ void ListElementUI::SetIndex(int idx)
 bool ListElementUI::Activate()
 {
    if (!ControlUI::Activate())  return false;
-   if (m_manager != NULL)  m_manager->SendNotify(this, _T("itemactivate"));
+   if (m_manager != NULL)  m_manager->SendNotify(this, "itemactivate");
    return true;
 }
 
@@ -172,17 +172,17 @@ void ListHeaderItemUI::Event(TEventUI& event)
       if (::PtInRect(&rcSeparator, event.ptMouse))  {
          m_uDragState |= UISTATE_CAPTURED;
          ptLastMouse = event.ptMouse;
-         m_manager->SendNotify(this, _T("headerdragging"));
+         m_manager->SendNotify(this, "headerdragging");
       }
       else {
-         m_manager->SendNotify(this, _T("headerclick"));
+         m_manager->SendNotify(this, "headerclick");
       }
    }
    if (event.Type == UIEVENT_BUTTONUP) 
    {
       if ((m_uDragState & UISTATE_CAPTURED) != 0)  {
          m_uDragState &= ~UISTATE_CAPTURED;
-         m_manager->SendNotify(this, _T("headerdragged"));
+         m_manager->SendNotify(this, "headerdragged");
          m_manager->UpdateLayout();
       }
    }
@@ -483,8 +483,8 @@ bool ListUI::SelectItem(int idx)
    }
    ctrl->SetFocus();
    if (m_manager != NULL)  {
-      m_manager->SendNotify(ctrl, _T("itemclick"));
-      m_manager->SendNotify(this, _T("itemselect"));
+      m_manager->SendNotify(ctrl, "itemclick");
+      m_manager->SendNotify(this, "itemselect");
    }
    Invalidate();
    return true;
@@ -801,12 +801,12 @@ bool ListExpandElementUI::Expand(bool bExpand)
       TileLayoutUI* pTile = new TileLayoutUI;
       pTile->SetPadding(4);
       m_pContainer = pTile;
-      if (m_manager != NULL)  m_manager->SendNotify(this, _T("itemexpand"));
+      if (m_manager != NULL)  m_manager->SendNotify(this, "itemexpand");
       m_manager->InitControls(m_pContainer, this);
    }
    else
    {
-      if (m_manager != NULL)  m_manager->SendNotify(this, _T("itemcollapse"));
+      if (m_manager != NULL)  m_manager->SendNotify(this, "itemcollapse");
    }
    m_cyExpanded = 0;
    return true;

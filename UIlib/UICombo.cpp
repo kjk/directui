@@ -39,7 +39,7 @@ void SingleLinePickUI::Event(TEventUI& event)
          // Check for link press
          for (int i = 0; i < m_nLinks; i++)  {
             if (::PtInRect(&m_rcLinks[i], event.ptMouse))  {
-               m_manager->SendNotify(this, _T("link"));
+               m_manager->SendNotify(this, "link");
                return;
             }
          }      
@@ -57,15 +57,15 @@ void SingleLinePickUI::Event(TEventUI& event)
    if (event.Type == UIEVENT_BUTTONUP) 
    {
       if ((m_uButtonState & UISTATE_CAPTURED) != 0)  {
-         if (::PtInRect(&m_rcButton, event.ptMouse))  m_manager->SendNotify(this, _T("browse"));
+         if (::PtInRect(&m_rcButton, event.ptMouse))  m_manager->SendNotify(this, "browse");
          m_uButtonState &= ~(UISTATE_PUSHED | UISTATE_CAPTURED);
          Invalidate();
       }
    }
    if (event.Type == UIEVENT_KEYDOWN)  
    {
-      if (event.chKey == VK_SPACE && m_nLinks > 0)  m_manager->SendNotify(this, _T("link"));
-      if (event.chKey == VK_F4 && IsEnabled())  m_manager->SendNotify(this, _T("browse"));
+      if (event.chKey == VK_SPACE && m_nLinks > 0)  m_manager->SendNotify(this, "link");
+      if (event.chKey == VK_F4 && IsEnabled())  m_manager->SendNotify(this, "browse");
    }
    ControlUI::Event(event);
 }
@@ -265,8 +265,8 @@ bool DropDownUI::SelectItem(int idx)
    m_curSel = idx;
    ctrl->SetFocus();
    listItem->Select(true);
-   if (m_manager != NULL)  m_manager->SendNotify(ctrl, _T("itemclick"));
-   if (m_manager != NULL)  m_manager->SendNotify(this, _T("itemselect"));
+   if (m_manager != NULL)  m_manager->SendNotify(ctrl, "itemclick");
+   if (m_manager != NULL)  m_manager->SendNotify(this, "itemselect");
    Invalidate();
    return true;
 }
@@ -355,7 +355,7 @@ bool DropDownUI::Activate()
    if (!ControlUI::Activate())  return false;
    DropDownWnd* win = new DropDownWnd;
    win->Init(this);
-   if (m_manager != NULL)  m_manager->SendNotify(this, _T("dropdown"));
+   if (m_manager != NULL)  m_manager->SendNotify(this, "dropdown");
    Invalidate();
    return true;
 }

@@ -67,7 +67,7 @@ void ButtonUI::SetText(const TCHAR* txt)
 bool ButtonUI::Activate()
 {
    if (!ControlUI::Activate())  return false;
-   if (m_manager != NULL)  m_manager->SendNotify(this, _T("click"));
+   if (m_manager != NULL)  m_manager->SendNotify(this, "click");
    return true;
 }
 
@@ -168,7 +168,7 @@ void OptionUI::SetCheck(bool bSelected)
 {
    if (m_bSelected == bSelected)  return;
    m_bSelected = bSelected;
-   if (m_manager != NULL)  m_manager->SendNotify(this, _T("changed"));
+   if (m_manager != NULL)  m_manager->SendNotify(this, "changed");
    Invalidate();
 }
 

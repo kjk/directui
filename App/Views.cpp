@@ -45,7 +45,7 @@ void StandardPageWnd::OnPrepareAnimation()
 
 void StandardPageWnd::Notify(TNotifyUI& msg)
 {
-   if (msg.sType == _T("windowinit"))  OnPrepareAnimation();
+   if (str::Eq(msg.type, "windowinit"))  OnPrepareAnimation();
 }
 
 const TCHAR* StartPageWnd::GetWindowClassName() const 
@@ -318,7 +318,7 @@ const char* SystemsPageWnd::GetDialogResource() const
 
 void SystemsPageWnd::Notify(TNotifyUI& msg)
 {
-   if (msg.sType == _T("itemexpand"))  OnExpandItem(msg.pSender);
+   if (str::Eq(msg.type, "itemexpand"))  OnExpandItem(msg.pSender);
    StandardPageWnd::Notify(msg);
 }
 
@@ -420,7 +420,7 @@ void SearchPageWnd::Init()
 
 void SearchPageWnd::Notify(TNotifyUI& msg)
 {
-   if (msg.sType == _T("click"))  
+   if (str::Eq(msg.type, "click"))  
    {
       if (str::Eq(msg.pSender->GetName(), "ok"))  {
          StandardPageWnd* win = new EditPageWnd;
@@ -484,8 +484,8 @@ void EditPageWnd::Init()
 
 void EditPageWnd::Notify(TNotifyUI& msg)
 {
-   if (msg.sType == _T("click") && str::Eq(msg.pSender->GetName(), "cancel"))  Close();
-   if (msg.sType == _T("link") && str::Eq(msg.pSender->GetName(), "warning"))  {
+   if (str::Eq(msg.type, "click") && str::Eq(msg.pSender->GetName(), "cancel"))  Close();
+   if (str::Eq(msg.type, "link") && str::Eq(msg.pSender->GetName(), "warning"))  {
       PopupWnd* pPopup = new PopupWnd;
       pPopup->Create(m_hWnd, _T(""), UI_WNDSTYLE_DIALOG, UI_WNDSTYLE_EX_DIALOG, 0, 0, 0, 0, NULL);
       pPopup->ShowModal();
@@ -589,7 +589,7 @@ void PopupWnd::Init()
 
 void PopupWnd::Notify(TNotifyUI& msg)
 {
-   if (msg.sType == _T("click"))  Close();
+   if (str::Eq(msg.type, "click"))  Close();
    StandardPageWnd::Notify(msg);
 }
 

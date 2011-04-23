@@ -38,7 +38,7 @@ bool TabFolderUI::SelectItem(int idx)
    if (m_curPage != NULL)  m_curPage->SetVisible(false);
    m_curSel = idx;
    m_curPage = static_cast<ControlUI*>(m_items[idx]);
-   if (m_manager != NULL)  m_manager->SendNotify(this, _T("itemselect"));
+   if (m_manager != NULL)  m_manager->SendNotify(this, "itemselect");
    m_curPage->SetVisible(true);
    // Need to re-think the layout
    if (m_manager != NULL)  m_manager->UpdateLayout();

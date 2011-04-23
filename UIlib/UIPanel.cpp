@@ -42,9 +42,9 @@ bool NavigatorPanelUI::SelectItem(int idx)
       IListItemUI* listItem = static_cast<IListItemUI*>(ctrl->GetInterface("ListItem"));
       if (listItem == NULL)  return false;
       listItem->Select(true);
-      if (m_manager != NULL)  m_manager->SendNotify(ctrl, _T("itemclick"));
+      if (m_manager != NULL)  m_manager->SendNotify(ctrl, "itemclick");
    }
-   if (m_manager != NULL)  m_manager->SendNotify(this, _T("itemselect"));
+   if (m_manager != NULL)  m_manager->SendNotify(this, "itemselect");
    Invalidate();
    return true;
 }
@@ -106,7 +106,7 @@ void NavigatorButtonUI::Event(TEventUI& event)
       if ((m_uButtonState & UISTATE_CAPTURED) != 0)  {
          RECT rcButton = GetButtonRect(m_rcItem);
          if (::PtInRect(&rcButton, event.ptMouse))  {
-            m_manager->SendNotify(this, _T("link"));
+            m_manager->SendNotify(this, "link");
             Select();
          }
          m_uButtonState &= ~(UISTATE_PUSHED | UISTATE_CAPTURED);
@@ -422,7 +422,7 @@ const char* TextPanelUI::GetClass() const
 bool TextPanelUI::Activate()
 {
    if (!LabelPanelUI::Activate())  return false;
-   if (m_nLinks > 0)  m_manager->SendNotify(this, _T("link"));
+   if (m_nLinks > 0)  m_manager->SendNotify(this, "link");
    return true;
 }
 

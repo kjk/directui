@@ -447,7 +447,7 @@ bool PaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRE
                // to submit swipes/animations.
                if (m_firstLayout)  {
                   m_firstLayout = false;
-                  SendNotify(m_root, _T("windowinit"));
+                  SendNotify(m_root, "windowinit");
                }
             }
             // Reset offscreen device
@@ -1001,7 +1001,7 @@ void PaintManagerUI::SetFocus(ControlUI* ctrl)
       event.pSender = ctrl;
       event.dwTimestamp = ::GetTickCount();
       m_focus->Event(event);
-      SendNotify(m_focus, _T("killfocus"));
+      SendNotify(m_focus, "killfocus");
       m_focus = NULL;
    }
    // Set focus to new control
@@ -1016,7 +1016,7 @@ void PaintManagerUI::SetFocus(ControlUI* ctrl)
       event.pSender = ctrl;
       event.dwTimestamp = ::GetTickCount();
       m_focus->Event(event);
-      SendNotify(m_focus, _T("setfocus"));
+      SendNotify(m_focus, "setfocus");
    }
 }
 
@@ -1130,11 +1130,14 @@ bool PaintManagerUI::RemoveMessageFilter(IMessageFilterUI* filter)
    return false;
 }
 
-void PaintManagerUI::SendNotify(ControlUI* ctrl, const TCHAR* msg, WPARAM wParam /*= 0*/, LPARAM lParam /*= 0*/)
+// Note: we assume that msg has infinite lifetime
+// TODO: replace msg with msgId, have a bunch of known ids and ability
+// to register new ones (as a string)
+void PaintManagerUI::SendNotify(ControlUI* ctrl, const char* msg, WPARAM wParam /*= 0*/, LPARAM lParam /*= 0*/)
 {
    TNotifyUI Msg;
    Msg.pSender = ctrl;
-   Msg.sType = msg;
+   Msg.type = msg;
    Msg.wParam = 0;
    Msg.lParam = 0;
    SendNotify(Msg);
@@ -1509,7 +1512,7 @@ void ControlUI::Event(TEventUI& event)
    }
    if (event.Type == UIEVENT_TIMER) 
    {
-      m_manager->SendNotify(this, _T("timer"), event.wParam, event.lParam);
+      m_manager->SendNotify(this, "timer", event.wParam, event.lParam);
       return;
    }
    if (m_parent != NULL)  m_parent->Event(event);
