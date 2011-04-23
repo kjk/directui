@@ -80,8 +80,6 @@ public:
    const char* GetAttributeName(int idx);
    const char* GetAttributeValue(int idx);
    const char* GetAttributeValue(const char* name);
-   bool GetAttributeValue(int idx, char* value, size_t cchMax);
-   bool GetAttributeValue(const char* name, char* value, size_t cchMax);
 
 private:
    void _MapAttributes();

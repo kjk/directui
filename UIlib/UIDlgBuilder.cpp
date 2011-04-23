@@ -140,8 +140,6 @@ ControlUI* DialogBuilder::_ParseXml(MarkupNode* root, ControlUI* parent)
       }
       // Process attributes
       if (node.HasAttributes())  {
-         char val[500] = { 0 };
-         size_t cchLen = dimof(val) - 1;
          // Set ordinary attributes
          int nAttributes = node.GetAttributeCount();
          for (int i = 0; i < nAttributes; i++)  {
@@ -149,7 +147,8 @@ ControlUI* DialogBuilder::_ParseXml(MarkupNode* root, ControlUI* parent)
          }
 
          // Very custom attributes
-         if (node.GetAttributeValue("stretch", val, cchLen))  {
+         const char *val = node.GetAttributeValue("stretch");
+         if (val)  {
             if (pStretched == NULL)  pStretched = static_cast<DialogLayoutUI*>(parent->GetInterface("DialogLayout"));
             ASSERT(pStretched);
             if (pStretched == NULL)  return NULL;

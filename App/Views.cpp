@@ -53,6 +53,7 @@ const TCHAR* StartPageWnd::GetWindowClassName() const
    return _T("UIStart"); 
 }
 
+#if 0
 static const char* ResSimple()
 {
 return "\
@@ -84,6 +85,7 @@ Dialog\
             TextPanel name=link_reports text=<i 5 50><a><f 6>Rapporter</f></a\\n<h>\\n<c #444540>Rapporter giver dig overblik over registre samt hverdagens ture og bestillinger.\\n\\nGennem statistik og lister kan du hurtigt få præsenteret historiske data fra systemet.\
 ";
 }
+#endif
 
 const char* StartPageWnd::GetDialogResourceXml() const 
 { 

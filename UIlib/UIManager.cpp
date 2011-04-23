@@ -1303,6 +1303,7 @@ ControlUI* CALLBACK PaintManagerUI::__FindControlFromPoint(ControlUI* pThis, voi
 ControlUI::ControlUI() : 
    m_manager(NULL), 
    m_parent(NULL), 
+   m_name(NULL),
    m_tag(NULL),
    m_chShortcut('\0'),
    m_visible(true), 
@@ -1455,7 +1456,8 @@ void ControlUI::SetName(const char* name)
 
 void* ControlUI::GetInterface(const char* name)
 {
-   if (str::Eq(name, "Control") == 0)  return this;
+   if (str::Eq(name, "Control"))
+     return this;
    return NULL;
 }
 

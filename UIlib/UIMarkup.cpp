@@ -85,7 +85,7 @@ const char* MarkupNode::GetAttributeName(int idx)
 {
    if (m_owner == NULL)  return NULL;
    if (m_nAttributes == 0)  _MapAttributes();
-   if (idx < 0 || idx >= m_nAttributes)  return "";
+   if (idx < 0 || idx >= m_nAttributes)  return NULL;
    return m_owner->m_xml + m_aAttributes[idx].iName;
 }
 
@@ -93,7 +93,7 @@ const char* MarkupNode::GetAttributeValue(int idx)
 {
    if (m_owner == NULL)  return NULL;
    if (m_nAttributes == 0)  _MapAttributes();
-   if (idx < 0 || idx >= m_nAttributes)  return "";
+   if (idx < 0 || idx >= m_nAttributes)  return NULL;
    return m_owner->m_xml + m_aAttributes[idx].iValue;
 }
 
@@ -105,29 +105,7 @@ const char* MarkupNode::GetAttributeValue(const char* name)
       if (str::Eq(m_owner->m_xml + m_aAttributes[i].iName, name))
          return m_owner->m_xml + m_aAttributes[i].iValue;
    }
-   return "";
-}
-
-bool MarkupNode::GetAttributeValue(int idx, char* value, size_t cchMax)
-{
-   if (m_owner == NULL)  return false;
-   if (m_nAttributes == 0)  _MapAttributes();
-   if (idx < 0 || idx >= m_nAttributes)  return false;
-   strncpy(value, m_owner->m_xml + m_aAttributes[idx].iValue, cchMax);
-   return true;
-}
-
-bool MarkupNode::GetAttributeValue(const char* name, char* value, size_t cchMax)
-{
-   if (m_owner == NULL)  return false;
-   if (m_nAttributes == 0)  _MapAttributes();
-   for (int i = 0; i < m_nAttributes; i++)  {
-      if (str::Eq(m_owner->m_xml + m_aAttributes[i].iName, name))  {
-         strncpy(value, m_owner->m_xml + m_aAttributes[i].iValue, cchMax);
-         return true;
-      }
-   }
-   return false;
+   return NULL;
 }
 
 int MarkupNode::GetAttributeCount()

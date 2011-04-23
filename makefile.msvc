@@ -138,9 +138,9 @@ $(O)\App.obj: App\Views.h UIlib\UIActiveX.h UIlib\UIAnim.h
 $(O)\App.obj: UIlib\UIBase.h UIlib\UIBlue.h UIlib\UIButton.h
 $(O)\App.obj: UIlib\UICombo.h UIlib\UIContainer.h UIlib\UIDecoration.h
 $(O)\App.obj: UIlib\UIDlgBuilder.h UIlib\UIEdit.h UIlib\UILabel.h
-$(O)\App.obj: UIlib\UIlist.h UIlib\UIList.h UIlib\UIManager.h
-$(O)\App.obj: UIlib\UIMarkup.h UIlib\UIPanel.h UIlib\UITab.h
-$(O)\App.obj: UIlib\UITool.h
+$(O)\App.obj: UIlib\UIlib.h UIlib\UIlist.h UIlib\UIList.h
+$(O)\App.obj: UIlib\UIManager.h UIlib\UIMarkup.h UIlib\UIPanel.h
+$(O)\App.obj: UIlib\UITab.h UIlib\UITool.h
 $(O)\StdAfx.obj: App\..\UIlib\UIlib.h App\stdafx.h UIlib\UIActiveX.h
 $(O)\StdAfx.obj: UIlib\UIAnim.h UIlib\UIBase.h UIlib\UIBlue.h
 $(O)\StdAfx.obj: UIlib\UIButton.h UIlib\UICombo.h UIlib\UIContainer.h
