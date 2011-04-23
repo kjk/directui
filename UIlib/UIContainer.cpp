@@ -23,9 +23,9 @@ const char* ContainerUI::GetClass() const
    return "ContainerUI";
 }
 
-void* ContainerUI::GetInterface(const TCHAR* name)
+void* ContainerUI::GetInterface(const char* name)
 {
-   if (_tcscmp(name, _T("Container")) == 0)  return static_cast<IContainerUI*>(this);
+   if (str::Eq(name, "Container"))  return static_cast<IContainerUI*>(this);
    return ControlUI::GetInterface(name);
 }
 
@@ -214,7 +214,7 @@ int ContainerUI::FindSelectable(int idx, bool bForward /*= true*/) const
    idx = CLAMP(idx, 0, GetCount() - 1);
    if (bForward)  {
       for (int i = idx; i < GetCount(); i++)  {
-         if (GetItem(i)->GetInterface(_T("ListItem")) != NULL 
+         if (GetItem(i)->GetInterface("ListItem") != NULL 
              && GetItem(i)->IsVisible()
              && GetItem(i)->IsEnabled())  return i;
       }
@@ -222,7 +222,7 @@ int ContainerUI::FindSelectable(int idx, bool bForward /*= true*/) const
    }
    else {
       for (int i = idx; i >= 0; --i)  {
-         if (GetItem(i)->GetInterface(_T("ListItem")) != NULL 
+         if (GetItem(i)->GetInterface("ListItem") != NULL 
              && GetItem(i)->IsVisible()
              && GetItem(i)->IsEnabled())  return i;
       }
@@ -648,9 +648,9 @@ const char* DialogLayoutUI::GetClass() const
    return "DialogLayoutUI";
 }
 
-void* DialogLayoutUI::GetInterface(const TCHAR* name)
+void* DialogLayoutUI::GetInterface(const char* name)
 {
-   if (_tcscmp(name, _T("DialogLayout")) == 0)  return this;
+   if (str::Eq(name, "DialogLayout"))  return this;
    return ContainerUI::GetInterface(name);
 }
 

@@ -67,7 +67,7 @@ HIMAGELIST m_himgIcons50 = NULL;
 
 HINSTANCE PaintManagerUI::m_hInstance = NULL;
 HINSTANCE PaintManagerUI::m_hLangInst = NULL;
-StdPtrArray PaintManagerUI::m_aPreMessages;
+StdPtrArray PaintManagerUI::m_preMessages;
 
 PaintManagerUI::PaintManagerUI() :
    m_hWndPaint(NULL),
@@ -232,7 +232,7 @@ PaintManagerUI::~PaintManagerUI()
    if (m_hDcOffscreen != NULL)  ::DeleteDC(m_hDcOffscreen);
    if (m_hbmpOffscreen != NULL)  ::DeleteObject(m_hbmpOffscreen);
    if (m_hDcPaint != NULL)  ::ReleaseDC(m_hWndPaint, m_hDcPaint);
-   m_aPreMessages.Remove(m_aPreMessages.Find(this));
+   m_preMessages.Remove(m_preMessages.Find(this));
 }
 
 void PaintManagerUI::Init(HWND hWnd)
@@ -242,7 +242,7 @@ void PaintManagerUI::Init(HWND hWnd)
    m_hWndPaint = hWnd;
    m_hDcPaint = ::GetDC(hWnd);
    // We'll want to filter messages globally too
-   m_aPreMessages.Add(this);
+   m_preMessages.Add(this);
 }
 
 HINSTANCE PaintManagerUI::GetResourceInstance()
@@ -958,8 +958,8 @@ bool PaintManagerUI::TranslateMessage(const MSG* pMsg)
    HWND hwndParent = ::GetParent(pMsg->hwnd);
    UINT uStyle = GetWindowStyle(pMsg->hwnd);
    LRESULT lRes = 0;
-   for (int i = 0; i < m_aPreMessages.GetSize(); i++)  {
-      PaintManagerUI* pT = static_cast<PaintManagerUI*>(m_aPreMessages[i]);
+   for (int i = 0; i < m_preMessages.GetSize(); i++)  {
+      PaintManagerUI* pT = static_cast<PaintManagerUI*>(m_preMessages[i]);
       if (pMsg->hwnd == pT->GetPaintWindow()
          || (hwndParent == pT->GetPaintWindow() && ((uStyle & WS_CHILD) != 0))) 
       {
@@ -1450,9 +1450,9 @@ void ControlUI::SetName(const char* name)
    str::Replace(m_name, name);
 }
 
-void* ControlUI::GetInterface(const TCHAR* name)
+void* ControlUI::GetInterface(const char* name)
 {
-   if (_tcscmp(name, _T("Control")) == 0)  return this;
+   if (str::Eq(name, "Control") == 0)  return this;
    return NULL;
 }
 

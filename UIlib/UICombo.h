@@ -28,8 +28,8 @@ class UILIB_API DropDownUI : public ContainerUI, public IListOwnerUI
 public:
    DropDownUI();
 
-   const char* GetClass() const;
-   void* GetInterface(const TCHAR* name);
+   virtual const char* GetClass() const;
+   virtual void* GetInterface(const char* name);
    
    void Init();
    UINT GetControlFlags() const;

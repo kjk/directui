@@ -18,8 +18,8 @@ public:
    virtual ~ContainerUI();
 
 public:
-   const char* GetClass() const;
-   LPVOID GetInterface(const TCHAR* name);
+   virtual const char* GetClass() const;
+   virtual void* GetInterface(const char* name);
 
    ControlUI* GetItem(int idx) const;
    int GetCount() const;
@@ -176,8 +176,8 @@ class UILIB_API DialogLayoutUI : public ContainerUI
 public:
    DialogLayoutUI();
 
-   const char* GetClass() const;
-   void* GetInterface(const TCHAR* name);
+   virtual const char* GetClass() const;
+   virtual void* GetInterface(const char* name);
 
    void SetStretchMode(ControlUI* ctrl, UINT uMode);
 

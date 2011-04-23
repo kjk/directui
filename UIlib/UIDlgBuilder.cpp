@@ -133,7 +133,7 @@ ControlUI* DialogBuilder::_Parse(MarkupNode* root, ControlUI* parent)
       }
       // Attach to parent
       if (parent != NULL)  {
-         if (pContainer == NULL)  pContainer = static_cast<IContainerUI*>(parent->GetInterface(_T("Container")));
+         if (pContainer == NULL)  pContainer = static_cast<IContainerUI*>(parent->GetInterface("Container"));
          ASSERT(pContainer);
          if (pContainer == NULL)  return NULL;
          pContainer->Add(ctrl);
@@ -141,7 +141,7 @@ ControlUI* DialogBuilder::_Parse(MarkupNode* root, ControlUI* parent)
       // Process attributes
       if (node.HasAttributes())  {
          char val[500] = { 0 };
-         SIZE_T cchLen = dimof(val) - 1;
+         size_t cchLen = dimof(val) - 1;
          // Set ordinary attributes
          int nAttributes = node.GetAttributeCount();
          for (int i = 0; i < nAttributes; i++)  {
@@ -150,7 +150,7 @@ ControlUI* DialogBuilder::_Parse(MarkupNode* root, ControlUI* parent)
 
          // Very custom attributes
          if (node.GetAttributeValue("stretch", val, cchLen))  {
-            if (pStretched == NULL)  pStretched = static_cast<DialogLayoutUI*>(parent->GetInterface(_T("DialogLayout")));
+            if (pStretched == NULL)  pStretched = static_cast<DialogLayoutUI*>(parent->GetInterface("DialogLayout"));
             ASSERT(pStretched);
             if (pStretched == NULL)  return NULL;
             UINT uMode = 0;

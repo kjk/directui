@@ -324,11 +324,11 @@ private:
    static ControlUI* CALLBACK __FindControlFromShortcut(ControlUI* pThis, void* data);
 
 private:
-   HWND m_hWndPaint;
-   HDC m_hDcPaint;
-   HDC m_hDcOffscreen;
-   HBITMAP m_hbmpOffscreen;
-   HWND m_hwndTooltip;
+   HWND     m_hWndPaint;
+   HDC      m_hDcPaint;
+   HDC      m_hDcOffscreen;
+   HBITMAP  m_hbmpOffscreen;
+   HWND     m_hwndTooltip;
    TOOLINFO m_toolTip;
    //
    ControlUI* m_root;
@@ -346,20 +346,20 @@ private:
    bool m_focusNeeded;
    bool m_offscreenPaint;
    bool m_mouseTracking;
-   //
+
    TSystemMetricsUI m_SystemMetrics;
    TSystemSettingsUI m_SystemConfig;
-   //
+
    StdPtrArray m_notifiers;
    StdPtrArray m_nameHash;
    StdPtrArray m_timers;
    StdValArray m_postPaint;
    StdPtrArray m_messageFilters;
    StdPtrArray m_delayedCleanup;
-   //
+
    static HINSTANCE m_hLangInst;
    static HINSTANCE m_hInstance;
-   static StdPtrArray m_aPreMessages;
+   static StdPtrArray m_preMessages;
 };
 
 typedef ControlUI* (CALLBACK* FINDCONTROLPROC)(ControlUI*, void*);
@@ -374,7 +374,7 @@ public:
    const char* GetName() const;
    void        SetName(const char* name);
 
-   virtual void* GetInterface(const TCHAR* name);
+   virtual void* GetInterface(const char* name);
 
    virtual bool Activate();
    virtual ControlUI* GetParent() const;

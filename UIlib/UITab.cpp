@@ -148,6 +148,6 @@ bool TabPageUI::Activate()
 {
    if (!ContainerUI::Activate())  return false;
    ControlUI* parent = GetParent();
-   if (parent == NULL || parent->GetInterface(_T("ListOwner")) == NULL)  return false;
-   return static_cast<IListOwnerUI*>(parent->GetInterface(_T("ListOwner")))->SelectItem(0 /*m_idx*/);
+   if (parent == NULL || parent->GetInterface("ListOwner") == NULL)  return false;
+   return static_cast<IListOwnerUI*>(parent->GetInterface("ListOwner"))->SelectItem(0 /*m_idx*/);
 }

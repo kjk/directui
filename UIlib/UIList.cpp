@@ -17,15 +17,15 @@ UINT ListElementUI::GetControlFlags() const
    return UIFLAG_WANTRETURN;
 }
 
-void* ListElementUI::GetInterface(const TCHAR* name)
+void* ListElementUI::GetInterface(const char* name)
 {
-   if (_tcscmp(name, _T("ListItem")) == 0)  return static_cast<IListItemUI*>(this);
+   if (str::Eq(name, "ListItem"))  return static_cast<IListItemUI*>(this);
    return ControlUI::GetInterface(name);
 }
 
 void ListElementUI::SetOwner(ControlUI* owner)
 {
-   m_owner = static_cast<IListOwnerUI*>(owner->GetInterface(_T("ListOwner")));
+   m_owner = static_cast<IListOwnerUI*>(owner->GetInterface("ListOwner"));
 }
 
 int ListElementUI::GetIndex() const
@@ -108,9 +108,9 @@ const char* ListHeaderUI::GetClass() const
    return "ListHeaderUI";
 }
 
-void* ListHeaderUI::GetInterface(const TCHAR* name)
+void* ListHeaderUI::GetInterface(const char* name)
 {
-   if (_tcscmp(name, _T("ListHeader")) == 0)  return this;
+   if (str::Eq(name, "ListHeader"))  return this;
    return HorizontalLayoutUI::GetInterface(name);
 }
 
@@ -252,9 +252,9 @@ const char* ListFooterUI::GetClass() const
    return "ListFooterUI";
 }
 
-void* ListFooterUI::GetInterface(const TCHAR* name)
+void* ListFooterUI::GetInterface(const char* name)
 {
-   if (_tcscmp(name, _T("ListFooter")) == 0)  return this;
+   if (str::Eq(name, "ListFooter"))  return this;
    return HorizontalLayoutUI::GetInterface(name);
 }
 
@@ -308,10 +308,10 @@ UINT ListUI::GetControlFlags() const
    return UIFLAG_TABSTOP;
 }
 
-void* ListUI::GetInterface(const TCHAR* name)
+void* ListUI::GetInterface(const char* name)
 {
-   if (_tcscmp(name, _T("List")) == 0)  return static_cast<IListUI*>(this);
-   if (_tcscmp(name, _T("ListOwner")) == 0)  return static_cast<IListOwnerUI*>(this);
+   if (str::Eq(name, "List"))  return static_cast<IListUI*>(this);
+   if (str::Eq(name, "ListOwner"))  return static_cast<IListOwnerUI*>(this);
    return VerticalLayoutUI::GetInterface(name);
 }
 
@@ -320,13 +320,13 @@ bool ListUI::Add(ControlUI* ctrl)
    // Override the Add() method so we can add items specifically to
    // the intended widgets. Headers and footers are assumed to be
    // answer the correct interface so we can add multiple list headers/footers.
-   if (ctrl->GetInterface(_T("ListHeader")) != NULL)  return VerticalLayoutUI::Add(ctrl);
-   if (ctrl->GetInterface(_T("ListFooter")) != NULL)  return VerticalLayoutUI::Add(ctrl);
+   if (ctrl->GetInterface("ListHeader") != NULL)  return VerticalLayoutUI::Add(ctrl);
+   if (ctrl->GetInterface("ListFooter") != NULL)  return VerticalLayoutUI::Add(ctrl);
    // We also need to recognize header sub-items
    if (str::Find(ctrl->GetClass(), "Header") != NULL)  return m_header->Add(ctrl);
    if (str::Find(ctrl->GetClass(), "Footer") != NULL)  return m_footer->Add(ctrl);
    // The list items should know about us
-   IListItemUI* listItem = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
+   IListItemUI* listItem = static_cast<IListItemUI*>(ctrl->GetInterface("ListItem"));
    if (listItem != NULL)  {
       listItem->SetOwner(this);
       listItem->SetIndex(GetCount());
@@ -464,7 +464,7 @@ bool ListUI::SelectItem(int idx)
    if (m_curSel >= 0)  {
       ControlUI* ctrl = GetItem(m_curSel);
       if (ctrl != NULL)  {
-         IListItemUI* listItem = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
+         IListItemUI* listItem = static_cast<IListItemUI*>(ctrl->GetInterface("ListItem"));
          if (listItem != NULL)  listItem->Select(false);
       }
    }
@@ -474,7 +474,7 @@ bool ListUI::SelectItem(int idx)
    if (ctrl == NULL)  return false;
    if (!ctrl->IsVisible())  return false;
    if (!ctrl->IsEnabled())  return false;
-   IListItemUI* listItem = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
+   IListItemUI* listItem = static_cast<IListItemUI*>(ctrl->GetInterface("ListItem"));
    if (listItem == NULL)  return false;
    m_curSel = idx;
    if (!listItem->Select(true))  {
@@ -506,7 +506,7 @@ bool ListUI::ExpandItem(int idx, bool bExpand /*= true*/)
    if (m_expandedItem >= 0)  {
       ControlUI* ctrl = GetItem(m_expandedItem);
       if (ctrl != NULL)  {
-         IListItemUI* item = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
+         IListItemUI* item = static_cast<IListItemUI*>(ctrl->GetInterface("ListItem"));
          if (item != NULL)  item->Expand(false);
       }
       m_expandedItem = -1;
@@ -515,7 +515,7 @@ bool ListUI::ExpandItem(int idx, bool bExpand /*= true*/)
       ControlUI* ctrl = GetItem(idx);
       if (ctrl == NULL)  return false;
       if (!ctrl->IsVisible())  return false;
-      IListItemUI* item = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
+      IListItemUI* item = static_cast<IListItemUI*>(ctrl->GetInterface("ListItem"));
       if (item == NULL)  return false;
       m_expandedItem = idx;
       if (!item->Expand(true))  {
@@ -692,7 +692,7 @@ UINT ListTextElementUI::GetControlFlags() const
 void ListTextElementUI::SetOwner(ControlUI* owner)
 {
    ListElementUI::SetOwner(owner);
-   m_owner = static_cast<IListUI*>(owner->GetInterface(_T("List")));
+   m_owner = static_cast<IListUI*>(owner->GetInterface("List"));
 }
 
 void ListTextElementUI::Event(TEventUI& event)

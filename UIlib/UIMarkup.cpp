@@ -108,7 +108,7 @@ const char* MarkupNode::GetAttributeValue(const char* name)
    return "";
 }
 
-bool MarkupNode::GetAttributeValue(int idx, char* value, SIZE_T cchMax)
+bool MarkupNode::GetAttributeValue(int idx, char* value, size_t cchMax)
 {
    if (m_owner == NULL)  return false;
    if (m_nAttributes == 0)  _MapAttributes();
@@ -117,7 +117,7 @@ bool MarkupNode::GetAttributeValue(int idx, char* value, SIZE_T cchMax)
    return true;
 }
 
-bool MarkupNode::GetAttributeValue(const char* name, char* value, SIZE_T cchMax)
+bool MarkupNode::GetAttributeValue(const char* name, char* value, size_t cchMax)
 {
    if (m_owner == NULL)  return false;
    if (m_nAttributes == 0)  _MapAttributes();
@@ -199,7 +199,7 @@ void MarkupParser::SetPreserveWhitespace(bool bPreserve)
 bool MarkupParser::Load(const char* xml)
 {
    Release();
-   SIZE_T cbLen = str::Len(xml) + 1;
+   size_t cbLen = str::Len(xml) + 1;
    m_xml = static_cast<char*>(malloc(cbLen));
    ::CopyMemory(m_xml, xml, cbLen);
    bool bRes = _Parse();
@@ -240,12 +240,12 @@ void MarkupParser::Release()
    m_nElements;
 }
 
-void MarkupParser::GetLastErrorMessage(char* msg, SIZE_T cchMax) const
+void MarkupParser::GetLastErrorMessage(char* msg, size_t cchMax) const
 {
    strncpy(msg, m_errorMsg, cchMax);
 }
 
-void MarkupParser::GetLastErrorLocation(char* src, SIZE_T cchMax) const
+void MarkupParser::GetLastErrorLocation(char* src, size_t cchMax) const
 {
    strncpy(src, m_errorXml, cchMax);
 }
@@ -326,7 +326,7 @@ bool MarkupParser::_Parse(char*& txt, ULONG iParent)
             *pstrDest = '\0';
             *txt = '\0';
             txt += 2;
-            SIZE_T cchName = nameEnd - name;
+            size_t cchName = nameEnd - name;
             if (!str::EqN(txt, name, cchName))
                 return _Failed("Unmatched closing tag", txt);
             if (txt[cchName] != '>')

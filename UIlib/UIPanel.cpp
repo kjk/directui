@@ -12,9 +12,9 @@ const char* NavigatorPanelUI::GetClass() const
    return "NavigatorPanelUI";
 }
 
-void* NavigatorPanelUI::GetInterface(const TCHAR* name)
+void* NavigatorPanelUI::GetInterface(const char* name)
 {
-   if (_tcscmp(name, _T("ListOwner")) == 0)  return static_cast<IListOwnerUI*>(this);
+   if (str::Eq(name, "ListOwner")) return static_cast<IListOwnerUI*>(this);
    return VerticalLayoutUI::GetInterface(name);
 }
 
@@ -33,13 +33,13 @@ bool NavigatorPanelUI::SelectItem(int idx)
    if (idx == m_curSel)  return true;
    if (m_curSel >= 0)  {
       ControlUI* ctrl = GetItem(m_curSel);
-      IListItemUI* listItem = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
+      IListItemUI* listItem = static_cast<IListItemUI*>(ctrl->GetInterface("ListItem"));
       if (listItem != NULL)  listItem->Select(false);
    }
    m_curSel = idx;
    if (m_curSel >= 0)  {
       ControlUI* ctrl = GetItem(m_curSel);
-      IListItemUI* listItem = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
+      IListItemUI* listItem = static_cast<IListItemUI*>(ctrl->GetInterface("ListItem"));
       if (listItem == NULL)  return false;
       listItem->Select(true);
       if (m_manager != NULL)  m_manager->SendNotify(ctrl, _T("itemclick"));
@@ -51,7 +51,7 @@ bool NavigatorPanelUI::SelectItem(int idx)
 
 bool NavigatorPanelUI::Add(ControlUI* ctrl)
 {
-   IListItemUI* listItem = static_cast<IListItemUI*>(ctrl->GetInterface(_T("ListItem")));
+   IListItemUI* listItem = static_cast<IListItemUI*>(ctrl->GetInterface("ListItem"));
    if (listItem != NULL)  {
       listItem->SetOwner(this);
       listItem->SetIndex(m_items.GetSize());

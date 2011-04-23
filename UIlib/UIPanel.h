@@ -31,7 +31,7 @@ public:
    NavigatorPanelUI();
 
    const char* GetClass() const;   
-   void* GetInterface(const TCHAR* name);
+   void* GetInterface(const char* name);
 
    bool Add(ControlUI* ctrl);
 

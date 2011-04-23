@@ -490,7 +490,7 @@ void StdPtrArray::Resize(int iSize)
 {
    Empty();
    m_ppVoid = static_cast<void**>(malloc(iSize * sizeof(void*)));
-   ::ZeroMemory(m_ppVoid, iSize * sizeof(LPVOID));
+   ::ZeroMemory(m_ppVoid, iSize * sizeof(void*));
    m_nAllocated = iSize;
    m_nCount = iSize;
 }

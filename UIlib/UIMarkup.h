@@ -17,8 +17,8 @@ public:
    bool IsValid() const;
 
    void SetPreserveWhitespace(bool bPreserve = true);
-   void GetLastErrorMessage(char* msg, SIZE_T cchMax) const;
-   void GetLastErrorLocation(char* pstrSource, SIZE_T cchMax) const;
+   void GetLastErrorMessage(char* msg, size_t cchMax) const;
+   void GetLastErrorLocation(char* pstrSource, size_t cchMax) const;
 
    MarkupNode GetRoot();
 
@@ -80,8 +80,8 @@ public:
    const char* GetAttributeName(int idx);
    const char* GetAttributeValue(int idx);
    const char* GetAttributeValue(const char* name);
-   bool GetAttributeValue(int idx, char* value, SIZE_T cchMax);
-   bool GetAttributeValue(const char* name, char* value, SIZE_T cchMax);
+   bool GetAttributeValue(int idx, char* value, size_t cchMax);
+   bool GetAttributeValue(const char* name, char* value, size_t cchMax);
 
 private:
    void _MapAttributes();

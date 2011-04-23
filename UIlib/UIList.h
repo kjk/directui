@@ -66,7 +66,7 @@ public:
    ListElementUI();
 
    UINT GetControlFlags() const;
-   void* GetInterface(const TCHAR* name);
+   virtual void* GetInterface(const char* name);
 
    int GetIndex() const;
    void SetIndex(int idx);
@@ -94,8 +94,8 @@ class UILIB_API ListHeaderUI : public HorizontalLayoutUI
 public:
    ListHeaderUI();
 
-   const char* GetClass() const;
-   void* GetInterface(const TCHAR* name);
+   virtual const char* GetClass() const;
+   virtual void* GetInterface(const char* name);
 
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
@@ -132,8 +132,8 @@ class UILIB_API ListFooterUI : public HorizontalLayoutUI
 public:
    ListFooterUI();
 
-   const char* GetClass() const;
-   void* GetInterface(const TCHAR* name);
+   virtual const char* GetClass() const;
+   virtual void* GetInterface(const char* name);
 
    SIZE EstimateSize(SIZE szAvailable);
    void DoPaint(HDC hDC, const RECT& rcPaint);
@@ -144,9 +144,9 @@ class UILIB_API ListUI : public VerticalLayoutUI, public IListUI
 public:
    ListUI();
 
-   const char* GetClass() const;
+   virtual const char* GetClass() const;
    UINT GetControlFlags() const;
-   void* GetInterface(const TCHAR* name);
+   virtual void* GetInterface(const char* name);
 
    int GetCurSel() const;
    bool SelectItem(int idx);
