@@ -7,6 +7,9 @@
     <Filter Include="App">
       <UniqueIdentifier>{da419723-df32-47b8-bd26-b2ad3d454f0a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="UIlib\util">
+      <UniqueIdentifier>{6ab9e8da-3834-4874-b3db-0fc451a6cf14}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="UIlib\StdAfx.h">
@@ -75,6 +78,27 @@
     <ClInclude Include="App\Views.h">
       <Filter>App</Filter>
     </ClInclude>
+    <ClInclude Include="UIlib\util\BaseUtil.h">
+      <Filter>UIlib\util</Filter>
+    </ClInclude>
+    <ClInclude Include="UIlib\util\FileUtil.h">
+      <Filter>UIlib\util</Filter>
+    </ClInclude>
+    <ClInclude Include="UIlib\util\Http.h">
+      <Filter>UIlib\util</Filter>
+    </ClInclude>
+    <ClInclude Include="UIlib\util\SettingsParser.h">
+      <Filter>UIlib\util</Filter>
+    </ClInclude>
+    <ClInclude Include="UIlib\util\StrUtil.h">
+      <Filter>UIlib\util</Filter>
+    </ClInclude>
+    <ClInclude Include="UIlib\util\Vec.h">
+      <Filter>UIlib\util</Filter>
+    </ClInclude>
+    <ClInclude Include="UIlib\util\WinUtil.h">
+      <Filter>UIlib\util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="UIlib\UIActiveX.cpp">
@@ -139,6 +163,18 @@
     </ClCompile>
     <ClCompile Include="App\Views.cpp">
       <Filter>App</Filter>
+    </ClCompile>
+    <ClCompile Include="UIlib\util\FileUtil.cpp">
+      <Filter>UIlib\util</Filter>
+    </ClCompile>
+    <ClCompile Include="UIlib\util\Http.cpp">
+      <Filter>UIlib\util</Filter>
+    </ClCompile>
+    <ClCompile Include="UIlib\util\SettingsParser.cpp">
+      <Filter>UIlib\util</Filter>
+    </ClCompile>
+    <ClCompile Include="UIlib\util\StrUtil.cpp">
+      <Filter>UIlib\util</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

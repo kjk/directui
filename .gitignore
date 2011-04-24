@@ -3,5 +3,6 @@
 *.suo
 *.sdf
 *.opensdf
+*.pyc
 dbg/
 rel/

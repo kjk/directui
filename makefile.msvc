@@ -62,7 +62,7 @@ CFLAGS = $(CFLAGS) /MDd /EHsc /D "DEBUG" /D "_DEBUG"
 
 WINVER_DEFS =  /D "WINVER=0x0501" /D "_WIN32_WINNT=0x0501"
 
-CFLAGS = $(CFLAGS) $(WINVER_DEFS) /I$(UIL) /D "UILIB_API="
+CFLAGS = $(CFLAGS) $(WINVER_DEFS) /I$(UIL) /I$(UIL)/util /D "UILIB_API="
 
 #CFLAGS = $(CFLAGS) /D"UNICODE" /D"_UNICODE"
 
@@ -81,9 +81,12 @@ TA_RES = $(OTA)TestApp.res
 TA_MANIFEST = $(OTA)\TestApp.manifest.res
 TA_APP = $(O)\TestApp.exe
 
-UIL_OBJS = $(OUI)\UIActiveX.obj $(OUI)\UIAnim.obj $(OUI)\UIBase.obj \
-	$(OUI)\UIBlue.obj $(OUI)\UIButton.obj $(OUI)\UICombo.obj \
-	$(OUI)\UIContainer.obj $(OUI)\UIDecoration.obj \
+UTIL_OBJS = $(OUI)\FileUtil.obj $(OUI)\Http.obj $(OUI)\SettingsParser.obj \
+	$(OUI)\StrUtil.obj
+
+UIL_OBJS = $(UTIL_OBJS) $(OUI)\UIActiveX.obj $(OUI)\UIAnim.obj \
+	$(OUI)\UIBase.obj $(OUI)\UIBlue.obj $(OUI)\UIButton.obj \
+	$(OUI)\UICombo.obj $(OUI)\UIContainer.obj $(OUI)\UIDecoration.obj \
 	$(OUI)\UIDlgBuilder.obj $(OUI)\UIEdit.obj $(OUI)\UILabel.obj \
 	$(OUI)\UIList.obj $(OUI)\UIManager.obj $(OUI)\UIMarkup.obj \
 	$(OUI)\UIPanel.obj $(OUI)\UITab.obj $(OUI)\UITool.obj $(OUI)\UIlib.obj
@@ -123,6 +126,9 @@ $(TA_APP): $(TA_OBJS)
 	$(LD) $(LDFLAGS) $** $(LIBS) /PDB:$*.pdb /OUT:$@ 
 
 {UIlib\}.cpp{$(OUI)}.obj::
+	$(CC) /TP $(CFLAGS) /Fo$(OUI)\ /Fd$(O)\vc80.pdb $<
+
+{UIlib\util}.cpp{$(OUI)}.obj::
 	$(CC) /TP $(CFLAGS) /Fo$(OUI)\ /Fd$(O)\vc80.pdb $<
 
 {App\}.cpp{$(OTA)}.obj::

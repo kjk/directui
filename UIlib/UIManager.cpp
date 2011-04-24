@@ -1303,6 +1303,8 @@ ControlUI::ControlUI() :
    m_manager(NULL), 
    m_parent(NULL), 
    m_name(NULL),
+   m_txt(NULL),
+   m_toolTip(NULL),
    m_tag(NULL),
    m_chShortcut('\0'),
    m_visible(true), 
@@ -1531,8 +1533,8 @@ void ControlUI::SetAttribute(const char* name, const char* value)
 // foo="value of foo",bar="value of bar"
 ControlUI* ControlUI::ApplyAttributeList(const char* attrList)
 {
-   ASSERT(0);
-   char *s = str::Dup(attrList);
+   ScopedMem<char> attrListCopy(str::Dup(attrList));
+   char *s = attrListCopy;
    char *name, *value;
    while (*s)  {
       while (*s == ' ')
@@ -1558,6 +1560,5 @@ ControlUI* ControlUI::ApplyAttributeList(const char* attrList)
       if (*s++ != ',')
         break;
    }
-   free(s);
    return this;
 }

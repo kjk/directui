@@ -33,6 +33,13 @@
     <ClInclude Include="UIlib\UIPanel.h" />
     <ClInclude Include="UIlib\UITab.h" />
     <ClInclude Include="UIlib\UITool.h" />
+    <ClInclude Include="UIlib\util\BaseUtil.h" />
+    <ClInclude Include="UIlib\util\FileUtil.h" />
+    <ClInclude Include="UIlib\util\Http.h" />
+    <ClInclude Include="UIlib\util\SettingsParser.h" />
+    <ClInclude Include="UIlib\util\StrUtil.h" />
+    <ClInclude Include="UIlib\util\Vec.h" />
+    <ClInclude Include="UIlib\util\WinUtil.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\App.cpp" />
@@ -56,6 +63,10 @@
     <ClCompile Include="UIlib\UIPanel.cpp" />
     <ClCompile Include="UIlib\UITab.cpp" />
     <ClCompile Include="UIlib\UITool.cpp" />
+    <ClCompile Include="UIlib\util\FileUtil.cpp" />
+    <ClCompile Include="UIlib\util\Http.cpp" />
+    <ClCompile Include="UIlib\util\SettingsParser.cpp" />
+    <ClCompile Include="UIlib\util\StrUtil.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="App\App.exe.manifest" />

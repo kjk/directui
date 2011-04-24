@@ -8,7 +8,6 @@
 #include <d3d9.h>
 #include <math.h>
 
-#define dimof(x) (sizeof(x)/sizeof(*x))
 #define MAX max
 #define MIN min
 #define CLAMP(x,a,b) (MIN(b,MAX(a,x)))
