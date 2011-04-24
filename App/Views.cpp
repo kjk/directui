@@ -266,19 +266,20 @@ const char* RegistersPageWnd::GetDialogResourceXml() const
 
 void RegistersPageWnd::OnPrepareAnimation()
 {
-   ListUI* pList = static_cast<ListUI*>(m_pm.FindControl("list"));
-   pList->SetTextCallback(this);                                          // We want GetItemText for items
-   for (int i = 0; i < 1000; i++)  pList->Add(new ListTextElementUI);    // We want 1000 items in list
+   ListUI* list = static_cast<ListUI*>(m_pm.FindControl("list"));
+   list->SetTextCallback(this);            // We want GetItemText for items
+   for (int i = 0; i < 1000; i++)
+      list->Add(new ListTextElementUI);    // We want 1000 items in list
 }
 
-const TCHAR* RegistersPageWnd::GetItemText(ControlUI* ctrl, int idx, int subItem)
+const char* RegistersPageWnd::GetItemText(ControlUI* ctrl, int idx, int subItem)
 {
-   if (idx == 0 && subItem == 0)  return _T("<i 3>Item1");
-   if (idx == 1 && subItem == 0)  return _T("<i 3>Item2");
-   if (idx == 2 && subItem == 0)  return _T("<i 3>Item3");
-   if (idx == 0 && subItem == 1)  return _T("Horse");
-   if (idx == 1 && subItem == 1)  return _T("Dog");
-   if (idx == 2 && subItem == 1)  return _T("Rabbit");
+   if (idx == 0 && subItem == 0)  return "<i 3>Item1";
+   if (idx == 1 && subItem == 0)  return "<i 3>Item2";
+   if (idx == 2 && subItem == 0)  return "<i 3>Item3";
+   if (idx == 0 && subItem == 1)  return "Horse";
+   if (idx == 1 && subItem == 1)  return "Dog";
+   if (idx == 2 && subItem == 1)  return "Rabbit";
    static StdString sTemp;
    sTemp.Format(_T("Item %d %d"), idx, subItem);
    return sTemp;
@@ -356,18 +357,18 @@ void SystemsPageWnd::Notify(TNotifyUI& msg)
    StandardPageWnd::Notify(msg);
 }
 
-const TCHAR* SystemsPageWnd::GetItemText(ControlUI* ctrl, int idx, int subItem)
+const char* SystemsPageWnd::GetItemText(ControlUI* ctrl, int idx, int subItem)
 {
-   if (idx == 0 && subItem == 1)  return _T("Expanding Item #1");
-   if (idx == 1 && subItem == 1)  return _T("Expanding Item #2");
-   if (idx == 2 && subItem == 1)  return _T("Expanding Item #3");
-   if (idx == 0 && subItem == 2)  return _T("100.0");
-   if (idx == 1 && subItem == 2)  return _T("20.0");
-   if (idx == 2 && subItem == 2)  return _T("30.0");
-   if (idx == 0 && subItem == 3)  return _T("<a>Kunde #1</a>");
-   if (idx == 1 && subItem == 3)  return _T("");
-   if (idx == 2 && subItem == 3)  return _T("<a>Kunde #3</a>");
-   return _T("");
+   if (idx == 0 && subItem == 1)  return "Expanding Item #1";
+   if (idx == 1 && subItem == 1)  return "Expanding Item #2";
+   if (idx == 2 && subItem == 1)  return "Expanding Item #3";
+   if (idx == 0 && subItem == 2)  return "100.0";
+   if (idx == 1 && subItem == 2)  return "20.0";
+   if (idx == 2 && subItem == 2)  return "30.0";
+   if (idx == 0 && subItem == 3)  return "<a>Kunde #1</a>";
+   if (idx == 1 && subItem == 3)  return "";
+   if (idx == 2 && subItem == 3)  return "<a>Kunde #3</a>";
+   return "";
 }
 
 int SystemsPageWnd::CompareItem(ControlUI* pList, ControlUI* item1, ControlUI* item2)

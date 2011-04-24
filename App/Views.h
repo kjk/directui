@@ -41,8 +41,8 @@ public:
    virtual const char* GetDialogResourceXml() const;
    virtual void OnPrepareAnimation();
    // IListCallbackUI
-   virtual const TCHAR* GetItemText(ControlUI* ctrl, int idx, int subItem);
-   virtual int CompareItem(ControlUI* pList, ControlUI* item1, ControlUI* item2);
+   virtual const char* GetItemText(ControlUI* ctrl, int idx, int subItem);
+   virtual int CompareItem(ControlUI* list, ControlUI* item1, ControlUI* item2);
 };
 
 class ReportsPageWnd : public StandardPageWnd
@@ -62,8 +62,8 @@ public:
    virtual void OnPrepareAnimation();
    void OnExpandItem(ControlUI* ctrl);
    // IListCallbackUI
-   virtual const TCHAR* GetItemText(ControlUI* ctrl, int idx, int subItem);
-   virtual int CompareItem(ControlUI* pList, ControlUI* item1, ControlUI* item2);
+   virtual const char* GetItemText(ControlUI* ctrl, int idx, int subItem);
+   virtual int CompareItem(ControlUI* list, ControlUI* item1, ControlUI* item2);
 };
 
 class SearchPageWnd : public StandardPageWnd

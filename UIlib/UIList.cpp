@@ -72,13 +72,13 @@ bool ListElementUI::Expand(bool /*bExpand = true*/)
 
 void ListElementUI::Event(TEventUI& event)
 {
-   if (event.Type == UIEVENT_DBLCLICK && IsEnabled()) 
+   if (event.type == UIEVENT_DBLCLICK && IsEnabled()) 
    {
       Activate();
       Invalidate();
       return;
    }
-   if (event.Type == UIEVENT_KEYDOWN && IsEnabled()) 
+   if (event.type == UIEVENT_KEYDOWN && IsEnabled()) 
    {
       if (event.chKey == VK_RETURN)  {
          Activate();
@@ -166,7 +166,7 @@ UINT ListHeaderItemUI::GetControlFlags() const
 
 void ListHeaderItemUI::Event(TEventUI& event)
 {
-   if (event.Type == UIEVENT_BUTTONDOWN && IsEnabled()) 
+   if (event.type == UIEVENT_BUTTONDOWN && IsEnabled()) 
    {
       RECT rcSeparator = GetThumbRect(m_rcItem);
       if (::PtInRect(&rcSeparator, event.ptMouse))  {
@@ -178,7 +178,7 @@ void ListHeaderItemUI::Event(TEventUI& event)
          m_manager->SendNotify(this, "headerclick");
       }
    }
-   if (event.Type == UIEVENT_BUTTONUP) 
+   if (event.type == UIEVENT_BUTTONUP) 
    {
       if ((m_uDragState & UISTATE_CAPTURED) != 0)  {
          m_uDragState &= ~UISTATE_CAPTURED;
@@ -186,7 +186,7 @@ void ListHeaderItemUI::Event(TEventUI& event)
          m_manager->UpdateLayout();
       }
    }
-   if (event.Type == UIEVENT_MOUSEMOVE) 
+   if (event.type == UIEVENT_MOUSEMOVE) 
    {
       if ((m_uDragState & UISTATE_CAPTURED) != 0)  {
          RECT rc = m_rcItem;
@@ -200,7 +200,7 @@ void ListHeaderItemUI::Event(TEventUI& event)
          }
       }
    }
-   if (event.Type == UIEVENT_SETCURSOR) 
+   if (event.type == UIEVENT_SETCURSOR) 
    {
       RECT rcSeparator = GetThumbRect(m_rcItem);
       if (IsEnabled() && ::PtInRect(&rcSeparator, event.ptMouse))  {
@@ -387,7 +387,7 @@ void ListUI::SetPos(RECT rc)
 
 void ListUI::Event(TEventUI& event)
 {
-   switch( event.Type)  {
+   switch( event.type)  {
    case UIEVENT_KEYDOWN:
       switch( event.chKey)  {
       case VK_UP:
@@ -593,17 +593,17 @@ void ListLabelElementUI::SetTextStyle(UINT uStyle)
 
 void ListLabelElementUI::Event(TEventUI& event)
 {
-   if (event.Type == UIEVENT_BUTTONDOWN && IsEnabled()) 
+   if (event.type == UIEVENT_BUTTONDOWN && IsEnabled()) 
    {
       Select();
       Invalidate();
    }
-   if (event.Type == UIEVENT_MOUSEENTER) 
+   if (event.type == UIEVENT_MOUSEENTER) 
    {
       m_uButtonState |= UISTATE_HOT;
       Invalidate();
    }
-   if (event.Type == UIEVENT_MOUSELEAVE) 
+   if (event.type == UIEVENT_MOUSELEAVE) 
    {
       if ((m_uButtonState & UISTATE_HOT) != 0)  {
          m_uButtonState &= ~UISTATE_HOT;
@@ -698,7 +698,7 @@ void ListTextElementUI::SetOwner(ControlUI* owner)
 void ListTextElementUI::Event(TEventUI& event)
 {
    // When you hover over a link
-   if (event.Type == UIEVENT_SETCURSOR)  {
+   if (event.type == UIEVENT_SETCURSOR)  {
       for (int i = 0; i < m_nLinks; i++)  {
          if (::PtInRect(&m_rcLinks[i], event.ptMouse))  {
             ::SetCursor(::LoadCursor(NULL, MAKEINTRESOURCE(IDC_HAND)));
@@ -706,8 +706,8 @@ void ListTextElementUI::Event(TEventUI& event)
          }
       }      
    }
-   if (m_nLinks > 0 && event.Type == UIEVENT_MOUSEMOVE)  Invalidate();
-   if (m_nLinks > 0 && event.Type == UIEVENT_MOUSELEAVE)  Invalidate();
+   if (m_nLinks > 0 && event.type == UIEVENT_MOUSEMOVE)  Invalidate();
+   if (m_nLinks > 0 && event.type == UIEVENT_MOUSELEAVE)  Invalidate();
    ListLabelElementUI::Event(event);
 }
 
@@ -762,7 +762,7 @@ void ListTextElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
    {
       // Paint text
       RECT rcItem = { pInfo->rcColumn[i].left, m_rcItem.top, pInfo->rcColumn[i].right, m_rcItem.bottom - 1 };
-      const TCHAR* txt = cb->GetItemText(this, m_idx, i);
+      const char* txt = cb->GetItemText(this, m_idx, i);
       ::InflateRect(&rcItem, -4, 0);
       BlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcItem, txt, iTextColor, UICOLOR__INVALID, m_rcLinks, nLinks, DT_SINGLELINE | m_uTextStyle);
       if (nLinks > 0)  m_nLinks = nLinks, nLinks = 0; else nLinks = dimof(m_rcLinks);
@@ -819,14 +819,14 @@ bool ListExpandElementUI::IsExpanded() const
 
 void ListExpandElementUI::Event(TEventUI& event)
 {
-   if (event.Type == UIEVENT_BUTTONUP) 
+   if (event.type == UIEVENT_BUTTONUP) 
    {
       if (m_owner == NULL)  return;
       const TListInfoUI* pInfo = m_owner->GetListInfo();
       RECT rcExpander = { m_rcItem.left, m_rcItem.top, m_rcItem.left + 20, m_rcItem.bottom };;
       if (pInfo->expandable && ::PtInRect(&rcExpander, event.ptMouse))  Expand(!m_bExpanded);
    }
-   if (event.Type == UIEVENT_KEYDOWN) 
+   if (event.type == UIEVENT_KEYDOWN) 
    {
       switch( event.chKey)  {
       case VK_LEFT:
@@ -967,7 +967,7 @@ void ListExpandElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
    {
       // Paint text
       RECT rcItem = { pInfo->rcColumn[i].left, m_rcItem.top, pInfo->rcColumn[i].right, m_rcItem.top + m_cyItem };
-      const TCHAR* txt = cb->GetItemText(this, m_idx, i);
+      const char* txt = cb->GetItemText(this, m_idx, i);
       // If list control is expandable then we'll automaticially draw
       // the expander-box at the first column.
       if (i == 0 && pInfo->expandable)  {
