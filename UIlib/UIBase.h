@@ -225,9 +225,9 @@ public:
    enum { MAX_LOCAL_STRING_LEN = 63 };
 
    StdString();
-   StdString(const TCHAR ch);
+   StdString(const char ch);
    StdString(const StdString& src);
-   StdString(const TCHAR* lpsz, int nLen = -1);
+   StdString(const char* lpsz, int nLen = -1);
    virtual ~StdString();
 
    static StdString RES(UINT nRes);
@@ -236,35 +236,35 @@ public:
    int GetLength() const;
    bool IsEmpty() const;
    TCHAR GetAt(int idx) const;
-   void Append(const TCHAR* pstr);
-   void Assign(const TCHAR* pstr, int len = -1);
-   const TCHAR* GetData();
+   void Append(const char* pstr);
+   void Assign(const char* pstr, int len = -1);
+   const char* GetData();
    
-   void SetAt(int idx, TCHAR ch);
-   operator LPCTSTR() const;
+   void SetAt(int idx, char ch);
+   operator LPCSTR() const;
 
-   TCHAR operator[] (int idx) const;
+   char operator[] (int idx) const;
    const StdString& operator=(const StdString& src);
-   const StdString& operator=(const TCHAR ch);
-   const StdString& operator=(const TCHAR* pstr);
+   const StdString& operator=(const char ch);
+   const StdString& operator=(const char* pstr);
 #ifndef _UNICODE
    const StdString& StdString::operator=(LPCWSTR lpwStr);
 #endif
    StdString operator+(const StdString& src);
-   StdString operator+(const TCHAR* pstr);
+   StdString operator+(const char* pstr);
    const StdString& operator+=(const StdString& src);
-   const StdString& operator+=(const TCHAR* pstr);
-   const StdString& operator+=(const TCHAR ch);
+   const StdString& operator+=(const char* pstr);
+   const StdString& operator+=(const char ch);
 
-   bool operator == (const TCHAR* str) const;
-   bool operator != (const TCHAR* str) const;
-   bool operator <= (const TCHAR* str) const;
-   bool operator <  (const TCHAR* str) const;
-   bool operator >= (const TCHAR* str) const;
-   bool operator >  (const TCHAR* str) const;
+   bool operator == (const char* str) const;
+   bool operator != (const char* str) const;
+   bool operator <= (const char* str) const;
+   bool operator <  (const char* str) const;
+   bool operator >= (const char* str) const;
+   bool operator >  (const char* str) const;
 
-   int Compare(const TCHAR* pstr) const;
-   int CompareNoCase(const TCHAR* pstr) const;
+   int Compare(const char* pstr) const;
+   int CompareNoCase(const char* pstr) const;
    
    void MakeUpper();
    void MakeLower();
@@ -273,17 +273,17 @@ public:
    StdString Mid(int pos, int len = -1) const;
    StdString Right(int len) const;
 
-   int Find(TCHAR ch, int pos = 0) const;
-   int Find(const TCHAR* pstr, int pos = 0) const;
-   int ReverseFind(TCHAR ch) const;
-   int Replace(const TCHAR* pstrFrom, const TCHAR* pstrTo);
+   int Find(char ch, int pos = 0) const;
+   int Find(const char* pstr, int pos = 0) const;
+   int ReverseFind(char ch) const;
+   int Replace(const char* pstrFrom, const TCHAR* pstrTo);
    
    void ProcessResourceTokens();
-   int __cdecl Format(const TCHAR* pstrFormat, ...);
+   int __cdecl Format(const char* pstrFormat, ...);
 
 protected:
-   TCHAR* m_pstr;
-   TCHAR m_buf[MAX_LOCAL_STRING_LEN + 1];
+   char* m_pstr;
+   char  m_buf[MAX_LOCAL_STRING_LEN + 1];
 };
 
 #endif // !defined(AFX_UIBASE_H__20050509_3DFB_5C7A_C897_0080AD509054__INCLUDED_)
