@@ -109,18 +109,18 @@ UINT SingleLineEditUI::GetControlFlags() const
 
 void SingleLineEditUI::Event(TEventUI& event)
 {
-   if (event.Type == UIEVENT_SETCURSOR) 
+   if (event.type == UIEVENT_SETCURSOR) 
    {
       if (IsEnabled())  {
          ::SetCursor(::LoadCursor(NULL, MAKEINTRESOURCE(IDC_IBEAM)));
          return;
       }
    }
-   if (event.Type == UIEVENT_WINDOWSIZE) 
+   if (event.type == UIEVENT_WINDOWSIZE) 
    {
       if (m_win != NULL)  m_manager->SetFocus(NULL);
    }
-   if (event.Type == UIEVENT_SETFOCUS)  
+   if (event.type == UIEVENT_SETFOCUS)  
    {
       if (IsEnabled())  {
          m_win = new SingleLineEditWnd();
@@ -128,7 +128,7 @@ void SingleLineEditUI::Event(TEventUI& event)
          m_win->Init(this);
       }
    }
-   if (event.Type == UIEVENT_BUTTONDOWN && IsFocused() && m_win == NULL)  
+   if (event.type == UIEVENT_BUTTONDOWN && IsFocused() && m_win == NULL)  
    {
       // FIX: In the case of window having lost focus, editor is gone, but
       //      we don't get another SetFocus when we click on the control again.
@@ -140,9 +140,9 @@ void SingleLineEditUI::Event(TEventUI& event)
    ControlUI::Event(event);
 }
 
-void SingleLineEditUI::SetText(const TCHAR* txt)
+void SingleLineEditUI::SetText(const char* txt)
 {
-   m_txt = txt;
+   str::Replace(m_txt, txt);
    if (m_manager != NULL)  m_manager->SendNotify(this, "changed");
    Invalidate();
 }
@@ -276,22 +276,21 @@ UINT MultiLineEditUI::GetControlFlags() const
    return UIFLAG_TABSTOP;
 }
 
-void MultiLineEditUI::SetText(const TCHAR* txt)
+void MultiLineEditUI::SetText(const char* txt)
 {
-   m_txt = txt;
+   str::Replace(m_txt, txt);
    if (m_win != NULL)  SetWindowText(*m_win, txt);
    if (m_manager != NULL)  m_manager->SendNotify(this, "changed");
    Invalidate();
 }
 
-StdString MultiLineEditUI::GetText() const
+const char * MultiLineEditUI::GetText() const
 {
    if (m_win != NULL)  {
       int cchLen = ::GetWindowTextLength(*m_win) + 1;
-      TCHAR* pstr = static_cast<TCHAR*>(_alloca(cchLen * sizeof(TCHAR)));
-      ASSERT(pstr);
+      char* pstr = static_cast<char*>(_alloca(cchLen * sizeof(char)));
       ::GetWindowText(*m_win, pstr, cchLen);
-      return StdString(pstr);
+      return (const char*)str::Dup(pstr);  // TDOO: this leak
    }
    return m_txt;
 }
@@ -341,11 +340,11 @@ void MultiLineEditUI::SetPos(int left, int top, int right, int bottom)
 
 void MultiLineEditUI::Event(TEventUI& event)
 {
-   if (event.Type == UIEVENT_WINDOWSIZE) 
+   if (event.type == UIEVENT_WINDOWSIZE) 
    {
       if (m_win != NULL)  m_manager->SetFocus(NULL);
    }
-   if (event.Type == UIEVENT_SETFOCUS)  
+   if (event.type == UIEVENT_SETFOCUS)  
    {
       if (m_win != NULL)  ::SetFocus(*m_win);
    }

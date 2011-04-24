@@ -84,7 +84,7 @@ const char* NavigatorButtonUI::GetClass() const
 
 void NavigatorButtonUI::Event(TEventUI& event)
 {
-   if (event.Type == UIEVENT_BUTTONDOWN && IsEnabled()) 
+   if (event.type == UIEVENT_BUTTONDOWN && IsEnabled()) 
    {
       RECT rcButton = GetButtonRect(m_rcItem);
       if (::PtInRect(&rcButton, event.ptMouse))  {
@@ -92,7 +92,7 @@ void NavigatorButtonUI::Event(TEventUI& event)
          Invalidate();
       }
    }
-   if (event.Type == UIEVENT_MOUSEMOVE) 
+   if (event.type == UIEVENT_MOUSEMOVE) 
    {
       if ((m_uButtonState & UISTATE_CAPTURED) != 0)  {
          RECT rcButton = GetButtonRect(m_rcItem);
@@ -101,7 +101,7 @@ void NavigatorButtonUI::Event(TEventUI& event)
          Invalidate();
       }
    }
-   if (event.Type == UIEVENT_BUTTONUP) 
+   if (event.type == UIEVENT_BUTTONUP) 
    {
       if ((m_uButtonState & UISTATE_CAPTURED) != 0)  {
          RECT rcButton = GetButtonRect(m_rcItem);
@@ -208,11 +208,11 @@ SIZE TaskPanelUI::EstimateSize(SIZE szAvailable)
 
 void TaskPanelUI::Event(TEventUI& event)
 {
-   if (event.Type == UIEVENT_TIMER && event.wParam == FADE_TIMERID) 
+   if (event.type == UIEVENT_TIMER && event.wParam == FADE_TIMERID) 
    {
       // The fading animation runs for 500ms. Then we kill
       // the bitmap which in turn disables the animation.
-      if (event.dwTimestamp - m_dwFadeTick > FADE_DELAY)  {
+      if (event.timestamp - m_dwFadeTick > FADE_DELAY)  {
          m_manager->KillTimer(this, FADE_TIMERID);
          ::DeleteObject(m_hFadeBitmap);
          m_hFadeBitmap = NULL;
@@ -445,7 +445,7 @@ UINT TextPanelUI::GetControlFlags() const
 
 void TextPanelUI::Event(TEventUI& event)
 {
-   if (event.Type == UIEVENT_SETCURSOR)  {
+   if (event.type == UIEVENT_SETCURSOR)  {
       for (int i = 0; i < m_nLinks; i++)  {
          if (::PtInRect(&m_rcLinks[i], event.ptMouse))  {
             ::SetCursor(::LoadCursor(NULL, MAKEINTRESOURCE(IDC_HAND)));
@@ -453,7 +453,7 @@ void TextPanelUI::Event(TEventUI& event)
          }
       }      
    }
-   if (event.Type == UIEVENT_BUTTONDOWN && IsEnabled())  {
+   if (event.type == UIEVENT_BUTTONDOWN && IsEnabled())  {
       for (int i = 0; i < m_nLinks; i++)  {
          if (::PtInRect(&m_rcLinks[i], event.ptMouse))  {
             m_uButtonState |= UISTATE_PUSHED;
@@ -462,7 +462,7 @@ void TextPanelUI::Event(TEventUI& event)
          }
       }      
    }
-   if (event.Type == UIEVENT_BUTTONUP)  {
+   if (event.type == UIEVENT_BUTTONUP)  {
       for (int i = 0; i < m_nLinks; i++)  {
          if (::PtInRect(&m_rcLinks[i], event.ptMouse))  Activate();
       }      
@@ -471,8 +471,8 @@ void TextPanelUI::Event(TEventUI& event)
       return;
    }
    // When you move over a link
-   if (m_nLinks > 0 && event.Type == UIEVENT_MOUSEMOVE)  Invalidate();
-   if (m_nLinks > 0 && event.Type == UIEVENT_MOUSELEAVE)  Invalidate();
+   if (m_nLinks > 0 && event.type == UIEVENT_MOUSEMOVE)  Invalidate();
+   if (m_nLinks > 0 && event.type == UIEVENT_MOUSELEAVE)  Invalidate();
    LabelPanelUI::Event(event);
 }
 

@@ -350,11 +350,11 @@ bool PaintManagerUI::PreMessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, 
          }
          if (m_focus != NULL)  {
             TEventUI event = { 0 };
-            event.Type = UIEVENT_SYSKEY;
+            event.type = UIEVENT_SYSKEY;
             event.chKey = wParam;
             event.ptMouse = m_ptLastMousePos;
             event.wKeyState = MapKeyState();
-            event.dwTimestamp = ::GetTickCount();
+            event.timestamp = ::GetTickCount();
             m_focus->Event(event);
          }
       }
@@ -401,15 +401,15 @@ bool PaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRE
          // Make sure all matching "closing" events are sent
          TEventUI event = { 0 };
          event.ptMouse = m_ptLastMousePos;
-         event.dwTimestamp = ::GetTickCount();
+         event.timestamp = ::GetTickCount();
          if (m_eventHover != NULL)  {
-            event.Type = UIEVENT_MOUSELEAVE;
-            event.pSender = m_eventHover;
+            event.type = UIEVENT_MOUSELEAVE;
+            event.sender = m_eventHover;
             m_eventHover->Event(event);
          }
          if (m_eventClick != NULL)  {
-            event.Type = UIEVENT_BUTTONUP;
-            event.pSender = m_eventClick;
+            event.type = UIEVENT_BUTTONUP;
+            event.sender = m_eventClick;
             m_eventClick->Event(event);
          }
          SetFocus(NULL);
@@ -579,8 +579,8 @@ bool PaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRE
       {
          if (m_focus != NULL)  {
             TEventUI event = { 0 };
-            event.Type = UIEVENT_WINDOWSIZE;
-            event.dwTimestamp = ::GetTickCount();
+            event.type = UIEVENT_WINDOWSIZE;
+            event.timestamp = ::GetTickCount();
             m_focus->Event(event);
          }
          if (m_anim.IsAnimating())  m_anim.CancelJobs();
@@ -593,9 +593,9 @@ bool PaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRE
             const TIMERINFO* pTimer = static_cast<TIMERINFO*>(m_timers[i]);
             if (pTimer->hWnd == m_hWndPaint && pTimer->uWinTimer == LOWORD(wParam))  {
                TEventUI event = { 0 };
-               event.Type = UIEVENT_TIMER;
+               event.type = UIEVENT_TIMER;
                event.wParam = pTimer->localID;
-               event.dwTimestamp = ::GetTickCount();
+               event.timestamp = ::GetTickCount();
                pTimer->pSender->Event(event);
                break;
             }
@@ -612,9 +612,9 @@ bool PaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRE
          if (m_eventHover != NULL)  {
             TEventUI event = { 0 };
             event.ptMouse = pt;
-            event.Type = UIEVENT_MOUSEHOVER;
-            event.pSender = pHover;
-            event.dwTimestamp = ::GetTickCount();
+            event.type = UIEVENT_MOUSEHOVER;
+            event.sender = pHover;
+            event.timestamp = ::GetTickCount();
             m_eventHover->Event(event);
          }
          // Create tooltip information
@@ -663,28 +663,28 @@ bool PaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRE
          if (pNewHover != NULL && pNewHover->GetManager() != this)  break;
          TEventUI event = { 0 };
          event.ptMouse = pt;
-         event.dwTimestamp = ::GetTickCount();
+         event.timestamp = ::GetTickCount();
          if (pNewHover != m_eventHover && m_eventHover != NULL)  {
-            event.Type = UIEVENT_MOUSELEAVE;
-            event.pSender = pNewHover;
+            event.type = UIEVENT_MOUSELEAVE;
+            event.sender = pNewHover;
             m_eventHover->Event(event);
             m_eventHover = NULL;
             if (m_hwndTooltip != NULL)  ::SendMessage(m_hwndTooltip, TTM_TRACKACTIVATE, FALSE, (LPARAM) &m_toolTip);
          }
          if (pNewHover != m_eventHover && pNewHover != NULL)  {
-            event.Type = UIEVENT_MOUSEENTER;
-            event.pSender = m_eventHover;
+            event.type = UIEVENT_MOUSEENTER;
+            event.sender = m_eventHover;
             pNewHover->Event(event);
             m_eventHover = pNewHover;
          }
          if (m_eventClick != NULL)  {
-            event.Type = UIEVENT_MOUSEMOVE;
-            event.pSender = NULL;
+            event.type = UIEVENT_MOUSEMOVE;
+            event.sender = NULL;
             m_eventClick->Event(event);
          }
          else if (pNewHover != NULL)  {
-            event.Type = UIEVENT_MOUSEMOVE;
-            event.pSender = NULL;
+            event.type = UIEVENT_MOUSEMOVE;
+            event.sender = NULL;
             pNewHover->Event(event);
          }
       }
@@ -703,12 +703,12 @@ bool PaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRE
          m_eventClick = ctrl;
          ctrl->SetFocus();
          TEventUI event = { 0 };
-         event.Type = UIEVENT_BUTTONDOWN;
+         event.type = UIEVENT_BUTTONDOWN;
          event.wParam = wParam;
          event.lParam = lParam;
          event.ptMouse = pt;
          event.wKeyState = wParam;
-         event.dwTimestamp = ::GetTickCount();
+         event.timestamp = ::GetTickCount();
          ctrl->Event(event);
          // No need to burden user with 3D animations
          m_anim.CancelJobs();
@@ -723,12 +723,12 @@ bool PaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRE
          if (m_eventClick == NULL)  break;
          ::ReleaseCapture();
          TEventUI event = { 0 };
-         event.Type = UIEVENT_BUTTONUP;
+         event.type = UIEVENT_BUTTONUP;
          event.wParam = wParam;
          event.lParam = lParam;
          event.ptMouse = pt;
          event.wKeyState = wParam;
-         event.dwTimestamp = ::GetTickCount();
+         event.timestamp = ::GetTickCount();
          m_eventClick->Event(event);
          m_eventClick = NULL;
       }
@@ -741,10 +741,10 @@ bool PaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRE
          if (ctrl == NULL)  break;
          if (ctrl->GetManager() != this)  break;
          TEventUI event = { 0 };
-         event.Type = UIEVENT_DBLCLICK;
+         event.type = UIEVENT_DBLCLICK;
          event.ptMouse = pt;
          event.wKeyState = wParam;
-         event.dwTimestamp = ::GetTickCount();
+         event.timestamp = ::GetTickCount();
          ctrl->Event(event);
          m_eventClick = ctrl;
          // We always capture the mouse
@@ -755,11 +755,11 @@ bool PaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRE
       {
          if (m_focus == NULL)  break;
          TEventUI event = { 0 };
-         event.Type = UIEVENT_CHAR;
+         event.type = UIEVENT_CHAR;
          event.chKey = wParam;
          event.ptMouse = m_ptLastMousePos;
          event.wKeyState = MapKeyState();
-         event.dwTimestamp = ::GetTickCount();
+         event.timestamp = ::GetTickCount();
          m_focus->Event(event);
       }
       break;
@@ -767,11 +767,11 @@ bool PaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRE
       {
          if (m_focus == NULL)  break;
          TEventUI event = { 0 };
-         event.Type = UIEVENT_KEYDOWN;
+         event.type = UIEVENT_KEYDOWN;
          event.chKey = wParam;
          event.ptMouse = m_ptLastMousePos;
          event.wKeyState = MapKeyState();
-         event.dwTimestamp = ::GetTickCount();
+         event.timestamp = ::GetTickCount();
          m_focus->Event(event);
          m_eventKey = m_focus;
       }
@@ -780,11 +780,11 @@ bool PaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRE
       {
          if (m_eventKey == NULL)  break;
          TEventUI event = { 0 };
-         event.Type = UIEVENT_KEYUP;
+         event.type = UIEVENT_KEYUP;
          event.chKey = wParam;
          event.ptMouse = m_ptLastMousePos;
          event.wKeyState = MapKeyState();
-         event.dwTimestamp = ::GetTickCount();
+         event.timestamp = ::GetTickCount();
          m_eventKey->Event(event);
          m_eventKey = NULL;
       }
@@ -798,12 +798,12 @@ bool PaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRE
          if (ctrl == NULL)  break;
          if ((ctrl->GetControlFlags() & UIFLAG_SETCURSOR) == 0)  break;
          TEventUI event = { 0 };
-         event.Type = UIEVENT_SETCURSOR;
+         event.type = UIEVENT_SETCURSOR;
          event.wParam = wParam;
          event.lParam = lParam;
          event.ptMouse = pt;
          event.wKeyState = MapKeyState();
-         event.dwTimestamp = ::GetTickCount();
+         event.timestamp = ::GetTickCount();
          ctrl->Event(event);
       }
       return true;
@@ -838,10 +838,10 @@ bool PaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRE
          ContainerUI* pContainer = static_cast<ContainerUI*>(::GetPropA((HWND) lParam, "WndX"));
          if (pContainer == NULL)  break;
          TEventUI event = { 0 };
-         event.Type = UIEVENT_VSCROLL;
+         event.type = UIEVENT_VSCROLL;
          event.wParam = wParam;
          event.lParam = lParam;
-         event.dwTimestamp = ::GetTickCount();
+         event.timestamp = ::GetTickCount();
          pContainer->Event(event);
       }
       break;
@@ -866,13 +866,13 @@ bool PaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRE
       {
          int zDelta = (int) (short) HIWORD(wParam);
          TEventUI event = { 0 };
-         event.Type = UIEVENT_SCROLLWHEEL;
+         event.type = UIEVENT_SCROLLWHEEL;
          event.wParam = MAKELPARAM(zDelta < 0 ? SB_LINEDOWN : SB_LINEUP, 0);
          event.lParam = lParam;
-         event.dwTimestamp = ::GetTickCount();
+         event.timestamp = ::GetTickCount();
          m_focus->Event(event);
          // Simulate regular scrolling by sending scroll events
-         event.Type = UIEVENT_VSCROLL;
+         event.type = UIEVENT_VSCROLL;
          for (int i = 0; i < abs(zDelta); i += 40)  m_focus->Event(event);
          // Let's make sure that the scroll item below the cursor is the same as before...
          ::SendMessage(m_hWndPaint, WM_MOUSEMOVE, 0, (LPARAM) MAKELPARAM(m_ptLastMousePos.x, m_ptLastMousePos.y));
@@ -997,9 +997,9 @@ void PaintManagerUI::SetFocus(ControlUI* ctrl)
    if (m_focus != NULL)  
    {
       TEventUI event = { 0 };
-      event.Type = UIEVENT_KILLFOCUS;
-      event.pSender = ctrl;
-      event.dwTimestamp = ::GetTickCount();
+      event.type = UIEVENT_KILLFOCUS;
+      event.sender = ctrl;
+      event.timestamp = ::GetTickCount();
       m_focus->Event(event);
       SendNotify(m_focus, "killfocus");
       m_focus = NULL;
@@ -1012,9 +1012,9 @@ void PaintManagerUI::SetFocus(ControlUI* ctrl)
    {
       m_focus = ctrl;
       TEventUI event = { 0 };
-      event.Type = UIEVENT_SETFOCUS;
-      event.pSender = ctrl;
-      event.dwTimestamp = ::GetTickCount();
+      event.type = UIEVENT_SETFOCUS;
+      event.sender = ctrl;
+      event.timestamp = ::GetTickCount();
       m_focus->Event(event);
       SendNotify(m_focus, "setfocus");
    }
@@ -1136,7 +1136,7 @@ bool PaintManagerUI::RemoveMessageFilter(IMessageFilterUI* filter)
 void PaintManagerUI::SendNotify(ControlUI* ctrl, const char* msg, WPARAM wParam /*= 0*/, LPARAM lParam /*= 0*/)
 {
    TNotifyUI Msg;
-   Msg.pSender = ctrl;
+   Msg.sender = ctrl;
    Msg.type = msg;
    Msg.wParam = 0;
    Msg.lParam = 0;
@@ -1147,9 +1147,9 @@ void PaintManagerUI::SendNotify(TNotifyUI& Msg)
 {
    // Pre-fill some standard members
    Msg.ptMouse = m_ptLastMousePos;
-   Msg.dwTimestamp = ::GetTickCount();
+   Msg.timestamp = ::GetTickCount();
    // Allow sender control to react
-   Msg.pSender->Notify(Msg);
+   Msg.sender->Notify(Msg);
    // Send to all listeners
    for (int i = 0; i < m_notifiers.GetSize(); i++)  {
       static_cast<INotifyUI*>(m_notifiers[i])->Notify(Msg);
@@ -1317,6 +1317,8 @@ ControlUI::~ControlUI()
 {
    if (m_manager != NULL)  m_manager->ReapObjects(this);
    free((void*)m_name);
+   free((void*)m_txt);
+   free((void*)m_toolTip);
 }
 
 bool ControlUI::IsVisible() const
@@ -1369,35 +1371,26 @@ void ControlUI::SetFocus()
    if (m_manager != NULL)  m_manager->SetFocus(this);
 }
 
-void ControlUI::SetShortcut(TCHAR ch)
+void ControlUI::SetShortcut(char ch)
 {
    m_chShortcut = ch;
 }
 
-TCHAR ControlUI::GetShortcut() const
+char ControlUI::GetShortcut() const
 {
    return m_chShortcut;
 }
 
-StdString ControlUI::GetText() const
+const char * ControlUI::GetText() const
 {
    return m_txt;
 }
 
-void ControlUI::SetText(const TCHAR* txt)
-{
-   m_txt = txt;
-   Invalidate();
-}
-
-#ifdef UNICODE
 void ControlUI::SetText(const char* txt)
 {
-   ASSERT(0);
-   // TODO: write me
+   str::Replace(m_txt, txt);
    Invalidate();
 }
-#endif
 
 UINT_PTR ControlUI::GetTag() const
 {
@@ -1409,20 +1402,12 @@ void ControlUI::SetTag(UINT_PTR pTag)
    m_tag = pTag;
 }
 
-void ControlUI::SetToolTip(const TCHAR* txt)
-{
-   m_toolTip = txt;
-}
-
-#ifdef UNICODE
 void ControlUI::SetToolTip(const char* txt)
 {
-   ASSERT(0);
-   // TODO: write me
+   str::Replace(m_toolTip, txt);
 }
-#endif
 
-StdString ControlUI::GetToolTip() const
+const char* ControlUI::GetToolTip() const
 {
    return m_toolTip;
 }
@@ -1495,24 +1480,24 @@ void ControlUI::UpdateLayout()
 
 void ControlUI::Event(TEventUI& event)
 {
-   if (event.Type == UIEVENT_SETCURSOR) 
+   if (event.type == UIEVENT_SETCURSOR) 
    {
       ::SetCursor(::LoadCursor(NULL, MAKEINTRESOURCE(IDC_ARROW)));
       return;
    }
-   if (event.Type == UIEVENT_SETFOCUS)  
+   if (event.type == UIEVENT_SETFOCUS)  
    {
       m_focused = true;
       Invalidate();
       return;
    }
-   if (event.Type == UIEVENT_KILLFOCUS)  
+   if (event.type == UIEVENT_KILLFOCUS)  
    {
       m_focused = false;
       Invalidate();
       return;
    }
-   if (event.Type == UIEVENT_TIMER) 
+   if (event.type == UIEVENT_TIMER) 
    {
       m_manager->SendNotify(this, "timer", event.wParam, event.lParam);
       return;

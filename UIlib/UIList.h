@@ -108,8 +108,8 @@ public:
 
    virtual const char* GetClass() const;
    virtual UINT GetControlFlags() const;
-   
-   void SetText(const TCHAR* txt);
+
+   virtual void SetText(const char* txt);
 
    virtual void Event(TEventUI& event);
 

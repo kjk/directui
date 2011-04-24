@@ -21,14 +21,14 @@ UINT ButtonUI::GetControlFlags() const
 
 void ButtonUI::Event(TEventUI& event)
 {
-   if (event.Type == UIEVENT_BUTTONDOWN || event.Type == UIEVENT_DBLCLICK) 
+   if (event.type == UIEVENT_BUTTONDOWN || event.type == UIEVENT_DBLCLICK) 
    {
       if (::PtInRect(&m_rcItem, event.ptMouse) && IsEnabled())  {
          m_uButtonState |= UISTATE_PUSHED | UISTATE_CAPTURED;
          Invalidate();
       }
    }
-   if (event.Type == UIEVENT_MOUSEMOVE) 
+   if (event.type == UIEVENT_MOUSEMOVE) 
    {
       if ((m_uButtonState & UISTATE_CAPTURED) != 0)  {
          if (::PtInRect(&m_rcItem, event.ptMouse))  m_uButtonState |= UISTATE_PUSHED;
@@ -36,7 +36,7 @@ void ButtonUI::Event(TEventUI& event)
          Invalidate();
       }
    }
-   if (event.Type == UIEVENT_BUTTONUP) 
+   if (event.type == UIEVENT_BUTTONUP) 
    {
       if ((m_uButtonState & UISTATE_CAPTURED) != 0)  {
          if (::PtInRect(&m_rcItem, event.ptMouse))  Activate();
@@ -44,12 +44,12 @@ void ButtonUI::Event(TEventUI& event)
          Invalidate();
       }
    }
-   if (event.Type == UIEVENT_MOUSEENTER)
+   if (event.type == UIEVENT_MOUSEENTER)
    {
       m_uButtonState |= UISTATE_HOT;
       Invalidate();
    }
-   if (event.Type == UIEVENT_MOUSELEAVE)
+   if (event.type == UIEVENT_MOUSELEAVE)
    {
       m_uButtonState &= ~UISTATE_HOT;
       Invalidate();
@@ -57,11 +57,13 @@ void ButtonUI::Event(TEventUI& event)
    ControlUI::Event(event);
 }
 
-void ButtonUI::SetText(const TCHAR* txt)
+void ButtonUI::SetText(const char* txt)
 {
    ControlUI::SetText(txt);
    // Automatic assignment of keyboard shortcut
-   if (_tcschr(txt, '&') != NULL)  m_chShortcut = *(_tcschr(txt, '&') + 1);
+   const char *s = str::Find(txt, "&");
+   if (s)
+      m_chShortcut = s[1];
 }
 
 bool ButtonUI::Activate()
@@ -133,14 +135,14 @@ UINT OptionUI::GetControlFlags() const
 
 void OptionUI::Event(TEventUI& event)
 {
-   if (event.Type == UIEVENT_BUTTONDOWN || event.Type == UIEVENT_DBLCLICK) 
+   if (event.type == UIEVENT_BUTTONDOWN || event.type == UIEVENT_DBLCLICK) 
    {
       if (::PtInRect(&m_rcItem, event.ptMouse) && IsEnabled())  {
          m_uButtonState |= UISTATE_PUSHED | UISTATE_CAPTURED;
          Invalidate();
       }
    }
-   if (event.Type == UIEVENT_MOUSEMOVE) 
+   if (event.type == UIEVENT_MOUSEMOVE) 
    {
       if ((m_uButtonState & UISTATE_CAPTURED) != 0)  {
          if (::PtInRect(&m_rcItem, event.ptMouse))  m_uButtonState |= UISTATE_PUSHED;
@@ -148,7 +150,7 @@ void OptionUI::Event(TEventUI& event)
          Invalidate();
       }
    }
-   if (event.Type == UIEVENT_BUTTONUP) 
+   if (event.type == UIEVENT_BUTTONUP) 
    {
       if ((m_uButtonState & UISTATE_CAPTURED) != 0)  {
          if (::PtInRect(&m_rcItem, event.ptMouse))  Activate();

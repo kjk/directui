@@ -20,7 +20,7 @@ UINT SingleLinePickUI::GetControlFlags() const
 
 void SingleLinePickUI::Event(TEventUI& event)
 {
-   if (event.Type == UIEVENT_SETCURSOR) 
+   if (event.type == UIEVENT_SETCURSOR) 
    {
       for (int i = 0; i < m_nLinks; i++)  {
          if (::PtInRect(&m_rcLinks[i], event.ptMouse))  {
@@ -29,7 +29,7 @@ void SingleLinePickUI::Event(TEventUI& event)
          }
       }      
    }
-   if (event.Type == UIEVENT_BUTTONDOWN && IsEnabled()) 
+   if (event.type == UIEVENT_BUTTONDOWN && IsEnabled()) 
    {
       if (::PtInRect(&m_rcButton, event.ptMouse))  {
          m_uButtonState |= UISTATE_PUSHED | UISTATE_CAPTURED;
@@ -46,7 +46,7 @@ void SingleLinePickUI::Event(TEventUI& event)
       }
       return;
    }
-   if (event.Type == UIEVENT_MOUSEMOVE) 
+   if (event.type == UIEVENT_MOUSEMOVE) 
    {
       if ((m_uButtonState & UISTATE_CAPTURED) != 0)  {
          if (::PtInRect(&m_rcButton, event.ptMouse))  m_uButtonState |= UISTATE_PUSHED;
@@ -54,7 +54,7 @@ void SingleLinePickUI::Event(TEventUI& event)
          Invalidate();
       }
    }
-   if (event.Type == UIEVENT_BUTTONUP) 
+   if (event.type == UIEVENT_BUTTONUP) 
    {
       if ((m_uButtonState & UISTATE_CAPTURED) != 0)  {
          if (::PtInRect(&m_rcButton, event.ptMouse))  m_manager->SendNotify(this, "browse");
@@ -62,7 +62,7 @@ void SingleLinePickUI::Event(TEventUI& event)
          Invalidate();
       }
    }
-   if (event.Type == UIEVENT_KEYDOWN)  
+   if (event.type == UIEVENT_KEYDOWN)  
    {
       if (event.chKey == VK_SPACE && m_nLinks > 0)  m_manager->SendNotify(this, "link");
       if (event.chKey == VK_F4 && IsEnabled())  m_manager->SendNotify(this, "browse");
@@ -196,7 +196,7 @@ LRESULT DropDownWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
          break;
       default:
          TEventUI event;
-         event.Type = UIEVENT_KEYDOWN;
+         event.type = UIEVENT_KEYDOWN;
          event.chKey = wParam;
          m_owner->Event(event);
          return 0;
@@ -295,12 +295,12 @@ void DropDownUI::RemoveAll()
 
 void DropDownUI::Event(TEventUI& event)
 {
-   if (event.Type == UIEVENT_BUTTONDOWN && IsEnabled()) 
+   if (event.type == UIEVENT_BUTTONDOWN && IsEnabled()) 
    {
       Activate();
       m_uButtonState |= UISTATE_PUSHED | UISTATE_CAPTURED;
    }
-   if (event.Type == UIEVENT_MOUSEMOVE) 
+   if (event.type == UIEVENT_MOUSEMOVE) 
    {
       if ((m_uButtonState & UISTATE_CAPTURED) != 0)  {
          if (::PtInRect(&m_rcButton, event.ptMouse))  m_uButtonState |= UISTATE_PUSHED;
@@ -308,14 +308,14 @@ void DropDownUI::Event(TEventUI& event)
          Invalidate();
       }
    }
-   if (event.Type == UIEVENT_BUTTONUP) 
+   if (event.type == UIEVENT_BUTTONUP) 
    {
       if ((m_uButtonState & UISTATE_CAPTURED) != 0)  {
          m_uButtonState &= ~(UISTATE_PUSHED | UISTATE_CAPTURED);
          Invalidate();
       }
    }
-   if (event.Type == UIEVENT_KEYDOWN) 
+   if (event.type == UIEVENT_KEYDOWN) 
    {
       switch( event.chKey)  {
       case VK_F4:
@@ -341,7 +341,7 @@ void DropDownUI::Event(TEventUI& event)
          return;
       }
    }
-   if (event.Type == UIEVENT_SCROLLWHEEL) 
+   if (event.type == UIEVENT_SCROLLWHEEL) 
    {
       bool bDownward = LOWORD(event.wParam) == SB_LINEDOWN;
       SelectItem(FindSelectable(m_curSel + (bDownward ? 1 : -1), bDownward));
@@ -360,9 +360,9 @@ bool DropDownUI::Activate()
    return true;
 }
 
-StdString DropDownUI::GetText() const
+const char* DropDownUI::GetText() const
 {
-   if (m_curSel < 0)  return _T("");
+   if (m_curSel < 0)  return "";
    ControlUI* ctrl = static_cast<ControlUI*>(m_items[m_curSel]);
    return ctrl->GetText();
 }

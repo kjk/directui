@@ -8,7 +8,7 @@ public:
 
    virtual const char* GetClass() const;
 
-   void SetText(const TCHAR* txt);
+   virtual void SetText(const char* txt);
 
    void SetWidth(int cxWidth);
    void SetTextStyle(UINT uStyle);

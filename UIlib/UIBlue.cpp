@@ -269,7 +269,7 @@ void BlueRenderEngineUI::DoPaintOptionBox(HDC hDC, PaintManagerUI* manager, RECT
    }
 }
 
-void BlueRenderEngineUI::DoPaintTabFolder(HDC hDC, PaintManagerUI* manager, RECT& rcItem, const TCHAR* txt, UINT uState)
+void BlueRenderEngineUI::DoPaintTabFolder(HDC hDC, PaintManagerUI* manager, RECT& rcItem, const char* txt, UINT uState)
 {
    ASSERT(::GetObjectType(hDC)==OBJ_DC || ::GetObjectType(hDC)==OBJ_MEMDC);
    ::SetBkMode(hDC, TRANSPARENT);

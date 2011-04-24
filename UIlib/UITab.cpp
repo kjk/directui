@@ -50,7 +50,7 @@ bool TabFolderUI::SelectItem(int idx)
 
 void TabFolderUI::Event(TEventUI& event)
 {
-   if (event.Type == UIEVENT_BUTTONDOWN && IsEnabled()) 
+   if (event.type == UIEVENT_BUTTONDOWN && IsEnabled()) 
    {
       for (int i = 0; i < m_items.GetSize() && i < m_tabAreas.GetSize(); i++)  {
          if (::PtInRect( static_cast<LPRECT>(m_tabAreas[i]), event.ptMouse))  {
@@ -59,7 +59,7 @@ void TabFolderUI::Event(TEventUI& event)
          }
       }
    }
-   if (event.Type == UIEVENT_SYSKEY && IsEnabled()) 
+   if (event.type == UIEVENT_SYSKEY && IsEnabled()) 
    {
       if (event.chKey == VK_PRIOR && (event.wKeyState & MK_ALT) != 0)  {
          SelectItem(m_curSel - 1);
@@ -112,7 +112,7 @@ void TabFolderUI::DoPaint(HDC hDC, const RECT& rcPaint)
          for (int i = 0; i < GetCount(); i++)  
          {
             const ControlUI* page = GetItem(i);
-            const StdString& txt = page->GetText();
+            const char *txt = page->GetText();
             RECT rcTab = { rcTabs.left + posX, rcTabs.top, rcTabs.right, m_rcClient.top };
             UINT uState = 0;
             if (IsFocused())  uState |= UISTATE_FOCUSED;

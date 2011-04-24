@@ -25,7 +25,7 @@ public:
    static void DoPaintButton(HDC hDC, PaintManagerUI* manager, RECT rc, const TCHAR* txt, RECT rcPadding, UINT uState, UINT uDrawStyle);
    static void DoPaintEditBox(HDC hDC, PaintManagerUI* manager, RECT rcItem, const TCHAR* txt, UINT uState, UINT uDrawStyle, bool bPaintFrameOnly);
    static void DoPaintOptionBox(HDC hDC, PaintManagerUI* manager, RECT rcItem, const TCHAR* txt, UINT uState, UINT uStyle);
-   static void DoPaintTabFolder(HDC hDC, PaintManagerUI* manager, RECT& rc, const TCHAR* txt, UINT uState);
+   static void DoPaintTabFolder(HDC hDC, PaintManagerUI* manager, RECT& rc, const char* txt, UINT uState);
    static void DoPaintToolbarButton(HDC hDC, PaintManagerUI* manager, RECT rc, const TCHAR* txt, SIZE szPadding, UINT uState);
    static void DoPaintQuickText(HDC hDC, PaintManagerUI* manager, RECT& rc, LPCTSTR txt, UITYPE_COLOR iTextColor, UITYPE_FONT iFont, UINT uStyle);
    static void DoPaintPrettyText(HDC hDC, PaintManagerUI* manager, RECT& rc, const TCHAR* txt, UITYPE_COLOR iTextColor, UITYPE_COLOR iBackColor, RECT* pLinks, int& nLinkRects, UINT uStyle);

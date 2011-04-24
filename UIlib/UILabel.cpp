@@ -11,10 +11,12 @@ const char* LabelPanelUI::GetClass() const
    return "LabelPanelUI";
 }
 
-void LabelPanelUI::SetText(const TCHAR* txt)
+void LabelPanelUI::SetText(const char* txt)
 {
    // Automatic assignment of keyboard shortcut
-   if (_tcschr(txt, '&') != NULL)  m_chShortcut = *(_tcschr(txt, '&') + 1);
+   const char *s = str::Find(txt, "&");
+   if (s)
+      m_chShortcut = s[1];
    ControlUI::SetText(txt);
 }
 

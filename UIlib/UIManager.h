@@ -379,29 +379,24 @@ public:
    virtual bool Activate();
    virtual ControlUI* GetParent() const;
 
-   virtual StdString GetText() const;
-#ifdef UNICODE
-   virtual void SetText(const TCHAR* txt);
-#endif
+   virtual const char* GetText() const;
    virtual void SetText(const char* txt);
 
-           StdString GetToolTip() const;
-#ifdef UNICODE
-           void SetToolTip(const TCHAR* txt);
-#endif
-           void SetToolTip(const char* txt);
+   const char * GetToolTip() const;
+   void SetToolTip(const char* txt);
 
-           TCHAR GetShortcut() const;
-           void SetShortcut(TCHAR ch);
+   char GetShortcut() const;
+   void SetShortcut(char ch);
 
-           UINT_PTR GetTag() const;
-           void SetTag(UINT_PTR pTag);
+   UINT_PTR GetTag() const;
+   void SetTag(UINT_PTR pTag);
 
    virtual void SetFocus();
 
-           bool IsVisible() const;
-           bool IsEnabled() const;
-           bool IsFocused() const;
+   bool IsVisible() const;
+   bool IsEnabled() const;
+   bool IsFocused() const;
+
    virtual void SetVisible(bool visible = true);
    virtual void SetEnabled(bool bEnable = true);
 
@@ -431,7 +426,7 @@ public:
 protected:
    PaintManagerUI*  m_manager;
    ControlUI*       m_parent;
-   TCHAR            m_chShortcut;
+   char             m_chShortcut;
    const char*      m_name;
    const char*      m_txt;
    const char*      m_toolTip;

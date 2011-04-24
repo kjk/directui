@@ -113,9 +113,9 @@ void ContainerUI::Event(TEventUI& event)
 {
    if (m_hwndScroll != NULL)  
    {
-      if (event.Type == UIEVENT_VSCROLL)  
+      if (event.type == UIEVENT_VSCROLL)  
       {
-         switch( LOWORD(event.wParam))  {
+         switch (LOWORD(event.wParam))  {
          case SB_THUMBPOSITION:
          case SB_THUMBTRACK:
             {
@@ -140,9 +140,9 @@ void ContainerUI::Event(TEventUI& event)
             break;
          }
       }
-      if (event.Type == UIEVENT_KEYDOWN)  
+      if (event.type == UIEVENT_KEYDOWN)  
       {
-         switch( event.chKey)  {
+         switch (event.chKey)  {
          case VK_DOWN:
             SetScrollPos(GetScrollPos() + 5);
             return;

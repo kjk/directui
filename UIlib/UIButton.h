@@ -11,7 +11,7 @@ public:
 
    virtual bool Activate();
 
-   void SetText(const TCHAR* txt);
+   virtual void SetText(const TCHAR* txt);
 
    void SetWidth(int cxWidth);
    void SetPadding(int cx, int cy);

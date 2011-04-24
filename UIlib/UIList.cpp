@@ -141,9 +141,9 @@ const char* ListHeaderItemUI::GetClass() const
    return "ListHeaderItemUI";
 }
 
-void ListHeaderItemUI::SetText(const TCHAR* txt)
+void ListHeaderItemUI::SetText(const char* txt)
 {
-   m_txt = txt;
+   str::Replace(m_txt, txt);
    UpdateLayout();
 }
 
@@ -171,7 +171,7 @@ void ListHeaderItemUI::Event(TEventUI& event)
       RECT rcSeparator = GetThumbRect(m_rcItem);
       if (::PtInRect(&rcSeparator, event.ptMouse))  {
          m_uDragState |= UISTATE_CAPTURED;
-         ptLastMouse = event.ptMouse;
+         m_ptLastMouse = event.ptMouse;
          m_manager->SendNotify(this, "headerdragging");
       }
       else {
@@ -190,12 +190,12 @@ void ListHeaderItemUI::Event(TEventUI& event)
    {
       if ((m_uDragState & UISTATE_CAPTURED) != 0)  {
          RECT rc = m_rcItem;
-         rc.right -= ptLastMouse.x - event.ptMouse.x;
+         rc.right -= m_ptLastMouse.x - event.ptMouse.x;
          const int MIN_DRAGSIZE = 40;
          if (rc.right - rc.left > MIN_DRAGSIZE)  {
             m_rcItem = rc;
             m_cxWidth = rc.right - rc.left;
-            ptLastMouse = event.ptMouse;
+            m_ptLastMouse = event.ptMouse;
             m_parent->Invalidate();
          }
       }

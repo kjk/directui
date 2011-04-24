@@ -12,7 +12,7 @@ public:
    virtual const char* GetClass() const;
    virtual UINT GetControlFlags() const;
 
-   void SetText(const TCHAR* txt);
+   virtual void SetText(const char* txt);
 
    void SetEditStyle(UINT uStyle);
    void SetReadOnly(bool bReadOnly);
@@ -42,10 +42,10 @@ public:
    virtual const char* GetClass() const;
    virtual UINT GetControlFlags() const;
 
-   void Init();
+   virtual void Init();
    
-   StdString GetText() const;
-   void SetText(const TCHAR* txt);
+   virtual const char *GetText() const;
+   virtual void SetText(const char* txt);
 
    virtual void SetEnabled(bool enabled);
    virtual void SetVisible(bool visible);

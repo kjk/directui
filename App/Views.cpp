@@ -285,7 +285,7 @@ const char* RegistersPageWnd::GetItemText(ControlUI* ctrl, int idx, int subItem)
    return sTemp;
 }
 
-int RegistersPageWnd::CompareItem(ControlUI* pList, ControlUI* item1, ControlUI* item2)
+int RegistersPageWnd::CompareItem(ControlUI* list, ControlUI* item1, ControlUI* item2)
 {
    return 0;
 }
@@ -371,15 +371,15 @@ const char* SystemsPageWnd::GetItemText(ControlUI* ctrl, int idx, int subItem)
    return "";
 }
 
-int SystemsPageWnd::CompareItem(ControlUI* pList, ControlUI* item1, ControlUI* item2)
+int SystemsPageWnd::CompareItem(ControlUI* list, ControlUI* item1, ControlUI* item2)
 {
    return 0;
 }
 
 void SystemsPageWnd::OnPrepareAnimation()
 {
-   ListUI* pList = static_cast<ListUI*>(m_pm.FindControl("list"));
-   pList->SetTextCallback(this);  // List will call our GetItemText()
+   ListUI* list = static_cast<ListUI*>(m_pm.FindControl("list"));
+   list->SetTextCallback(this);  // List will call our GetItemText()
 }
 
 void SystemsPageWnd::OnExpandItem(ControlUI* ctrl)
@@ -388,7 +388,7 @@ void SystemsPageWnd::OnExpandItem(ControlUI* ctrl)
    // Add slowly...
    TextPanelUI* text = new TextPanelUI();
    StdString sText;
-   sText.Format(_T("<b>Episode:</b> Gyldendal #%p"), ctrl);
+   sText.Format("<b>Episode:</b> Gyldendal #%p", ctrl);
    text->SetText(sText);
    item->Add(text);
    // Add quickly...
