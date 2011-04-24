@@ -271,16 +271,16 @@ void RegistersPageWnd::OnPrepareAnimation()
    for (int i = 0; i < 1000; i++)  pList->Add(new ListTextElementUI);    // We want 1000 items in list
 }
 
-const TCHAR* RegistersPageWnd::GetItemText(ControlUI* ctrl, int idx, int iSubItem)
+const TCHAR* RegistersPageWnd::GetItemText(ControlUI* ctrl, int idx, int subItem)
 {
-   if (idx == 0 && iSubItem == 0)  return _T("<i 3>Item1");
-   if (idx == 1 && iSubItem == 0)  return _T("<i 3>Item2");
-   if (idx == 2 && iSubItem == 0)  return _T("<i 3>Item3");
-   if (idx == 0 && iSubItem == 1)  return _T("Horse");
-   if (idx == 1 && iSubItem == 1)  return _T("Dog");
-   if (idx == 2 && iSubItem == 1)  return _T("Rabbit");
+   if (idx == 0 && subItem == 0)  return _T("<i 3>Item1");
+   if (idx == 1 && subItem == 0)  return _T("<i 3>Item2");
+   if (idx == 2 && subItem == 0)  return _T("<i 3>Item3");
+   if (idx == 0 && subItem == 1)  return _T("Horse");
+   if (idx == 1 && subItem == 1)  return _T("Dog");
+   if (idx == 2 && subItem == 1)  return _T("Rabbit");
    static StdString sTemp;
-   sTemp.Format(_T("Item %d %d"), idx, iSubItem);
+   sTemp.Format(_T("Item %d %d"), idx, subItem);
    return sTemp;
 }
 
@@ -352,21 +352,21 @@ const char* SystemsPageWnd::GetDialogResourceXml() const
 
 void SystemsPageWnd::Notify(TNotifyUI& msg)
 {
-   if (str::Eq(msg.type, "itemexpand"))  OnExpandItem(msg.pSender);
+   if (str::Eq(msg.type, "itemexpand"))  OnExpandItem(msg.sender);
    StandardPageWnd::Notify(msg);
 }
 
-const TCHAR* SystemsPageWnd::GetItemText(ControlUI* ctrl, int idx, int iSubItem)
+const TCHAR* SystemsPageWnd::GetItemText(ControlUI* ctrl, int idx, int subItem)
 {
-   if (idx == 0 && iSubItem == 1)  return _T("Expanding Item #1");
-   if (idx == 1 && iSubItem == 1)  return _T("Expanding Item #2");
-   if (idx == 2 && iSubItem == 1)  return _T("Expanding Item #3");
-   if (idx == 0 && iSubItem == 2)  return _T("100.0");
-   if (idx == 1 && iSubItem == 2)  return _T("20.0");
-   if (idx == 2 && iSubItem == 2)  return _T("30.0");
-   if (idx == 0 && iSubItem == 3)  return _T("<a>Kunde #1</a>");
-   if (idx == 1 && iSubItem == 3)  return _T("");
-   if (idx == 2 && iSubItem == 3)  return _T("<a>Kunde #3</a>");
+   if (idx == 0 && subItem == 1)  return _T("Expanding Item #1");
+   if (idx == 1 && subItem == 1)  return _T("Expanding Item #2");
+   if (idx == 2 && subItem == 1)  return _T("Expanding Item #3");
+   if (idx == 0 && subItem == 2)  return _T("100.0");
+   if (idx == 1 && subItem == 2)  return _T("20.0");
+   if (idx == 2 && subItem == 2)  return _T("30.0");
+   if (idx == 0 && subItem == 3)  return _T("<a>Kunde #1</a>");
+   if (idx == 1 && subItem == 3)  return _T("");
+   if (idx == 2 && subItem == 3)  return _T("<a>Kunde #3</a>");
    return _T("");
 }
 
@@ -385,11 +385,11 @@ void SystemsPageWnd::OnExpandItem(ControlUI* ctrl)
 {
    ListExpandElementUI* item = static_cast<ListExpandElementUI*>(ctrl);
    // Add slowly...
-   TextPanelUI* pText = new TextPanelUI();
+   TextPanelUI* text = new TextPanelUI();
    StdString sText;
    sText.Format(_T("<b>Episode:</b> Gyldendal #%p"), ctrl);
-   pText->SetText(sText);
-   item->Add(pText);
+   text->SetText(sText);
+   item->Add(text);
    // Add quickly...
    item->Add((new TextPanelUI())->ApplyAttributeList("text=\"<b>Navn:</b> Anders And\""));
    item->Add((new TextPanelUI())->ApplyAttributeList("text=\"<b>Tidspunkt:</b> <i 3>Juleaften\""));
@@ -456,11 +456,11 @@ void SearchPageWnd::Notify(TNotifyUI& msg)
 {
    if (str::Eq(msg.type, "click"))  
    {
-      if (str::Eq(msg.pSender->GetName(), "ok"))  {
+      if (str::Eq(msg.sender->GetName(), "ok"))  {
          StandardPageWnd* win = new EditPageWnd;
          win->Create(m_hWnd, NULL, UI_WNDSTYLE_FRAME, 0L);
       }
-      if (str::Eq(msg.pSender->GetName(), "cancel")) Close();
+      if (str::Eq(msg.sender->GetName(), "cancel")) Close();
    }
    StandardPageWnd::Notify(msg);
 }
@@ -518,10 +518,10 @@ void EditPageWnd::Init()
 
 void EditPageWnd::Notify(TNotifyUI& msg)
 {
-   if (str::Eq(msg.type, "click") && str::Eq(msg.pSender->GetName(), "cancel"))  Close();
-   if (str::Eq(msg.type, "link") && str::Eq(msg.pSender->GetName(), "warning"))  {
+   if (str::Eq(msg.type, "click") && str::Eq(msg.sender->GetName(), "cancel"))  Close();
+   if (str::Eq(msg.type, "link") && str::Eq(msg.sender->GetName(), "warning"))  {
       PopupWnd* pPopup = new PopupWnd;
-      pPopup->Create(m_hWnd, _T(""), UI_WNDSTYLE_DIALOG, UI_WNDSTYLE_EX_DIALOG, 0, 0, 0, 0, NULL);
+      pPopup->Create(m_hWnd, "", UI_WNDSTYLE_DIALOG, UI_WNDSTYLE_EX_DIALOG, 0, 0, 0, 0, NULL);
       pPopup->ShowModal();
    }
    StandardPageWnd::Notify(msg);

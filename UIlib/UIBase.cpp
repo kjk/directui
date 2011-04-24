@@ -204,7 +204,7 @@ CPoint::CPoint(LPARAM lParam)
 }
 
 
-WindowWnd::WindowWnd() : m_hWnd(NULL), m_OldWndProc(::DefWindowProc), m_bSubclassed(false)
+WindowWnd::WindowWnd() : m_hWnd(NULL), m_OldWndProc(::DefWindowProc), m_subclassed(false)
 {
 }
 
@@ -228,12 +228,12 @@ WindowWnd::operator HWND() const
    return m_hWnd;
 }
 
-HWND WindowWnd::Create(HWND hwndParent, const TCHAR* name, DWORD dwStyle, DWORD dwExStyle, const RECT rc, HMENU hMenu)
+HWND WindowWnd::Create(HWND hwndParent, const char* name, DWORD dwStyle, DWORD dwExStyle, const RECT rc, HMENU hMenu)
 {
    return Create(hwndParent, name, dwStyle, dwExStyle, rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top, hMenu);
 }
 
-HWND WindowWnd::Create(HWND hwndParent, const TCHAR* name, DWORD dwStyle, DWORD dwExStyle, int x, int y, int cx, int cy, HMENU hMenu)
+HWND WindowWnd::Create(HWND hwndParent, const char* name, DWORD dwStyle, DWORD dwExStyle, int x, int y, int cx, int cy, HMENU hMenu)
 {
    if (GetSuperClassName() != NULL && !RegisterSuperclass())  return NULL;
    if (GetSuperClassName() == NULL && !RegisterWindowClass())  return NULL;
@@ -248,7 +248,7 @@ HWND WindowWnd::Subclass(HWND hWnd)
    ASSERT(m_hWnd==NULL);
    m_OldWndProc = SubclassWindow(hWnd, __WndProc);
    if (m_OldWndProc == NULL)  return NULL;
-   m_bSubclassed = true;
+   m_subclassed = true;
    m_hWnd = hWnd;
    return m_hWnd;
 }
@@ -257,17 +257,17 @@ void WindowWnd::Unsubclass()
 {
    ASSERT(::IsWindow(m_hWnd));
    if (!::IsWindow(m_hWnd))  return;
-   if (!m_bSubclassed)  return;
+   if (!m_subclassed)  return;
    SubclassWindow(m_hWnd, m_OldWndProc);
    m_OldWndProc = ::DefWindowProc;
-   m_bSubclassed = false;
+   m_subclassed = false;
 }
 
-void WindowWnd::ShowWindow(bool bShow /*= true*/, bool bTakeFocus /*= false*/)
+void WindowWnd::ShowWindow(bool bShow /*= true*/, bool takeFocus /*= false*/)
 {
    ASSERT(::IsWindow(m_hWnd));
    if (!::IsWindow(m_hWnd))  return;
-   ::ShowWindow(m_hWnd, bShow ? (bTakeFocus ? SW_SHOWNORMAL : SW_SHOWNOACTIVATE) : SW_HIDE);
+   ::ShowWindow(m_hWnd, bShow ? (takeFocus ? SW_SHOWNORMAL : SW_SHOWNOACTIVATE) : SW_HIDE);
 }
 
 bool WindowWnd::ShowModal()
@@ -392,7 +392,7 @@ LRESULT CALLBACK WindowWnd::__WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
       if (uMsg == WM_NCDESTROY && pThis != NULL)  {
          LRESULT lRes = ::CallWindowProc(pThis->m_OldWndProc, hWnd, uMsg, wParam, lParam);
          ::SetWindowLongPtr(pThis->m_hWnd, GWLP_USERDATA, 0L);
-         if (pThis->m_bSubclassed)  pThis->Unsubclass();
+         if (pThis->m_subclassed)  pThis->Unsubclass();
          pThis->m_hWnd = NULL;
          pThis->OnFinalMessage(hWnd);
          return lRes;
@@ -419,7 +419,7 @@ LRESULT CALLBACK WindowWnd::__ControlProc(HWND hWnd, UINT uMsg, WPARAM wParam, L
       pThis = reinterpret_cast<WindowWnd*>(::GetPropA(hWnd, "WndX"));
       if (uMsg == WM_NCDESTROY && pThis != NULL)  {
          LRESULT lRes = ::CallWindowProc(pThis->m_OldWndProc, hWnd, uMsg, wParam, lParam);
-         if (pThis->m_bSubclassed)  pThis->Unsubclass();
+         if (pThis->m_subclassed)  pThis->Unsubclass();
          ::SetPropA(hWnd, "WndX", NULL);
          pThis->m_hWnd = NULL;
          pThis->OnFinalMessage(hWnd);

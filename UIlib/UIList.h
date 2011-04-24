@@ -22,7 +22,7 @@ typedef struct tagTListInfoUI
 class IListCallbackUI
 {
 public:
-   virtual const TCHAR* GetItemText(ControlUI* pList, int iItem, int iSubItem) = 0;
+   virtual const TCHAR* GetItemText(ControlUI* pList, int iItem, int subItem) = 0;
    virtual int CompareItem(ControlUI* pList, ControlUI* item1, ControlUI* item2) = 0;
 };
 

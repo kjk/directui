@@ -41,7 +41,7 @@ public:
    virtual const char* GetDialogResourceXml() const;
    virtual void OnPrepareAnimation();
    // IListCallbackUI
-   virtual const TCHAR* GetItemText(ControlUI* ctrl, int idx, int iSubItem);
+   virtual const TCHAR* GetItemText(ControlUI* ctrl, int idx, int subItem);
    virtual int CompareItem(ControlUI* pList, ControlUI* item1, ControlUI* item2);
 };
 
@@ -62,7 +62,7 @@ public:
    virtual void OnPrepareAnimation();
    void OnExpandItem(ControlUI* ctrl);
    // IListCallbackUI
-   virtual const TCHAR* GetItemText(ControlUI* ctrl, int idx, int iSubItem);
+   virtual const TCHAR* GetItemText(ControlUI* ctrl, int idx, int subItem);
    virtual int CompareItem(ControlUI* pList, ControlUI* item1, ControlUI* item2);
 };
 

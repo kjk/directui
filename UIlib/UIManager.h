@@ -192,22 +192,22 @@ typedef enum
 // to the control implementation.
 typedef struct
 {
-   int Type;
-   ControlUI* pSender;
-   DWORD dwTimestamp;
-   POINT ptMouse;
-   TCHAR chKey;
-   WORD wKeyState;
-   WPARAM wParam;
-   LPARAM lParam;
+   int          type;
+   ControlUI*   sender;
+   DWORD        timestamp;
+   POINT        ptMouse;
+   TCHAR        chKey;
+   WORD         wKeyState;
+   WPARAM       wParam;
+   LPARAM       lParam;
 } TEventUI;
 
 // Structure for notifications to the outside world
 typedef struct 
 {
    const char*  type;
-   ControlUI*   pSender;
-   DWORD        dwTimestamp;
+   ControlUI*   sender;
+   DWORD        timestamp;
    POINT        ptMouse;
    WPARAM       wParam;
    LPARAM       lParam;

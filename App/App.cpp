@@ -17,7 +17,7 @@ public:
    void Notify(TNotifyUI& msg)
    {
       if (str::Eq(msg.type,"click") || str::Eq(msg.type, "link"))
-         _CreatePage(msg.pSender->GetName());
+         _CreatePage(msg.sender->GetName());
       if (str::Eq(msg.type, "itemactivate"))
          _CreatePage("page_search");
    }
@@ -96,7 +96,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*l
 
    FrameWindowWnd* pFrame = new FrameWindowWnd();
    if (pFrame == NULL)  return 0;
-   pFrame->Create(NULL, _T("Test"), UI_WNDSTYLE_FRAME, WS_EX_WINDOWEDGE);
+   pFrame->Create(NULL, "Test", UI_WNDSTYLE_FRAME, WS_EX_WINDOWEDGE);
 
    PaintManagerUI::MessageLoop();
 

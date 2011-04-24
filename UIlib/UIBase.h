@@ -178,11 +178,11 @@ public:
    bool RegisterWindowClass();
    bool RegisterSuperclass();
 
-   HWND Create(HWND hwndParent, const TCHAR* name, DWORD dwStyle, DWORD dwExStyle, const RECT rc, HMENU hMenu = NULL);
-   HWND Create(HWND hwndParent, const TCHAR* name, DWORD dwStyle, DWORD dwExStyle, int x = CW_USEDEFAULT, int y = CW_USEDEFAULT, int cx = CW_USEDEFAULT, int cy = CW_USEDEFAULT, HMENU hMenu = NULL);
+   HWND Create(HWND hwndParent, const char* name, DWORD dwStyle, DWORD dwExStyle, const RECT rc, HMENU hMenu = NULL);
+   HWND Create(HWND hwndParent, const char* name, DWORD dwStyle, DWORD dwExStyle, int x = CW_USEDEFAULT, int y = CW_USEDEFAULT, int cx = CW_USEDEFAULT, int cy = CW_USEDEFAULT, HMENU hMenu = NULL);
    HWND Subclass(HWND hWnd);
    void Unsubclass();
-   void ShowWindow(bool bShow = true, bool bTakeFocus = true);
+   void ShowWindow(bool bShow = true, bool takeFocus = true);
    bool ShowModal();
    void Close();
    void CenterWindow();
@@ -204,9 +204,9 @@ protected:
    static LRESULT CALLBACK __ControlProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 protected:
-   HWND m_hWnd;
-   WNDPROC m_OldWndProc;
-   bool m_bSubclassed;
+   HWND     m_hWnd;
+   WNDPROC  m_OldWndProc;
+   bool     m_subclassed;
 };
 
 class UILIB_API WaitCursor
