@@ -142,7 +142,7 @@ void BlueRenderEngineUI::DoPaintArcCaption(HDC hDC, PaintManagerUI* manager, REC
    }
    rcText.left += 8;
 
-   if (txt != NULL && _tcslen(txt) > 0)  {
+   if (txt != NULL && strlen(txt) > 0)  {
       int nLinks = 0;
       DoPaintPrettyText(hDC, manager, rcText, txt, UICOLOR_TITLE_TEXT, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE);
    }
@@ -478,7 +478,7 @@ void BlueRenderEngineUI::DoPaintPrettyText(HDC hDC, PaintManagerUI* manager, REC
             break;
          case 'f':  // Font
             {
-               UITYPE_FONT iFont = (UITYPE_FONT) _tcstol(txt, const_cast<char**>(&txt), 10);
+               UITYPE_FONT iFont = (UITYPE_FONT) strtol(txt, const_cast<char**>(&txt), 10);
                ::SelectObject(hDC, manager->GetThemeFont(iFont));
                tm = manager->GetThemeFontInfo(iFont);
                cyLine = MAX(cyLine, tm.tmHeight + tm.tmExternalLeading);
@@ -493,7 +493,7 @@ void BlueRenderEngineUI::DoPaintPrettyText(HDC hDC, PaintManagerUI* manager, REC
             break;
          case 'x':  // Indent
             {
-               iLineIndent = (int) _tcstol(txt, const_cast<char**>(&txt), 10);
+               iLineIndent = (int) strtol(txt, const_cast<char**>(&txt), 10);
                if (pt.x < rc.left + iLineIndent)  pt.x = rc.left + iLineIndent;
             }
             break;
@@ -523,8 +523,8 @@ void BlueRenderEngineUI::DoPaintPrettyText(HDC hDC, PaintManagerUI* manager, REC
                int iSize = 16;
                if (*txt == ' ')  txt++;
                if (isdigit(*txt))  {
-                  int idx = (int) _tcstol(txt, const_cast<char**>(&txt), 10);
-                  iSize = MAX(16, _ttoi(txt));
+                  int idx = (int) strtol(txt, const_cast<char**>(&txt), 10);
+                  iSize = MAX(16, atoi(txt));
                   if (bDraw)  {
                      HICON hIcon = manager->GetThemeIcon(idx, iSize);
                      ASSERT(hIcon!=NULL);
@@ -548,7 +548,10 @@ void BlueRenderEngineUI::DoPaintPrettyText(HDC hDC, PaintManagerUI* manager, REC
                }
                // A special feature with an icon at the left edge is that it also sets
                // the paragraph indent.
-               if (pt.x == rc.left)  iLineIndent = iSize + (iSize / 8); else cyLine = MAX(iSize, cyLine);
+               if (pt.x == rc.left)
+                  iLineIndent = iSize + (iSize / 8);
+               else
+                  cyLine = MAX(iSize, cyLine);
                pt.x += iSize + (iSize / 8);
                cyMinHeight = pt.y + iSize;
             }
@@ -558,12 +561,12 @@ void BlueRenderEngineUI::DoPaintPrettyText(HDC hDC, PaintManagerUI* manager, REC
                if (*txt == ' ')  txt++;
                if (*txt == '#') {
                   txt++;
-                  COLORREF clrColor = _tcstol(txt, const_cast<char**>(&txt), 16);
+                  COLORREF clrColor = strtol(txt, const_cast<char**>(&txt), 16);
                   clrColor = RGB(GetBValue(clrColor), GetGValue(clrColor), GetRValue(clrColor));
                   ::SetTextColor(hDC, clrColor);
                }
                else {
-                  UITYPE_COLOR Color = (UITYPE_COLOR) _tcstol(txt, const_cast<char**>(&txt), 10);
+                  UITYPE_COLOR Color = (UITYPE_COLOR) strtol(txt, const_cast<char**>(&txt), 10);
                   ::SetTextColor(hDC, manager->GetThemeColor(Color));
                }
             }
@@ -673,7 +676,7 @@ void BlueRenderEngineUI::DoPaintPrettyText(HDC hDC, PaintManagerUI* manager, REC
    if ((uStyle & DT_CALCRECT) != 0)  {
       rc.bottom = MAX(cyMinHeight, pt.y + cyLine);
       if (rc.right >= 9999)  {
-         if (_tcslen(txt) > 0)  pt.x += 3;
+         if (strlen(txt) > 0)  pt.x += 3;
          rc.right = pt.x;
       }
    }
