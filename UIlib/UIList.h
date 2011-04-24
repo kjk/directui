@@ -22,8 +22,8 @@ typedef struct tagTListInfoUI
 class IListCallbackUI
 {
 public:
-   virtual const char* GetItemText(ControlUI* pList, int iItem, int subItem) = 0;
-   virtual int CompareItem(ControlUI* pList, ControlUI* item1, ControlUI* item2) = 0;
+   virtual const char* GetItemText(ControlUI* list, int iItem, int subItem) = 0;
+   virtual int CompareItem(ControlUI* list, ControlUI* item1, ControlUI* item2) = 0;
 };
 
 class IListOwnerUI
@@ -65,7 +65,7 @@ class UILIB_API ListElementUI : public ControlUI, public IListItemUI
 public:
    ListElementUI();
 
-   UINT GetControlFlags() const;
+   virtual UINT GetControlFlags() const;
    virtual void* GetInterface(const char* name);
 
    int GetIndex() const;
@@ -78,15 +78,15 @@ public:
    bool IsExpanded() const;
    bool Expand(bool bExpand = true);
 
-   bool Activate();
+   virtual bool Activate();
 
    virtual void Event(TEventUI& event);
-   void SetAttribute(const char* name, const char* value);
+   virtual void SetAttribute(const char* name, const char* value);
 
 protected:
-   int m_idx;
-   bool m_bSelected;
-   IListOwnerUI* m_owner;
+   int              m_idx;
+   bool             m_bSelected;
+   IListOwnerUI*    m_owner;
 };
 
 class UILIB_API ListHeaderUI : public HorizontalLayoutUI
@@ -97,8 +97,8 @@ public:
    virtual const char* GetClass() const;
    virtual void* GetInterface(const char* name);
 
-   SIZE EstimateSize(SIZE szAvailable);
-   void DoPaint(HDC hDC, const RECT& rcPaint);
+   virtual SIZE EstimateSize(SIZE szAvailable);
+   virtual void DoPaint(HDC hDC, const RECT& rcPaint);
 };
 
 class UILIB_API ListHeaderItemUI : public ControlUI
@@ -106,25 +106,25 @@ class UILIB_API ListHeaderItemUI : public ControlUI
 public:
    ListHeaderItemUI();
 
-   const char* GetClass() const;
-   UINT GetControlFlags() const;
+   virtual const char* GetClass() const;
+   virtual UINT GetControlFlags() const;
    
    void SetText(const TCHAR* txt);
 
    virtual void Event(TEventUI& event);
 
-   SIZE EstimateSize(SIZE szAvailable);
-   void DoPaint(HDC hDC, const RECT& rcPaint);
+   virtual SIZE EstimateSize(SIZE szAvailable);
+   virtual void DoPaint(HDC hDC, const RECT& rcPaint);
 
    void SetWidth(int cxWidth);
-   void SetAttribute(const char* name, const char* value);
+   virtual void SetAttribute(const char* name, const char* value);
 
    RECT GetThumbRect(RECT rc) const;
 
 protected:
-   int m_cxWidth;
-   POINT ptLastMouse;
-   UINT m_uDragState;
+   int   m_cxWidth;
+   POINT m_ptLastMouse;
+   UINT  m_uDragState;
 };
 
 class UILIB_API ListFooterUI : public HorizontalLayoutUI
@@ -145,7 +145,7 @@ public:
    ListUI();
 
    virtual const char* GetClass() const;
-   UINT GetControlFlags() const;
+   virtual UINT GetControlFlags() const;
    virtual void* GetInterface(const char* name);
 
    int GetCurSel() const;
@@ -170,21 +170,21 @@ public:
    int GetExpandedItem() const;
    bool ExpandItem(int idx, bool bExpand = true);
 
-   void SetPos(RECT rc);
+   virtual void SetPos(RECT rc);
    virtual void Event(TEventUI& event);
-   void SetAttribute(const char* name, const char* value);
+   virtual void SetAttribute(const char* name, const char* value);
 
    IListCallbackUI* GetTextCallback() const;
    void SetTextCallback(IListCallbackUI* cb);
 
 protected:
-   int m_curSel;
-   int m_expandedItem;
-   IListCallbackUI* m_cb;
+   int               m_curSel;
+   int               m_expandedItem;
+   IListCallbackUI*  m_cb;
    VerticalLayoutUI* m_list;
-   ListHeaderUI* m_header;
-   ListFooterUI* m_footer;
-   TListInfoUI m_listInfo;
+   ListHeaderUI*     m_header;
+   ListFooterUI*     m_footer;
+   TListInfoUI       m_listInfo;
 };
 
 class UILIB_API ListLabelElementUI : public ListElementUI
@@ -192,21 +192,21 @@ class UILIB_API ListLabelElementUI : public ListElementUI
 public:
    ListLabelElementUI();
 
-   const char* GetClass() const;
+   virtual const char* GetClass() const;
 
    void SetWidth(int cxWidth);
    void SetTextStyle(UINT uStyle);
 
    virtual void Event(TEventUI& event);
-   SIZE EstimateSize(SIZE szAvailable);
-   void DoPaint(HDC hDC, const RECT& rcPaint);
+   virtual SIZE EstimateSize(SIZE szAvailable);
+   virtual void DoPaint(HDC hDC, const RECT& rcPaint);
 
-   void DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle);
+   virtual void DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle);
 
-   void SetAttribute(const char* name, const char* value);
+   virtual void SetAttribute(const char* name, const char* value);
 
 protected:
-   int m_cxWidth;
+   int  m_cxWidth;
    UINT m_uTextStyle;
    UINT m_uButtonState;
 };
@@ -216,21 +216,21 @@ class UILIB_API ListTextElementUI : public ListLabelElementUI
 public:
    ListTextElementUI();
 
-   const char* GetClass() const;
-   UINT GetControlFlags() const;
+   virtual const char* GetClass() const;
+   virtual UINT GetControlFlags() const;
 
    void SetOwner(ControlUI* owner);
 
    virtual void Event(TEventUI& event);
-   SIZE EstimateSize(SIZE szAvailable);
-   void DoPaint(HDC hDC, const RECT& rcPaint);
+   virtual SIZE EstimateSize(SIZE szAvailable);
+   virtual void DoPaint(HDC hDC, const RECT& rcPaint);
 
-   void DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle);
+   virtual void DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle);
 
 protected:
-   int m_cyItem;
-   int m_nLinks;
-   RECT m_rcLinks[8];
+   int      m_cyItem;
+   int      m_nLinks;
+   RECT     m_rcLinks[8];
    IListUI* m_owner;
 };
 
@@ -240,12 +240,12 @@ public:
    ListExpandElementUI();
    virtual ~ListExpandElementUI();
 
-   const char* GetClass() const;
+   virtual const char* GetClass() const;
 
-   void SetPos(RECT rc);
+   virtual void SetPos(RECT rc);
    virtual void Event(TEventUI& event);
-   SIZE EstimateSize(SIZE szAvailable);
-   void DoPaint(HDC hDC, const RECT& rcPaint);
+   virtual SIZE EstimateSize(SIZE szAvailable);
+   virtual void DoPaint(HDC hDC, const RECT& rcPaint);
 
    void SetManager(PaintManagerUI* manager, ControlUI* parent);
    virtual ControlUI* FindControl(FINDCONTROLPROC Proc, void* data, UINT uFlags);

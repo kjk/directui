@@ -6,10 +6,10 @@ class UILIB_API ButtonUI : public ControlUI
 public:
    ButtonUI();
 
-   const char* GetClass() const;
-   UINT GetControlFlags() const;
+   virtual const char* GetClass() const;
+   virtual UINT GetControlFlags() const;
 
-   bool Activate();
+   virtual bool Activate();
 
    void SetText(const TCHAR* txt);
 
@@ -18,12 +18,12 @@ public:
 
    virtual void Event(TEventUI& event);
 
-   SIZE EstimateSize(SIZE szAvailable);
-   void DoPaint(HDC hDC, const RECT& rcPaint);
-   void SetAttribute(const char* name, const char* value);
+   virtual SIZE EstimateSize(SIZE szAvailable);
+   virtual void DoPaint(HDC hDC, const RECT& rcPaint);
+   virtual void SetAttribute(const char* name, const char* value);
 
 protected:
-   int m_cxWidth;
+   int  m_cxWidth;
    SIZE m_szPadding;
    UINT m_uTextStyle;
    UINT m_uButtonState;
@@ -35,10 +35,10 @@ class UILIB_API OptionUI : public ControlUI
 public:
    OptionUI();
 
-   const char* GetClass() const;
-   UINT GetControlFlags() const;
+   virtual const char* GetClass() const;
+   virtual UINT GetControlFlags() const;
 
-   bool Activate();
+   virtual bool Activate();
 
    bool IsChecked() const;
    void SetCheck(bool bSelected);
@@ -46,15 +46,15 @@ public:
    
    virtual void Event(TEventUI& event);
 
-   SIZE EstimateSize(SIZE szAvailable);
-   void DoPaint(HDC hDC, const RECT& rcPaint);
-   void SetAttribute(const char* name, const char* value);
+   virtual SIZE EstimateSize(SIZE szAvailable);
+   virtual void DoPaint(HDC hDC, const RECT& rcPaint);
+   virtual void SetAttribute(const char* name, const char* value);
 
 protected:
    bool m_bSelected;
    UINT m_uStyle;
    UINT m_uButtonState;
-   int m_cxWidth;
+   int  m_cxWidth;
 };
 
 

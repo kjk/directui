@@ -9,8 +9,8 @@ friend SingleLineEditWnd;
 public:
    SingleLineEditUI();
 
-   const char* GetClass() const;
-   UINT GetControlFlags() const;
+   virtual const char* GetClass() const;
+   virtual UINT GetControlFlags() const;
 
    void SetText(const TCHAR* txt);
 
@@ -20,8 +20,8 @@ public:
 
    virtual void Event(TEventUI& event);
 
-   SIZE EstimateSize(SIZE szAvailable);
-   void DoPaint(HDC hDC, const RECT& rcPaint);
+   virtual SIZE EstimateSize(SIZE szAvailable);
+   virtual void DoPaint(HDC hDC, const RECT& rcPaint);
 
 protected:
    SingleLineEditWnd* m_win;
@@ -39,8 +39,8 @@ public:
    MultiLineEditUI();
    ~MultiLineEditUI();
 
-   const char* GetClass() const;
-   UINT GetControlFlags() const;
+   virtual const char* GetClass() const;
+   virtual UINT GetControlFlags() const;
 
    void Init();
    
@@ -57,10 +57,10 @@ public:
 
    virtual void Event(TEventUI& event);
 
-   SIZE EstimateSize(SIZE szAvailable);
-   void SetPos(RECT rc);
-   void SetPos(int left, int top, int right, int bottom);
-   void DoPaint(HDC hDC, const RECT& rcPaint);
+   virtual SIZE EstimateSize(SIZE szAvailable);
+   virtual void SetPos(RECT rc);
+   virtual void SetPos(int left, int top, int right, int bottom);
+   virtual void DoPaint(HDC hDC, const RECT& rcPaint);
 
 protected:
    MultiLineEditWnd* m_win;

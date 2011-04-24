@@ -8,18 +8,18 @@ public:
 
    void SetWidth(int cxWidth);
 
-   const char* GetClass() const;
-   UINT GetControlFlags() const;
+   virtual const char* GetClass() const;
+   virtual UINT GetControlFlags() const;
    virtual void Event(TEventUI& event);
 
-   SIZE EstimateSize(SIZE szAvailable);
-   void DoPaint(HDC hDC, const RECT& rcPaint);
+   virtual SIZE EstimateSize(SIZE szAvailable);
+   virtual void DoPaint(HDC hDC, const RECT& rcPaint);
 
 protected:
    RECT m_rcButton;
    RECT m_rcLinks[8];
-   int m_nLinks;
-   int m_cxWidth;
+   int  m_nLinks;
+   int  m_cxWidth;
    UINT m_uButtonState;
 };
 
@@ -32,7 +32,7 @@ public:
    virtual void* GetInterface(const char* name);
    
    void Init();
-   UINT GetControlFlags() const;
+   virtual UINT GetControlFlags() const;
 
    StdString GetText() const;
 
@@ -46,16 +46,16 @@ public:
    bool Remove(ControlUI* ctrl);
    void RemoveAll();
 
-   bool Activate();
+   virtual bool Activate();
 
-   void SetPos(RECT rc);
+   virtual void SetPos(RECT rc);
    virtual void Event(TEventUI& event);
-   SIZE EstimateSize(SIZE szAvailable);
-   void DoPaint(HDC hDC, const RECT& rcPaint);
+   virtual SIZE EstimateSize(SIZE szAvailable);
+   virtual void DoPaint(HDC hDC, const RECT& rcPaint);
 
 protected:
-   int m_curSel;
-   int m_cxWidth;
+   int  m_curSel;
+   int  m_cxWidth;
    SIZE m_szDropBox;
    RECT m_rcButton;
    UINT m_uButtonState;

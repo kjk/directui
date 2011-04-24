@@ -433,8 +433,8 @@ protected:
    ControlUI*       m_parent;
    TCHAR            m_chShortcut;
    const char*      m_name;
-   StdString        m_txt;
-   StdString        m_toolTip;
+   const char*      m_txt;
+   const char*      m_toolTip;
    UINT_PTR         m_tag;
    RECT             m_rcItem;
    bool             m_visible;

@@ -12,17 +12,17 @@ public:
    enum { FADE_TIMERID = 10 };
    enum { FADE_DELAY = 500UL };
 
-   const char* GetClass() const;
+   virtual const char* GetClass() const;
 
    virtual void Event(TEventUI& event);
-   void SetPos(RECT rc);
-   SIZE EstimateSize(SIZE szAvailable);
-   void DoPaint(HDC hDC, const RECT& rcPaint);
+   virtual void SetPos(RECT rc);
+   virtual SIZE EstimateSize(SIZE szAvailable);
+   virtual void DoPaint(HDC hDC, const RECT& rcPaint);
    
 protected:
-   HBITMAP m_hFadeBitmap;
-   DWORD m_dwFadeTick;
-   RECT m_rcFade;
+   HBITMAP  m_hFadeBitmap;
+   DWORD    m_dwFadeTick;
+   RECT     m_rcFade;
 };
 
 class UILIB_API NavigatorPanelUI : public VerticalLayoutUI, public IListOwnerUI
@@ -30,18 +30,18 @@ class UILIB_API NavigatorPanelUI : public VerticalLayoutUI, public IListOwnerUI
 public:
    NavigatorPanelUI();
 
-   const char* GetClass() const;   
+   virtual const char* GetClass() const;   
    void* GetInterface(const char* name);
 
    bool Add(ControlUI* ctrl);
 
-   int GetCurSel() const;
-   bool SelectItem(int idx);
+   virtual int GetCurSel() const;
+   virtual bool SelectItem(int idx);
 
    virtual void Event(TEventUI& event);
 
-   SIZE EstimateSize(SIZE szAvailable);
-   void DoPaint(HDC hDC, const RECT& rcPaint);
+   virtual SIZE EstimateSize(SIZE szAvailable);
+   virtual void DoPaint(HDC hDC, const RECT& rcPaint);
 
 protected:
    int m_curSel;
@@ -52,11 +52,11 @@ class UILIB_API NavigatorButtonUI : public ListElementUI
 public:
    NavigatorButtonUI();
 
-   const char* GetClass() const;
+   virtual const char* GetClass() const;
    virtual void Event(TEventUI& event);
    
-   SIZE EstimateSize(SIZE szAvailable);
-   void DoPaint(HDC hDC, const RECT& rcPaint);
+   virtual SIZE EstimateSize(SIZE szAvailable);
+   virtual void DoPaint(HDC hDC, const RECT& rcPaint);
    void DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle);
 
    RECT GetButtonRect(RECT rc) const;
@@ -88,14 +88,14 @@ public:
    PaddingPanelUI();
    PaddingPanelUI(int cx, int cy);
 
-   const char* GetClass() const;
+   virtual const char* GetClass() const;
 
    void SetWidth(int cx);
    void SetHeight(int cy);
 
-   SIZE EstimateSize(SIZE szAvailable);
-   void DoPaint(HDC hDC, const RECT& rcPaint);
-   void SetAttribute(const char* name, const char* value);
+   virtual SIZE EstimateSize(SIZE szAvailable);
+   virtual void DoPaint(HDC hDC, const RECT& rcPaint);
+   virtual void SetAttribute(const char* name, const char* value);
 
 protected:
    SIZE m_cxyFixed;
@@ -107,15 +107,15 @@ public:
    ImagePanelUI();
    virtual ~ImagePanelUI();
 
-   const char* GetClass() const;
+   virtual const char* GetClass() const;
 
    bool SetImage(const char* pstrImage);
    void SetWidth(int cx);
    void SetHeight(int cy);
 
-   SIZE EstimateSize(SIZE szAvailable);
-   void DoPaint(HDC hDC, const RECT& rcPaint);
-   void SetAttribute(const char* name, const char* value);
+   virtual SIZE EstimateSize(SIZE szAvailable);
+   virtual void DoPaint(HDC hDC, const RECT& rcPaint);
+   virtual void SetAttribute(const char* name, const char* value);
 
 protected:
    HBITMAP m_hBitmap;
@@ -127,24 +127,24 @@ class UILIB_API TextPanelUI : public LabelPanelUI
 public:
    TextPanelUI();
 
-   const char* GetClass() const;
-   UINT GetControlFlags() const;
+   virtual const char* GetClass() const;
+   virtual UINT GetControlFlags() const;
 
-   bool Activate();
+   virtual bool Activate();
 
    void SetTextColor(UITYPE_COLOR TextColor);
    void SetBkColor(UITYPE_COLOR BackColor);
 
    virtual void Event(TEventUI& event);
-   SIZE EstimateSize(SIZE szAvailable);
-   void DoPaint(HDC hDC, const RECT& rcPaint);
+   virtual SIZE EstimateSize(SIZE szAvailable);
+   virtual void DoPaint(HDC hDC, const RECT& rcPaint);
 
-   void SetAttribute(const char* name, const char* value);
+   virtual void SetAttribute(const char* name, const char* value);
 
 protected:
-   int m_nLinks;
-   RECT m_rcLinks[8];
-   UINT m_uButtonState;
+   int          m_nLinks;
+   RECT         m_rcLinks[8];
+   UINT         m_uButtonState;
    UITYPE_COLOR m_TextColor;
    UITYPE_COLOR m_BackColor;
 };
@@ -154,13 +154,13 @@ class UILIB_API WarningPanelUI : public TextPanelUI
 public:
    WarningPanelUI();
 
-   const char* GetClass() const;
+   virtual const char* GetClass() const;
 
    void SetWarningType(UINT uType);
 
-   SIZE EstimateSize(SIZE szAvailable);
-   void DoPaint(HDC hDC, const RECT& rcPaint);  
-   void SetAttribute(const char* name, const char* value);
+   virtual SIZE EstimateSize(SIZE szAvailable);
+   virtual void DoPaint(HDC hDC, const RECT& rcPaint);  
+   virtual void SetAttribute(const char* name, const char* value);
 
 protected:
    UITYPE_COLOR m_BackColor;

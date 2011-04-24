@@ -21,10 +21,10 @@ public:
    void SetHeight(int cy);
 
    void SetPos(RECT rc);
-   SIZE EstimateSize(SIZE szAvailable);
-   void DoPaint(HDC hDC, const RECT& rcPaint);
+   virtual SIZE EstimateSize(SIZE szAvailable);
+   virtual void DoPaint(HDC hDC, const RECT& rcPaint);
 
-   void SetAttribute(const char* name, const char* value);
+   virtual void SetAttribute(const char* name, const char* value);
 
    LRESULT MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, bool& bHandled);
 

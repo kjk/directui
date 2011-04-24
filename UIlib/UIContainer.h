@@ -40,10 +40,10 @@ public:
    virtual int FindSelectable(int idx, bool bForward = true) const;
 
    void SetPos(RECT rc);
-   SIZE EstimateSize(SIZE szAvailable);
-   void DoPaint(HDC hDC, const RECT& rcPaint);
+   virtual SIZE EstimateSize(SIZE szAvailable);
+   virtual void DoPaint(HDC hDC, const RECT& rcPaint);
 
-   void SetAttribute(const char* name, const char* value);
+   virtual void SetAttribute(const char* name, const char* value);
 
    void SetManager(PaintManagerUI* manager, ControlUI* parent);
    ControlUI* FindControl(FINDCONTROLPROC Proc, void* data, UINT uFlags);
@@ -182,7 +182,7 @@ public:
    void SetStretchMode(ControlUI* ctrl, UINT uMode);
 
    void SetPos(RECT rc);
-   SIZE EstimateSize(SIZE szAvailable);
+   virtual SIZE EstimateSize(SIZE szAvailable);
 
 protected:
    void RecalcArea();
