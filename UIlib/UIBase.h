@@ -189,8 +189,8 @@ public:
    void SetIcon(UINT nRes);
 
 protected:
-   virtual const TCHAR* GetWindowClassName() const = 0;
-   virtual const TCHAR* GetSuperClassName() const;
+   virtual const char* GetWindowClassName() const = 0;
+   virtual const char* GetSuperClassName() const;
    virtual UINT GetClassStyle() const;
 
    LRESULT SendMessage(UINT uMsg, WPARAM wParam = 0, LPARAM lParam = 0L);

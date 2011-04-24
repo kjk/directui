@@ -10,9 +10,9 @@ class FrameWindowWnd : public WindowWnd, public INotifyUI
 {
 public:
    FrameWindowWnd() : m_hWndClient(NULL) { };
-   const TCHAR* GetWindowClassName() const { return _T("UIMainFrame"); };
-   UINT GetClassStyle() const { return UI_CLASSSTYLE_FRAME; };
-   void OnFinalMessage(HWND /*hWnd*/) { delete this; };
+   virtual const char* GetWindowClassName() const { return "UIMainFrame"; };
+   virtual UINT GetClassStyle() const { return UI_CLASSSTYLE_FRAME; };
+   virtual void OnFinalMessage(HWND /*hWnd*/) { delete this; };
 
    void Notify(TNotifyUI& msg)
    {
@@ -22,7 +22,7 @@ public:
          _CreatePage("page_search");
    }
 
-   LRESULT HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
+   virtual LRESULT HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
    {
       if (uMsg == WM_CREATE)  {
          SetIcon(IDR_MAINFRAME);

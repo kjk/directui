@@ -218,7 +218,7 @@ UINT WindowWnd::GetClassStyle() const
    return 0;
 }
 
-const TCHAR* WindowWnd::GetSuperClassName() const
+const char* WindowWnd::GetSuperClassName() const
 {
    return NULL;
 }
@@ -341,7 +341,7 @@ void WindowWnd::SetIcon(UINT nRes)
 
 bool WindowWnd::RegisterWindowClass()
 {
-   WNDCLASS wc = { 0 };
+   WNDCLASSA wc = { 0 };
    wc.style = GetClassStyle();
    wc.cbClsExtra = 0;
    wc.cbWndExtra = 0;
@@ -352,7 +352,7 @@ bool WindowWnd::RegisterWindowClass()
    wc.hbrBackground = NULL;
    wc.lpszMenuName  = NULL;
    wc.lpszClassName = GetWindowClassName();
-   ATOM ret = ::RegisterClass(&wc);
+   ATOM ret = ::RegisterClassA(&wc);
    ASSERT(ret!=NULL || ::GetLastError()==ERROR_CLASS_ALREADY_EXISTS);
    return ret != NULL || ::GetLastError() == ERROR_CLASS_ALREADY_EXISTS;
 }
@@ -361,8 +361,8 @@ bool WindowWnd::RegisterSuperclass()
 {
    // Get the class information from an existing
    // window so we can subclass it later on...
-   WNDCLASSEX wc = { 0 };
-   wc.cbSize = sizeof(WNDCLASSEX);
+   WNDCLASSEXA wc = { 0 };
+   wc.cbSize = sizeof(wc);
    if (!::GetClassInfoEx(NULL, GetSuperClassName(), &wc))  {
       if (!::GetClassInfoEx(PaintManagerUI::GetResourceInstance(), GetSuperClassName(), &wc))  {
          ASSERT(!"Unable to locate window class");
@@ -373,7 +373,7 @@ bool WindowWnd::RegisterSuperclass()
    wc.lpfnWndProc = WindowWnd::__ControlProc;
    wc.hInstance = PaintManagerUI::GetResourceInstance();
    wc.lpszClassName = GetWindowClassName();
-   ATOM ret = ::RegisterClassEx(&wc);
+   ATOM ret = ::RegisterClassExA(&wc);
    ASSERT(ret!=NULL || ::GetLastError()==ERROR_CLASS_ALREADY_EXISTS);
    return ret != NULL || ::GetLastError() == ERROR_CLASS_ALREADY_EXISTS;
 }

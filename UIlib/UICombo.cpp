@@ -121,7 +121,7 @@ class DropDownWnd : public WindowWnd
 {
 public:
    void Init(DropDownUI* owner);
-   const TCHAR* GetWindowClassName() const;
+   const char* GetWindowClassName() const;
    void OnFinalMessage(HWND hWnd);
 
    LRESULT HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam);
@@ -152,9 +152,9 @@ void DropDownWnd::Init(DropDownUI* owner)
    ::SendMessage(hWndParent, WM_NCACTIVATE, TRUE, 0L);
 }
 
-const TCHAR* DropDownWnd::GetWindowClassName() const
+const char* DropDownWnd::GetWindowClassName() const
 {
-   return _T("DropDownWnd");
+   return "DropDownWnd";
 }
 
 void DropDownWnd::OnFinalMessage(HWND hWnd)

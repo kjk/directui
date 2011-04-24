@@ -10,9 +10,9 @@ public:
 
    void Init(SingleLineEditUI* owner);
 
-   const TCHAR* GetWindowClassName() const;
-   const TCHAR* GetSuperClassName() const;
-   void OnFinalMessage(HWND hWnd);
+   virtual const char* GetWindowClassName() const;
+   virtual const char* GetSuperClassName() const;
+   virtual void OnFinalMessage(HWND hWnd);
 
    LRESULT HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam);
    LRESULT OnKillFocus(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
@@ -44,14 +44,14 @@ void SingleLineEditWnd::Init(SingleLineEditUI* owner)
    m_owner = owner;
 }
 
-const TCHAR* SingleLineEditWnd::GetWindowClassName() const
+const char* SingleLineEditWnd::GetWindowClassName() const
 {
-   return _T("SingleLineEditWnd");
+   return "SingleLineEditWnd";
 }
 
-const TCHAR* SingleLineEditWnd::GetSuperClassName() const
+const char* SingleLineEditWnd::GetSuperClassName() const
 {
-   return WC_EDIT;
+   return WC_EDITA;
 }
 
 void SingleLineEditWnd::OnFinalMessage(HWND /*hWnd*/)
@@ -183,9 +183,9 @@ class MultiLineEditWnd : public WindowWnd
 public:
    void Init(MultiLineEditUI* owner);
 
-   const TCHAR* GetWindowClassName() const;
-   const TCHAR* GetSuperClassName() const;
-   void OnFinalMessage(HWND hWnd);
+   virtual const char* GetWindowClassName() const;
+   virtual const char* GetSuperClassName() const;
+   virtual void OnFinalMessage(HWND hWnd);
 
    LRESULT HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam);
    LRESULT OnEditChanged(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
@@ -210,14 +210,14 @@ void MultiLineEditWnd::Init(MultiLineEditUI* owner)
    m_owner = owner;
 }
 
-const TCHAR* MultiLineEditWnd::GetWindowClassName() const
+const char* MultiLineEditWnd::GetWindowClassName() const
 {
-   return _T("MultiLineEditWnd");
+   return "MultiLineEditWnd";
 }
 
-const TCHAR* MultiLineEditWnd::GetSuperClassName() const
+const char* MultiLineEditWnd::GetSuperClassName() const
 {
-   return WC_EDIT;
+   return WC_EDITA;
 }
 
 void MultiLineEditWnd::OnFinalMessage(HWND /*hWnd*/)

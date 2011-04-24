@@ -48,9 +48,9 @@ void StandardPageWnd::Notify(TNotifyUI& msg)
    if (str::Eq(msg.type, "windowinit"))  OnPrepareAnimation();
 }
 
-const TCHAR* StartPageWnd::GetWindowClassName() const 
+const char* StartPageWnd::GetWindowClassName() const 
 { 
-   return _T("UIStart"); 
+   return "UIStart"; 
 }
 
 #if 0
@@ -144,9 +144,9 @@ void StartPageWnd::Init()
 {
 }
 
-const TCHAR* ConfigurePageWnd::GetWindowClassName() const 
+const char* ConfigurePageWnd::GetWindowClassName() const 
 { 
-   return _T("UIConfigure"); 
+   return "UIConfigure"; 
 }
 
 const char* ConfigurePageWnd::GetDialogResourceXml() const 
@@ -213,9 +213,9 @@ void ConfigurePageWnd::OnPrepareAnimation()
    m_pm.AddAnimJob(AnimJobUI(UIANIMTYPE_FLAT, 0, 300, clrBack, CLR_INVALID, rcCtrl, 140, 0, 5, 200, 0.1f));
 }
 
-const TCHAR* RegistersPageWnd::GetWindowClassName() const 
+const char* RegistersPageWnd::GetWindowClassName() const 
 { 
-   return _T("UIRegisters"); 
+   return "UIRegisters"; 
 }
 
 const char* RegistersPageWnd::GetDialogResourceXml() const 
@@ -290,9 +290,9 @@ int RegistersPageWnd::CompareItem(ControlUI* pList, ControlUI* item1, ControlUI*
 }
 
 
-const TCHAR* SystemsPageWnd::GetWindowClassName() const 
+const char* SystemsPageWnd::GetWindowClassName() const 
 { 
-   return _T("UISystems"); 
+   return "UISystems"; 
 }
 
 const char* SystemsPageWnd::GetDialogResourceXml() const 
@@ -395,9 +395,9 @@ void SystemsPageWnd::OnExpandItem(ControlUI* ctrl)
    item->Add((new TextPanelUI())->ApplyAttributeList("text=\"<b>Tidspunkt:</b> <i 3>Juleaften\""));
 }
 
-const TCHAR* ReportsPageWnd::GetWindowClassName() const 
+const char* ReportsPageWnd::GetWindowClassName() const 
 { 
-   return _T("UIReports"); 
+   return "UIReports"; 
 }
 
 const char* ReportsPageWnd::GetDialogResourceXml() const 
@@ -442,9 +442,9 @@ void ReportsPageWnd::OnPrepareAnimation()
    m_pm.AddAnimJob(AnimJobUI(UIANIMTYPE_FLAT, 0, 300, CLR_INVALID, CLR_INVALID, rcCtrl, 0, 0, -2, -200, 0.0f));
 }
 
-const TCHAR* SearchPageWnd::GetWindowClassName() const 
+const char* SearchPageWnd::GetWindowClassName() const 
 { 
-   return _T("UISearch"); 
+   return "UISearch"; 
 }
 
 void SearchPageWnd::Init()
@@ -505,9 +505,9 @@ const char* SearchPageWnd::GetDialogResourceXml() const
       "</Dialog>";
 }
 
-const TCHAR* EditPageWnd::GetWindowClassName() const 
+const char* EditPageWnd::GetWindowClassName() const 
 { 
-   return _T("UIEdit"); 
+   return "UIEdit"; 
 }
 
 void EditPageWnd::Init()
@@ -610,9 +610,9 @@ UINT PopupWnd::GetClassStyle() const
    return UI_CLASSSTYLE_DIALOG;
 }
 
-const TCHAR* PopupWnd::GetWindowClassName() const 
+const char* PopupWnd::GetWindowClassName() const 
 { 
-   return _T("UIPopup"); 
+   return "UIPopup"; 
 }
 
 void PopupWnd::Init()

@@ -4,9 +4,9 @@
 class StandardPageWnd : public WindowWnd, public INotifyUI
 {
 public:
-   UINT GetClassStyle() const;
-   void OnFinalMessage(HWND hWnd);
-   LRESULT HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam);
+   virtual UINT GetClassStyle() const;
+   virtual void OnFinalMessage(HWND hWnd);
+   virtual LRESULT HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam);
 
    virtual void Init();
    virtual void OnPrepareAnimation();
@@ -20,79 +20,79 @@ public:
 class StartPageWnd : public StandardPageWnd
 {
 public:
-   const TCHAR* GetWindowClassName() const;
-   const char* GetDialogResourceXml() const;
-   void OnPrepareAnimation();
-   void Init();
+   virtual const char* GetWindowClassName() const;
+   virtual const char* GetDialogResourceXml() const;
+   virtual void OnPrepareAnimation();
+   virtual void Init();
 };
 
 class ConfigurePageWnd : public StandardPageWnd
 {
 public:
-   const TCHAR* GetWindowClassName() const;
-   const char* GetDialogResourceXml() const;
-   void OnPrepareAnimation();
+   virtual const char* GetWindowClassName() const;
+   virtual const char* GetDialogResourceXml() const;
+   virtual void OnPrepareAnimation();
 };
 
 class RegistersPageWnd : public StandardPageWnd, public IListCallbackUI
 {
 public:
-   const TCHAR* GetWindowClassName() const;
-   const char* GetDialogResourceXml() const;
-   void OnPrepareAnimation();
+   virtual const char* GetWindowClassName() const;
+   virtual const char* GetDialogResourceXml() const;
+   virtual void OnPrepareAnimation();
    // IListCallbackUI
-   const TCHAR* GetItemText(ControlUI* ctrl, int idx, int iSubItem);
-   int CompareItem(ControlUI* pList, ControlUI* item1, ControlUI* item2);
+   virtual const TCHAR* GetItemText(ControlUI* ctrl, int idx, int iSubItem);
+   virtual int CompareItem(ControlUI* pList, ControlUI* item1, ControlUI* item2);
 };
 
 class ReportsPageWnd : public StandardPageWnd
 {
 public:
-   const TCHAR* GetWindowClassName() const;
-   const char* GetDialogResourceXml() const;
-   void OnPrepareAnimation();
+   virtual const char* GetWindowClassName() const;
+   virtual const char* GetDialogResourceXml() const;
+   virtual void OnPrepareAnimation();
 };
 
 class SystemsPageWnd : public StandardPageWnd, public IListCallbackUI
 {
 public:
-   const TCHAR* GetWindowClassName() const;
-   const char* GetDialogResourceXml() const;
-   void Notify(TNotifyUI& msg);
-   void OnPrepareAnimation();
+   virtual const char* GetWindowClassName() const;
+   virtual const char* GetDialogResourceXml() const;
+   virtual void Notify(TNotifyUI& msg);
+   virtual void OnPrepareAnimation();
    void OnExpandItem(ControlUI* ctrl);
    // IListCallbackUI
-   const TCHAR* GetItemText(ControlUI* ctrl, int idx, int iSubItem);
-   int CompareItem(ControlUI* pList, ControlUI* item1, ControlUI* item2);
+   virtual const TCHAR* GetItemText(ControlUI* ctrl, int idx, int iSubItem);
+   virtual int CompareItem(ControlUI* pList, ControlUI* item1, ControlUI* item2);
 };
 
 class SearchPageWnd : public StandardPageWnd
 {
 public:
-   const TCHAR* GetWindowClassName() const;
-   const char* GetDialogResourceXml() const;
-   void Notify(TNotifyUI& msg);
-   void Init();
+   virtual const char* GetWindowClassName() const;
+   virtual const char* GetDialogResourceXml() const;
+   virtual void Notify(TNotifyUI& msg);
+   virtual void Init();
 };
 
 class EditPageWnd : public StandardPageWnd
 {
 public:
-   const TCHAR* GetWindowClassName() const;
-   const char* GetDialogResourceXml() const;
-   void Notify(TNotifyUI& msg);
-   void OnPrepareAnimation();
-   void Init();
+   virtual const char* GetWindowClassName() const;
+   virtual const char* GetDialogResourceXml() const;
+   virtual void Notify(TNotifyUI& msg);
+   virtual void OnPrepareAnimation();
+   virtual void Init();
 };
 
 class PopupWnd : public StandardPageWnd
 {
 public:
-   UINT GetClassStyle() const;
-   const TCHAR* GetWindowClassName() const;
-   const char* GetDialogResourceXml() const;
-   void Notify(TNotifyUI& msg);
-   void Init();
+   virtual UINT GetClassStyle() const;
+   virtual const char* GetWindowClassName() const;
+   virtual const char* GetDialogResourceXml() const;
+   virtual void Notify(TNotifyUI& msg);
+   virtual void Init();
 };
 
 #endif // !defined(AFX_VIEWS_H__20050510_6D37_02C3_39BC_0080AD509054__INCLUDED_)

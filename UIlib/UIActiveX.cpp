@@ -9,7 +9,7 @@ class ActiveXWnd : public WindowWnd
 public:
    HWND Init(ActiveXCtrl* owner, HWND hWndParent);
 
-   const TCHAR* GetWindowClassName() const;
+   virtual const char* GetWindowClassName() const;
    void OnFinalMessage(HWND hWnd);
 
    LRESULT HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam);
@@ -725,9 +725,9 @@ HWND ActiveXWnd::Init(ActiveXCtrl* owner, HWND hWndParent)
    return m_hWnd;
 }
 
-const TCHAR* ActiveXWnd::GetWindowClassName() const
+const char* ActiveXWnd::GetWindowClassName() const
 {
-   return _T("ActiveXWnd");
+   return "ActiveXWnd";
 }
 
 void ActiveXWnd::OnFinalMessage(HWND hWnd)
