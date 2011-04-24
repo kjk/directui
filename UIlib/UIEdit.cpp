@@ -84,7 +84,7 @@ LRESULT SingleLineEditWnd::OnEditChanged(UINT /*uMsg*/, WPARAM /*wParam*/, LPARA
    if (m_owner == NULL)  return 0;
    // Copy text back
    int cchLen = ::GetWindowTextLength(m_hWnd) + 1;
-   TCHAR* pstr = static_cast<TCHAR*>(_alloca(cchLen * sizeof(TCHAR)));
+   char* pstr = static_cast<char*>(_alloca(cchLen * sizeof(char)));
    ASSERT(pstr);
    if (pstr == NULL)  return 0;
    ::GetWindowText(m_hWnd, pstr, cchLen);
@@ -241,7 +241,7 @@ LRESULT MultiLineEditWnd::OnEditChanged(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM
    if (m_owner == NULL)  return 0;
    // Copy text back
    int cchLen = ::GetWindowTextLength(m_hWnd) + 1;
-   TCHAR* pstr = static_cast<TCHAR*>(_alloca(cchLen * sizeof(TCHAR)));
+   char* pstr = static_cast<char*>(_alloca(cchLen * sizeof(char)));
    ASSERT(pstr);
    ::GetWindowText(m_hWnd, pstr, cchLen);
    m_owner->m_txt = pstr;

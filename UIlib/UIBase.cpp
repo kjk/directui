@@ -930,13 +930,13 @@ int StdString::Format(const char* pstrFormat, ...)
    sFormat.ProcessResourceTokens();
    // Do ordinary printf replacements
    // NOTE: Documented max-length of wvsprintf() is 1024
-   char szBuffer[1025] = { 0 };
+   char buf[1025] = { 0 };
    va_list argList;
    va_start(argList, pstrFormat);
-   int iRet = ::wvsprintf(szBuffer, sFormat, argList);
+   int n = ::wvsprintfA(buf, sFormat, argList);
    va_end(argList);
-   Assign(szBuffer);
-   return iRet;
+   Assign(buf);
+   return n;
 }
 
 void StdString::ProcessResourceTokens()

@@ -185,7 +185,7 @@ bool MarkupParser::Load(const char* xml)
    return bRes;
 }
 
-bool MarkupParser::LoadFromFile(const TCHAR* fileName)
+bool MarkupParser::LoadFromFile(const char* fileName)
 {
    Release();
    HANDLE hFile = ::CreateFile(fileName, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);

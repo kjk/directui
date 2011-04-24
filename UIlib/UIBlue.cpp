@@ -120,7 +120,7 @@ void BlueRenderEngineUI::DoPaintBitmap(HDC hDC, PaintManagerUI* manager, HBITMAP
    ::SelectObject(hdcBmp, hOldBitmap);
 }
 
-void BlueRenderEngineUI::DoPaintArcCaption(HDC hDC, PaintManagerUI* manager, RECT rc, const TCHAR* txt, UINT uStyle)
+void BlueRenderEngineUI::DoPaintArcCaption(HDC hDC, PaintManagerUI* manager, RECT rc, const char* txt, UINT uStyle)
 {
    RenderClip clip;
    GenerateClip(hDC, rc, clip);
@@ -148,7 +148,7 @@ void BlueRenderEngineUI::DoPaintArcCaption(HDC hDC, PaintManagerUI* manager, REC
    }
 }
 
-void BlueRenderEngineUI::DoPaintButton(HDC hDC, PaintManagerUI* manager, RECT rc, const TCHAR* txt, RECT rcPadding, UINT uState, UINT uStyle)
+void BlueRenderEngineUI::DoPaintButton(HDC hDC, PaintManagerUI* manager, RECT rc, const char* txt, RECT rcPadding, UINT uState, UINT uStyle)
 {
    ASSERT(::GetObjectType(hDC)==OBJ_DC || ::GetObjectType(hDC)==OBJ_MEMDC);
    // Draw focus rectangle
@@ -207,7 +207,7 @@ void BlueRenderEngineUI::DoPaintButton(HDC hDC, PaintManagerUI* manager, RECT rc
    DoPaintPrettyText(hDC, manager, rcText, txt, clrText, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE | uStyle);
 }
 
-void BlueRenderEngineUI::DoPaintEditBox(HDC hDC, PaintManagerUI* manager, RECT rcItem, const TCHAR* txt, UINT uState, UINT uDrawStyle, bool bPaintFrameOnly)
+void BlueRenderEngineUI::DoPaintEditBox(HDC hDC, PaintManagerUI* manager, RECT rcItem, const char* txt, UINT uState, UINT uDrawStyle, bool bPaintFrameOnly)
 {
    ASSERT(::GetObjectType(hDC)==OBJ_DC || ::GetObjectType(hDC)==OBJ_MEMDC);
    if ((uState & UISTATE_DISABLED) != 0)  {
@@ -232,7 +232,7 @@ void BlueRenderEngineUI::DoPaintEditBox(HDC hDC, PaintManagerUI* manager, RECT r
    ::DrawText(hDC, txt, -1, &rcEdit, DT_SINGLELINE | DT_VCENTER | DT_NOPREFIX | DT_EDITCONTROL | uDrawStyle);
 }
 
-void BlueRenderEngineUI::DoPaintOptionBox(HDC hDC, PaintManagerUI* manager, RECT rcItem, const TCHAR* txt, UINT uState, UINT uStyle)
+void BlueRenderEngineUI::DoPaintOptionBox(HDC hDC, PaintManagerUI* manager, RECT rcItem, const char* txt, UINT uState, UINT uStyle)
 {
    ASSERT(::GetObjectType(hDC)==OBJ_DC || ::GetObjectType(hDC)==OBJ_MEMDC);
    // Determine placement of elements
@@ -328,7 +328,7 @@ void BlueRenderEngineUI::DoPaintTabFolder(HDC hDC, PaintManagerUI* manager, RECT
    rcItem = rcTab;
 }
 
-void BlueRenderEngineUI::DoPaintToolbarButton(HDC hDC, PaintManagerUI* manager, RECT rc, const TCHAR* txt, SIZE szPadding, UINT uState)
+void BlueRenderEngineUI::DoPaintToolbarButton(HDC hDC, PaintManagerUI* manager, RECT rc, const char* txt, SIZE szPadding, UINT uState)
 {
    ASSERT(::GetObjectType(hDC)==OBJ_DC || ::GetObjectType(hDC)==OBJ_MEMDC);
    if ((uState & UISTATE_PUSHED) != 0)  {
@@ -357,7 +357,7 @@ void BlueRenderEngineUI::DoPaintQuickText(HDC hDC, PaintManagerUI* manager, RECT
    ::DrawText(hDC, txt, -1, &rc, DT_SINGLELINE);
 }
 
-void BlueRenderEngineUI::DoPaintPrettyText(HDC hDC, PaintManagerUI* manager, RECT& rc, const TCHAR* txt, UITYPE_COLOR iTextColor, UITYPE_COLOR iBackColor, RECT* prcLinks, int& nLinkRects, UINT uStyle)
+void BlueRenderEngineUI::DoPaintPrettyText(HDC hDC, PaintManagerUI* manager, RECT& rc, const char* txt, UITYPE_COLOR iTextColor, UITYPE_COLOR iBackColor, RECT* prcLinks, int& nLinkRects, UINT uStyle)
 {
    ASSERT(::GetObjectType(hDC)==OBJ_DC || ::GetObjectType(hDC)==OBJ_MEMDC);
 
@@ -478,7 +478,7 @@ void BlueRenderEngineUI::DoPaintPrettyText(HDC hDC, PaintManagerUI* manager, REC
             break;
          case 'f':  // Font
             {
-               UITYPE_FONT iFont = (UITYPE_FONT) _tcstol(txt, const_cast<TCHAR**>(&txt), 10);
+               UITYPE_FONT iFont = (UITYPE_FONT) _tcstol(txt, const_cast<char**>(&txt), 10);
                ::SelectObject(hDC, manager->GetThemeFont(iFont));
                tm = manager->GetThemeFontInfo(iFont);
                cyLine = MAX(cyLine, tm.tmHeight + tm.tmExternalLeading);
@@ -493,7 +493,7 @@ void BlueRenderEngineUI::DoPaintPrettyText(HDC hDC, PaintManagerUI* manager, REC
             break;
          case 'x':  // Indent
             {
-               iLineIndent = (int) _tcstol(txt, const_cast<TCHAR**>(&txt), 10);
+               iLineIndent = (int) _tcstol(txt, const_cast<char**>(&txt), 10);
                if (pt.x < rc.left + iLineIndent)  pt.x = rc.left + iLineIndent;
             }
             break;
@@ -523,7 +523,7 @@ void BlueRenderEngineUI::DoPaintPrettyText(HDC hDC, PaintManagerUI* manager, REC
                int iSize = 16;
                if (*txt == ' ')  txt++;
                if (isdigit(*txt))  {
-                  int idx = (int) _tcstol(txt, const_cast<TCHAR**>(&txt), 10);
+                  int idx = (int) _tcstol(txt, const_cast<char**>(&txt), 10);
                   iSize = MAX(16, _ttoi(txt));
                   if (bDraw)  {
                      HICON hIcon = manager->GetThemeIcon(idx, iSize);
@@ -558,12 +558,12 @@ void BlueRenderEngineUI::DoPaintPrettyText(HDC hDC, PaintManagerUI* manager, REC
                if (*txt == ' ')  txt++;
                if (*txt == '#') {
                   txt++;
-                  COLORREF clrColor = _tcstol(txt, const_cast<TCHAR**>(&txt), 16);
+                  COLORREF clrColor = _tcstol(txt, const_cast<char**>(&txt), 16);
                   clrColor = RGB(GetBValue(clrColor), GetGValue(clrColor), GetRValue(clrColor));
                   ::SetTextColor(hDC, clrColor);
                }
                else {
-                  UITYPE_COLOR Color = (UITYPE_COLOR) _tcstol(txt, const_cast<TCHAR**>(&txt), 10);
+                  UITYPE_COLOR Color = (UITYPE_COLOR) _tcstol(txt, const_cast<char**>(&txt), 10);
                   ::SetTextColor(hDC, manager->GetThemeColor(Color));
                }
             }
@@ -625,7 +625,7 @@ void BlueRenderEngineUI::DoPaintPrettyText(HDC hDC, PaintManagerUI* manager, REC
          POINT ptPos = pt;
          int cchChars = 0;
          int cchLastGoodWord = 0;
-         const TCHAR* p = txt;
+         const char* p = txt;
          SIZE szText = { 0 };
          if (*p == '<')  p++, cchChars++;
          while (*p != '\0' && *p != '<' && *p != '\n' && *p != '&')  {

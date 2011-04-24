@@ -717,7 +717,7 @@ SIZE ListTextElementUI::EstimateSize(SIZE szAvailable)
    // We calculate the item height only once, because it will not wrap on the
    // line anyway when the screen is resized.
    if (m_cyItem == 0)  {
-      const TCHAR* txt = _T("XXX");
+      const char* txt = "XXX";
       RECT rcText = { 0, 0, 9999, 9999 };
       int nLinks = 0;
       BlueRenderEngineUI::DoPaintPrettyText(m_manager->GetPaintDC(), m_manager, rcText, txt, UICOLOR__INVALID, UICOLOR__INVALID, NULL, nLinks, DT_CALCRECT | m_uTextStyle);
@@ -846,7 +846,7 @@ SIZE ListExpandElementUI::EstimateSize(SIZE szAvailable)
    // We calculate the item height only once, because it will not wrap on the
    // line anyway when the screen is resized.
    if (m_cyItem == 0)  {
-      const TCHAR* txt = _T("XXX");
+      const char* txt = "XXX";
       RECT rcText = { 0, 0, 9999, 9999 };
       int nLinks = 0;
       BlueRenderEngineUI::DoPaintPrettyText(m_manager->GetPaintDC(), m_manager, rcText, txt, UICOLOR__INVALID, UICOLOR__INVALID, NULL, nLinks, DT_CALCRECT | m_uTextStyle);

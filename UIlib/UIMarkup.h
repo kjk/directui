@@ -12,7 +12,7 @@ public:
    ~MarkupParser();
 
    bool Load(const char* xml);
-   bool LoadFromFile(const TCHAR* fileName);
+   bool LoadFromFile(const char* fileName);
    void Release();
    bool IsValid() const;
 

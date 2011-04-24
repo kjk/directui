@@ -30,27 +30,26 @@ static UINT MapKeyState()
 #define IDB_ICONS32 202
 #define IDB_ICONS50 203
 
-
-typedef struct tagFINDTABINFO
+typedef struct
 {
    ControlUI* focus;
    ControlUI* pLast;
-   bool bForward;
-   bool bNextIsIt;
+   bool       bForward;
+   bool       bNextIsIt;
 } FINDTABINFO;
 
-typedef struct tagFINDSHORTCUT
+typedef struct
 {
-   TCHAR ch;
+   char ch;
    bool bPickNext;
 } FINDSHORTCUT;
 
-typedef struct tagTIMERINFO
+typedef struct
 {
-   ControlUI* pSender;
-   UINT localID;
-   HWND hWnd;
-   UINT uWinTimer;
+   ControlUI* sender;
+   UINT       localID;
+   HWND       hWnd;
+   UINT       uWinTimer;
 } TIMERINFO;
 
 AnimationSpooler m_anim;
@@ -590,13 +589,13 @@ bool PaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRE
    case WM_TIMER:
       {
          for (int i = 0; i < m_timers.GetSize(); i++)  {
-            const TIMERINFO* pTimer = static_cast<TIMERINFO*>(m_timers[i]);
-            if (pTimer->hWnd == m_hWndPaint && pTimer->uWinTimer == LOWORD(wParam))  {
+            const TIMERINFO* timer = static_cast<TIMERINFO*>(m_timers[i]);
+            if (timer->hWnd == m_hWndPaint && timer->uWinTimer == LOWORD(wParam))  {
                TEventUI event = { 0 };
                event.type = UIEVENT_TIMER;
-               event.wParam = pTimer->localID;
+               event.wParam = timer->localID;
                event.timestamp = ::GetTickCount();
-               pTimer->pSender->Event(event);
+               timer->sender->Event(event);
                break;
             }
          }
@@ -627,7 +626,7 @@ bool PaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRE
          m_toolTip.hwnd = m_hWndPaint;
          m_toolTip.uId = (UINT) m_hWndPaint;
          m_toolTip.hinst = m_hInstance;
-         m_toolTip.lpszText = const_cast<TCHAR*>( (const TCHAR*) sToolTip) ;
+         m_toolTip.lpszText = const_cast<char*>( (const char*) sToolTip) ;
          m_toolTip.rect = pHover->GetPos();
          if (m_hwndTooltip == NULL)  {
             m_hwndTooltip = ::CreateWindowEx(0, TOOLTIPS_CLASS, NULL, WS_POPUP | TTS_NOPREFIX | TTS_ALWAYSTIP, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, m_hWndPaint, NULL, m_hInstance, NULL);
@@ -1026,26 +1025,26 @@ bool PaintManagerUI::SetTimer(ControlUI* ctrl, UINT timerID, UINT uElapse)
    ASSERT(uElapse>0);
    m_timerID = (++m_timerID) % 0xFF;
    if (!::SetTimer(m_hWndPaint, m_timerID, uElapse, NULL))  return FALSE;
-   TIMERINFO* pTimer = new TIMERINFO;
-   if (pTimer == NULL)  return FALSE;
-   pTimer->hWnd = m_hWndPaint;
-   pTimer->pSender = ctrl;
-   pTimer->localID = timerID;
-   pTimer->uWinTimer = m_timerID;
-   return m_timers.Add(pTimer);
+   TIMERINFO* timer = new TIMERINFO;
+   if (timer == NULL)  return FALSE;
+   timer->hWnd = m_hWndPaint;
+   timer->sender = ctrl;
+   timer->localID = timerID;
+   timer->uWinTimer = m_timerID;
+   return m_timers.Add(timer);
 }
 
 bool PaintManagerUI::KillTimer(ControlUI* ctrl, UINT timerID)
 {
    ASSERT(ctrl!=NULL);
    for (int i = 0; i< m_timers.GetSize(); i++)  {
-      TIMERINFO* pTimer = static_cast<TIMERINFO*>(m_timers[i]);
-      if (pTimer->pSender == ctrl
-          && pTimer->hWnd == m_hWndPaint
-          && pTimer->localID == timerID) 
+      TIMERINFO* timer = static_cast<TIMERINFO*>(m_timers[i]);
+      if (timer->sender == ctrl
+          && timer->hWnd == m_hWndPaint
+          && timer->localID == timerID) 
       {
-         ::KillTimer(pTimer->hWnd, pTimer->uWinTimer);
-         delete pTimer;
+         ::KillTimer(timer->hWnd, timer->uWinTimer);
+         delete timer;
          return m_timers.Remove(i);
       }
    }

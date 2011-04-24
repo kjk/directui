@@ -235,7 +235,7 @@ public:
    void Empty();
    int GetLength() const;
    bool IsEmpty() const;
-   TCHAR GetAt(int idx) const;
+   char GetAt(int idx) const;
    void Append(const char* pstr);
    void Assign(const char* pstr, int len = -1);
    const char* GetData();
@@ -276,7 +276,7 @@ public:
    int Find(char ch, int pos = 0) const;
    int Find(const char* pstr, int pos = 0) const;
    int ReverseFind(char ch) const;
-   int Replace(const char* pstrFrom, const TCHAR* pstrTo);
+   int Replace(const char* pstrFrom, const char* pstrTo);
    
    void ProcessResourceTokens();
    int __cdecl Format(const char* pstrFormat, ...);

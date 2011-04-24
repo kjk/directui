@@ -196,7 +196,7 @@ typedef struct
    ControlUI*   sender;
    DWORD        timestamp;
    POINT        ptMouse;
-   TCHAR        chKey;
+   int          chKey;
    WORD         wKeyState;
    WPARAM       wParam;
    LPARAM       lParam;
