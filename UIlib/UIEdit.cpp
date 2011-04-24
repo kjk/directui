@@ -357,6 +357,6 @@ void MultiLineEditUI::DoPaint(HDC hDC, const RECT& /*rcPaint*/)
    if (IsFocused())  uState |= UISTATE_FOCUSED;
    if (IsReadOnly())  uState |= UISTATE_READONLY;
    if (!IsEnabled())  uState |= UISTATE_DISABLED;
-   BlueRenderEngineUI::DoPaintEditBox(hDC, m_manager, m_rcItem, _T(""), uState, 0, true);
+   BlueRenderEngineUI::DoPaintEditBox(hDC, m_manager, m_rcItem, "", uState, 0, true);
 }
 

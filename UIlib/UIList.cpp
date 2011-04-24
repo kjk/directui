@@ -971,7 +971,7 @@ void ListExpandElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
       // If list control is expandable then we'll automaticially draw
       // the expander-box at the first column.
       if (i == 0 && pInfo->expandable)  {
-         sColText = (m_bExpanded ? _T("<i 14> ") : _T("<i 13> "));
+         sColText = (m_bExpanded ? "<i 14> " : "<i 13> ");
          sColText += txt;
          txt = sColText;
       }

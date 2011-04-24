@@ -113,7 +113,7 @@ void SingleLinePickUI::DoPaint(HDC hDC, const RECT& rcPaint)
    m_nLinks = dimof(m_rcLinks);
    BlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcText, m_txt, iTextColor, UICOLOR__INVALID, m_rcLinks, m_nLinks, DT_SINGLELINE);
    RECT rcPadding = { 0 };
-   BlueRenderEngineUI::DoPaintButton(hDC, m_manager, m_rcButton, _T("<i 4>"), rcPadding, m_uButtonState, 0);
+   BlueRenderEngineUI::DoPaintButton(hDC, m_manager, m_rcButton, "<i 4>", rcPadding, m_uButtonState, 0);
 }
 
 
@@ -433,6 +433,6 @@ void DropDownUI::DoPaint(HDC hDC, const RECT& rcPaint)
    }
    // Paint dropdown button
    RECT rcPadding = { 0 };
-   BlueRenderEngineUI::DoPaintButton(hDC, m_manager, m_rcButton, _T("<i 6>"), rcPadding, m_uButtonState, 0);
+   BlueRenderEngineUI::DoPaintButton(hDC, m_manager, m_rcButton, "<i 6>", rcPadding, m_uButtonState, 0);
 }
 

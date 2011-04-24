@@ -287,7 +287,7 @@ void SearchTitlePanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
    RECT rcArc = { m_rcItem.left, m_rcItem.top + 14, m_rcItem.right, m_rcItem.top + 34 };
    RECT rcTemp = { 0 };
    if (::IntersectRect(&rcTemp, &rcPaint, &rcArc))  {
-      BlueRenderEngineUI::DoPaintArcCaption(hDC, m_manager, rcArc, _T(""), 0);
+      BlueRenderEngineUI::DoPaintArcCaption(hDC, m_manager, rcArc, "", 0);
    }
    if (m_iconIdx >= 0)  {
       HICON hIcon = m_manager->GetThemeIcon(m_iconIdx, 50);

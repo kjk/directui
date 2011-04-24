@@ -90,9 +90,9 @@ PaintManagerUI::PaintManagerUI() :
    if (m_hFonts[1] == NULL)  
    {
       // Fill in default font information
-      LOGFONT lf = { 0 };
+      LOGFONTA lf = { 0 };
       ::GetObject(::GetStockObject(DEFAULT_GUI_FONT), sizeof(LOGFONT), &lf);
-      _tcscpy(lf.lfFaceName, _T("Tahoma"));
+      strcpy(lf.lfFaceName, "Tahoma");
       // TODO: Handle "large fonts" or other font sizes when
       //       screen resolution changes!!!
       lf.lfHeight = -12;

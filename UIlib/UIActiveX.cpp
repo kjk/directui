@@ -721,7 +721,7 @@ HWND ActiveXWnd::Init(ActiveXCtrl* owner, HWND hWndParent)
 {
    m_owner = owner;
    UINT uStyle = WS_CHILD | WS_VISIBLE | WS_CLIPCHILDREN | WS_CLIPSIBLINGS;
-   Create(hWndParent, _T("UIActiveX"), uStyle, 0L, 0,0,0,0, NULL);
+   Create(hWndParent, "UIActiveX", uStyle, 0L, 0,0,0,0, NULL);
    return m_hWnd;
 }
 

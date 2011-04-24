@@ -281,7 +281,7 @@ const char* RegistersPageWnd::GetItemText(ControlUI* ctrl, int idx, int subItem)
    if (idx == 1 && subItem == 1)  return "Dog";
    if (idx == 2 && subItem == 1)  return "Rabbit";
    static StdString sTemp;
-   sTemp.Format(_T("Item %d %d"), idx, subItem);
+   sTemp.Format("Item %d %d", idx, subItem);
    return sTemp;
 }
 

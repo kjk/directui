@@ -603,12 +603,14 @@ void BlueRenderEngineUI::DoPaintPrettyText(HDC hDC, PaintManagerUI* manager, REC
       else if (*txt == '&') 
       {
          if ((uStyle & DT_NOPREFIX) == 0)  {
-            if (bDraw  && manager->GetSystemSettings().bShowKeyboardCues)  ::TextOut(hDC, pt.x, pt.y, _T("_"), 1);
+            if (bDraw  && manager->GetSystemSettings().bShowKeyboardCues)
+                ::TextOutA(hDC, pt.x, pt.y, "_", 1);
          }
          else {
             SIZE szChar = { 0 };
-            ::GetTextExtentPoint32(hDC, _T("&"), 1, &szChar);
-            if (bDraw)  ::TextOut(hDC, pt.x, pt.y, _T("&"), 1);
+            ::GetTextExtentPoint32A(hDC, "&", 1, &szChar);
+            if (bDraw)
+                ::TextOutA(hDC, pt.x, pt.y, "&", 1);
             pt.x += szChar.cx;
          }
          txt++;
@@ -616,10 +618,11 @@ void BlueRenderEngineUI::DoPaintPrettyText(HDC hDC, PaintManagerUI* manager, REC
       else if (*txt == ' ') 
       {
          SIZE szSpace = { 0 };
-         ::GetTextExtentPoint32(hDC, _T(" "), 1, &szSpace);
+         ::GetTextExtentPoint32A(hDC, " ", 1, &szSpace);
          // Still need to paint the space because the font might have
          // underline formatting.
-         if (bDraw)  ::TextOut(hDC, pt.x, pt.y, _T(" "), 1);
+         if (bDraw)
+            ::TextOutA(hDC, pt.x, pt.y, " ", 1);
          pt.x += szSpace.cx;
          txt++;
       }
@@ -659,7 +662,8 @@ void BlueRenderEngineUI::DoPaintPrettyText(HDC hDC, PaintManagerUI* manager, REC
             ::GetTextExtentPoint32(hDC, txt, cchChars, &szText);
             if (bDraw)  {
                ::TextOut(hDC, ptPos.x, ptPos.y, txt, cchChars);
-               if (pt.x == rc.right && (uStyle & DT_END_ELLIPSIS) != 0)  ::TextOut(hDC, rc.right - 10, ptPos.y, _T("..."), 3);
+               if (pt.x == rc.right && (uStyle & DT_END_ELLIPSIS) != 0)
+                  ::TextOutA(hDC, rc.right - 10, ptPos.y, "...", 3);
             }
             pt.x += szText.cx;
             txt += cchChars;
