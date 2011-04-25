@@ -387,9 +387,9 @@ void ListUI::SetPos(RECT rc)
 
 void ListUI::Event(TEventUI& event)
 {
-   switch( event.type)  {
+   switch (event.type)  {
    case UIEVENT_KEYDOWN:
-      switch( event.chKey)  {
+      switch (event.chKey)  {
       case VK_UP:
          SelectItem(FindSelectable(m_curSel - 1, false));
          EnsureVisible(m_curSel);
@@ -421,7 +421,7 @@ void ListUI::Event(TEventUI& event)
       break;
    case UIEVENT_SCROLLWHEEL:
       {
-         switch( LOWORD(event.wParam))  {
+         switch (LOWORD(event.wParam))  {
          case SB_LINEUP:
             SelectItem(FindSelectable(m_curSel - 1, false));
             EnsureVisible(m_curSel);
@@ -828,7 +828,7 @@ void ListExpandElementUI::Event(TEventUI& event)
    }
    if (event.type == UIEVENT_KEYDOWN) 
    {
-      switch( event.chKey)  {
+      switch (event.chKey)  {
       case VK_LEFT:
          Expand(false);
          return;

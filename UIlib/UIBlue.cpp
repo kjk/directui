@@ -464,7 +464,7 @@ void BlueRenderEngineUI::DoPaintPrettyText(HDC hDC, PaintManagerUI* manager, REC
                && (txt[2] == ' ' || txt[2] == '>')) 
       {
          txt++;
-         switch( *txt++) 
+         switch (*txt++) 
          {
          case 'a':  // Link
             {
@@ -578,7 +578,7 @@ void BlueRenderEngineUI::DoPaintPrettyText(HDC hDC, PaintManagerUI* manager, REC
       else if (*txt == '<' && txt[1] == '/') 
       {
          txt += 2;
-         switch( *txt++) 
+         switch (*txt++) 
          {
          case 'a':
             if (linkIdx < nLinkRects)  ::SetRect(&prcLinks[linkIdx++], ptLinkStart.x, ptLinkStart.y, pt.x, pt.y + tm.tmHeight + tm.tmExternalLeading);

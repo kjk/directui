@@ -162,9 +162,9 @@ void AnimationSpooler::Term()
    m_bIsInitialized = false;
 }
 
-bool AnimationSpooler::AddJob(AnimJobUI* pJob)
+bool AnimationSpooler::AddJob(AnimJobUI* job)
 {
-   return m_aJobs.Add(pJob);
+   return m_aJobs.Add(job);
 }
 
 bool AnimationSpooler::IsAnimating() const
@@ -198,18 +198,18 @@ bool AnimationSpooler::PrepareAnimation(HWND hWnd)
    m_p3DBackSurface->ReleaseDC(hDC);
    // Allow each job to prepare its 3D objects
    for (int i = 0; i < m_aJobs.GetSize(); i++)  {
-      AnimJobUI* pJob = static_cast<AnimJobUI*>(m_aJobs[i]);
-      switch( pJob->AnimType)  {
+      AnimJobUI* job = static_cast<AnimJobUI*>(m_aJobs[i]);
+      switch (job->AnimType)  {
       case UIANIMTYPE_FLAT:
-         if (!PrepareJob_Flat(pJob))  return false;
+         if (!PrepareJob_Flat(job))  return false;
          break;
       }
    }
    // Assign start time
    DWORD dwTick = ::timeGetTime();
    for (int j = 0; j < m_aJobs.GetSize(); j++)  {
-      AnimJobUI* pJob = static_cast<AnimJobUI*>(m_aJobs[j]);
-      pJob->dwStartTick += dwTick;
+      AnimJobUI* job = static_cast<AnimJobUI*>(m_aJobs[j]);
+      job->dwStartTick += dwTick;
    }
    m_bIsAnimating = true;
    return true;
@@ -234,15 +234,15 @@ bool AnimationSpooler::Render()
    int nAnimated = 0;
    DWORD dwTick = ::timeGetTime();
    for (int i = 0; i < m_aJobs.GetSize(); i++)  {
-      const AnimJobUI* pJob = static_cast<AnimJobUI*>(m_aJobs[i]);
-      if (dwTick < pJob->dwStartTick)  continue;
-      DWORD dwTickNow = MIN(dwTick, pJob->dwStartTick + pJob->dwDuration);
-      switch( pJob->AnimType)  {
+      const AnimJobUI* job = static_cast<AnimJobUI*>(m_aJobs[i]);
+      if (dwTick < job->dwStartTick)  continue;
+      DWORD dwTickNow = MIN(dwTick, job->dwStartTick + job->dwDuration);
+      switch (job->AnimType)  {
       case UIANIMTYPE_FLAT:
-         RenderJob_Flat(pJob, p3DTargetSurface, dwTickNow);
+         RenderJob_Flat(job, p3DTargetSurface, dwTickNow);
          break;
       }
-      if (dwTick < pJob->dwStartTick + pJob->dwDuration)  nAnimated++;
+      if (dwTick < job->dwStartTick + job->dwDuration)  nAnimated++;
    }
    m_p3DDevice->EndScene();
    m_p3DDevice->Present(NULL, NULL, NULL, NULL);
@@ -331,13 +331,13 @@ bool AnimationSpooler::SetColorKey(LPDIRECT3DTEXTURE9 pTexture, LPDIRECT3DSURFAC
    return false;
 }
 
-bool AnimationSpooler::PrepareJob_Flat(AnimJobUI* pJob)
+bool AnimationSpooler::PrepareJob_Flat(AnimJobUI* job)
 {
    // Determine actual colorkey
-   pJob->data.plot.clrKey = TranslateColor(m_p3DBackSurface, pJob->data.plot.clrKey);
+   job->data.plot.clrKey = TranslateColor(m_p3DBackSurface, job->data.plot.clrKey);
    // Prepare surfaces
    HRESULT Hr;
-   RECT rc = pJob->data.plot.rcFrom;
+   RECT rc = job->data.plot.rcFrom;
    int cx = rc.right - rc.left;
    int cy = rc.bottom - rc.left;
    FLOAT z = 0.1f;
@@ -349,7 +349,7 @@ bool AnimationSpooler::PrepareJob_Flat(AnimJobUI* pJob)
    if (cx < 32)  iTexSize = 32;
    FLOAT fTexSize = (FLOAT) iTexSize;
    // Start building tiles
-   pJob->iBufferStart = m_nBuffers;
+   job->iBufferStart = m_nBuffers;
    for (int x = rc.left; x < rc.right; x += iTexSize)  {
       for (int y = rc.top; y < rc.bottom; y += iTexSize)  {
          RECT rcTile = { x, y, MIN(rc.right, x + iTexSize), MIN(rc.bottom, y + iTexSize) };
@@ -396,17 +396,17 @@ bool AnimationSpooler::PrepareJob_Flat(AnimJobUI* pJob)
          Hr = m_p3DDevice->StretchRect(pTexSurf1, &rcDest, pTexSurf2, &rcDest, D3DTEXF_NONE);
          if (FAILED(Hr))  return false;
          // Replace colorkey pixels with alpha
-         SetColorKey(pTex2, pTexSurf2, iTexSize, pJob->data.plot.clrKey);
+         SetColorKey(pTex2, pTexSurf2, iTexSize, job->data.plot.clrKey);
          // Finally, assign the texture
          m_p3DTextures[m_nBuffers] = RefTex2.Detach();
          m_p3DVertices[m_nBuffers] = RefVertex.Detach();
          m_nBuffers++;
       }
    }
-   pJob->iBufferEnd = m_nBuffers;
+   job->iBufferEnd = m_nBuffers;
    ASSERT(m_nBuffers<MAX_BUFFERS);
    // Clear the background so the sprite can take its place
-   COLORREF clrBack = pJob->data.plot.clrBack;
+   COLORREF clrBack = job->data.plot.clrBack;
    if (clrBack != CLR_INVALID) {
       HDC hDC = NULL;
       Hr = m_p3DBackSurface->GetDC(&hDC);
@@ -419,23 +419,23 @@ bool AnimationSpooler::PrepareJob_Flat(AnimJobUI* pJob)
    return true;
 }
 
-bool AnimationSpooler::RenderJob_Flat(const AnimJobUI* pJob, LPDIRECT3DSURFACE9 /*pSurface*/, DWORD dwTick)
+bool AnimationSpooler::RenderJob_Flat(const AnimJobUI* job, LPDIRECT3DSURFACE9 /*pSurface*/, DWORD dwTick)
 {
-   RECT rc = pJob->data.plot.rcFrom;
-   FLOAT mu = (FLOAT)(pJob->dwStartTick + pJob->dwDuration - dwTick) / (FLOAT) pJob->dwDuration;
+   RECT rc = job->data.plot.rcFrom;
+   FLOAT mu = (FLOAT)(job->dwStartTick + job->dwDuration - dwTick) / (FLOAT) job->dwDuration;
    FLOAT scale1 = 0.0;
-   if (pJob->data.plot.iInterpolate == AnimJobUI::INTERPOLATE_LINEAR)  scale1 = (FLOAT) LinearInterpolate(0.0, 1.0, mu);
-   if (pJob->data.plot.iInterpolate == AnimJobUI::INTERPOLATE_COS)  scale1 = (FLOAT) CosineInterpolate(0.0, 1.0, mu);
+   if (job->data.plot.iInterpolate == AnimJobUI::INTERPOLATE_LINEAR)  scale1 = (FLOAT) LinearInterpolate(0.0, 1.0, mu);
+   if (job->data.plot.iInterpolate == AnimJobUI::INTERPOLATE_COS)  scale1 = (FLOAT) CosineInterpolate(0.0, 1.0, mu);
    FLOAT scale2 = 1.0f - scale1;
    D3DVECTOR ptCenter = { rc.left + ((rc.right - rc.left) / 2.0f), rc.top + ((rc.bottom - rc.top) / 2.0f) };
-   FLOAT xtrans = (FLOAT) pJob->data.plot.mFrom.xtrans * scale1;
-   FLOAT ytrans = (FLOAT) pJob->data.plot.mFrom.ytrans * scale1;
-   FLOAT ztrans = 1.0f + ((FLOAT) abs(pJob->data.plot.mFrom.ztrans) * (pJob->data.plot.mFrom.ztrans >= 0.0 ? scale1 : scale2));
-   FLOAT fSin = (FLOAT) sin(pJob->data.plot.mFrom.zrot * scale1);
-   FLOAT fCos = (FLOAT) cos(pJob->data.plot.mFrom.zrot * scale1);
-   DWORD clrAlpha = ((DWORD)(0xFF - (FLOAT) abs(pJob->data.plot.mFrom.alpha) * (pJob->data.plot.mFrom.alpha >= 0 ? scale1 : scale2)) << 24) | 0xffffff;
+   FLOAT xtrans = (FLOAT) job->data.plot.mFrom.xtrans * scale1;
+   FLOAT ytrans = (FLOAT) job->data.plot.mFrom.ytrans * scale1;
+   FLOAT ztrans = 1.0f + ((FLOAT) abs(job->data.plot.mFrom.ztrans) * (job->data.plot.mFrom.ztrans >= 0.0 ? scale1 : scale2));
+   FLOAT fSin = (FLOAT) sin(job->data.plot.mFrom.zrot * scale1);
+   FLOAT fCos = (FLOAT) cos(job->data.plot.mFrom.zrot * scale1);
+   DWORD clrAlpha = ((DWORD)(0xFF - (FLOAT) abs(job->data.plot.mFrom.alpha) * (job->data.plot.mFrom.alpha >= 0 ? scale1 : scale2)) << 24) | 0xffffff;
    HRESULT Hr = 0;
-   for (int iBuffer = pJob->iBufferStart; iBuffer < pJob->iBufferEnd; iBuffer++)  {
+   for (int iBuffer = job->iBufferStart; iBuffer < job->iBufferEnd; iBuffer++)  {
       // Lock the vertex buffer and apply transformation
       LPDIRECT3DVERTEXBUFFER9 pVBuffer = m_p3DVertices[iBuffer];
       void* pVertices = NULL;

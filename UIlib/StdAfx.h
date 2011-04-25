@@ -37,7 +37,7 @@ public:
 
    bool IsAnimating() const;
    bool IsJobScheduled() const;
-   bool AddJob(AnimJobUI* pJob);
+   bool AddJob(AnimJobUI* job);
 
 protected:
    void Term();
@@ -45,8 +45,8 @@ protected:
    COLORREF TranslateColor(LPDIRECT3DSURFACE9 pSurface, COLORREF clr) const;
    bool SetColorKey(LPDIRECT3DTEXTURE9 pTexture, LPDIRECT3DSURFACE9 pSurface, int iTexSize, COLORREF clrColorKey);
 
-   bool PrepareJob_Flat(AnimJobUI* pJob);
-   bool RenderJob_Flat(const AnimJobUI* pJob, LPDIRECT3DSURFACE9 pSurface, DWORD dwTick);
+   bool PrepareJob_Flat(AnimJobUI* job);
+   bool RenderJob_Flat(const AnimJobUI* job, LPDIRECT3DSURFACE9 pSurface, DWORD dwTick);
 
 protected:
    struct CUSTOMVERTEX 

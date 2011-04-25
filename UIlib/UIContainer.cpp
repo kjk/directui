@@ -376,7 +376,7 @@ void CanvasUI::DoPaint(HDC hDC, const RECT& rcPaint)
    // Paint watermark bitmap
    if (m_hBitmap != NULL)  {
       RECT rcBitmap = { 0 };
-      switch( m_iOrientation)  {
+      switch (m_iOrientation)  {
       case HTTOPRIGHT:
          ::SetRect(&rcBitmap, m_rcItem.right - m_BitmapInfo.bmWidth, m_rcItem.top, m_rcItem.right, m_rcItem.top + m_BitmapInfo.bmHeight);
          break;

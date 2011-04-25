@@ -753,7 +753,7 @@ LRESULT ActiveXWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
    LRESULT lRes;
    BOOL bHandled = TRUE;
-   switch( uMsg)  {
+   switch (uMsg)  {
    case WM_PAINT:         lRes = OnPaint(uMsg, wParam, lParam, bHandled); break;
    case WM_SETFOCUS:      lRes = OnSetFocus(uMsg, wParam, lParam, bHandled); break;
    case WM_KILLFOCUS:     lRes = OnKillFocus(uMsg, wParam, lParam, bHandled); break;
@@ -919,7 +919,7 @@ LRESULT ActiveXUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, bool&
    }
    else
    {
-      switch( uMsg)  {
+      switch (uMsg)  {
       case WM_HELP:
       case WM_CONTEXTMENU:
          bWasHandled = false;

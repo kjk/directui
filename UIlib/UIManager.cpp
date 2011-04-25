@@ -296,7 +296,7 @@ void PaintManagerUI::SetMinMaxInfo(int cx, int cy)
 
 bool PaintManagerUI::PreMessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT& /*lRes*/)
 {
-   switch( uMsg)  {
+   switch (uMsg)  {
    case WM_KEYDOWN:
       {
          // Tabbing between controls
@@ -365,7 +365,7 @@ bool PaintManagerUI::PreMessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, 
 bool PaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT& lRes)
 {
 #ifdef _DEBUG
-   switch( uMsg)  {
+   switch (uMsg)  {
    case WM_NCPAINT:
    case WM_NCHITTEST:
    case WM_SETCURSOR:
@@ -387,7 +387,7 @@ bool PaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRE
       }
    }
    // Custom handling of events
-   switch( uMsg)  {
+   switch (uMsg)  {
    case WM_APP + 1:
       {
          // Delayed control-tree cleanup. See AttachDialog() for details.
@@ -970,10 +970,10 @@ bool PaintManagerUI::TranslateMessage(const MSG* pMsg)
 
 bool PaintManagerUI::AddAnimJob(const AnimJobUI& job)
 {
-   AnimJobUI* pJob = new AnimJobUI(job);
-   if (pJob == NULL)  return false;
+   AnimJobUI* jobTmp = new AnimJobUI(job);
+   if (jobTmp == NULL)  return false;
    ::InvalidateRect(m_hWndPaint, NULL, FALSE);
-   return m_anim.AddJob(pJob);
+   return m_anim.AddJob(jobTmp);
 }
 
 bool PaintManagerUI::AddPostPaintBlit(const TPostPaintUI& job)

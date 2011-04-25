@@ -509,7 +509,7 @@ const char* WarningPanelUI::GetClass() const
 
 void WarningPanelUI::SetWarningType(UINT uType)
 {
-   switch( uType)  {
+   switch (uType)  {
    case MB_ICONERROR:
       m_BackColor = UICOLOR_STANDARD_RED;
       break;

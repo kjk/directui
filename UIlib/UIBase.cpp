@@ -77,6 +77,9 @@ const char* __TraceMsg(UINT uMsg)
    MSGDEF(WM_GETICON);   
    MSGDEF(WM_GETTEXT);
    MSGDEF(WM_GETTEXTLENGTH);   
+   MSGDEF(WM_IME_SETCONTEXT);
+   MSGDEF(WM_IME_NOTIFY);
+   MSGDEF(WM_PRINTCLIENT);
    static char buf[32];
    ::sprintf(buf, "0x%04X", uMsg);
    return buf;

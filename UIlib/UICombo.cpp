@@ -187,7 +187,7 @@ LRESULT DropDownWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
       PostMessage(WM_KILLFOCUS);
    }
    else if (uMsg == WM_KEYDOWN)  {
-      switch( wParam)  {
+      switch (wParam)  {
       case VK_ESCAPE:
          m_owner->SelectItem(m_iOldSel);
          // FALL THROUGH...
@@ -317,7 +317,7 @@ void DropDownUI::Event(TEventUI& event)
    }
    if (event.type == UIEVENT_KEYDOWN) 
    {
-      switch( event.chKey)  {
+      switch (event.chKey)  {
       case VK_F4:
          Activate();
          return;
