@@ -167,7 +167,7 @@ bool HttpPost(const char *url, str::Str<char> *headers, str::Str<char> *data, st
     hInet = InternetOpenA(USER_AGENT, INTERNET_OPEN_TYPE_PRECONFIG, NULL, NULL, 0);
     if (!hInet)
         goto Exit;
-    hConn = InternetConnect(hInet, parsedUrl.server.Get(), parsedUrl.port,
+    hConn = InternetConnectA(hInet, parsedUrl.server.Get(), parsedUrl.port,
                             NULL, NULL, INTERNET_SERVICE_HTTP, 0, 1);
     if (!hConn)
         goto Exit;

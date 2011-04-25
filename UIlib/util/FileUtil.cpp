@@ -5,7 +5,7 @@
 #include "StrUtil.h"
 #include "FileUtil.h"
 
-bool DeleteFileUTF8(const char* path)
+bool DeleteFileUtf8(const char* path)
 {
     ScopedMem<WCHAR> pathW(str::conv::Utf8ToUni(path));
     return !!DeleteFileW(pathW);
@@ -75,6 +75,28 @@ char *SHGetSpecialFolderPathUtf8(HWND hwndOwner, int csidl, BOOL fCreate)
     if (!ok)
         return NULL;
     return str::conv::UniToUtf8(dir);
+}
+
+HANDLE CreateFileUtf8(const char *fileNameUtf8, DWORD dwDesiredAccess, DWORD dwShareMode,
+    LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition,
+    DWORD dwFlagsAndAttributes, HANDLE hTemplateFile)
+{
+    ScopedMem<WCHAR> fileName(str::conv::Utf8ToUni(fileNameUtf8));
+    HANDLE h = CreateFileW(fileName, dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwCreationDisposition,
+        dwFlagsAndAttributes, hTemplateFile);
+    return h;
+}
+
+bool CreateDirectoryUtf8(const char* lpPathNameUtf8, LPSECURITY_ATTRIBUTES lpSecurityAttributes)
+{
+    ScopedMem<WCHAR> dir(str::conv::Utf8ToUni(lpPathNameUtf8));
+    return !!CreateDirectoryW(dir, lpSecurityAttributes);
+}
+
+bool GetFileAttributesExUtf8(const char* lpFileNameUtf8, GET_FILEEX_INFO_LEVELS fInfoLevelId, void* lpFileInformation)
+{
+    ScopedMem<WCHAR> fileName(str::conv::Utf8ToUni(lpFileNameUtf8));
+    return !!GetFileAttributesExW(fileName, fInfoLevelId, lpFileInformation);
 }
 
 namespace path {
@@ -152,8 +174,8 @@ char *Normalize(const char *path)
 bool IsSame(const char *path1, const char *path2)
 {
     bool isSame = false, needFallback = true;
-    HANDLE handle1 = CreateFile(path1, 0, 0, NULL, OPEN_EXISTING, FILE_FLAG_BACKUP_SEMANTICS, NULL);
-    HANDLE handle2 = CreateFile(path2, 0, 0, NULL, OPEN_EXISTING, FILE_FLAG_BACKUP_SEMANTICS, NULL);
+    HANDLE handle1 = CreateFileUtf8(path1, 0, 0, NULL, OPEN_EXISTING, FILE_FLAG_BACKUP_SEMANTICS, NULL);
+    HANDLE handle2 = CreateFileUtf8(path2, 0, 0, NULL, OPEN_EXISTING, FILE_FLAG_BACKUP_SEMANTICS, NULL);
 
     if (handle1 != INVALID_HANDLE_VALUE && handle2 != INVALID_HANDLE_VALUE) {
         BY_HANDLE_FILE_INFORMATION fi1, fi2;
@@ -171,8 +193,8 @@ bool IsSame(const char *path1, const char *path2)
     if (!needFallback)
         return isSame;
 
-    ScopedMem<TCHAR> npath1(Normalize(path1));
-    ScopedMem<TCHAR> npath2(Normalize(path2));
+    ScopedMem<char> npath1(Normalize(path1));
+    ScopedMem<char> npath2(Normalize(path2));
     // consider the files different, if their paths can't be normalized
     if (!npath1 || !npath2)
         return false;
@@ -251,7 +273,7 @@ char *ReadAll(const char *filePathUtf8, size_t *fileSizeOut)
 
 bool ReadAll(const char *filePathUtf8, char *buffer, size_t bufferLen)
 {
-    HANDLE h = CreateFile(filePathUtf8, GENERIC_READ, FILE_SHARE_READ, NULL,  
+    HANDLE h = CreateFileUtf8(filePathUtf8, GENERIC_READ, FILE_SHARE_READ, NULL,  
                           OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL,  NULL); 
     if (h == INVALID_HANDLE_VALUE)
         return false;
@@ -265,7 +287,7 @@ bool ReadAll(const char *filePathUtf8, char *buffer, size_t bufferLen)
 
 bool WriteAll(const char *filePathUtf8, void *data, size_t dataLen)
 {
-    HANDLE h = CreateFile(filePathUtf8, GENERIC_WRITE, FILE_SHARE_READ, NULL,  
+    HANDLE h = CreateFileUtf8(filePathUtf8, GENERIC_WRITE, FILE_SHARE_READ, NULL,  
                           CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL,  NULL); 
     if (h == INVALID_HANDLE_VALUE)
         return FALSE;
@@ -281,7 +303,7 @@ bool WriteAll(const char *filePathUtf8, void *data, size_t dataLen)
 // Return true if the file wasn't there or was successfully deleted
 bool Delete(const char *filePathUtf8)
 {
-    BOOL ok = DeleteFileUTF8(filePathUtf8);
+    bool ok = DeleteFileUtf8(filePathUtf8);
     if (ok)
         return true;
     DWORD err = GetLastError();
@@ -291,7 +313,7 @@ bool Delete(const char *filePathUtf8)
 FILETIME GetModificationTime(const char *filePathUtf8)
 {
     FILETIME lastMod = { 0 };
-    HANDLE h = CreateFile(filePathUtf8, GENERIC_READ, FILE_SHARE_READ, NULL,  
+    HANDLE h = CreateFileUtf8(filePathUtf8, GENERIC_READ, FILE_SHARE_READ, NULL,  
                           OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL,  NULL); 
     if (h != INVALID_HANDLE_VALUE)
         GetFileTime(h, NULL, NULL, &lastMod);
@@ -303,13 +325,13 @@ FILETIME GetModificationTime(const char *filePathUtf8)
 
 namespace dir {
 
-bool Exists(const char *dir)
+bool Exists(const char *dirUtf8)
 {
-    if (NULL == dir)
+    if (!dirUtf8)
         return false;
 
     WIN32_FILE_ATTRIBUTE_DATA   fileInfo;
-    BOOL res = GetFileAttributesEx(dir, GetFileExInfoStandard, &fileInfo);
+    BOOL res = GetFileAttributesExUtf8(dirUtf8, GetFileExInfoStandard, &fileInfo);
     if (0 == res)
         return false;
 
@@ -319,11 +341,11 @@ bool Exists(const char *dir)
 }
 
 // Return true if a directory already exists or has been successfully created
-bool Create(const char *dir)
+bool Create(const char *dirUtf8)
 {
-    if (!dir)
+    if (!dirUtf8)
         return false;
-    BOOL ok = CreateDirectory(dir, NULL);
+    BOOL ok = CreateDirectoryUtf8(dirUtf8, NULL);
     if (ok)
         return true;
     return ERROR_ALREADY_EXISTS == GetLastError();

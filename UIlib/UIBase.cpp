@@ -80,6 +80,7 @@ const char* __TraceMsg(UINT uMsg)
    MSGDEF(WM_IME_SETCONTEXT);
    MSGDEF(WM_IME_NOTIFY);
    MSGDEF(WM_PRINTCLIENT);
+   MSGDEF(WM_CTLCOLORSCROLLBAR);
    static char buf[32];
    ::sprintf(buf, "0x%04X", uMsg);
    return buf;
@@ -692,9 +693,9 @@ int StdString::GetLength() const
    return (int) strlen(m_pstr); 
 }
 
-StdString::operator LPCTSTR() const 
+StdString::operator const char*() const 
 { 
-   return m_pstr; 
+   return (const char*)m_pstr; 
 }
 
 void StdString::Append(const char* pstr)

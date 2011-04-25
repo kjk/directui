@@ -112,7 +112,6 @@ PaintManagerUI::PaintManagerUI() :
       lfLink.lfUnderline = TRUE;
       m_aLogFonts[UIFONT_LINK] = lfLink;
 
-      // Fill the color table
       m_colors[UICOLOR_WINDOW_BACKGROUND][0]            = RGB(239,239,235);
       m_colors[UICOLOR_DIALOG_BACKGROUND][0]            = RGB(238,238,238);
       m_colors[UICOLOR_DIALOG_TEXT_NORMAL][0]           = RGB(0,0,0);
@@ -122,11 +121,11 @@ PaintManagerUI::PaintManagerUI() :
       m_colors[UICOLOR_TITLE_BORDER_LIGHT][0]           = RGB(171,192,231);
       m_colors[UICOLOR_TITLE_BORDER_DARK][0]            = RGB(0,55,122);
       m_colors[UICOLOR_BUTTON_BACKGROUND_NORMAL][0]     = RGB(250,250,252);
-       m_colors[UICOLOR_BUTTON_BACKGROUND_NORMAL][1]    = RGB(215,215,227);
+      m_colors[UICOLOR_BUTTON_BACKGROUND_NORMAL][1]     = RGB(215,215,227);
       m_colors[UICOLOR_BUTTON_BACKGROUND_DISABLED][0]   = RGB(248,248,248);
-       m_colors[UICOLOR_BUTTON_BACKGROUND_DISABLED][1]  = RGB(214,214,214);
+      m_colors[UICOLOR_BUTTON_BACKGROUND_DISABLED][1]   = RGB(214,214,214);
       m_colors[UICOLOR_BUTTON_BACKGROUND_PUSHED][0]     = RGB(215,215,227);
-       m_colors[UICOLOR_BUTTON_BACKGROUND_PUSHED][1]    = RGB(250,250,252);
+      m_colors[UICOLOR_BUTTON_BACKGROUND_PUSHED][1]     = RGB(250,250,252);
       m_colors[UICOLOR_BUTTON_TEXT_NORMAL][0]           = RGB(0,0,0);
       m_colors[UICOLOR_BUTTON_TEXT_PUSHED][0]           = RGB(0,0,20);
       m_colors[UICOLOR_BUTTON_TEXT_DISABLED][0]         = RGB(204,204,204);
