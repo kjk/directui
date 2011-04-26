@@ -45,9 +45,7 @@ private:
    bool _Parse(char*& txt, ULONG iParent);
    XMLELEMENT* _ReserveElement();
    inline void _SkipWhitespace(char*& s) const;
-   inline void _SkipWhitespace(const char*& s) const;
    inline void _SkipIdentifier(char*& s) const;
-   inline void _SkipIdentifier(const char*& s) const;
    bool _ParseData(char*& txt, char*& pstrData, char cEnd);
    void _ParseMetaChar(char*& txt, char*& pstrDest);
    bool _ParseAttributes(char*& txt);

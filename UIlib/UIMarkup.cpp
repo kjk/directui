@@ -136,8 +136,8 @@ bool MarkupNode::HasAttribute(const char* name)
 void MarkupNode::_MapAttributes()
 {
    m_nAttributes = 0;
-   const char* pstr = m_owner->m_xml + m_owner->m_elements[m_pos].iStart;
-   const char* pstrEnd = m_owner->m_xml + m_owner->m_elements[m_pos].iData;
+   char* pstr = m_owner->m_xml + m_owner->m_elements[m_pos].iStart;
+   char* pstrEnd = m_owner->m_xml + m_owner->m_elements[m_pos].iData;
    pstr += str::Len(pstr) + 1;
    while (pstr < pstrEnd)  {
       m_owner->_SkipWhitespace(pstr);
@@ -327,21 +327,9 @@ MarkupParser::XMLELEMENT* MarkupParser::_ReserveElement()
    return &m_elements[m_nElements++];
 }
 
-void MarkupParser::_SkipWhitespace(const char*& s) const
-{
-   while (*s != '\0' && *s <= ' ')
-      s++;
-}
-
 void MarkupParser::_SkipWhitespace(char*& s) const
 {
    while (*s != '\0' && *s <= ' ')
-      s++;
-}
-
-void MarkupParser::_SkipIdentifier(const char*& s) const
-{
-   while (*s != '\0' && (*s == '_' || *s == ':' || isalnum(*s)))
       s++;
 }
 
@@ -387,9 +375,6 @@ bool MarkupParser::_ParseData(char*& txt, char*& pstrDest, char cEnd)
       }
       else {
          *pstrDest++ = *txt++;
-#ifdef _MBCS
-         if (::IsDBCSLeadByte(*(txt - 1)))  *pstrDest++ = *txt++;
-#endif // _MBCS
       }
    }
    // Make sure that MapAttributes() works correctly when it parses
