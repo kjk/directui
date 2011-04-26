@@ -4,17 +4,6 @@
 #ifndef FileUtil_h
 #define FileUtil_h
 
-// more convenient wrappers around win32 functions that use utf8 as paths
-bool DeleteFileUtf8(const char* path);
-char *GetFullPathNameUtf8(const char* lpFileNameUtf8);
-char *GetLongPathNameUtf8(const char* lpszShortPathUtf8);
-char *SHGetSpecialFolderPathUtf8(HWND hwndOwner, int csidl, BOOL fCreate);
-HANDLE CreateFileUtf8(const char *fileNameUtf8, DWORD dwDesiredAccess, DWORD dwShareMode,
-    LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition,
-    DWORD dwFlagsAndAttributes, HANDLE hTemplateFile = NULL);
-bool CreateDirectoryUtf8(const char* lpPathNameUtf8, LPSECURITY_ATTRIBUTES lpSecurityAttributes=NULL);
-bool GetFileAttributesExUtf8(const char* lpFileNameUtf8, GET_FILEEX_INFO_LEVELS fInfoLevelId, void* lpFileInformation);
-
 namespace path {
 
 const char * GetBaseName(const char *path);

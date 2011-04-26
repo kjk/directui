@@ -39,6 +39,7 @@
     <ClInclude Include="UIlib\util\SettingsParser.h" />
     <ClInclude Include="UIlib\util\StrUtil.h" />
     <ClInclude Include="UIlib\util\Vec.h" />
+    <ClInclude Include="UIlib\util\WinUtf8.h" />
     <ClInclude Include="UIlib\util\WinUtil.h" />
   </ItemGroup>
   <ItemGroup>
@@ -67,6 +68,7 @@
     <ClCompile Include="UIlib\util\Http.cpp" />
     <ClCompile Include="UIlib\util\SettingsParser.cpp" />
     <ClCompile Include="UIlib\util\StrUtil.cpp" />
+    <ClCompile Include="UIlib\util\WinUtf8.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="App\App.exe.manifest" />

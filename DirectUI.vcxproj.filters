@@ -99,6 +99,9 @@
     <ClInclude Include="UIlib\util\WinUtil.h">
       <Filter>UIlib\util</Filter>
     </ClInclude>
+    <ClInclude Include="UIlib\util\WinUtf8.h">
+      <Filter>UIlib\util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="UIlib\UIActiveX.cpp">
@@ -174,6 +177,9 @@
       <Filter>UIlib\util</Filter>
     </ClCompile>
     <ClCompile Include="UIlib\util\StrUtil.cpp">
+      <Filter>UIlib\util</Filter>
+    </ClCompile>
+    <ClCompile Include="UIlib\util\WinUtf8.cpp">
       <Filter>UIlib\util</Filter>
     </ClCompile>
   </ItemGroup>

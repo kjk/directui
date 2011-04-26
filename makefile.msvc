@@ -82,7 +82,7 @@ TA_MANIFEST = $(OTA)\TestApp.manifest.res
 TA_APP = $(O)\TestApp.exe
 
 UTIL_OBJS = $(OUI)\FileUtil.obj $(OUI)\Http.obj $(OUI)\SettingsParser.obj \
-	$(OUI)\StrUtil.obj
+	$(OUI)\StrUtil.obj $(OUI)\WinUtf8.obj
 
 UIL_OBJS = $(UTIL_OBJS) $(OUI)\UIActiveX.obj $(OUI)\UIAnim.obj \
 	$(OUI)\UIBase.obj $(OUI)\UIBlue.obj $(OUI)\UIButton.obj \
