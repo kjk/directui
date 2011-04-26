@@ -264,7 +264,7 @@ public:
 protected:
    bool m_bExpanded;
    int m_cyExpanded;
-   ContainerUI* m_pContainer;
+   ContainerUI* m_container;
 };
 
 #endif // !defined(AFX_UILIST_H__20060218_929F_BDFF_55AA_0080AD509054__INCLUDED_)

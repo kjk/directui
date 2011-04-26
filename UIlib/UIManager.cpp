@@ -833,14 +833,14 @@ bool PaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRE
    case WM_VSCROLL:
       {
          if (lParam == NULL)  break;
-         ContainerUI* pContainer = static_cast<ContainerUI*>(::GetPropA((HWND) lParam, "WndX"));
-         if (pContainer == NULL)  break;
+         ContainerUI* container = static_cast<ContainerUI*>(::GetPropA((HWND) lParam, "WndX"));
+         if (container == NULL)  break;
          TEventUI event = { 0 };
          event.type = UIEVENT_VSCROLL;
          event.wParam = wParam;
          event.lParam = lParam;
          event.timestamp = ::GetTickCount();
-         pContainer->Event(event);
+         container->Event(event);
       }
       break;
    case WM_NOTIFY:

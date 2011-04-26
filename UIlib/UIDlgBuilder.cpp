@@ -115,7 +115,7 @@ static ControlUI *CreateKnown(const char *cls)
 ControlUI* DialogBuilder::_ParseXml(MarkupNode* root, ControlUI* parent)
 {
    DialogLayoutUI* pStretched = NULL;
-   IContainerUI* pContainer = NULL;
+   IContainerUI* container = NULL;
    ControlUI* pReturn = NULL;
    for (MarkupNode node = root->GetChild() ; node.IsValid(); node = node.GetSibling())  {
       const char* cls = node.GetName();
@@ -133,10 +133,10 @@ ControlUI* DialogBuilder::_ParseXml(MarkupNode* root, ControlUI* parent)
       }
       // Attach to parent
       if (parent != NULL)  {
-         if (pContainer == NULL)  pContainer = static_cast<IContainerUI*>(parent->GetInterface("Container"));
-         ASSERT(pContainer);
-         if (pContainer == NULL)  return NULL;
-         pContainer->Add(ctrl);
+         if (container == NULL)  container = static_cast<IContainerUI*>(parent->GetInterface("Container"));
+         ASSERT(container);
+         if (container == NULL)  return NULL;
+         container->Add(ctrl);
       }
       // Process attributes
       if (node.HasAttributes())  {

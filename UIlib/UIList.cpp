@@ -772,13 +772,13 @@ void ListTextElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
 }
 
 
-ListExpandElementUI::ListExpandElementUI() : m_bExpanded(false), m_cyExpanded(0), m_pContainer(NULL)
+ListExpandElementUI::ListExpandElementUI() : m_bExpanded(false), m_cyExpanded(0), m_container(NULL)
 {
 }
 
 ListExpandElementUI::~ListExpandElementUI()
 {
-   delete m_pContainer;
+   delete m_container;
 }
 
 const char* ListExpandElementUI::GetClass() const
@@ -797,12 +797,12 @@ bool ListExpandElementUI::Expand(bool bExpand)
    // that we selectively display or not.
    if (bExpand)  
    {
-      delete m_pContainer;
+      delete m_container;
       TileLayoutUI* pTile = new TileLayoutUI;
       pTile->SetPadding(4);
-      m_pContainer = pTile;
+      m_container = pTile;
       if (m_manager != NULL)  m_manager->SendNotify(this, "itemexpand");
-      m_manager->InitControls(m_pContainer, this);
+      m_manager->InitControls(m_container, this);
    }
    else
    {
@@ -853,11 +853,11 @@ SIZE ListExpandElementUI::EstimateSize(SIZE szAvailable)
       m_cyItem = (rcText.bottom - rcText.top) + 8;
    }
    int cyItem = m_cyItem;
-   if (m_bExpanded && m_cyExpanded == 0 && m_pContainer != NULL && m_pContainer->GetCount() > 0)  {
-      RECT rcItem = m_pContainer->GetItem(0)->GetPos();
+   if (m_bExpanded && m_cyExpanded == 0 && m_container != NULL && m_container->GetCount() > 0)  {
+      RECT rcItem = m_container->GetItem(0)->GetPos();
       // HACK: Here we boldy assume that the item height is the same as the listitem.
-      m_cyExpanded = ((rcItem.bottom - rcItem.top) + 14) * ((m_pContainer->GetCount() + 1) / 2);
-      m_cyExpanded += 4 * ((m_pContainer->GetCount() - 1) / 2);
+      m_cyExpanded = ((rcItem.bottom - rcItem.top) + 14) * ((m_container->GetCount() + 1) / 2);
+      m_cyExpanded += 4 * ((m_container->GetCount() - 1) / 2);
       m_cyExpanded += 26;
    }
    return CSize(m_cxWidth, cyItem + m_cyExpanded + 1);
@@ -865,18 +865,18 @@ SIZE ListExpandElementUI::EstimateSize(SIZE szAvailable)
 
 void ListExpandElementUI::SetPos(RECT rc)
 {
-   if (m_pContainer != NULL)  {
+   if (m_container != NULL)  {
       RECT rcSubItems = { rc.left + 14, rc.top + m_cyItem, rc.right - 8, rc.bottom - 6 };
-      m_pContainer->SetPos(rcSubItems);
+      m_container->SetPos(rcSubItems);
    }
    ListTextElementUI::SetPos(rc);
 }
 
 bool ListExpandElementUI::Add(ControlUI* ctrl)
 {
-   ASSERT(m_pContainer);
-   if (m_pContainer == NULL)  return false;
-   return m_pContainer->Add(ctrl);
+   ASSERT(m_container);
+   if (m_container == NULL)  return false;
+   return m_container->Add(ctrl);
 }
 
 bool ListExpandElementUI::Remove(ControlUI* ctrl)
@@ -887,28 +887,28 @@ bool ListExpandElementUI::Remove(ControlUI* ctrl)
 
 void ListExpandElementUI::RemoveAll()
 {
-   if (m_pContainer != NULL)  m_pContainer->RemoveAll();
+   if (m_container != NULL)  m_container->RemoveAll();
 }
 
 ControlUI* ListExpandElementUI::GetItem(int idx) const
 {
-   if (m_pContainer == NULL)  return NULL;
-   return m_pContainer->GetItem(idx);
+   if (m_container == NULL)  return NULL;
+   return m_container->GetItem(idx);
 }
 
 int ListExpandElementUI::GetCount() const
 {
-   if (m_pContainer == NULL)  return 0;
-   return m_pContainer->GetCount();
+   if (m_container == NULL)  return 0;
+   return m_container->GetCount();
 }
 
 void ListExpandElementUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
    ListTextElementUI::DoPaint(hDC, rcPaint);
    // Paint the expanded items?
-   if (m_bExpanded && m_pContainer != NULL)  {
+   if (m_bExpanded && m_container != NULL)  {
       // Paint gradient box for the items
-      RECT rcFrame = m_pContainer->GetPos();
+      RECT rcFrame = m_container->GetPos();
       COLORREF clr1, clr2;
       m_manager->GetThemeColorPair(UICOLOR_CONTROL_BACKGROUND_EXPANDED, clr1, clr2);
       BlueRenderEngineUI::DoPaintGradient(hDC, m_manager, rcFrame, clr1, clr2, true, 64);
@@ -916,20 +916,20 @@ void ListExpandElementUI::DoPaint(HDC hDC, const RECT& rcPaint)
       RECT rcLine = { m_rcItem.left, rcFrame.top, m_rcItem.right, rcFrame.top };
       BlueRenderEngineUI::DoPaintLine(hDC, m_manager, rcLine, UICOLOR_STANDARD_BLACK);
       // We'll draw the items then...
-      m_pContainer->DoPaint(hDC, rcPaint);
+      m_container->DoPaint(hDC, rcPaint);
    }
 }
 
 void ListExpandElementUI::SetManager(PaintManagerUI* manager, ControlUI* parent)
 {
-   if (m_pContainer != NULL)  m_pContainer->SetManager(manager, parent);
+   if (m_container != NULL)  m_container->SetManager(manager, parent);
    ListTextElementUI::SetManager(manager, parent);
 }
 
 ControlUI* ListExpandElementUI::FindControl(FINDCONTROLPROC Proc, void* data, UINT uFlags)
 {
    ControlUI* pResult = NULL;
-   if (m_pContainer != NULL)  pResult = m_pContainer->FindControl(Proc, data, uFlags);
+   if (m_container != NULL)  pResult = m_container->FindControl(Proc, data, uFlags);
    if (pResult == NULL)  pResult = ListTextElementUI::FindControl(Proc, data, uFlags);
    return pResult;
 }
