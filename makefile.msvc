@@ -89,6 +89,7 @@ UIL_OBJS = $(UTIL_OBJS) $(OUI)\UIActiveX.obj $(OUI)\UIAnim.obj \
 	$(OUI)\UICombo.obj $(OUI)\UIContainer.obj $(OUI)\UIDecoration.obj \
 	$(OUI)\UIDlgBuilder.obj $(OUI)\UIEdit.obj $(OUI)\UILabel.obj \
 	$(OUI)\UIList.obj $(OUI)\UIManager.obj $(OUI)\UIMarkup.obj \
+	$(OUI)\UIMarkup2.obj \
 	$(OUI)\UIPanel.obj $(OUI)\UITab.obj $(OUI)\UITool.obj $(OUI)\UIlib.obj
 
 #PANDORA_OBJS = $(O)\crypt.obj $(O)\ezxml.obj $(O)\xml.obj $(O)\piano.obj

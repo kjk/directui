@@ -114,9 +114,9 @@ static ControlUI *CreateKnown(const char *cls)
 
 ControlUI* DialogBuilder::_ParseXml(MarkupNode* root, ControlUI* parent)
 {
-   DialogLayoutUI* pStretched = NULL;
+   DialogLayoutUI* stretched = NULL;
    IContainerUI* container = NULL;
-   ControlUI* pReturn = NULL;
+   ControlUI* ret = NULL;
    for (MarkupNode node = root->GetChild() ; node.IsValid(); node = node.GetSibling())  {
       const char* cls = node.GetName();
 
@@ -149,9 +149,9 @@ ControlUI* DialogBuilder::_ParseXml(MarkupNode* root, ControlUI* parent)
          // Very custom attributes
          const char *val = node.GetAttributeValue("stretch");
          if (val)  {
-            if (pStretched == NULL)  pStretched = static_cast<DialogLayoutUI*>(parent->GetInterface("DialogLayout"));
-            ASSERT(pStretched);
-            if (pStretched == NULL)  return NULL;
+            if (stretched == NULL)  stretched = static_cast<DialogLayoutUI*>(parent->GetInterface("DialogLayout"));
+            ASSERT(stretched);
+            if (stretched == NULL)  return NULL;
             UINT uMode = 0;
             if (str::Eq(val, "move_x"))  uMode |= UISTRETCH_MOVE_X;
             if (str::Eq(val, "move_y"))  uMode |= UISTRETCH_MOVE_Y;
@@ -161,12 +161,12 @@ ControlUI* DialogBuilder::_ParseXml(MarkupNode* root, ControlUI* parent)
             if (str::Eq(val, "size_xy"))  uMode |= UISTRETCH_SIZE_X | UISTRETCH_SIZE_Y;
             if (str::Eq(val, "group"))  uMode |= UISTRETCH_NEWGROUP;
             if (str::Eq(val, "line"))  uMode |= UISTRETCH_NEWLINE;
-            pStretched->SetStretchMode(ctrl, uMode);
+            stretched->SetStretchMode(ctrl, uMode);
          }
       }
       // Return first item
-      if (pReturn == NULL)  pReturn = ctrl;
+      if (ret == NULL)  ret = ctrl;
    }
-   return pReturn;
+   return ret;
 }
 
