@@ -55,7 +55,7 @@ static void ParseEntity(char*& s, char*& dst)
    }
 }
 
-static bool ParseEntities(char*& s, char*& dst, char until)
+static bool ParseXmlData(char*& s, char*& dst, char until)
 {
    while (*s && *s != until)  {
       if (*s == '&')  {
@@ -71,7 +71,8 @@ static bool ParseEntities(char*& s, char*& dst, char until)
    // Make sure that MapAttributes() works correctly when it parses
    // over a value that has been transformed.
    char* sfill = dst + 1;
-   while (sfill < s)  *sfill++ = ' ';
+   while (sfill < s)
+      *sfill++ = ' ';
    return true;
 }
 
@@ -92,7 +93,7 @@ static bool ParseAttributes(char*& s, MarkupNode2 *node)
             return false;
         char *value = s;
         char* dst = s;
-        if (!ParseEntities(s, dst, chQuote))
+        if (!ParseXmlData(s, dst, chQuote))
             return false;
         if (!*s)
             return false;
@@ -129,11 +130,10 @@ static bool ParseXmlRecur(XmlState *state, MarkupNode2 *parent)
             continue;
         }
         char *name = s;
-
         SkipIdentifier(s);
-        char* nameEnd = s;
         if (!*s)
             return false;
+        size_t nameLen = s - name;
 
         MarkupNode2 *node = state->AllocNode();
         node->parent = parent;
@@ -156,7 +156,7 @@ static bool ParseXmlRecur(XmlState *state, MarkupNode2 *parent)
             if (*s != '>')
                 return false;
             char* dst = s;
-            if (!ParseEntities(s, dst, '<'))
+            if (!ParseXmlData(s, dst, '<'))
                 return false;
 
             if (!*s && !parent)
@@ -164,7 +164,10 @@ static bool ParseXmlRecur(XmlState *state, MarkupNode2 *parent)
             if (*s != '<')
                 return false;
 
+            char tmp = name[nameLen];
+            name[nameLen] = 0;
             state->cb->NewNode(node);
+            name[nameLen] = tmp;
 
             if (s[0] == '<' && s[1] != '/')  
             {
@@ -178,15 +181,13 @@ static bool ParseXmlRecur(XmlState *state, MarkupNode2 *parent)
                 *dst = 0;
                 *s = 0;
                 s += 2;
-                size_t cchName = nameEnd - name;
-                if (!str::EqN(s, name, cchName))
+                if (!str::EqN(s, name, nameLen))
                     return false;
-                if (s[cchName] != '>')
+                if (s[nameLen] != '>')
                     return false;
-                s += cchName + 1;
+                s += nameLen + 1;
             }
         }
-        *nameEnd = 0;
         SkipWhitespace(s);
     }
 }

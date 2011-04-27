@@ -24,6 +24,7 @@ LRESULT StandardPageWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
       m_pm.Init(m_hWnd);
       DialogBuilder builder;
       ControlUI* root = builder.CreateFromXml(GetDialogResourceXml());
+      //ControlUI* root = CreateDialogFromXml(GetDialogResourceXml());
       ASSERT(root && "Failed to parse XML");
       m_pm.AttachDialog(root);
       m_pm.AddNotifier(this);

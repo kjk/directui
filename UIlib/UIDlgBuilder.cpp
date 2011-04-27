@@ -146,6 +146,11 @@ void XmlParserCallback::NewNode(MarkupNode2 *node)
 {
     ControlUI* parent = NULL;
     const char *cls = node->name;
+
+    // for compat with the old code, skip the Dialog node if it's the first node
+    if (str::Eq(cls, "Dialog") && !node->parent)
+        return;
+
     ControlUI* ctrl = CreateKnown(cls);
     if (ctrl == NULL && cb != NULL)  {
        ctrl = cb->CreateControl(cls);
