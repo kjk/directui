@@ -5,20 +5,38 @@ class XmlState
 {
 public:
     XmlState(const char *s, MarkupParserCallback *cb) {
-        this->s = str::Dup(s);
-        this->curr = this->s;
+        this->xml = str::Dup(s);
+        this->curr = this->xml;
         this->cb = cb;
     }
-    ~XmlState() { free(s); }
+    ~XmlState() { free(xml); }
 
     MarkupNode2 *AllocNode() {
         return nodes.MakeSpaceAt(nodes.Count());
     }
 
-    char *                  s;
+    char *                  xml;
     char *                  curr;
     Vec<MarkupNode2>        nodes;
     MarkupParserCallback *  cb;
+};
+
+enum XmlTagType {
+    TAG_INVALID,
+    TAG_OPEN,           // <foo>
+    TAG_CLOSE,          // </foo>
+    TAG_OPEN_CLOSE      // <foo/>
+};
+
+class XmlTagInfo {
+public:
+    XmlTagInfo() : type(TAG_INVALID), name(NULL), attributes(NULL) {}
+    // we assume that the ownership of only data XmlTagInfo owns (attributes)
+    // will be transferred to the client, so destructor does nothing
+    ~XmlTagInfo() {}
+    XmlTagType   type;
+    char *       name;
+    Vec<char*> * attributes;
 };
 
 static void SkipWhitespace(char*& s)
@@ -76,119 +94,132 @@ static bool ParseXmlData(char*& s, char*& dst, char until)
    return true;
 }
 
-static bool ParseAttributes(char*& s, MarkupNode2 *node)
+static bool ParseAttributes(char* s, XmlTagInfo *tagInfo)
 {
-    if (*s == '>')
-        return true;
-    *s++ = 0;
-    SkipWhitespace(s);
-    while (*s && *s != '>' && *s != '/')  {
+    for (;;) {
+        SkipWhitespace(s);
+        if (!*s)
+            return true;
         char *name = s;
         SkipIdentifier(s);
         if (*s != '=')
             return false;
         *s++ = 0;
-        char chQuote = *s++;
-        if (chQuote != '\"' && chQuote != '\'')
+        char quoteChar = *s++;
+        if (quoteChar != '\"' && quoteChar != '\'')
             return false;
         char *value = s;
         char* dst = s;
-        if (!ParseXmlData(s, dst, chQuote))
+        if (!ParseXmlData(s, dst, quoteChar))
             return false;
         if (!*s)
             return false;
         *dst = '\0';
         *s++ = '\0';
-        if (!node->attributes)
-            node->attributes = new Vec<char*>();
-        node->attributes->Append(name);
-        node->attributes->Append(value);        
-        SkipWhitespace(s);
+        if (!tagInfo->attributes)
+            tagInfo->attributes = new Vec<char*>();
+        tagInfo->attributes->Append(name);
+        tagInfo->attributes->Append(value);        
     }
     return true;
 }
 
+static bool SkipCommentOrProcesingInstr(char *& s, bool& skipped)
+{
+    skipped = false;
+    if (!(*s == '!' || *s == '?'))
+        return true;
+    char end = (*s == '!') ? '-' : '?';
+    while (*s) {
+        if (*s == end) {
+            if (s[1] == '>')
+                goto Exit;
+            return false;
+        }
+        // TODO: this should be utf8-aware
+        s++;
+    }
+Exit:
+    if (*s)
+        s += 2;
+    skipped = true;
+    return true;
+}
+
+// parse xml tag information i.e. extract tag name and attributes
+// until closing '>'. We've already consumed opening '<' in the caller.
+static bool ParseTag(char *& s, XmlTagInfo& tagInfo)
+{
+    tagInfo.type = TAG_OPEN;
+    if (*s == '/') { // '</foo>
+        ++s;
+        tagInfo.type = TAG_OPEN_CLOSE;
+    }
+    tagInfo.name = s;
+    SkipIdentifier(s);
+    if (!*s)
+        return false;
+    char *e = (char*)str::Find(s, ">"); // TODO: use more efficient str::Find(s, '>')
+    if (!e)
+        return false;
+    *e = 0;
+    char *tmp = s;
+    s = e + 1;
+    if (e[-1] == '/') { // <foo/>
+        if (tagInfo.type != TAG_OPEN) // but not </foo/>
+            return false;
+        tagInfo.type = TAG_CLOSE;
+        --*e = 0;
+    }
+    return ParseAttributes(tmp, &tagInfo);
+}
+
 static bool ParseXmlRecur(XmlState *state, MarkupNode2 *parent)
 {
-    char *s = state->s;
+    char *s = state->curr;
     for (;;)
     {
-        if (!*s) return parent != NULL;
+        XmlTagInfo tagInfo;
+
+        SkipWhitespace(s);
+        if (!*s)
+            return parent != NULL;
+
         if (*s != '<')
             return false;
-        *s++ = 0;
-        
-        // Skip comment or processing directive
-        if (*s == '!' || *s == '?')  {
-            char chEnd = *s == '!' ? '-' : '?';
-            while (*s && !(*s == chEnd && *(s + 1) == '>')) {
-                s = ::CharNextA(s);
-            }
-            if (*s)\
-                s += 2;
-            SkipWhitespace(s);
-            continue;
-        }
-        char *name = s;
-        SkipIdentifier(s);
-        if (!*s)
+        s++;
+
+        bool skipped;
+        if (!SkipCommentOrProcesingInstr(s, skipped))
             return false;
-        size_t nameLen = s - name;
+        if (skipped)
+            continue;
+
+        if (!ParseTag(s, tagInfo))
+            return false;
+
+        if (TAG_CLOSE == tagInfo.type) {
+            if (NULL != tagInfo.attributes) {
+                delete tagInfo.attributes;
+                return false;
+            }
+            return str::Eq(parent->name, tagInfo.name);
+        }
 
         MarkupNode2 *node = state->AllocNode();
         node->parent = parent;
-        node->attributes = NULL;
-        node->name = name;
+        node->attributes = tagInfo.attributes;
+        node->name = tagInfo.name;
         node->user = NULL;
 
-        if (!ParseAttributes(s, node))
+        state->cb->NewNode(node);
+        if (TAG_OPEN_CLOSE == tagInfo.type)
+            continue;
+
+        assert(TAG_OPEN == tagInfo.type);
+        state->curr = s;
+        if (!ParseXmlRecur(state, node))
             return false;
-
-        SkipWhitespace(s);
-        if (s[0] == '/' && s[1] == '>') 
-        {
-            *s = 0;
-            s += 2;
-            state->cb->NewNode(node);
-        }
-        else
-        {
-            if (*s != '>')
-                return false;
-            char* dst = s;
-            if (!ParseXmlData(s, dst, '<'))
-                return false;
-
-            if (!*s && !parent)
-                return true;
-            if (*s != '<')
-                return false;
-
-            char tmp = name[nameLen];
-            name[nameLen] = 0;
-            state->cb->NewNode(node);
-            name[nameLen] = tmp;
-
-            if (s[0] == '<' && s[1] != '/')  
-            {
-                state->s = s;
-                if (!ParseXmlRecur(state, node))
-                    return false;
-            }
-
-            if (s[0] == '<' && s[1] == '/')  
-            {
-                *dst = 0;
-                *s = 0;
-                s += 2;
-                if (!str::EqN(s, name, nameLen))
-                    return false;
-                if (s[nameLen] != '>')
-                    return false;
-                s += nameLen + 1;
-            }
-        }
-        SkipWhitespace(s);
     }
 }
 
