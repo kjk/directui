@@ -20,5 +20,7 @@ private:
    IDialogBuilderCallback* m_cb;
 };
 
+ControlUI* CreateDialogFromXml(const char* xml, IDialogBuilderCallback* cb = NULL);
+
 #endif // !defined(AFX_BLUEBUILDER_H__20050505_A1C5_1D19_C2BA_0080AD509054__INCLUDED_)
 

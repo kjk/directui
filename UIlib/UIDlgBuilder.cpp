@@ -112,6 +112,96 @@ static ControlUI *CreateKnown(const char *cls)
     return NULL;
 }
 
+#include "UIMarkup2.h"
+
+class XmlParserCallback : MarkupParserCallback {
+    ControlUI*                first;
+    IDialogBuilderCallback *  cb;
+    DialogLayoutUI*           stretched;
+
+public:
+    XmlParserCallback() : first(NULL), stretched(NULL) {}
+    ~XmlParserCallback() {}
+
+    ControlUI *Parse(const char *xml, IDialogBuilderCallback* cb);
+
+    virtual void NewNode(MarkupNode2 *node);
+};
+
+static UINT GetStretchMode(const char *val)
+{
+    UINT mode = 0;
+    if (str::Eq(val, "move_x"))  mode |= UISTRETCH_MOVE_X;
+    if (str::Eq(val, "move_y"))  mode |= UISTRETCH_MOVE_Y;
+    if (str::Eq(val, "move_xy")) mode |= UISTRETCH_MOVE_X | UISTRETCH_MOVE_Y;
+    if (str::Eq(val, "size_x"))  mode |= UISTRETCH_SIZE_X;
+    if (str::Eq(val, "size_y"))  mode |= UISTRETCH_SIZE_Y;
+    if (str::Eq(val, "size_xy")) mode |= UISTRETCH_SIZE_X | UISTRETCH_SIZE_Y;
+    if (str::Eq(val, "group"))   mode |= UISTRETCH_NEWGROUP;
+    if (str::Eq(val, "line"))    mode |= UISTRETCH_NEWLINE;
+    return mode;
+}
+
+void XmlParserCallback::NewNode(MarkupNode2 *node)
+{
+    ControlUI* parent = NULL;
+    const char *cls = node->name;
+    ControlUI* ctrl = CreateKnown(cls);
+    if (ctrl == NULL && cb != NULL)  {
+       ctrl = cb->CreateControl(cls);
+    }
+    if (!ctrl)
+        return;
+    if (NULL == first)
+        first = ctrl;
+
+    assert(NULL == node->user);
+    node->user = (void*)ctrl;
+
+    if (node->parent) {
+        parent = (ControlUI*) node->parent->user;
+        if (parent) {
+            IContainerUI* container = (IContainerUI*)parent->GetInterface("Container");
+            if (container)
+                container->Add(ctrl);
+        }
+    }
+
+    if (NULL == node->attributes)
+        return;
+    int n = node->attributes->Count() / 2;
+    for (int i = 0; i < n; i++) {
+        char *name = node->attributes->At(i*2);
+        char *val = node->attributes->At(i*2+1);
+        if (str::Eq(name, "stretch")) {
+            if (stretched == NULL)
+                stretched = (DialogLayoutUI*)parent->GetInterface("DialogLayout");
+            ASSERT(stretched);
+            if (stretched) {
+                UINT mode = GetStretchMode(val);
+                stretched->SetStretchMode(ctrl, mode);
+            }
+        } else {
+            ctrl->SetAttribute(name, val);
+        }
+    }
+}
+
+ControlUI *XmlParserCallback::Parse(const char *xml, IDialogBuilderCallback* cb)
+{
+    this->cb = cb;
+    ParseMarkupXml(xml, this);
+    return first;
+}
+
+ControlUI* CreateDialogFromXml(const char* xml, IDialogBuilderCallback* cb)
+{
+    XmlParserCallback *p = new XmlParserCallback();
+    ControlUI* res = p->Parse(xml, cb);
+    delete p;
+    return res;
+}
+
 ControlUI* DialogBuilder::_ParseXml(MarkupNode* root, ControlUI* parent)
 {
    DialogLayoutUI* stretched = NULL;
@@ -133,7 +223,8 @@ ControlUI* DialogBuilder::_ParseXml(MarkupNode* root, ControlUI* parent)
       }
       // Attach to parent
       if (parent != NULL)  {
-         if (container == NULL)  container = static_cast<IContainerUI*>(parent->GetInterface("Container"));
+         if (container == NULL)
+            container = static_cast<IContainerUI*>(parent->GetInterface("Container"));
          ASSERT(container);
          if (container == NULL)  return NULL;
          container->Add(ctrl);
@@ -152,16 +243,8 @@ ControlUI* DialogBuilder::_ParseXml(MarkupNode* root, ControlUI* parent)
             if (stretched == NULL)  stretched = static_cast<DialogLayoutUI*>(parent->GetInterface("DialogLayout"));
             ASSERT(stretched);
             if (stretched == NULL)  return NULL;
-            UINT uMode = 0;
-            if (str::Eq(val, "move_x"))  uMode |= UISTRETCH_MOVE_X;
-            if (str::Eq(val, "move_y"))  uMode |= UISTRETCH_MOVE_Y;
-            if (str::Eq(val, "move_xy"))  uMode |= UISTRETCH_MOVE_X | UISTRETCH_MOVE_Y;
-            if (str::Eq(val, "size_x"))  uMode |= UISTRETCH_SIZE_X;
-            if (str::Eq(val, "size_y"))  uMode |= UISTRETCH_SIZE_Y;
-            if (str::Eq(val, "size_xy"))  uMode |= UISTRETCH_SIZE_X | UISTRETCH_SIZE_Y;
-            if (str::Eq(val, "group"))  uMode |= UISTRETCH_NEWGROUP;
-            if (str::Eq(val, "line"))  uMode |= UISTRETCH_NEWLINE;
-            stretched->SetStretchMode(ctrl, uMode);
+            UINT mode = GetStretchMode(val);
+            stretched->SetStretchMode(ctrl, mode);
          }
       }
       // Return first item
