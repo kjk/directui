@@ -255,7 +255,7 @@ const char* RegistersPageWnd::GetDialogResourceXml() const
                 "</TabPage>"
               "</TabFolder>"
               "<List name=\"list\">"
-                "<ListHeaderItem text=\"Navn\" width=\"240\" />"
+                "<ListHeaderItem text=\"Name\" width=\"240\" />"
                 "<ListHeaderItem text=\"Type\" width=\"80\" />"
               "</List>"            
             "</SearchTitlePanel>"
@@ -338,7 +338,7 @@ const char* SystemsPageWnd::GetDialogResourceXml() const
               "</DialogLayout>"
               "<List name=\"list\" expanding=\"true\">"
                 "<ListHeaderItem enabled=\"false\" width=\"30\" />"
-                "<ListHeaderItem text=\"Navn\" width=\"140\" />"
+                "<ListHeaderItem text=\"Name\" width=\"140\" />"
                 "<ListHeaderItem text=\"Price\" width=\"80\" />"
                 "<ListHeaderItem text=\"Link\" width=\"180\" />"
                 "<ListExpandElement />"
@@ -393,7 +393,7 @@ void SystemsPageWnd::OnExpandItem(ControlUI* ctrl)
    text->SetText(sText);
    item->Add(text);
    // Add quickly...
-   item->Add((new TextPanelUI())->ApplyAttributeList("text=\"<b>Navn:</b> Anders And\""));
+   item->Add((new TextPanelUI())->ApplyAttributeList("text=\"<b>Name:</b> Anders And\""));
    item->Add((new TextPanelUI())->ApplyAttributeList("text=\"<b>Tidspunkt:</b> <i 3>Juleaften\""));
 }
 
@@ -477,16 +477,16 @@ const char* SearchPageWnd::GetDialogResourceXml() const
             "<DialogLayout>"
               "<LabelPanel pos=\"0, 10, 60, 34\" text=\"Type\" stretch=\"group\" />"
               "<DropDown pos=\"60, 12, 340, 32\" name=\"navn\" stretch=\"size_x\" >"
-                 "<ListLabelElement text=\"<i 2> Navn\" selected=\"true\" />"
-                 "<ListLabelElement text=\"<i 5> Kontakter\" />"
-                 "<ListLabelElement text=\"<i 8> E-mail grupper\" />"
+                 "<ListLabelElement text=\"<i 2> Name\" selected=\"true\" />"
+                 "<ListLabelElement text=\"<i 5> Contact\" />"
+                 "<ListLabelElement text=\"<i 8> E-mail\" />"
                  "<ListLabelElement text=\"<i 8> Kunde grupper\" />"
               "</DropDown>"
               "<LabelPanel pos=\"0, 36, 60, 60\" text=\"Search\" stretch=\"group\" />"
               "<SingleLineEdit pos=\"60, 38, 250, 58\" name=\"search\" text=\"\" stretch=\"size_x\" />"
               "<Button pos=\"260, 38, 340, 58\" name=\"ok\" text=\"&Search\" stretch=\"move_x\" />"
               "<SeparatorLine pos=\"0, 68, 340, 78\" stretch=\"group size_x\" />"
-              "<LabelPanel pos=\"0, 78, 340, 98\" text=\"Valgbare veje\" />"
+              "<LabelPanel pos=\"0, 78, 340, 98\" text=\"Selectable roads\" />"
               "<PaddingPanel pos=\"0, 98, 340, 100\" />"
             "</DialogLayout>"
             "<List name=\"list\">"
@@ -498,7 +498,7 @@ const char* SearchPageWnd::GetDialogResourceXml() const
               "<SeparatorLine  pos=\"0, 4, 340, 18\" stretch=\"group size_x\" />"
               "<PaddingPanel pos=\"0, 18, 160, 38\" stretch=\"group size_x\" />"
               "<Button pos=\"160, 18, 246, 38\" text=\"OK\" name=\"ok\" stretch=\"move_x\" />"
-              "<Button pos=\"250, 18, 340, 38\" text=\"Annuller\" name=\"cancel\" stretch=\"move_x\" />"
+              "<Button pos=\"250, 18, 340, 38\" text=\"Cancel\" name=\"cancel\" stretch=\"move_x\" />"
               "<PaddingPanel pos=\"0, 38, 340, 48\" />"
             "</DialogLayout>"
           "</VerticalLayout>"
@@ -553,20 +553,20 @@ const char* EditPageWnd::GetDialogResourceXml() const
 
                     "<LabelPanel pos=\"0, 30, 110, 54\" text=\"&Firma Nr\" stretch=\"group\" />"
                     "<SingleLineEdit pos=\"110, 32, 240, 52\" text=\"\" stretch=\"size_x\" />"
-                    "<LabelPanel pos=\"260, 30, 370, 54\" text=\"Telefon 2\" stretch=\"move_x\" />"
+                    "<LabelPanel pos=\"260, 30, 370, 54\" text=\"Phone 2\" stretch=\"move_x\" />"
                     "<SingleLineEdit pos=\"370, 32, 510, 52\" text=\"+45 87654321\" enabled=\"false\" stretch=\"move_x size_x\" />"
 
-                    "<LabelPanel pos=\"0, 60, 110, 84\" text=\"Kontakt\" stretch=\"group\" />"
+                    "<LabelPanel pos=\"0, 60, 110, 84\" text=\"Contact\" stretch=\"group\" />"
                     "<SingleLinePick pos=\"110, 62, 240, 82\" text=\"<i 3><a>Bjarke Viksøe</a>\" stretch=\"size_x\" />"
                     "<LabelPanel pos=\"260, 60, 370, 84\" text=\"Website\" stretch=\"move_x\" />"
                     "<SingleLineEdit pos=\"370, 62, 510, 82\" text=\"www.viksoe.dk/code\" stretch=\"move_x size_x\" />"
 
-                    "<GreyTextHeader pos=\"0, 100, 510, 120\" text=\"Adresse\" stretch=\"group size_x\" />"
+                    "<GreyTextHeader pos=\"0, 100, 510, 120\" text=\"Adress\" stretch=\"group size_x\" />"
 
                     "<LabelPanel pos=\"0, 130, 110, 154\" text=\"Vej\" stretch=\"group\" />"
                     "<SingleLinePick pos=\"110, 132, 240, 152\" text=\"<a>Nørrebred, Vallensbæk</a>\" stretch=\"size_x\" />"
                     "<LabelPanel pos=\"260, 130, 370, 154\" text=\"Note\" stretch=\"move_x\" />"
-                    "<MultiLineEdit pos=\"370, 132, 510, 192\" text=\"Dette er en meget lang note omkring denne person. Her følger noget mere tekst\" stretch=\"move_x size_x\" />"
+                    "<MultiLineEdit pos=\"370, 132, 510, 192\" text=\"This is a very long note about this person. Here's some more text.\" stretch=\"move_x size_x\" />"
 
                     "<LabelPanel pos=\"0, 160, 110, 184\" text=\"Post Nr\" stretch=\"line\" />"
                     "<DropDown pos=\"110, 162, 240, 182\" stretch=\"move_x size_x\">"
