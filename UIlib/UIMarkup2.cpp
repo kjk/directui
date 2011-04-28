@@ -9,7 +9,13 @@ public:
         this->curr = this->xml;
         this->cb = cb;
     }
-    ~XmlState() { free(xml); }
+
+    ~XmlState() { 
+        for (size_t i=0; i<nodes.Count(); i++) {
+            delete nodes.At(i).attributes;
+        }
+        free(xml);
+    }
 
     MarkupNode2 *AllocNode(int& idx, int parentIdx) {
         idx = nodes.Count();
