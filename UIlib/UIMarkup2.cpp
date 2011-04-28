@@ -153,7 +153,7 @@ static bool ParseTag(char *& s, XmlTagInfo& tagInfo)
     tagInfo.type = TAG_OPEN;
     if (*s == '/') { // '</foo>
         ++s;
-        tagInfo.type = TAG_OPEN_CLOSE;
+        tagInfo.type = TAG_CLOSE;
     }
     tagInfo.name = s;
     SkipIdentifier(s);
@@ -168,17 +168,17 @@ static bool ParseTag(char *& s, XmlTagInfo& tagInfo)
     if (e[-1] == '/') { // <foo/>
         if (tagInfo.type != TAG_OPEN) // but not </foo/>
             return false;
-        tagInfo.type = TAG_CLOSE;
-        --*e = 0;
+        tagInfo.type = TAG_OPEN_CLOSE;
+        e[-1] = 0;
     }
     return ParseAttributes(tmp, &tagInfo);
 }
 
 static bool ParseXmlRecur(XmlState *state, MarkupNode2 *parent)
 {
-    char *s = state->curr;
     for (;;)
     {
+        char *s = state->curr;
         XmlTagInfo tagInfo;
 
         SkipWhitespace(s);
@@ -192,8 +192,10 @@ static bool ParseXmlRecur(XmlState *state, MarkupNode2 *parent)
         bool skipped;
         if (!SkipCommentOrProcesingInstr(s, skipped))
             return false;
-        if (skipped)
+        if (skipped) {
+            state->curr = s;
             continue;
+        }
 
         if (!ParseTag(s, tagInfo))
             return false;
@@ -203,6 +205,7 @@ static bool ParseXmlRecur(XmlState *state, MarkupNode2 *parent)
                 delete tagInfo.attributes;
                 return false;
             }
+            state->curr = s;
             return str::Eq(parent->name, tagInfo.name);
         }
 
@@ -213,8 +216,10 @@ static bool ParseXmlRecur(XmlState *state, MarkupNode2 *parent)
         node->user = NULL;
 
         state->cb->NewNode(node);
-        if (TAG_OPEN_CLOSE == tagInfo.type)
+        if (TAG_OPEN_CLOSE == tagInfo.type) {
+            state->curr = s;
             continue;
+        }
 
         assert(TAG_OPEN == tagInfo.type);
         state->curr = s;
