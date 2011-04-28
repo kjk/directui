@@ -4,12 +4,12 @@
 #include "BaseUtil.h"
 #include "Vec.h"
 
-class XmlState;
+class ParserState;
 
 class MarkupNode2 {
-    friend XmlState;
+    friend ParserState;
     int             parentIdx;
-    XmlState *      xmlState;
+    ParserState *   parserState;
 public:
     const char *    name;
     Vec<char*> *    attributes;
