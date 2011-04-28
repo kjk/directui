@@ -181,7 +181,6 @@ static bool ParseTag(char *& s, XmlTagInfo& tagInfo)
     char *e = FindTagClose(s);
     if (!e)
         return false;
-    *s = 0;
     *e = 0;
     char *tmp = s;
     s = e + 1;
@@ -191,7 +190,9 @@ static bool ParseTag(char *& s, XmlTagInfo& tagInfo)
         tagInfo.type = TAG_OPEN_CLOSE;
         e[-1] = 0;
     }
-    return ParseAttributes(tmp, &tagInfo);
+    bool ok = ParseAttributes(tmp, &tagInfo);
+    *tmp = 0;
+    return ok;
 }
 
 static bool ParseXmlRecur(XmlState *state, MarkupNode2 *parent)
