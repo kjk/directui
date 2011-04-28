@@ -263,9 +263,7 @@ static bool ParseXmlRecur(XmlState *state, int parentIdx=-1)
         node->attributes = tagInfo.attributes;
         node->user = NULL;
 
-        //assert(node->parent != (MarkupNode2*)0xfeeefeee);
         state->cb->NewNode(node);
-        //assert(node->parent != (MarkupNode2*)0xfeeefeee);
         if (TAG_OPEN_CLOSE == tagInfo.type) {
             state->curr = s;
             continue;
