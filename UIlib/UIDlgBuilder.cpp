@@ -148,7 +148,7 @@ void XmlParserCallback::NewNode(MarkupNode2 *node)
     const char *cls = node->name;
 
     // for compat with the old code, skip the Dialog node if it's the first node
-    if (str::Eq(cls, "Dialog") && !node->parent)
+    if (str::Eq(cls, "Dialog") && !node->Parent())
         return;
 
     ControlUI* ctrl = CreateKnown(cls);
@@ -163,8 +163,8 @@ void XmlParserCallback::NewNode(MarkupNode2 *node)
     assert(NULL == node->user);
     node->user = (void*)ctrl;
 
-    if (node->parent) {
-        parent = (ControlUI*) node->parent->user;
+    if (node->Parent()) {
+        parent = (ControlUI*) node->Parent()->user;
         if (parent) {
             IContainerUI* container = (IContainerUI*)parent->GetInterface("Container");
             if (container)

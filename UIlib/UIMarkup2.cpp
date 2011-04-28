@@ -11,8 +11,16 @@ public:
     }
     ~XmlState() { free(xml); }
 
-    MarkupNode2 *AllocNode() {
-        return nodes.MakeSpaceAt(nodes.Count());
+    MarkupNode2 *AllocNode(int& idx, int parentIdx) {
+        idx = nodes.Count();
+        MarkupNode2 *ret = nodes.MakeSpaceAt(idx);
+        ret->xmlState = this;
+        ret->parentIdx = parentIdx;
+        return ret;
+    }
+
+    MarkupNode2 *Node(int idx) {
+        return &nodes.At(idx);
     }
 
     char *                  xml;
@@ -20,6 +28,13 @@ public:
     Vec<MarkupNode2>        nodes;
     MarkupParserCallback *  cb;
 };
+
+MarkupNode2 *MarkupNode2::Parent()
+{
+    if (parentIdx >= 0)
+        return xmlState->Node(parentIdx);
+    return NULL;
+}
 
 enum XmlTagType {
     TAG_INVALID,
@@ -195,7 +210,7 @@ static bool ParseTag(char *& s, XmlTagInfo& tagInfo)
     return ok;
 }
 
-static bool ParseXmlRecur(XmlState *state, MarkupNode2 *parent)
+static bool ParseXmlRecur(XmlState *state, int parentIdx=-1)
 {
     for (;;)
     {
@@ -203,8 +218,11 @@ static bool ParseXmlRecur(XmlState *state, MarkupNode2 *parent)
         XmlTagInfo tagInfo;
 
         SkipWhitespace(s);
-        if (!*s)
-            return parent == NULL;
+        if (!*s) {
+            if (parentIdx == -1)
+                return true;
+            return false;
+        }
 
         if (*s != '<')
             return false;
@@ -227,18 +245,21 @@ static bool ParseXmlRecur(XmlState *state, MarkupNode2 *parent)
                 return false;
             }
             state->curr = s;
+            MarkupNode2 *parent = state->Node(parentIdx);
             if (!str::Eq(parent->name, tagInfo.name))
                 return false;
             return true;
         }
 
-        MarkupNode2 *node = state->AllocNode();
-        node->parent = parent;
-        node->attributes = tagInfo.attributes;
+        int nodeIdx;
+        MarkupNode2 *node = state->AllocNode(nodeIdx, parentIdx);
         node->name = tagInfo.name;
+        node->attributes = tagInfo.attributes;
         node->user = NULL;
 
+        //assert(node->parent != (MarkupNode2*)0xfeeefeee);
         state->cb->NewNode(node);
+        //assert(node->parent != (MarkupNode2*)0xfeeefeee);
         if (TAG_OPEN_CLOSE == tagInfo.type) {
             state->curr = s;
             continue;
@@ -246,7 +267,7 @@ static bool ParseXmlRecur(XmlState *state, MarkupNode2 *parent)
 
         assert(TAG_OPEN == tagInfo.type);
         state->curr = s;
-        if (!ParseXmlRecur(state, node))
+        if (!ParseXmlRecur(state, nodeIdx))
             return false;
     }
 }
@@ -254,7 +275,7 @@ static bool ParseXmlRecur(XmlState *state, MarkupNode2 *parent)
 bool ParseMarkupXml(const char *xml, MarkupParserCallback *cb)
 {
     XmlState *state = new XmlState(xml, cb);
-    bool ok = ParseXmlRecur(state, NULL);
+    bool ok = ParseXmlRecur(state);
     delete state;
     return ok;
 }

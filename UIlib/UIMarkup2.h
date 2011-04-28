@@ -4,11 +4,18 @@
 #include "BaseUtil.h"
 #include "Vec.h"
 
-struct MarkupNode2 {
-    MarkupNode2 *   parent;
+class XmlState;
+
+class MarkupNode2 {
+    friend XmlState;
+    int             parentIdx;
+    XmlState *      xmlState;
+public:
     const char *    name;
     Vec<char*> *    attributes;
     void *          user;
+
+    MarkupNode2 *   Parent();
 };
 
 class MarkupParserCallback
