@@ -146,6 +146,25 @@ Exit:
     return true;
 }
 
+// The xml variant used by directui allows unescaped '<' and '>' inside attribute
+// values, so as work-around, find closing '>' by looking for first unbalanced '>'
+char *FindTagClose(char *s)
+{
+    int nest = 0;
+    while (*s) {
+        if (*s == '<')
+            ++nest;
+        else if (*s == '>')
+        {
+            if (0 == nest)
+                return s;
+            --nest;
+        }
+        ++s;
+    }
+    return NULL;
+}
+
 // parse xml tag information i.e. extract tag name and attributes
 // until closing '>'. We've already consumed opening '<' in the caller.
 static bool ParseTag(char *& s, XmlTagInfo& tagInfo)
@@ -159,9 +178,10 @@ static bool ParseTag(char *& s, XmlTagInfo& tagInfo)
     SkipIdentifier(s);
     if (!*s)
         return false;
-    char *e = (char*)str::Find(s, ">"); // TODO: use more efficient str::Find(s, '>')
+    char *e = FindTagClose(s);
     if (!e)
         return false;
+    *s = 0;
     *e = 0;
     char *tmp = s;
     s = e + 1;
@@ -183,7 +203,7 @@ static bool ParseXmlRecur(XmlState *state, MarkupNode2 *parent)
 
         SkipWhitespace(s);
         if (!*s)
-            return parent != NULL;
+            return parent == NULL;
 
         if (*s != '<')
             return false;
@@ -206,7 +226,9 @@ static bool ParseXmlRecur(XmlState *state, MarkupNode2 *parent)
                 return false;
             }
             state->curr = s;
-            return str::Eq(parent->name, tagInfo.name);
+            if (!str::Eq(parent->name, tagInfo.name))
+                return false;
+            return true;
         }
 
         MarkupNode2 *node = state->AllocNode();
