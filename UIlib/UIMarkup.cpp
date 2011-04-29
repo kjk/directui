@@ -1,424 +1,471 @@
+#include "UIMarkup.h"
+#include "StrUtil.h"
 
-#include "StdAfx.h"
-
-#ifndef TRACE
-   #define TRACE
-#endif
-
-
-MarkupNode::MarkupNode() : m_owner(NULL)
+class ParserState
 {
+public:
+    ParserState(const char *s, MarkupParserCallback *cb) {
+        this->txt = str::Dup(s);
+        this->curr = this->txt;
+        this->cb = cb;
+    }
+
+    ~ParserState() { 
+        for (size_t i=0; i<nodes.Count(); i++) {
+            delete nodes.At(i).attributes;
+        }
+        free(txt);
+    }
+
+    MarkupNode *AllocNode(int& idx, int parentIdx) {
+        idx = nodes.Count();
+        MarkupNode *ret = nodes.MakeSpaceAt(idx);
+        ret->parserState = this;
+        ret->parentIdx = parentIdx;
+        return ret;
+    }
+
+    MarkupNode *Node(int idx) {
+        return &nodes.At(idx);
+    }
+
+    char *                  txt;
+    char *                  curr;
+    Vec<MarkupNode>        nodes;
+    MarkupParserCallback *  cb;
+};
+
+MarkupNode *MarkupNode::Parent()
+{
+    if (parentIdx >= 0)
+        return parserState->Node(parentIdx);
+    return NULL;
 }
 
-MarkupNode::MarkupNode(MarkupParser* owner, int pos) : m_owner(owner), m_pos(pos), m_nAttributes(0)
-{
-}
+enum XmlTagType {
+    TAG_INVALID,
+    TAG_OPEN,           // <foo>
+    TAG_CLOSE,          // </foo>
+    TAG_OPEN_CLOSE      // <foo/>
+};
 
-MarkupNode MarkupNode::GetSibling()
-{
-   if (m_owner == NULL)  return MarkupNode();
-   ULONG pos = m_owner->m_elements[m_pos].iNext;
-   if (pos == 0)  return MarkupNode();
-   return MarkupNode(m_owner, pos);
-}
+class XmlTagInfo {
+public:
+    XmlTagInfo() : type(TAG_INVALID), name(NULL), attributes(NULL) {}
+    // we assume that the ownership of only data XmlTagInfo owns (attributes)
+    // will be transferred to the client, so destructor does nothing
+    ~XmlTagInfo() {}
+    XmlTagType   type;
+    char *       name;
+    Vec<char*> * attributes;
+};
 
-bool MarkupNode::HasSiblings() const
+static void SkipWhitespace(char*& s)
 {
-   if (m_owner == NULL)  return false;
-   ULONG pos = m_owner->m_elements[m_pos].iNext;
-   return pos > 0;
-}
-
-MarkupNode MarkupNode::GetChild()
-{
-   if (m_owner == NULL)  return MarkupNode();
-   ULONG pos = m_owner->m_elements[m_pos].iChild;
-   if (pos == 0)  return MarkupNode();
-   return MarkupNode(m_owner, pos);
-}
-
-MarkupNode MarkupNode::GetChild(const char* name)
-{
-   if (m_owner == NULL)  return MarkupNode();
-   ULONG pos = m_owner->m_elements[m_pos].iChild;
-   while (pos != 0)  {
-      if (str::Eq(m_owner->m_xml + m_owner->m_elements[pos].iStart, name))  {
-         return MarkupNode(m_owner, pos);
-      }
-      pos = m_owner->m_elements[pos].iNext;
-   }
-   return MarkupNode();
-}
-
-bool MarkupNode::HasChildren() const
-{
-   if (m_owner == NULL)  return false;
-   return m_owner->m_elements[m_pos].iChild != 0;
-}
-
-MarkupNode MarkupNode::GetParent()
-{
-   if (m_owner == NULL)  return MarkupNode();
-   ULONG pos = m_owner->m_elements[m_pos].iParent;
-   if (pos == 0)  return MarkupNode();
-   return MarkupNode(m_owner, pos);
-}
-
-bool MarkupNode::IsValid() const
-{
-   return m_owner != NULL;
-}
-
-const char* MarkupNode::GetName() const
-{
-   if (m_owner == NULL)  return NULL;
-   return m_owner->m_xml + m_owner->m_elements[m_pos].iStart;
-}
-
-const char* MarkupNode::GetValue() const
-{
-   if (m_owner == NULL)  return NULL;
-   return m_owner->m_xml + m_owner->m_elements[m_pos].iData;
-}
-
-const char* MarkupNode::GetAttributeName(int idx)
-{
-   if (m_owner == NULL)  return NULL;
-   if (m_nAttributes == 0)  _MapAttributes();
-   if (idx < 0 || idx >= m_nAttributes)  return NULL;
-   return m_owner->m_xml + m_aAttributes[idx].iName;
-}
-
-const char* MarkupNode::GetAttributeValue(int idx)
-{
-   if (m_owner == NULL)  return NULL;
-   if (m_nAttributes == 0)  _MapAttributes();
-   if (idx < 0 || idx >= m_nAttributes)  return NULL;
-   return m_owner->m_xml + m_aAttributes[idx].iValue;
-}
-
-const char* MarkupNode::GetAttributeValue(const char* name)
-{
-   if (m_owner == NULL)  return NULL;
-   if (m_nAttributes == 0)  _MapAttributes();
-   for (int i = 0; i < m_nAttributes; i++)  {
-      if (str::Eq(m_owner->m_xml + m_aAttributes[i].iName, name))
-         return m_owner->m_xml + m_aAttributes[i].iValue;
-   }
-   return NULL;
-}
-
-int MarkupNode::GetAttributeCount()
-{
-   if (m_owner == NULL)  return 0;
-   if (m_nAttributes == 0)  _MapAttributes();
-   return m_nAttributes;
-}
-
-bool MarkupNode::HasAttributes()
-{
-   if (m_owner == NULL)  return false;
-   if (m_nAttributes == 0)  _MapAttributes();
-   return m_nAttributes > 0;
-}
-
-bool MarkupNode::HasAttribute(const char* name)
-{
-   if (m_owner == NULL)  return false;
-   if (m_nAttributes == 0)  _MapAttributes();
-   for (int i = 0; i < m_nAttributes; i++)  {
-      if (str::Eq(m_owner->m_xml + m_aAttributes[i].iName, name))
-         return true;
-   }
-   return false;
-}
-
-void MarkupNode::_MapAttributes()
-{
-   m_nAttributes = 0;
-   char* pstr = m_owner->m_xml + m_owner->m_elements[m_pos].iStart;
-   char* pstrEnd = m_owner->m_xml + m_owner->m_elements[m_pos].iData;
-   pstr += str::Len(pstr) + 1;
-   while (pstr < pstrEnd)  {
-      m_owner->_SkipWhitespace(pstr);
-      m_aAttributes[m_nAttributes].iName = pstr - m_owner->m_xml;
-      pstr += str::Len(pstr) + 1;
-      if (*pstr++ != '\"' && *pstr++ != '\'')  return;
-      m_aAttributes[m_nAttributes++].iValue = pstr - m_owner->m_xml;
-      if (m_nAttributes >= MAX_XML_ATTRIBUTES)  return;
-      pstr += str::Len(pstr) + 1;
-   }
-}
-
-MarkupParser::MarkupParser(const char* xml)
-{
-   m_xml = NULL;
-   m_elements = NULL;
-   m_nElements = 0;
-   m_bPreserveWhitespace = false;
-   if (xml != NULL)  Load(xml);
-}
-
-MarkupParser::~MarkupParser()
-{
-   Release();
-}
-
-bool MarkupParser::IsValid() const
-{
-   return m_elements != NULL;
-}
-
-void MarkupParser::SetPreserveWhitespace(bool bPreserve)
-{
-   m_bPreserveWhitespace = bPreserve;
-}
-
-bool MarkupParser::Load(const char* xml)
-{
-   Release();
-   size_t cbLen = str::Len(xml) + 1;
-   m_xml = static_cast<char*>(malloc(cbLen));
-   ::CopyMemory(m_xml, xml, cbLen);
-   bool bRes = _Parse();
-   if (!bRes)  Release();
-   return bRes;
-}
-
-bool MarkupParser::LoadFromFile(const char* fileName)
-{
-   Release();
-   HANDLE hFile = ::CreateFile(fileName, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-   if (hFile == INVALID_HANDLE_VALUE)  
-      return _Failed("Error opening file");
-   DWORD dwSize = ::GetFileSize(hFile, NULL);
-   if (dwSize == 0)
-      return _Failed("File is empty");
-   DWORD dwRead = 0;
-   m_xml = static_cast<char*>(malloc(dwSize + 1));
-   ::ReadFile(hFile, m_xml, dwSize, &dwRead, NULL);
-   ::CloseHandle(hFile);
-   m_xml[dwSize] = '\0';
-
-   if (dwRead != dwSize)  {
-      Release();
-      return _Failed("Could not read file");
-   }
-   bool ok = _Parse();
-   if (!ok)  Release();
-   return ok;
-}
-
-void MarkupParser::Release()
-{
-   free(m_xml);
-   free(m_elements);
-   m_xml = NULL;
-   m_elements = NULL;
-   m_nElements;
-}
-
-void MarkupParser::GetLastErrorMessage(char* msg, size_t cchMax) const
-{
-   strncpy(msg, m_errorMsg, cchMax);
-}
-
-void MarkupParser::GetLastErrorLocation(char* src, size_t cchMax) const
-{
-   strncpy(src, m_errorXml, cchMax);
-}
-
-MarkupNode MarkupParser::GetRoot()
-{
-   if (m_nElements == 0)  return MarkupNode();
-   return MarkupNode(this, 1);
-}
-
-bool MarkupParser::_Parse()
-{
-   _ReserveElement(); // Reserve index 0 for errors
-   ::ZeroMemory(m_errorMsg, sizeof(m_errorMsg));
-   ::ZeroMemory(m_errorXml, sizeof(m_errorXml));
-   char* xml = m_xml;
-   return _Parse(xml, 0);
-}
-
-bool MarkupParser::_Parse(char*& txt, ULONG iParent)
-{
-   ULONG iPrevious = 0;
-   for (; ;)  
-   {
-      if (*txt == '\0' && iParent <= 1)  return true;
-      if (*txt != '<')  return _Failed("Expected start tag", txt);
-      if (txt[1] == '/')  return true;
-      *txt++ = '\0';
-      // Skip comment or processing directive
-      if (*txt == '!' || *txt == '?')  {
-         char chEnd = *txt == '!' ? '-' : '?';
-         while (*txt != '\0' && !(*txt == chEnd && *(txt + 1) == '>')) {
-            txt = ::CharNextA(txt);
-         }
-         if (*txt != '\0')  txt += 2;
-         _SkipWhitespace(txt);
-         continue;
-      }
-      // Fill out element structure
-      XMLELEMENT* pEl = _ReserveElement();
-      ULONG pos = pEl - m_elements;
-      pEl->iStart = txt - m_xml;
-      pEl->iParent = iParent;
-      pEl->iNext = pEl->iChild = 0;
-      if (iPrevious != 0)  m_elements[iPrevious].iNext = pos;
-      else if (iParent > 0)  m_elements[iParent].iChild = pos;
-      iPrevious = pos;
-      // Parse name
-      const char* name = txt;
-      _SkipIdentifier(txt);
-      char* nameEnd = txt;
-      if (*txt == '\0')  return _Failed("Error parsing element name", txt);
-      // Parse attributes
-      if (!_ParseAttributes(txt))  return false;
-      _SkipWhitespace(txt);
-      if (txt[0] == '/' && txt[1] == '>') 
-      {
-         pEl->iData = txt - m_xml;
-         *txt = '\0';
-         txt += 2;
-      }
-      else
-      {
-         if (*txt != '>')  return _Failed("Expected start-tag closing", txt);
-         // Parse node data
-         pEl->iData = ++txt - m_xml;
-         char* pstrDest = txt;
-         if (!_ParseData(txt, pstrDest, '<'))  return false;
-         // Determine type of next element
-         if (*txt == '\0' && iParent <= 1)  return true;
-         if (*txt != '<')  return _Failed("Expected end-tag start", txt);
-         if (txt[0] == '<' && txt[1] != '/')  
-         {
-            if (!_Parse(txt, pos))  return false;
-         }
-         if (txt[0] == '<' && txt[1] == '/')  
-         {
-            *pstrDest = '\0';
-            *txt = '\0';
-            txt += 2;
-            size_t cchName = nameEnd - name;
-            if (!str::EqN(txt, name, cchName))
-                return _Failed("Unmatched closing tag", txt);
-            if (txt[cchName] != '>')
-                return _Failed("Unmatched closing tag", txt);
-            txt += cchName + 1;
-         }
-      }
-      *nameEnd = '\0';
-      _SkipWhitespace(txt);
-   }
-}
-
-MarkupParser::XMLELEMENT* MarkupParser::_ReserveElement()
-{
-   if (m_nElements == 0)  m_nReservedElements = 0;
-   if (m_nElements >= m_nReservedElements)  {
-      m_nReservedElements += (m_nReservedElements / 2) + 500;
-      m_elements = static_cast<XMLELEMENT*>(realloc(m_elements, m_nReservedElements * sizeof(XMLELEMENT)));
-   }
-   return &m_elements[m_nElements++];
-}
-
-void MarkupParser::_SkipWhitespace(char*& s) const
-{
-   while (*s != '\0' && *s <= ' ')
+   while (*s && *s <= ' ')
       s++;
 }
 
-void MarkupParser::_SkipIdentifier(char*& s) const
+static void SkipIdentifier(char*& s)
 {
-   while (*s != '\0' && (*s == '_' || *s == ':' || isalnum(*s)))
+   while (*s && (*s == '_' || *s == ':' || isalnum(*s)))
       s++;
 }
 
-bool MarkupParser::_ParseAttributes(char*& txt)
-{   
-   if (*txt == '>')  return true;
-   *txt++ = '\0';
-   _SkipWhitespace(txt);
-   while (*txt != '\0' && *txt != '>' && *txt != '/')  {
-      _SkipIdentifier(txt);
-      if (*txt != '=')
-         return _Failed("Error while parsing attributes", txt);
-      *txt++ = '\0';
-      char chQuote = *txt++;
-      if (chQuote != '\"' && chQuote != '\'')
-         return _Failed("Expected attribute value", txt);
-      char* pstrDest = txt;
-      if (!_ParseData(txt, pstrDest, chQuote))  return false;
-      if (*txt == '\0')
-         return _Failed("Error while parsing attribute string", txt);
-      *pstrDest = '\0';
-      *txt++ = '\0';
-      _SkipWhitespace(txt);
+static void ParseEntity(char*& s, char*& dst)
+{
+   if (s[0] == 'a' && s[1] == 'm' && s[2] == 'p' && s[3] == ';')  {
+      *dst++ = '&';
+      s += 4;
+   } else if (s[0] == 'l' && s[1] == 't' && s[2] == ';')  {
+      *dst++ = '<';
+      s += 3;
+   } else if (s[0] == 'g' && s[1] == 't' && s[2] == ';')  {
+      *dst++ = '>';
+      s += 3;
+   } else if (s[0] == 'q' && s[1] == 'u' && s[2] == 'o' && s[3] == 't' && s[4] == ';')  {
+      *dst++ = '\"';
+      s += 5;
+   } else if (s[0] == 'a' && s[1] == 'p' && s[2] == 'o' && s[3] == 's' && s[4] == ';')  {
+      *dst++ = '\'';
+      s += 5;
+   } else {
+      *dst++ = '&';
    }
-   return true;
 }
 
-bool MarkupParser::_ParseData(char*& txt, char*& pstrDest, char cEnd)
+static bool ParseXmlData(char*& s, char*& dst, char until)
 {
-   while (*txt != '\0' && *txt != cEnd)  {
-      if (*txt == '&')  {
-         _ParseMetaChar(++txt, pstrDest);
+   while (*s && *s != until)  {
+      if (*s == '&')  {
+         ParseEntity(++s, dst);
       }
-      if (*txt == ' ')  {
-         *pstrDest++ = *txt++;
-         if (!m_bPreserveWhitespace)  _SkipWhitespace(txt);
-      }
-      else {
-         *pstrDest++ = *txt++;
+      if (*s == ' ')  {
+         *dst++ = *s++;
+         //if (!m_bPreserveWhitespace)  SkipWhitespace(s);
+      } else {
+         *dst++ = *s++;
       }
    }
    // Make sure that MapAttributes() works correctly when it parses
    // over a value that has been transformed.
-   char* pstrFill = pstrDest + 1;
-   while (pstrFill < txt)  *pstrFill++ = ' ';
+   char* sfill = dst + 1;
+   while (sfill < s)
+      *sfill++ = ' ';
    return true;
 }
 
-void MarkupParser::_ParseMetaChar(char*& txt, char*& pstrDest)
+static bool ParseAttributes(char* s, XmlTagInfo *tagInfo)
 {
-   if (txt[0] == 'a' && txt[1] == 'm' && txt[2] == 'p' && txt[3] == ';')  {
-      *pstrDest++ = '&';
-      txt += 4;
-   }
-   else if (txt[0] == 'l' && txt[1] == 't' && txt[2] == ';')  {
-      *pstrDest++ = '<';
-      txt += 3;
-   }
-   else if (txt[0] == 'g' && txt[1] == 't' && txt[2] == ';')  {
-      *pstrDest++ = '>';
-      txt += 3;
-   }
-   else if (txt[0] == 'q' && txt[1] == 'u' && txt[2] == 'o' && txt[3] == 't' && txt[4] == ';')  {
-      *pstrDest++ = '\"';
-      txt += 5;
-   }
-   else if (txt[0] == 'a' && txt[1] == 'p' && txt[2] == 'o' && txt[3] == 's' && txt[4] == ';')  {
-      *pstrDest++ = '\'';
-      txt += 5;
-   }
-   else {
-      *pstrDest++ = '&';
-   }
+    for (;;) {
+        SkipWhitespace(s);
+        if (!*s)
+            return true;
+        char *name = s;
+        SkipIdentifier(s);
+        if (*s != '=')
+            return false;
+        *s++ = 0;
+        char quoteChar = *s++;
+        if (quoteChar != '\"' && quoteChar != '\'')
+            return false;
+        char *value = s;
+        char* dst = s;
+        if (!ParseXmlData(s, dst, quoteChar))
+            return false;
+        if (!*s)
+            return false;
+        *dst = '\0';
+        *s++ = '\0';
+        if (!tagInfo->attributes)
+            tagInfo->attributes = new Vec<char*>();
+        tagInfo->attributes->Append(name);
+        tagInfo->attributes->Append(value);        
+    }
+    return true;
 }
 
-// remember last error
-bool MarkupParser::_Failed(const char* pstrError, const char* location)
+static bool SkipCommentOrProcesingInstr(char *& s, bool& skipped)
 {
-    if (!location) location = "";
-   TRACE("XML Error: %s", pstrError);
-   TRACE(location);
-   strncpy(m_errorMsg, pstrError, dimof(m_errorMsg) - 1);
-   strncpy(m_errorXml, location, dimof(m_errorXml) - 1);
-   return false; // Always return 'false'
+    skipped = false;
+    if (!(*s == '!' || *s == '?'))
+        return true;
+    char end = (*s == '!') ? '-' : '?';
+    while (*s) {
+        if (*s == end) {
+            if (s[1] == '>')
+                goto Exit;
+            return false;
+        }
+        // TODO: this should be utf8-aware
+        s++;
+    }
+Exit:
+    if (*s)
+        s += 2;
+    skipped = true;
+    return true;
+}
+
+// The xml variant used by directui allows unescaped '<' and '>' inside attribute
+// values, so as work-around, find closing '>' by looking for first unbalanced '>'
+char *FindTagClose(char *s)
+{
+    int nest = 0;
+    while (*s) {
+        if (*s == '<')
+            ++nest;
+        else if (*s == '>')
+        {
+            if (0 == nest)
+                return s;
+            --nest;
+        }
+        ++s;
+    }
+    return NULL;
+}
+
+// parse xml tag information i.e. extract tag name and attributes
+// until closing '>'. We've already consumed opening '<' in the caller.
+static bool ParseTag(char *& s, XmlTagInfo& tagInfo)
+{
+    tagInfo.type = TAG_OPEN;
+    if (*s == '/') { // '</foo>
+        ++s;
+        tagInfo.type = TAG_CLOSE;
+    }
+    tagInfo.name = s;
+    SkipIdentifier(s);
+    if (!*s)
+        return false;
+    char *e = FindTagClose(s);
+    if (!e)
+        return false;
+    *e = 0;
+    char *tmp = s;
+    s = e + 1;
+    if (e[-1] == '/') { // <foo/>
+        if (tagInfo.type != TAG_OPEN) // but not </foo/>
+            return false;
+        tagInfo.type = TAG_OPEN_CLOSE;
+        e[-1] = 0;
+    }
+    bool ok = ParseAttributes(tmp, &tagInfo);
+    *tmp = 0;
+    return ok;
+}
+
+static bool ParseXmlRecur(ParserState *state, int parentIdx=-1)
+{
+    for (;;)
+    {
+        char *s = state->curr;
+        XmlTagInfo tagInfo;
+
+        SkipWhitespace(s);
+        if (!*s) {
+            if (parentIdx == -1)
+                return true;
+            return false;
+        }
+
+        if (*s != '<')
+            return false;
+        s++;
+
+        bool skipped;
+        if (!SkipCommentOrProcesingInstr(s, skipped))
+            return false;
+        if (skipped) {
+            state->curr = s;
+            continue;
+        }
+
+        if (!ParseTag(s, tagInfo))
+            return false;
+
+        if (TAG_CLOSE == tagInfo.type) {
+            if (NULL != tagInfo.attributes) {
+                delete tagInfo.attributes;
+                return false;
+            }
+            state->curr = s;
+            MarkupNode *parent = state->Node(parentIdx);
+            if (!str::Eq(parent->name, tagInfo.name))
+                return false;
+            return true;
+        }
+
+        int nodeIdx;
+        MarkupNode *node = state->AllocNode(nodeIdx, parentIdx);
+        node->name = tagInfo.name;
+        node->attributes = tagInfo.attributes;
+        node->user = NULL;
+
+        state->cb->NewNode(node);
+        if (TAG_OPEN_CLOSE == tagInfo.type) {
+            state->curr = s;
+            continue;
+        }
+
+        assert(TAG_OPEN == tagInfo.type);
+        state->curr = s;
+        if (!ParseXmlRecur(state, nodeIdx))
+            return false;
+    }
+}
+
+bool ParseMarkupXml(const char *xml, MarkupParserCallback *cb)
+{
+    ParserState *state = new ParserState(xml, cb);
+    bool ok = ParseXmlRecur(state);
+    delete state;
+    return ok;
+}
+
+static char* SkipSpaces(char *s)
+{
+    while (*s == ' ')
+        s++;
+    return s;
+}
+
+static inline bool IsNewline(char c)
+{
+    return c == '\n' || c == '\r';
+}
+
+static char *FindEndLine(char *s)
+{
+    while (*s && !IsNewline(*s))
+        ++s;
+    if (!*s)
+        return s;
+    *s++ = 0;
+    while (IsNewline(*s))
+        ++s;
+    return s;
+}
+
+static bool IsQuoteChar(char c)
+{
+    return c == '\'' || c == '\"';
+}
+
+static void SlashUnescape(char *s)
+{
+    char *dst = s;
+    while (*s) {
+        if (*s == '\\') {
+            if (s[1] == '\\') {
+                s += 2;
+                *dst++ = '\\';
+            } else if (s[1] == 'n') {
+                s += 2;
+                *dst++ = '\n';
+            }
+        } else {
+            *dst++ = *s++;
+        }
+    }
+    *dst = 0;
+}
+
+static char *FindQuotedEnd(char *s, int& len)
+{
+    char *start = s;
+    if (IsQuoteChar(*s)) {
+        char c = *s++;
+        char *res = s;
+        while (*s && *s != c)
+            ++s;
+        if (!*s)
+            return NULL;
+        *s++ = 0;
+        len = s - start;
+        return res;
+    }
+
+    while (*s && *s != ' ')
+        ++s;
+    if (*s == ' ')
+        *s++ = 0;
+    len = s - start;
+    return start;
+}
+
+static Vec<char*> *ParseAttributesSimple(char* s, bool& ok)
+{
+    Vec<char*> *attributes = NULL;
+    while (*s)
+    {
+        SkipWhitespace(s);
+        if (!*s)
+            return attributes;
+        char *name = s;
+        SkipIdentifier(s);
+        if (*s != '=')
+            goto Error;
+        *s++ = 0;
+        int len;
+        char *val = FindQuotedEnd(s, len);
+        if (0 == len)
+            goto Error;
+        if (NULL == attributes)
+            attributes = new Vec<char*>();
+        attributes->Append(name);
+        SlashUnescape(val);
+        attributes->Append(val);
+        s += len;
+    }
+    return attributes;
+Error:
+    ok = false;
+    delete attributes;
+    return NULL;
+}
+
+struct ParsedLine {
+    int             indent;
+    char *          name;
+    Vec<char*> *    attributes;
+};
+
+static char *ParseSimpleLine(char *s, ParsedLine& p)
+{
+    char *e = FindEndLine(s);
+    p.name = SkipSpaces(s);
+    p.indent = p.name - s;
+    s = p.name;
+    SkipIdentifier(s);
+    if (*s) {
+        if (' ' == *s)
+            *s++ = 0;
+        else
+            return NULL;
+    }
+    bool ok;
+    p.attributes = ParseAttributesSimple(s, ok);
+    if (!ok)
+        return NULL;
+    return e;
+}
+
+struct NestingInfo {
+    int indent;
+    int nodeIdx;
+};
+
+static bool ParseSimple(ParserState *state)
+{
+    Vec<NestingInfo> stack;
+    int       parentNodeIdx = -1;
+    char *s = state->curr;
+    for (;;) {
+        if (!*s)
+            break;
+
+        ParsedLine p;
+        s = ParseSimpleLine(s, p);
+        if (!s)
+            return false;
+
+        while (stack.Count() > 0) {
+            size_t pos = stack.Count() - 1;
+            NestingInfo it = stack.At(pos);
+            if (it.indent >= p.indent) {
+                stack.RemoveAt(pos);
+            } else {
+                parentNodeIdx = it.nodeIdx;
+                break;
+            }
+        }
+
+        if (parentNodeIdx != -1 && 0 == stack.Count())
+            return false;
+
+        int nodeIdx;
+        MarkupNode *node = state->AllocNode(nodeIdx, parentNodeIdx);
+        node->name = p.name;
+        node->attributes = p.attributes;
+        node->user = NULL;
+        state->cb->NewNode(node);
+
+        NestingInfo it;
+        it.indent = p.indent;
+        it.nodeIdx = nodeIdx;
+        stack.Append(it);
+    }
+
+    return 0 == stack.Count();
+}
+
+bool ParseMarkupSimple(const char *s, MarkupParserCallback *cb)
+{
+    ParserState *state = new ParserState(s, cb);
+    bool ok = ParseSimple(state);
+    delete state;
+    return ok;
 }
 

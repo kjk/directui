@@ -1,6 +1,6 @@
 #include "StdAfx.h"
 #include "UIDlgBuilder.h"
-#include "UIMarkup2.h"
+#include "UIMarkup.h"
 
 static ControlUI *CreateKnown(const char *cls)
 {
@@ -92,7 +92,7 @@ public:
 
     ControlUI *ParseXml(const char *xml, IDialogBuilderCallback* cb);
     ControlUI *ParseSimple(const char *s, IDialogBuilderCallback* cb);
-    virtual void NewNode(MarkupNode2 *node);
+    virtual void NewNode(MarkupNode *node);
 };
 
 static UINT GetStretchMode(const char *val)
@@ -109,7 +109,7 @@ static UINT GetStretchMode(const char *val)
     return mode;
 }
 
-void UIBuilderParserCallback::NewNode(MarkupNode2 *node)
+void UIBuilderParserCallback::NewNode(MarkupNode *node)
 {
     ControlUI* parent = NULL;
     const char *cls = node->name;
