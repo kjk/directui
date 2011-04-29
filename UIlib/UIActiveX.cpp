@@ -883,9 +883,12 @@ void ActiveXUI::DoPaint(HDC hDC, const RECT& /*rcPaint*/)
 
 void ActiveXUI::SetAttribute(const char* name, const char* value)
 {
+   int n;
    if (str::Eq(name, "clsid"))  CreateControl(value);
-   else if (str::Eq(name, "width"))  SetWidth(atoi(value));
-   else if (str::Eq(name, "height"))  SetHeight(atoi(value));
+   else if (ParseWidth(name, value, n))
+      SetWidth(n);
+   else if (ParseHeight(name, value, n))
+      SetHeight(n);
    else ControlUI::SetAttribute(name, value);
 }
 

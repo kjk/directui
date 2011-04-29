@@ -251,10 +251,15 @@ SIZE ContainerUI::EstimateSize(SIZE /*szAvailable*/)
 
 void ContainerUI::SetAttribute(const char* name, const char* value)
 {
-   if (str::Eq(name, "inset"))  SetInset(CSize(atoi(value), atoi(value)));
-   else if (str::Eq(name, "padding"))  SetPadding(atoi(value));
-   else if (str::Eq(name, "width"))  SetWidth(atoi(value));
-   else if (str::Eq(name, "height"))  SetHeight(atoi(value));
+   int n;
+   if (ParseInt(name, value, "inset", n))
+      SetInset(CSize(n, n));
+   else if (ParseInt(name, value, "padding", n))
+      SetPadding(n);
+   else if (ParseWidth(name, value, n))
+      SetWidth(n);
+   else if (ParseHeight(name, value, n))
+      SetHeight(n);
    else if (str::Eq(name, "scrollbar"))
       EnableScrollBar(str::Eq(value, "true"));
    else ControlUI::SetAttribute(name, value);

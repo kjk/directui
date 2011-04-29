@@ -34,11 +34,12 @@ void LabelPanelUI::SetTextStyle(UINT uStyle)
 
 void LabelPanelUI::SetAttribute(const char* name, const char* value)
 {
+   int n;
    if (str::Eq(name, "align"))  {
       if (str::Find(value, "center") != NULL)  m_uTextStyle |= DT_CENTER;
       if (str::Find(value, "right") != NULL)   m_uTextStyle |= DT_RIGHT;
-   }
-   else if (str::Eq(name, "width"))  SetWidth(atoi(value));
+   } else if (ParseWidth(name, value, n))
+      SetWidth(n);
    else ControlUI::SetAttribute(name, value);
 }
 

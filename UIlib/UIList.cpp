@@ -155,7 +155,9 @@ void ListHeaderItemUI::SetWidth(int cxWidth)
 
 void ListHeaderItemUI::SetAttribute(const char* name, const char* value)
 {
-   if (str::Eq(name, "width"))  SetWidth(atol(value));
+   int n;
+   if (ParseWidth(name, value, n))
+      SetWidth(n);
    else ControlUI::SetAttribute(name, value);
 }
 
@@ -615,10 +617,10 @@ void ListLabelElementUI::Event(TEventUI& event)
 
 void ListLabelElementUI::SetAttribute(const char* name, const char* value)
 {
-   if (str::Eq(name, "width")) {
-      SetWidth(atoi(value));
-   }
-   else if (str::Eq(name, "align"))  {
+   int n;
+   if (ParseWidth(name, value, n)) {
+      SetWidth(n);
+   } else if (str::Eq(name, "align"))  {
       if (str::Find(value, "center") != NULL)  m_uTextStyle |= DT_CENTER;
       if (str::Find(value, "right") != NULL)  m_uTextStyle |= DT_RIGHT;
    }

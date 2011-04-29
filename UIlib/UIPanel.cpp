@@ -329,8 +329,11 @@ void PaddingPanelUI::SetHeight(int cyHeight)
 
 void PaddingPanelUI::SetAttribute(const char* name, const char* value)
 {
-   if (str::Eq(name, "width"))  SetWidth(atoi(value));
-   else if (str::Eq(name, "height"))  SetHeight(atoi(value));
+   int n;
+   if (ParseWidth(name, value, n))
+      SetWidth(n);
+   else if (ParseHeight(name, value, n))
+      SetHeight(n);
    else ControlUI::SetAttribute(name, value);
 }
 
@@ -386,8 +389,11 @@ void ImagePanelUI::SetHeight(int cyHeight)
 
 void ImagePanelUI::SetAttribute(const char* name, const char* value)
 {
-   if (str::Eq(name, "width"))  SetWidth(atoi(value));
-   else if (str::Eq(name, "height"))  SetHeight(atoi(value));
+   int n;
+   if (ParseWidth(name, value, n))
+      SetWidth(n);
+   else if (ParseHeight(name, value, n))
+      SetHeight(n);
    else if (str::Eq(name, "image"))  SetImage(value);
    else ControlUI::SetAttribute(name, value);
 }

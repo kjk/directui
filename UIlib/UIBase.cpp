@@ -961,3 +961,31 @@ void StdString::ProcessResourceTokens()
       pos = Find('%', pos + 1);
    }
 }
+
+bool ParseInt(const char *name, const char *val, const char *expectedName, int& ret)
+{
+    if (str::Eq(name, expectedName)) {
+        ret = atoi(val);
+        return true;
+    }
+    return false;
+}
+
+bool ParseWidth(const char *name, const char *val, int& dx)
+{
+    if (str::Eq(name, "width") || str::Eq(name, "dx")) {
+        dx = atoi(val);
+        return true;
+    }
+    return false;
+}
+
+bool ParseHeight(const char *name, const char *val, int& dy)
+{
+    if (str::Eq(name, "height") || str::Eq(name, "dy")) {
+        dy = atoi(val);
+        return true;
+    }
+    return false;
+}
+

@@ -239,4 +239,8 @@ protected:
    char  m_buf[MAX_LOCAL_STRING_LEN + 1];
 };
 
+bool ParseInt(const char *name, const char *val, const char *expectedName, int& ret);
+bool ParseWidth(const char *name, const char *val, int& dx);
+bool ParseHeight(const char *name, const char *val, int& dy);
+
 #endif // !defined(AFX_UIBASE_H__20050509_3DFB_5C7A_C897_0080AD509054__INCLUDED_)

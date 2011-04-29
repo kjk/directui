@@ -81,7 +81,9 @@ void ButtonUI::SetWidth(int cxWidth)
 
 void ButtonUI::SetAttribute(const char* name, const char* value)
 {
-   if (str::Eq(name, "width"))  SetWidth(atoi(value));
+   int n;
+   if (ParseWidth(name, value, n))
+      SetWidth(n);
    else if (str::Eq(name, "align"))  {
       if (str::Find(value, "center") != NULL)  m_uTextStyle |= DT_CENTER;
       if (str::Find(value, "right") != NULL)  m_uTextStyle |= DT_RIGHT;
@@ -189,7 +191,9 @@ void OptionUI::SetWidth(int cxWidth)
 
 void OptionUI::SetAttribute(const char* name, const char* value)
 {
-   if (str::Eq(name, "width"))  SetWidth(atoi(value));
+   int n;
+   if (ParseWidth(name, value, n))
+      SetWidth(n);
    else if (str::Eq(name, "selected"))
       SetCheck(str::Eq(value, "true"));
    else if (str::Eq(name, "align"))  {
