@@ -211,23 +211,40 @@ static bool ParseTag(char *& s, XmlTagInfo& tagInfo)
         tagInfo.type = TAG_OPEN_CLOSE;
         e[-1] = 0;
     }
+    if (NULL != tagInfo.attributes) {
+        delete tagInfo.attributes;
+        return false;
+    }
+
     bool ok = ParseAttributes(tmp, &tagInfo);
     *tmp = 0;
+    if (ok && (TAG_CLOSE == tagInfo.type) && tagInfo.attributes) {
+        delete tagInfo.attributes;
+        return false;
+    }
     return ok;
 }
 
-static bool ParseXmlRecur(ParserState *state, int parentIdx=-1)
+struct XmlNestingInfo {
+    char *  name;
+    int     nodeIdx;
+};
+
+static bool ParseXml(ParserState *state)
 {
+    Vec<XmlNestingInfo> stack;
+    int parentIdx = -1;
+    char *s = state->curr;
     for (;;)
     {
-        char *s = state->curr;
         XmlTagInfo tagInfo;
-
         SkipWhitespace(s);
         if (!*s) {
-            if (parentIdx == -1)
-                return true;
-            return false;
+            if (parentIdx != -1)
+                return false;
+            if (stack.Count() > 0)
+                return false;
+            return true;
         }
 
         if (*s != '<')
@@ -237,24 +254,26 @@ static bool ParseXmlRecur(ParserState *state, int parentIdx=-1)
         bool skipped;
         if (!SkipCommentOrProcesingInstr(s, skipped))
             return false;
-        if (skipped) {
-            state->curr = s;
+        if (skipped)
             continue;
-        }
 
         if (!ParseTag(s, tagInfo))
             return false;
 
         if (TAG_CLOSE == tagInfo.type) {
-            if (NULL != tagInfo.attributes) {
-                delete tagInfo.attributes;
+            if (0 == stack.Count())
                 return false;
+            size_t pos = stack.Count() - 1;
+            XmlNestingInfo ni = stack.At(pos);
+            stack.RemoveAt(pos);
+            if (!str::Eq(ni.name, tagInfo.name))
+                return false;
+            parentIdx = -1;
+            if (stack.Count() > 0) {
+                ni = stack.At(stack.Count() - 1);
+                parentIdx = ni.nodeIdx;
             }
-            state->curr = s;
-            MarkupNode *parent = state->Node(parentIdx);
-            if (!str::Eq(parent->name, tagInfo.name))
-                return false;
-            return true;
+            continue;
         }
 
         int nodeIdx;
@@ -264,22 +283,22 @@ static bool ParseXmlRecur(ParserState *state, int parentIdx=-1)
         node->user = NULL;
 
         state->cb->NewNode(node);
-        if (TAG_OPEN_CLOSE == tagInfo.type) {
-            state->curr = s;
-            continue;
+
+        if (TAG_OPEN == tagInfo.type) {
+            XmlNestingInfo ni;
+            ni.name = tagInfo.name;
+            ni.nodeIdx = nodeIdx;
+            stack.Push(ni);
+            parentIdx = nodeIdx;
         }
 
-        assert(TAG_OPEN == tagInfo.type);
-        state->curr = s;
-        if (!ParseXmlRecur(state, nodeIdx))
-            return false;
     }
 }
 
 bool ParseMarkupXml(const char *xml, MarkupParserCallback *cb)
 {
     ParserState *state = new ParserState(xml, cb);
-    bool ok = ParseXmlRecur(state);
+    bool ok = ParseXml(state);
     delete state;
     return ok;
 }
