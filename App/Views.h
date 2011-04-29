@@ -12,6 +12,7 @@ public:
    virtual void OnPrepareAnimation();
    virtual void Notify(TNotifyUI& msg);
    virtual const char* GetDialogResourceXml() const = 0;
+   virtual const char* GetDialogResourceSimple() const { return NULL; }
 
 public:
    PaintManagerUI m_pm;
@@ -22,6 +23,7 @@ class StartPageWnd : public StandardPageWnd
 public:
    virtual const char* GetWindowClassName() const;
    virtual const char* GetDialogResourceXml() const;
+   virtual const char* GetDialogResourceSimple() const;
    virtual void OnPrepareAnimation();
    virtual void Init();
 };

@@ -1,37 +1,6 @@
-
 #include "StdAfx.h"
 #include "UIDlgBuilder.h"
-
-
-ControlUI* DialogBuilder::CreateFromXml(const char* xml, IDialogBuilderCallback* cb /*= NULL*/)
-{
-   m_cb = cb;
-   if (!m_xml.Load(xml))  return NULL;
-   // NOTE: The root element is actually discarded since the _Parse() methods is
-   //       parsing children and attaching to the current node.
-   MarkupNode root = m_xml.GetRoot();
-   return _ParseXml(&root);
-}
-
-ControlUI* DialogBuilder::CreateFromXmlResource(UINT nRes, IDialogBuilderCallback* cb /*= NULL*/)
-{
-   ASSERT(0); // TODO: not tested
-   HINSTANCE hinst = PaintManagerUI::GetResourceInstance();
-   HRSRC hResource = ::FindResourceA(hinst, MAKEINTRESOURCEA(nRes), "XML");
-   if (hResource == NULL)  return NULL;
-   HGLOBAL hGlobal = ::LoadResource(hinst, hResource);
-   if (hGlobal == NULL)  {
-      FreeResource(hResource);
-      return NULL;
-   }
-   void *tmp = LockResource(hGlobal);
-   size_t len = SizeofResource(hinst, hResource);
-   char * s = (char*)memdup(tmp, len);
-   //TODO: write me
-   //str::Replace(s, "\\n", "\n");
-   FreeResource(hResource);
-   return CreateFromXml(s, cb);
-}
+#include "UIMarkup2.h"
 
 static ControlUI *CreateKnown(const char *cls)
 {
@@ -112,19 +81,17 @@ static ControlUI *CreateKnown(const char *cls)
     return NULL;
 }
 
-#include "UIMarkup2.h"
-
-class XmlParserCallback : MarkupParserCallback {
+class UIBuilderParserCallback : MarkupParserCallback {
     ControlUI*                first;
     IDialogBuilderCallback *  cb;
     DialogLayoutUI*           stretched;
 
 public:
-    XmlParserCallback() : first(NULL), stretched(NULL) {}
-    ~XmlParserCallback() {}
+    UIBuilderParserCallback() : first(NULL), stretched(NULL) {}
+    ~UIBuilderParserCallback() {}
 
-    ControlUI *Parse(const char *xml, IDialogBuilderCallback* cb);
-
+    ControlUI *ParseXml(const char *xml, IDialogBuilderCallback* cb);
+    ControlUI *ParseSimple(const char *s, IDialogBuilderCallback* cb);
     virtual void NewNode(MarkupNode2 *node);
 };
 
@@ -142,7 +109,7 @@ static UINT GetStretchMode(const char *val)
     return mode;
 }
 
-void XmlParserCallback::NewNode(MarkupNode2 *node)
+void UIBuilderParserCallback::NewNode(MarkupNode2 *node)
 {
     ControlUI* parent = NULL;
     const char *cls = node->name;
@@ -192,69 +159,33 @@ void XmlParserCallback::NewNode(MarkupNode2 *node)
     }
 }
 
-ControlUI *XmlParserCallback::Parse(const char *xml, IDialogBuilderCallback* cb)
+ControlUI *UIBuilderParserCallback::ParseXml(const char *xml, IDialogBuilderCallback* cb)
 {
     this->cb = cb;
     ParseMarkupXml(xml, this);
     return first;
 }
 
+ControlUI *UIBuilderParserCallback::ParseSimple(const char *s, IDialogBuilderCallback* cb)
+{
+    this->cb = cb;
+    ParseMarkupSimple(s, this);
+    return first;
+}
+
 ControlUI* CreateDialogFromXml(const char* xml, IDialogBuilderCallback* cb)
 {
-    XmlParserCallback *p = new XmlParserCallback();
-    ControlUI* res = p->Parse(xml, cb);
+    UIBuilderParserCallback *p = new UIBuilderParserCallback();
+    ControlUI* res = p->ParseXml(xml, cb);
     delete p;
     return res;
 }
 
-ControlUI* DialogBuilder::_ParseXml(MarkupNode* root, ControlUI* parent)
+ControlUI* CreateDialogFromSimple(const char* s, IDialogBuilderCallback* cb)
 {
-   DialogLayoutUI* stretched = NULL;
-   IContainerUI* container = NULL;
-   ControlUI* ret = NULL;
-   for (MarkupNode node = root->GetChild() ; node.IsValid(); node = node.GetSibling())  {
-      const char* cls = node.GetName();
-
-      ControlUI* ctrl = CreateKnown(cls);
-      // User-supplied control factory
-      if (ctrl == NULL && m_cb != NULL)  {
-         ctrl = m_cb->CreateControl(cls);
-      }
-      ASSERT(ctrl);
-      if (ctrl == NULL)  return NULL;
-      // Add children
-      if (node.HasChildren())  {
-         _ParseXml(&node, ctrl);
-      }
-      // Attach to parent
-      if (parent != NULL)  {
-         if (container == NULL)
-            container = static_cast<IContainerUI*>(parent->GetInterface("Container"));
-         ASSERT(container);
-         if (container == NULL)  return NULL;
-         container->Add(ctrl);
-      }
-      // Process attributes
-      if (node.HasAttributes())  {
-         // Set ordinary attributes
-         int nAttributes = node.GetAttributeCount();
-         for (int i = 0; i < nAttributes; i++)  {
-            ctrl->SetAttribute(node.GetAttributeName(i), node.GetAttributeValue(i));
-         }
-
-         // Very custom attributes
-         const char *val = node.GetAttributeValue("stretch");
-         if (val)  {
-            if (stretched == NULL)  stretched = static_cast<DialogLayoutUI*>(parent->GetInterface("DialogLayout"));
-            ASSERT(stretched);
-            if (stretched == NULL)  return NULL;
-            UINT mode = GetStretchMode(val);
-            stretched->SetStretchMode(ctrl, mode);
-         }
-      }
-      // Return first item
-      if (ret == NULL)  ret = ctrl;
-   }
-   return ret;
+    UIBuilderParserCallback *p = new UIBuilderParserCallback();
+    ControlUI* res = p->ParseSimple(s, cb);
+    delete p;
+    return res;
 }
 

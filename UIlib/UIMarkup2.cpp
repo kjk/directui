@@ -284,17 +284,16 @@ bool ParseMarkupXml(const char *xml, MarkupParserCallback *cb)
     return ok;
 }
 
-static int Indent(char *s)
+static char* SkipSpaces(char *s)
 {
-    char *e = s;
-    while (*e == ' ')
-        e++;
-    return e - s;
+    while (*s == ' ')
+        s++;
+    return s;
 }
 
 static inline bool IsNewline(char c)
 {
-    return c == '\n' || c == '\t';
+    return c == '\n' || c == '\r';
 }
 
 static char *FindEndLine(char *s)
@@ -312,6 +311,25 @@ static char *FindEndLine(char *s)
 static bool IsQuoteChar(char c)
 {
     return c == '\'' || c == '\"';
+}
+
+static void SlashUnescape(char *s)
+{
+    char *dst = s;
+    while (*s) {
+        if (*s == '\\') {
+            if (s[1] == '\\') {
+                s += 2;
+                *dst++ = '\\';
+            } else if (s[1] == 'n') {
+                s += 2;
+                *dst++ = '\n';
+            }
+        } else {
+            *dst++ = *s++;
+        }
+    }
+    *dst = 0;
 }
 
 static char *FindQuotedEnd(char *s, int& len)
@@ -347,56 +365,107 @@ static Vec<char*> *ParseAttributesSimple(char* s, bool& ok)
             return attributes;
         char *name = s;
         SkipIdentifier(s);
-        if (*s++ != '=')
+        if (*s != '=')
             goto Error;
+        *s++ = 0;
         int len;
         char *val = FindQuotedEnd(s, len);
-        if (NULL == len)
+        if (0 == len)
             goto Error;
         if (NULL == attributes)
             attributes = new Vec<char*>();
         attributes->Append(name);
+        SlashUnescape(val);
         attributes->Append(val);
         s += len;
     }
-    return NULL;
+    return attributes;
 Error:
     ok = false;
     delete attributes;
     return NULL;
 }
 
-static bool ParseSimpleRecur(ParserState *state, int parentIdx=-1)
+struct ParsedLine {
+    int             indent;
+    char *          name;
+    Vec<char*> *    attributes;
+};
+
+static char *ParseSimpleLine(char *s, ParsedLine& p)
 {
-    int prevIndent = -1;
+    char *e = FindEndLine(s);
+    p.name = SkipSpaces(s);
+    p.indent = p.name - s;
+    s = p.name;
+    SkipIdentifier(s);
+    if (*s) {
+        if (' ' == *s)
+            *s++ = 0;
+        else
+            return NULL;
+    }
+    bool ok;
+    p.attributes = ParseAttributesSimple(s, ok);
+    if (!ok)
+        return NULL;
+    return e;
+}
+
+struct NestingInfo {
+    int indent;
+    int nodeIdx;
+};
+
+static bool ParseSimple(ParserState *state)
+{
+    Vec<NestingInfo> stack;
+    int       parentNodeIdx = -1;
     char *s = state->curr;
     for (;;) {
         if (!*s)
-            return true;
-        char *s = state->curr;
-        char *e = FindEndLine(s);
-        int indent = Indent(s);
-        s += indent;
-        char *name = s;
-        SkipIdentifier(s);
-        bool ok;
-        Vec<char*> *attributes = ParseAttributesSimple(s, ok);
-        if (!ok)
+            break;
+
+        ParsedLine p;
+        s = ParseSimpleLine(s, p);
+        if (!s)
             return false;
+
+        while (stack.Count() > 0) {
+            size_t pos = stack.Count() - 1;
+            NestingInfo it = stack.At(pos);
+            if (it.indent >= p.indent) {
+                stack.RemoveAt(pos);
+            } else {
+                parentNodeIdx = it.nodeIdx;
+                break;
+            }
+        }
+
+        if (parentNodeIdx != -1 && 0 == stack.Count())
+            return false;
+
         int nodeIdx;
-        MarkupNode2 *node = state->AllocNode(nodeIdx, parentIdx);
-        node->name = name;
-        node->attributes = attributes;
+        MarkupNode2 *node = state->AllocNode(nodeIdx, parentNodeIdx);
+        node->name = p.name;
+        node->attributes = p.attributes;
         node->user = NULL;
-        s = e;
-        // TODO: write me, my friend
+        state->cb->NewNode(node);
+
+        NestingInfo it;
+        it.indent = p.indent;
+        it.nodeIdx = nodeIdx;
+        stack.Append(it);
     }
+
+    return 0 == stack.Count();
 }
 
 bool ParseMarkupSimple(const char *s, MarkupParserCallback *cb)
 {
     ParserState *state = new ParserState(s, cb);
-    bool ok = ParseSimpleRecur(state);
+    bool ok = ParseSimple(state);
     delete state;
     return ok;
 }
+

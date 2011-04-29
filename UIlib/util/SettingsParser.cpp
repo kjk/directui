@@ -34,13 +34,11 @@ struct LineInfo {
     int        indent;
 };
 
-static int Indent(char *s)
+static char* SkipSpaces(char *s)
 {
-    char *sStart = s;
-    while (*s == ' ') {
+    while (*s == ' ')
         ++s;
-    }
-    return s - sStart;
+    return s;
 }
 
 static inline bool IsNewLine(char c)
@@ -68,15 +66,14 @@ NextLine:
     if (emptyLine)
         goto NextLine;
 
-    liOut.indent = Indent(sStart);
-    liOut.name = sStart + liOut.indent;
+    liOut.name = SkipSpaces(sStart);
+    liOut.indent = liOut.name - sStart;
     liOut.value = NULL;
     char *value = (char*)str::Find(liOut.name, ":");
     if (NULL != value) {
         // null out ':"
         *value++ = 0;
-        // skip whitespace at the beginning
-        liOut.value = value + Indent(value);
+        liOut.value = SkipSpaces(value);
     }
     return s;
 }

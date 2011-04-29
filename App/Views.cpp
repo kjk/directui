@@ -22,9 +22,14 @@ LRESULT StandardPageWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
    if (uMsg == WM_CREATE)  {     
       m_pm.Init(m_hWnd);
-      DialogBuilder builder;
-      //ControlUI* root = builder.CreateFromXml(GetDialogResourceXml());
-      ControlUI* root = CreateDialogFromXml(GetDialogResourceXml());
+      ControlUI* root;
+      const char *s = GetDialogResourceSimple();
+      if (s) {
+        root = CreateDialogFromSimple(s);
+      } else {
+        s = GetDialogResourceXml();
+        root = CreateDialogFromXml(s);
+      }
       ASSERT(root && "Failed to parse XML");
       m_pm.AttachDialog(root);
       m_pm.AddNotifier(this);
@@ -54,39 +59,37 @@ const char* StartPageWnd::GetWindowClassName() const
    return "UIStart"; 
 }
 
-#if 0
-static const char* ResSimple()
+const char* StartPageWnd::GetDialogResourceSimple() const 
 {
-return "\
-Dialog\
-  HorizontalLayout\
-    VerticalLayout width=150\
-      Toolbar\
-        ToolGripper\
-      NavigatorPanel\
-        PaddingPanel height=18\
-        NavigatorButton name=page_start text=[<i 0> Start] selected=true tooltip=Vis start siden\
-        NavigatorButton name=page_registers text=[<i 4> Registre] tooltip=Vis forskellige registre\
-        NavigatorButton name=page_systems text=<i 4> Systemer\
-        NavigatorButton name=page_configure text=<i 4> Opsætning\
-        NavigatorButton name=page_reports text=<i 4> Rapporter\
-    VerticalLayout\
-      Toolbar\
-        LabelPanel align=right text=<f 6><c #fffe28>Start Side</c></f>\
-      ToolbarTitlePanel text=<f 7>Bjarke's Test Program</f>\
-      TitleShadow\
-      WindowCanvas watermark=StartWatermark\
-        VerticalLayout\
-          TextPanel text=<f 8>Vælg startområde?</h>\
-          FadedLine\
-          TileLayout scrollbar=true\
-            TextPanel name=link_registers shortcut=R text=<i 7 50><a><f 6>&Registre</f></a>\\n<h>\\n<c #444540>Vælg denne menu for at rette i diverse registre i systemet.\\n\\nDu kan rette i kunde, vogn og chauffør-reigsteret.\
-            TextPanel name=link_systems shortcut=S text=<i 9 50><a><f 6>&Systemer</f></a>\\n<h>\\n<c #444540>Gennem denne menu kan du opsætte diverse ting.\
-            TextPanel name=link_configure text=<i 6 50><a><f 6>Opsætning</f></a>\\n<h>\\n<c #444540>Opsætning giver adgang til konfiguration af de mange kørsels-systemer og regler.\
-            TextPanel name=link_reports text=<i 5 50><a><f 6>Rapporter</f></a\\n<h>\\n<c #444540>Rapporter giver dig overblik over registre samt hverdagens ture og bestillinger.\\n\\nGennem statistik og lister kan du hurtigt få præsenteret historiske data fra systemet.\
+    return "\
+Dialog\n\r\n\
+  HorizontalLayout\n\
+    VerticalLayout width=150\n\
+      Toolbar\n\
+        ToolGripper\n\
+      NavigatorPanel\n\
+        PaddingPanel height=18\n\
+        NavigatorButton name=page_start text='<i 0> Start' selected=true tooltip='Vis start siden'\n\
+        NavigatorButton name=page_registers text='<i 4> Registre' tooltip='Vis forskellige registre'\n\
+        NavigatorButton name=page_systems text='<i 4> Systemer'\n\
+        NavigatorButton name=page_configure text='<i 4> Opsætning'\n\
+        NavigatorButton name=page_reports text='<i 4> Rapporter'\n\
+    VerticalLayout\n\
+      Toolbar\n\
+        LabelPanel align=right text='<f 6><c #fffe28>Start Side</c></f>'\n\
+      ToolbarTitlePanel text=\"<f 7>Bjarke's Test Program</f>\"\n\
+      TitleShadow\n\
+      WindowCanvas watermark=StartWatermark\n\
+        VerticalLayout\n\
+          TextPanel text='<f 8>Vælg startområde?</f>'\n\
+          FadedLine\n\
+          TileLayout scrollbar=true\n\
+            TextPanel name=link_registers shortcut=R text='<i 7 50><a><f 6>&Registre</f></a>\\n<h>\\n<c #444540>Vælg denne menu for at rette i diverse registre i systemet.\\n\\nDu kan rette i kunde, vogn og chauffør-reigsteret.'\n\
+            TextPanel name=link_systems shortcut=S text='<i 9 50><a><f 6>&Systemer</f></a>\\n<h>\\n<c #444540>Gennem denne menu kan du opsætte diverse ting.'\n\
+            TextPanel name=link_configure text='<i 6 50><a><f 6>Opsætning</f></a>\\n<h>\\n<c #444540>Opsætning giver adgang til konfiguration af de mange kørsels-systemer og regler.'\n\
+            TextPanel name=link_reports text='<i 5 50><a><f 6>Rapporter</f></a\\n<h>\\n<c #444540>Rapporter giver dig overblik over registre samt hverdagens ture og bestillinger.\\n\\nGennem statistik og lister kan du hurtigt få præsenteret historiske data fra systemet.'\n\
 ";
 }
-#endif
 
 const char* StartPageWnd::GetDialogResourceXml() const 
 { 
@@ -113,7 +116,7 @@ const char* StartPageWnd::GetDialogResourceXml() const
           "<TitleShadow />"
           "<WindowCanvas watermark='StartWatermark' >"
             "<VerticalLayout>"
-              "<TextPanel text=\"<f 8>What do you want to do?</h>\" />"
+              "<TextPanel text=\"<f 8>What do you want to do?</f>\" />"
               "<FadedLine />"
               "<TileLayout scrollbar=\"true\" >"
                 "<TextPanel name=\"link_registers\" text=\"<i 7 50><a><f 6>&Registration</f></a>\n<h>\n<c #444540>Select this menu to correct in the miscellaneous registers in the system.\n\nYou can correct customer, car and registration information.\" shortcut=\"R\" />"
