@@ -88,18 +88,18 @@ protected:
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*lpCmdLine*/, int nCmdShow)
 {
    PaintManagerUI::SetResourceInstance(hInstance);
+   InitCommonControls();
 
    HRESULT Hr = ::CoInitialize(NULL);
    if (FAILED(Hr))  return 0;
 
    if (::LoadLibraryA("d3d9.dll") == NULL)  ::MessageBoxA(NULL, "DirectX 9 not installed!", "Test", MB_ICONINFORMATION);
-
    FrameWindowWnd* frame = new FrameWindowWnd();
    if (frame == NULL)  return 0;
    frame->Create(NULL, "Test", UI_WNDSTYLE_FRAME, WS_EX_WINDOWEDGE);
 
    PaintManagerUI::MessageLoop();
-
+ 
    ::CoUninitialize();
    return 0;
 }
