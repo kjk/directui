@@ -70,13 +70,13 @@ class UILIB_API SearchTitlePanelUI : public HorizontalLayoutUI
 public:
     SearchTitlePanelUI();
 
-    const char* GetClass() const;
+    virtual const char* GetClass() const;
 
     void SetImage(int idx);
 
-    void SetPos(RECT rc);
-    void DoPaint(HDC hDC, const RECT& rcPaint);
-    void SetAttribute(const char* name, const char* value);
+    virtual void SetPos(RECT rc);
+    virtual void DoPaint(HDC hDC, const RECT& rcPaint);
+    virtual void SetAttribute(const char* name, const char* value);
 
 protected:
     int m_iconIdx;
@@ -133,7 +133,7 @@ public:
     virtual bool Activate();
 
     void SetTextColor(UITYPE_COLOR TextColor);
-    void SetBkColor(UITYPE_COLOR BackColor);
+    void SetBkColor(UITYPE_COLOR backColor);
 
     virtual void Event(TEventUI& event);
     virtual SIZE EstimateSize(SIZE szAvailable);
@@ -145,8 +145,8 @@ protected:
     int          m_nLinks;
     RECT         m_rcLinks[8];
     UINT         m_uButtonState;
-    UITYPE_COLOR m_TextColor;
-    UITYPE_COLOR m_BackColor;
+    UITYPE_COLOR m_textColor;
+    UITYPE_COLOR m_backColor;
 };
 
 class UILIB_API WarningPanelUI : public TextPanelUI
@@ -163,8 +163,7 @@ public:
     virtual void SetAttribute(const char* name, const char* value);
 
 protected:
-    UITYPE_COLOR m_BackColor;
+    UITYPE_COLOR m_backColor;
 };
 
 #endif // !defined(AFX_UIPANEL_H__20060218_451A_298B_7A16_0080AD509054__INCLUDED_)
-

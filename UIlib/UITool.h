@@ -49,9 +49,8 @@ class UILIB_API ToolButtonUI : public ButtonUI
 public:
     ToolButtonUI();
 
-    const char* GetClass() const;
-
-    void DoPaint(HDC hDC, const RECT& rcPaint);
+    virtual const char* GetClass() const;
+    virtual void DoPaint(HDC hDC, const RECT& rcPaint);
 };
 
 class UILIB_API StatusbarUI : public ContainerUI

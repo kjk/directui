@@ -135,8 +135,8 @@ public:
     virtual const char* GetClass() const;
     virtual void* GetInterface(const char* name);
 
-    SIZE EstimateSize(SIZE szAvailable);
-    void DoPaint(HDC hDC, const RECT& rcPaint);
+    virtual SIZE EstimateSize(SIZE szAvailable);
+    virtual void DoPaint(HDC hDC, const RECT& rcPaint);
 };
 
 class UILIB_API ListUI : public VerticalLayoutUI, public IListUI

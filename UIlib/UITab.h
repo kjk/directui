@@ -8,7 +8,7 @@ class UILIB_API TabFolderUI : public ContainerUI, public IListOwnerUI
 public:
     TabFolderUI();
 
-    const char* GetClass() const;
+    virtual const char* GetClass() const;
 
     void Init();
 
@@ -19,16 +19,15 @@ public:
 
     virtual void Event(TEventUI& Event);
 
-    void SetPos(RECT rc);
-    void DoPaint(HDC hDC, const RECT& rcPaint);
-
-    void SetAttribute(const char* name, const char* value);
+    virtual void SetPos(RECT rc);
+    virtual void DoPaint(HDC hDC, const RECT& rcPaint);
+    virtual void SetAttribute(const char* name, const char* value);
 
 protected:
-    int m_curSel;
-    RECT m_rcPage;
-    RECT m_rcClient;
-    ControlUI* m_curPage;
+    int         m_curSel;
+    RECT        m_rcPage;
+    RECT        m_rcClient;
+    ControlUI*  m_curPage;
     StdValArray m_tabAreas;
 };
 
@@ -36,9 +35,9 @@ class UILIB_API TabPageUI : public ContainerUI
 {
 public:
     TabPageUI();
-    const char* GetClass() const;
+    virtual const char* GetClass() const;
 
-    bool Activate();
+    virtual bool Activate();
 };
 
 #endif // !defined(AFX_UITAB_H__20060218_95D6_2F8B_4F7A_0080AD509054__INCLUDED_)

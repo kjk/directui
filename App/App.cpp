@@ -37,7 +37,7 @@ Dialog\n\r\n\
 static const char* mainWindowPageDialog = "\
 Dialog\n\
   VerticalLayout\n\
-      TextPanel text='<x 16><c #f00000>hello'\n\
+      TextPanel backColor=3 text='<x 16><c #f00000>h&ello'\n\
       List header=hidden\n\
         TextPanel text='<x 16><c #585ebf><b>Click one of the items below:</b>\\n<h>'\n\
         ListLabelElement name=test_old text='<x 14>Old test window'\n\

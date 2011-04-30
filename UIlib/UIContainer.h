@@ -74,12 +74,12 @@ public:
     CanvasUI();
     virtual ~CanvasUI();
 
-    const char* GetClass() const;
+    virtual const char* GetClass() const;
 
     bool SetWatermark(UINT iBitmapRes, int iOrientation = HTBOTTOMRIGHT);
     bool SetWatermark(const char* pstrBitmap, int iOrientation = HTBOTTOMRIGHT);
 
-    void DoPaint(HDC hDC, const RECT& rcPaint);
+    virtual void DoPaint(HDC hDC, const RECT& rcPaint);
 
     void SetAttribute(const char* name, const char* value);
 
@@ -90,54 +90,48 @@ protected:
     int m_iOrientation;
 };
 
-
 class UILIB_API WindowCanvasUI : public CanvasUI
 {
 public:
     WindowCanvasUI();
-    const char* GetClass() const;
+    virtual const char* GetClass() const;
 };
-
 
 class UILIB_API ControlCanvasUI : public CanvasUI
 {
 public:
     ControlCanvasUI();
-    const char* GetClass() const;
+    virtual const char* GetClass() const;
 };
-
 
 class UILIB_API WhiteCanvasUI : public CanvasUI
 {
 public:
     WhiteCanvasUI();
-    const char* GetClass() const;
+    virtual const char* GetClass() const;
 };
-
 
 class UILIB_API DialogCanvasUI : public CanvasUI
 {
 public:
     DialogCanvasUI();
-    const char* GetClass() const;
+    virtual const char* GetClass() const;
 };
-
 
 class UILIB_API TabFolderCanvasUI : public CanvasUI
 {
 public:
     TabFolderCanvasUI();
-    const char* GetClass() const;
+    virtual const char* GetClass() const;
 };
-
 
 class UILIB_API VerticalLayoutUI : public ContainerUI
 {
 public:
     VerticalLayoutUI();
 
-    const char* GetClass() const;
-    void SetPos(RECT rc);
+    virtual const char* GetClass() const;
+    virtual void SetPos(RECT rc);
 
 protected:
     int m_cyNeeded;
@@ -150,19 +144,18 @@ class UILIB_API HorizontalLayoutUI : public ContainerUI
 public:
     HorizontalLayoutUI();
 
-    const char* GetClass() const;
-    void SetPos(RECT rc);
+    virtual const char* GetClass() const;
+    virtual void SetPos(RECT rc);
 };
-
 
 class UILIB_API TileLayoutUI : public ContainerUI
 {
 public:
     TileLayoutUI();
 
-    const char* GetClass() const;
+    virtual const char* GetClass() const;
 
-    void SetPos(RECT rc);
+    virtual void SetPos(RECT rc);
     void SetColumns(int nCols);
 
 protected:
@@ -181,7 +174,7 @@ public:
 
     void SetStretchMode(ControlUI* ctrl, UINT uMode);
 
-    void SetPos(RECT rc);
+    virtual void SetPos(RECT rc);
     virtual SIZE EstimateSize(SIZE szAvailable);
 
 protected:

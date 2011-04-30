@@ -414,7 +414,7 @@ void ImagePanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
 }
 
 
-TextPanelUI::TextPanelUI() : m_nLinks(0), m_uButtonState(0), m_TextColor(UICOLOR_EDIT_TEXT_NORMAL), m_BackColor(UICOLOR__INVALID)
+TextPanelUI::TextPanelUI() : m_nLinks(0), m_uButtonState(0), m_textColor(UICOLOR_EDIT_TEXT_NORMAL), m_backColor(UICOLOR__INVALID)
 {
     m_uTextStyle = DT_WORDBREAK;
     ::ZeroMemory(m_rcLinks, sizeof(m_rcLinks));
@@ -432,15 +432,15 @@ bool TextPanelUI::Activate()
     return true;
 }
 
-void TextPanelUI::SetTextColor(UITYPE_COLOR TextColor)
+void TextPanelUI::SetTextColor(UITYPE_COLOR textColor)
 {
-    m_TextColor = TextColor;
+    m_textColor = textColor;
     Invalidate();
 }
 
-void TextPanelUI::SetBkColor(UITYPE_COLOR BackColor)
+void TextPanelUI::SetBkColor(UITYPE_COLOR backColor)
 {
-    m_BackColor = BackColor;
+    m_backColor = backColor;
     Invalidate();
 }
 
@@ -501,10 +501,10 @@ void TextPanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
     RECT rcText = m_rcItem;
     m_nLinks = dimof(m_rcLinks);
-    BlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcText, m_txt, m_TextColor, m_BackColor, m_rcLinks, m_nLinks, m_uTextStyle);
+    BlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcText, m_txt, m_textColor, m_backColor, m_rcLinks, m_nLinks, m_uTextStyle);
 }
 
-WarningPanelUI::WarningPanelUI() : m_BackColor(UICOLOR_STANDARD_YELLOW)
+WarningPanelUI::WarningPanelUI() : m_backColor(UICOLOR_STANDARD_YELLOW)
 {
 }
 
@@ -517,13 +517,13 @@ void WarningPanelUI::SetWarningType(UINT uType)
 {
     switch (uType)  {
     case MB_ICONERROR:
-        m_BackColor = UICOLOR_STANDARD_RED;
+        m_backColor = UICOLOR_STANDARD_RED;
         break;
     case MB_ICONWARNING:
-        m_BackColor = UICOLOR_STANDARD_YELLOW;
+        m_backColor = UICOLOR_STANDARD_YELLOW;
         break;
     default:
-        m_BackColor = UICOLOR_WINDOW_BACKGROUND;
+        m_backColor = UICOLOR_WINDOW_BACKGROUND;
         break;
     }
 }
@@ -550,7 +550,7 @@ void WarningPanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
     RECT rcSign = m_rcItem;
     rcSign.bottom -= 8;
-    BlueRenderEngineUI::DoPaintFrame(hDC, m_manager, rcSign, UICOLOR_STANDARD_GREY, UICOLOR_STANDARD_GREY, m_BackColor);
+    BlueRenderEngineUI::DoPaintFrame(hDC, m_manager, rcSign, UICOLOR_STANDARD_GREY, UICOLOR_STANDARD_GREY, m_backColor);
     RECT rcText = rcSign;
     ::InflateRect(&rcText, -6, -4);
     m_nLinks = dimof(m_rcLinks);

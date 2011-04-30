@@ -11,7 +11,7 @@ public:
     ActiveXUI();
     virtual ~ActiveXUI();
 
-    const char* GetClass() const;
+    virtual const char* GetClass() const;
 
     bool CreateControl(const CLSID clsid);
     bool CreateControl(const char* pstrCLSID);
