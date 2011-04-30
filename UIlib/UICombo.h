@@ -39,12 +39,14 @@ public:
     SIZE GetDropDownSize() const;
     void SetDropDownSize(SIZE szDropBox);
 
-    int GetCurSel() const;  
-    bool SelectItem(int idx);
+    // IListOwnerUI
+    virtual int GetCurSel() const;  
+    virtual bool SelectItem(int idx);
 
-    bool Add(ControlUI* ctrl);
-    bool Remove(ControlUI* ctrl);
-    void RemoveAll();
+    // IContainerUI
+    virtual bool Add(ControlUI* ctrl);
+    virtual bool Remove(ControlUI* ctrl);
+    virtual void RemoveAll();
 
     virtual bool Activate();
 

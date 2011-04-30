@@ -119,17 +119,16 @@ class DropDownWnd : public WindowWnd
 {
 public:
     void Init(DropDownUI* owner);
-    const char* GetWindowClassName() const;
-    void OnFinalMessage(HWND hWnd);
+    virtual const char* GetWindowClassName() const;
+    virtual void OnFinalMessage(HWND hWnd);
 
-    LRESULT HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam);
+    virtual LRESULT HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 public:
     PaintManagerUI m_pm;
     DropDownUI* m_owner;
     int m_iOldSel;
 };
-
 
 void DropDownWnd::Init(DropDownUI* owner)
 {

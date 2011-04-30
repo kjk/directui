@@ -488,7 +488,8 @@ void VerticalLayoutUI::SetPos(RECT rc)
     rc.top += m_rcInset.top;
     rc.right -= m_rcInset.right;
     rc.bottom -= m_rcInset.bottom;
-    if (m_hwndScroll != NULL)  rc.right -= m_manager->GetSystemMetrics().cxvscroll;
+    if (m_hwndScroll != NULL)
+        rc.right -= m_manager->GetSystemMetrics().cxvscroll;
     // Determine the minimum size
     SIZE szAvailable = { RectDx(rc), RectDy(rc) };
     int nAdjustables = 0;
@@ -503,7 +504,8 @@ void VerticalLayoutUI::SetPos(RECT rc)
     // Place elements
     int cyNeeded = 0;
     int cyExpand = 0;
-    if (nAdjustables > 0)  cyExpand = MAX(0, (szAvailable.cy - cyFixed) / nAdjustables);
+    if (nAdjustables > 0)
+        cyExpand = MAX(0, (szAvailable.cy - cyFixed) / nAdjustables);
     // Position the elements
     SIZE szRemaining = szAvailable;
     int posY = rc.top - m_iScrollPos;
@@ -516,7 +518,8 @@ void VerticalLayoutUI::SetPos(RECT rc)
             iAdjustable++;
             sz.cy = cyExpand;
             // Distribute remaining to last element (usually round-off left-overs)
-            if (iAdjustable == nAdjustables)  sz.cy += MAX(0, szAvailable.cy - (cyExpand * nAdjustables) - cyFixed);
+            if (iAdjustable == nAdjustables)
+                sz.cy += MAX(0, szAvailable.cy - (cyExpand * nAdjustables) - cyFixed);
         }
         RECT rcCtrl = { rc.left, posY, rc.right, posY + sz.cy };
         ctrl->SetPos(rcCtrl);
@@ -557,7 +560,8 @@ void HorizontalLayoutUI::SetPos(RECT rc)
         cxFixed += sz.cx + m_iPadding;
     }
     int cxExpand = 0;
-    if (nAdjustables > 0)  cxExpand = MAX(0, (szAvailable.cx - cxFixed) / nAdjustables);
+    if (nAdjustables > 0)
+        cxExpand = MAX(0, (szAvailable.cx - cxFixed) / nAdjustables);
     // Position the elements
     SIZE szRemaining = szAvailable;
     int posX = rc.left;
@@ -569,7 +573,8 @@ void HorizontalLayoutUI::SetPos(RECT rc)
         if (sz.cx == 0)  {
             iAdjustable++;
             sz.cx = cxExpand;
-            if (iAdjustable == nAdjustables)  sz.cx += MAX(0, szAvailable.cx - (cxExpand * nAdjustables) - cxFixed);
+            if (iAdjustable == nAdjustables)
+                sz.cx += MAX(0, szAvailable.cx - (cxExpand * nAdjustables) - cxFixed);
         }
         RECT rcCtrl = { posX, rc.top, posX + sz.cx, rc.bottom };
         ctrl->SetPos(rcCtrl);
@@ -617,15 +622,17 @@ void TileLayoutUI::SetPos(RECT rc)
         // Determine size
         RECT rcTile = { ptTile.x, ptTile.y, ptTile.x + cxWidth, ptTile.y };
         // Adjust with element padding
-        if ((iCount % m_nColumns) == 0)  rcTile.right -= m_iPadding / 2;
-        else if ((iCount % m_nColumns) == m_nColumns - 1)  rcTile.left += m_iPadding / 2;
+        if ((iCount % m_nColumns) == 0)
+            rcTile.right -= m_iPadding / 2;
+        else if ((iCount % m_nColumns) == m_nColumns - 1)
+            rcTile.left += m_iPadding / 2;
         else ::InflateRect(&rcTile, -(m_iPadding / 2), 0);
         // If this panel expands vertically
         if (m_cxyFixed.cy == 0) {
             SIZE szAvailable = { RectDx(rcTile), 9999 };
             int idx = iCount;
             for (int it2 = it1; it2 < m_items.GetSize(); it2++)  {
-                SIZE szTile = static_cast<ControlUI*>(m_items[it2])->EstimateSize(szAvailable);
+                SIZE szTile = ((ControlUI*)m_items[it2])->EstimateSize(szAvailable);
                 cyHeight = MAX(cyHeight, szTile.cy);
                 if ((++idx % m_nColumns) == 0) break;
             }
@@ -716,10 +723,14 @@ void DialogLayoutUI::SetPos(RECT rc)
         }
         RECT rcPos = item->rcItem;
         ::OffsetRect(&rcPos, rc.left, rc.top - m_iScrollPos);
-        if (FlSet(item->uMode, UISTRETCH_MOVE_X))  ::OffsetRect(&rcPos, cxMove, 0);
-        if (FlSet(item->uMode, UISTRETCH_MOVE_Y))  ::OffsetRect(&rcPos, 0, cyMove);
-        if (FlSet(item->uMode, UISTRETCH_SIZE_X))  rcPos.right += cxStretch;
-        if (FlSet(item->uMode, UISTRETCH_SIZE_Y))  rcPos.bottom += cyStretch;
+        if (FlSet(item->uMode, UISTRETCH_MOVE_X))
+            ::OffsetRect(&rcPos, cxMove, 0);
+        if (FlSet(item->uMode, UISTRETCH_MOVE_Y))
+            ::OffsetRect(&rcPos, 0, cyMove);
+        if (FlSet(item->uMode, UISTRETCH_SIZE_X))
+            rcPos.right += cxStretch;
+        if (FlSet(item->uMode, UISTRETCH_SIZE_Y))
+            rcPos.bottom += cyStretch;
         if (FlSet(item->uMode, (UISTRETCH_SIZE_X | UISTRETCH_SIZE_Y)))  {
             cxMove += cxStretch;
             cyMove += cyStretch;
@@ -733,7 +744,7 @@ void DialogLayoutUI::RecalcArea()
     if (!m_bFirstResize)  return;
     // Add the remaining control to the list
     // Controls that have specific stretching needs will define them in the XML resource
-    // and by calling SetStretchMode(). Other controls needs to be added as well now...
+    // and by calling SetStretchMode(). Other controls need to be added as well now...
     for (int it = 0; it < m_items.GetSize(); it++)  {         
         ControlUI* ctrl = static_cast<ControlUI*>(m_items[it]);
         bool bFound = false;
@@ -751,7 +762,7 @@ void DialogLayoutUI::RecalcArea()
     // Figure out the actual size of the dialog so we can add proper scrollbars later
     CRect rcDialog(9999, 9999, 0,0);
     for (int i = 0; i < m_items.GetSize(); i++)  {
-        const RECT& rcPos = static_cast<ControlUI*>(m_items[i])->GetPos();
+        const RECT& rcPos = ((ControlUI*)m_items[i])->GetPos();
         rcDialog.Join(rcPos);
     }
     for (int j = 0; j < m_aModes.GetSize(); j++)  {
