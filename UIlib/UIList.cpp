@@ -731,16 +731,16 @@ void ListTextElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
 {
     ASSERT(m_owner);
     if (m_owner == NULL)  return;
-    const TListInfoUI* pInfo = m_owner->GetListInfo();
-    UITYPE_COLOR iTextColor = pInfo->Text;
-    UITYPE_COLOR iBackColor = pInfo->Background;
+    const TListInfoUI* info = m_owner->GetListInfo();
+    UITYPE_COLOR iTextColor = info->Text;
+    UITYPE_COLOR iBackColor = info->Background;
     if (FlSet(m_uButtonState, UISTATE_HOT))  {
-        iBackColor = pInfo->HotBackground;
-        iTextColor = pInfo->HotText;
+        iBackColor = info->HotBackground;
+        iTextColor = info->HotText;
     }
     if (IsSelected())  {
-        iTextColor = pInfo->SelText;
-        iBackColor = pInfo->SelBackground;
+        iTextColor = info->SelText;
+        iBackColor = info->SelBackground;
     }
     if (!IsEnabled())  {
         iTextColor = UICOLOR_CONTROL_TEXT_DISABLED;
@@ -754,10 +754,10 @@ void ListTextElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
     if (cb == NULL)  return;
     m_nLinks = 0;
     int nLinks = dimof(m_rcLinks);
-    for (int i = 0; i < pInfo->nColumns; i++) 
+    for (int i = 0; i < info->nColumns; i++) 
     {
         // Paint text
-        RECT rcItem = { pInfo->rcColumn[i].left, m_rcItem.top, pInfo->rcColumn[i].right, m_rcItem.bottom - 1 };
+        RECT rcItem = { info->rcColumn[i].left, m_rcItem.top, info->rcColumn[i].right, m_rcItem.bottom - 1 };
         const char* txt = cb->GetItemText(this, m_idx, i);
         ::InflateRect(&rcItem, -4, 0);
         BlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcItem, txt, iTextColor, UICOLOR__INVALID, m_rcLinks, nLinks, DT_SINGLELINE | m_uTextStyle);
@@ -818,9 +818,9 @@ void ListExpandElementUI::Event(TEventUI& event)
     if (event.type == UIEVENT_BUTTONUP) 
     {
         if (m_owner == NULL)  return;
-        const TListInfoUI* pInfo = m_owner->GetListInfo();
+        const TListInfoUI* info = m_owner->GetListInfo();
         RECT rcExpander = { m_rcItem.left, m_rcItem.top, m_rcItem.left + 20, m_rcItem.bottom };;
-        if (pInfo->expandable && ::PtInRect(&rcExpander, event.ptMouse))  Expand(!m_bExpanded);
+        if (info->expandable && ::PtInRect(&rcExpander, event.ptMouse))  Expand(!m_bExpanded);
     }
     if (event.type == UIEVENT_KEYDOWN) 
     {
@@ -934,16 +934,16 @@ void ListExpandElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
 {
     ASSERT(m_owner);
     if (m_owner == NULL)  return;
-    const TListInfoUI* pInfo = m_owner->GetListInfo();
-    UITYPE_COLOR iTextColor = pInfo->Text;
-    UITYPE_COLOR iBackColor = pInfo->Background;
+    const TListInfoUI* info = m_owner->GetListInfo();
+    UITYPE_COLOR iTextColor = info->Text;
+    UITYPE_COLOR iBackColor = info->Background;
     if (FlSet(m_uButtonState, UISTATE_HOT))  {
-        iBackColor = pInfo->HotBackground;
-        iTextColor = pInfo->HotText;
+        iBackColor = info->HotBackground;
+        iTextColor = info->HotText;
     }
     if (IsSelected())  {
-        iTextColor = pInfo->SelText;
-        iBackColor = pInfo->SelBackground;
+        iTextColor = info->SelText;
+        iBackColor = info->SelBackground;
     }
     if (!IsEnabled())  {
         iTextColor = UICOLOR_CONTROL_TEXT_DISABLED;
@@ -959,14 +959,14 @@ void ListExpandElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
     m_nLinks = 0;
     StdString sColText;
     int nLinks = dimof(m_rcLinks);
-    for (int i = 0; i < pInfo->nColumns; i++) 
+    for (int i = 0; i < info->nColumns; i++) 
     {
         // Paint text
-        RECT rcItem = { pInfo->rcColumn[i].left, m_rcItem.top, pInfo->rcColumn[i].right, m_rcItem.top + m_cyItem };
+        RECT rcItem = { info->rcColumn[i].left, m_rcItem.top, info->rcColumn[i].right, m_rcItem.top + m_cyItem };
         const char* txt = cb->GetItemText(this, m_idx, i);
         // If list control is expandable then we'll automaticially draw
         // the expander-box at the first column.
-        if (i == 0 && pInfo->expandable)  {
+        if (i == 0 && info->expandable)  {
             sColText = (m_bExpanded ? "<i 14> " : "<i 13> ");
             sColText += txt;
             txt = sColText;

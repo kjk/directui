@@ -628,8 +628,10 @@ bool PaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRE
         return true;
     case WM_MOUSELEAVE:
         {
-            if (m_hwndTooltip != NULL)  ::SendMessage(m_hwndTooltip, TTM_TRACKACTIVATE, FALSE, (LPARAM) &m_toolTip);
-            if (m_mouseTracking)  ::SendMessage(m_hWndPaint, WM_MOUSEMOVE, 0, (LPARAM) -1);
+            if (m_hwndTooltip != NULL)
+                ::SendMessage(m_hwndTooltip, TTM_TRACKACTIVATE, FALSE, (LPARAM) &m_toolTip);
+            if (m_mouseTracking)
+                ::SendMessage(m_hWndPaint, WM_MOUSEMOVE, 0, (LPARAM) -1);
             m_mouseTracking = false;
         }
         break;
@@ -1244,15 +1246,15 @@ ControlUI* CALLBACK PaintManagerUI::__FindControlFromCount(ControlUI* /*pThis*/,
 
 ControlUI* CALLBACK PaintManagerUI::__FindControlFromTab(ControlUI* pThis, void* data)
 {
-    FINDTABINFO* pInfo = static_cast<FINDTABINFO*>(data);
-    if (pInfo->focus == pThis)  {
-        if (pInfo->bForward)  pInfo->bNextIsIt = true;
-        return pInfo->bForward ? NULL : pInfo->pLast;
+    FINDTABINFO* info = static_cast<FINDTABINFO*>(data);
+    if (info->focus == pThis)  {
+        if (info->bForward)  info->bNextIsIt = true;
+        return info->bForward ? NULL : info->pLast;
     }
     if ((pThis->GetControlFlags() & UIFLAG_TABSTOP) == 0)  return NULL;
-    pInfo->pLast = pThis;
-    if (pInfo->bNextIsIt)  return pThis;
-    if (pInfo->focus == NULL)  return pThis;
+    info->pLast = pThis;
+    if (info->bNextIsIt)  return pThis;
+    if (info->focus == NULL)  return pThis;
     return NULL;  // Examine all controls
 }
 
