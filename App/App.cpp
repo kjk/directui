@@ -38,7 +38,7 @@ static const char* mainWindowPageDialog = "\
 Dialog\n\
   VerticalLayout\n\
       TextPanel backColor=3 text='<x 16><c #f00000>h&ello'\n\
-      List header=hidden\n\
+      List header=hidden footer=hidden\n\
         TextPanel text='<x 16><c #585ebf><b>Click one of the items below:</b>\\n<h>'\n\
         ListLabelElement name=test_old text='<x 14>Old test window'\n\
         ListLabelElement text='<x 14>Institutions register'\n\
@@ -47,7 +47,8 @@ Dialog\n\
         ListLabelElement text='<x 14>Vogn register'\n\
         ListLabelElement text='<x 14>Chauffør register'\n\
         TextPanel text='<x 16><c #F00000><b>A cool effect</b>\\n<h>'\n\
-      Button text=&Exit name=exit\n\
+      HorizontalLayout\n\
+        Button text=&Exit name=exit\n\
 ";
 #endif
 
@@ -177,15 +178,13 @@ public:
 
     virtual void Notify(TNotifyUI& msg)
     {
+        ControlUI *sender = msg.sender;
+        const char *name = sender->GetName();
         if (str::Eq(msg.type, "itemclick")) {
-            ControlUI *sender = msg.sender;
-            const char *name = sender->GetName();
             if (str::Eq(name, "test_old")) {
                 CreateOldTestWindow();
             }
         } else if (str::Eq(msg.type, "click")) {
-            ControlUI *sender = msg.sender;
-            const char *name = sender->GetName();
             if (str::Eq(name, "exit")) {
                 PostMessage(WM_CLOSE);
             }

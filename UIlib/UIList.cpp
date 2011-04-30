@@ -548,9 +548,12 @@ void ListUI::Scroll(int dx, int dy)
 
 void ListUI::SetAttribute(const char* name, const char* value)
 {
-    if (str::Eq(name, "header"))  GetHeader()->SetVisible(!str::Eq(value, "hidden"));
-    else if (str::Eq(name, "footer"))  GetFooter()->SetVisible(!str::Eq(value, "hidden"));
-    else if (str::Eq(name, "expanding"))  SetExpanding(str::Eq(value, "true"));
+    if (str::Eq(name, "header"))
+        GetHeader()->SetVisible(!str::Eq(value, "hidden"));
+    else if (str::Eq(name, "footer"))
+        GetFooter()->SetVisible(!str::Eq(value, "hidden"));
+    else if (str::Eq(name, "expanding"))
+        SetExpanding(str::Eq(value, "true"));
     else VerticalLayoutUI::SetAttribute(name, value);
 }
 

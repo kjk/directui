@@ -20,13 +20,13 @@ public:
     void SetWidth(int cx);
     void SetHeight(int cy);
 
-    void SetPos(RECT rc);
+    virtual void SetPos(RECT rc);
     virtual SIZE EstimateSize(SIZE szAvailable);
     virtual void DoPaint(HDC hDC, const RECT& rcPaint);
 
     virtual void SetAttribute(const char* name, const char* value);
 
-    LRESULT MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, bool& bHandled);
+    virtual LRESULT MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, bool& bHandled);
 
 protected:
     void ReleaseControl();

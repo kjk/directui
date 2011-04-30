@@ -21,11 +21,12 @@ public:
     virtual const char* GetClass() const;
     virtual void* GetInterface(const char* name);
 
-    ControlUI* GetItem(int idx) const;
-    int GetCount() const;
-    bool Add(ControlUI* ctrl);
-    bool Remove(ControlUI* ctrl);
-    void RemoveAll();
+    // IContainerUI
+    virtual ControlUI* GetItem(int idx) const;
+    virtual int GetCount() const;
+    virtual bool Add(ControlUI* ctrl);
+    virtual bool Remove(ControlUI* ctrl);
+    virtual void RemoveAll();
 
     virtual void Event(TEventUI& event);
     void SetVisible(bool visible);
@@ -80,14 +81,13 @@ public:
     bool SetWatermark(const char* pstrBitmap, int iOrientation = HTBOTTOMRIGHT);
 
     virtual void DoPaint(HDC hDC, const RECT& rcPaint);
-
-    void SetAttribute(const char* name, const char* value);
+    virtual void SetAttribute(const char* name, const char* value);
 
 protected:
     COLORREF m_clrBack;
-    HBITMAP m_hBitmap;
-    BITMAP m_BitmapInfo;
-    int m_iOrientation;
+    HBITMAP  m_hBitmap;
+    BITMAP   m_BitmapInfo;
+    int      m_iOrientation;
 };
 
 class UILIB_API WindowCanvasUI : public CanvasUI
