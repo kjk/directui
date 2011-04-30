@@ -404,8 +404,7 @@ LRESULT CALLBACK WindowWnd::__WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
     }
     if (pThis != NULL)  {
         return pThis->HandleMessage(uMsg, wParam, lParam);
-    } 
-    else {
+    } else {
         return ::DefWindowProc(hWnd, uMsg, wParam, lParam);
     }
 }
@@ -701,13 +700,11 @@ void StdString::Append(const char* pstr)
             m_pstr = static_cast<char*>(malloc((nNewLength + 1) * sizeof(char)));
             strcpy(m_pstr, m_buf);
             strcat(m_pstr, pstr);
-        }
-        else {
+        } else {
             m_pstr = static_cast<char*>(realloc(m_pstr, (nNewLength + 1) * sizeof(char)));
             strcat(m_pstr, pstr);
         }
-    }
-    else {
+    } else {
         if (m_pstr != m_buf)  {
             free(m_pstr);
             m_pstr = m_buf;
@@ -725,8 +722,7 @@ void StdString::Assign(const char* pstr, int cchMax)
             free(m_pstr);
             m_pstr = m_buf;
         }
-    }
-    else if (cchMax > GetLength() || m_pstr == m_buf)  {
+    } else if (cchMax > GetLength() || m_pstr == m_buf)  {
         if (m_pstr == m_buf)  m_pstr = NULL;
         m_pstr = static_cast<char*>(realloc(m_pstr, (cchMax + 1) * sizeof(char)));
     }

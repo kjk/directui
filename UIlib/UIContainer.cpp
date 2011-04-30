@@ -218,12 +218,13 @@ int ContainerUI::FindSelectable(int idx, bool bForward /*= true*/) const
                 && GetItem(i)->IsEnabled())  return i;
         }
         return -1;
-    }
-    else {
+    } else {
         for (int i = idx; i >= 0; --i)  {
             if (GetItem(i)->GetInterface("ListItem") != NULL 
                 && GetItem(i)->IsVisible()
-                && GetItem(i)->IsEnabled())  return i;
+                && GetItem(i)->IsEnabled()) {
+                    return i;
+            }
         }
         return FindSelectable(0, true);
     }
@@ -638,8 +639,7 @@ void TileLayoutUI::SetPos(RECT rc)
             ptTile.x = rc.left;
             ptTile.y += cyHeight + m_iPadding;
             cyHeight = 0;
-        }
-        else {
+        } else {
             ptTile.x += cxWidth;
         }
         m_cyNeeded = rcTile.bottom - (rc.top - m_iScrollPos);

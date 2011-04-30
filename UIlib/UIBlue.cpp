@@ -158,19 +158,17 @@ void BlueRenderEngineUI::DoPaintButton(HDC hDC, PaintManagerUI* manager, RECT rc
     // Draw frame and body
     COLORREF clrColor1, clrColor2;
     UITYPE_COLOR clrBorder1, clrBorder2, clrText, clrBack;
-    if ((uState & UISTATE_DISABLED) != 0)  {
+    if (FlSet(uState, UISTATE_DISABLED))  {
         clrBorder1 = UICOLOR_BUTTON_BORDER_DISABLED;
         clrBorder2 = UICOLOR_BUTTON_BORDER_DISABLED;
         clrText = UICOLOR_BUTTON_TEXT_DISABLED;
         clrBack = UICOLOR_BUTTON_BACKGROUND_DISABLED;
-    }
-    else if ((uState & UISTATE_PUSHED) != 0)  {
+    } else if (FlSet(uState, UISTATE_PUSHED))  {
         clrBorder1 = UICOLOR_BUTTON_BORDER_DARK;
         clrBorder2 = UICOLOR_BUTTON_BORDER_LIGHT;
         clrText = UICOLOR_BUTTON_TEXT_PUSHED;
         clrBack = UICOLOR_BUTTON_BACKGROUND_PUSHED;
-    }
-    else {
+    } else {
         clrBorder1 = UICOLOR_BUTTON_BORDER_LIGHT;
         clrBorder2 = UICOLOR_BUTTON_BORDER_DARK;
         clrText = UICOLOR_BUTTON_TEXT_NORMAL;
@@ -209,20 +207,18 @@ void BlueRenderEngineUI::DoPaintButton(HDC hDC, PaintManagerUI* manager, RECT rc
 void BlueRenderEngineUI::DoPaintEditBox(HDC hDC, PaintManagerUI* manager, RECT rcItem, const char* txt, UINT uState, UINT uDrawStyle, bool bPaintFrameOnly)
 {
     ASSERT(::GetObjectType(hDC)==OBJ_DC || ::GetObjectType(hDC)==OBJ_MEMDC);
-    if ((uState & UISTATE_DISABLED) != 0)  {
+    if (FlSet(uState, UISTATE_DISABLED))  {
         DoPaintFrame(hDC, manager, rcItem, UICOLOR_CONTROL_BORDER_DISABLED, UICOLOR_CONTROL_BORDER_DISABLED, UICOLOR_EDIT_BACKGROUND_DISABLED);
-    }
-    else if ((uState & UISTATE_READONLY) != 0)  {
+    } else if (FlSet(uState, UISTATE_READONLY))  {
         DoPaintFrame(hDC, manager, rcItem, UICOLOR_CONTROL_BORDER_DISABLED, UICOLOR_CONTROL_BORDER_DISABLED, UICOLOR_EDIT_BACKGROUND_READONLY);
-    }
-    else {
+    } else {
         DoPaintFrame(hDC, manager, rcItem, UICOLOR_CONTROL_BORDER_NORMAL, UICOLOR_CONTROL_BORDER_NORMAL, UICOLOR_EDIT_BACKGROUND_NORMAL);
     }
     if (bPaintFrameOnly)  return;
     // We should also draw the actual text
     COLORREF clrText = manager->GetThemeColor(UICOLOR_EDIT_TEXT_NORMAL);
-    if ((uState & UISTATE_READONLY) != 0)  clrText = manager->GetThemeColor(UICOLOR_EDIT_TEXT_READONLY);
-    if ((uState & UISTATE_DISABLED) != 0)  clrText = manager->GetThemeColor(UICOLOR_EDIT_TEXT_DISABLED);
+    if (FlSet(uState, UISTATE_READONLY))  clrText = manager->GetThemeColor(UICOLOR_EDIT_TEXT_READONLY);
+    if (FlSet(uState, UISTATE_DISABLED))  clrText = manager->GetThemeColor(UICOLOR_EDIT_TEXT_DISABLED);
     ::SetBkMode(hDC, TRANSPARENT);
     ::SetTextColor(hDC, clrText);
     ::SelectObject(hDC, manager->GetThemeFont(UIFONT_NORMAL));
@@ -240,8 +236,7 @@ void BlueRenderEngineUI::DoPaintOptionBox(HDC hDC, PaintManagerUI* manager, RECT
     if ((uStyle & DT_RIGHT) != 0)  {
         rcText.right -= 18;
         rcButton.left = rcButton.right - 18;
-    }
-    else {
+    } else {
         rcText.left += 18;
         rcButton.right = rcButton.left + 18;
     }
@@ -279,7 +274,7 @@ void BlueRenderEngineUI::DoPaintTabFolder(HDC hDC, PaintManagerUI* manager, RECT
     SIZE szText = { 0 };
     ::GetTextExtentPoint32(hDC, sText, cchText, &szText);
     RECT rcTab = { 0 };
-    if ((uState & UISTATE_PUSHED) != 0)  
+    if (FlSet(uState, UISTATE_PUSHED))  
     {
         ::SetRect(&rcTab, rcItem.left, rcItem.top + 1, rcItem.left + szText.cx + 14, rcItem.bottom);
         DoFillRect(hDC, manager, rcTab, UICOLOR_TAB_BACKGROUND_NORMAL);
@@ -301,12 +296,9 @@ void BlueRenderEngineUI::DoPaintTabFolder(HDC hDC, PaintManagerUI* manager, RECT
 
         RECT rcTop = { rcTab.left + 1, rcTab.top, rcTab.right - 1, rcTab.top + 3 };
         DoPaintGradient(hDC, manager, rcTop, RGB(222,142,41), RGB(255,199,25), true, 4);
-    }
-    else if ((uState & UISTATE_DISABLED) != 0) 
+    } else if (FlSet(uState, UISTATE_DISABLED)) 
     {
-    }
-    else
-    {
+    } else {
         ::SetRect(&rcTab, rcItem.left, rcItem.top + 3, rcItem.left + szText.cx + 12, rcItem.bottom);
 
         COLORREF clrFolder1, clrFolder2;
@@ -330,15 +322,13 @@ void BlueRenderEngineUI::DoPaintTabFolder(HDC hDC, PaintManagerUI* manager, RECT
 void BlueRenderEngineUI::DoPaintToolbarButton(HDC hDC, PaintManagerUI* manager, RECT rc, const char* txt, SIZE szPadding, UINT uState)
 {
     ASSERT(::GetObjectType(hDC)==OBJ_DC || ::GetObjectType(hDC)==OBJ_MEMDC);
-    if ((uState & UISTATE_PUSHED) != 0)  {
+    if (FlSet(uState, UISTATE_PUSHED))  {
         DoPaintFrame(hDC, manager, rc, UICOLOR_TOOL_BORDER_PUSHED, UICOLOR_TOOL_BORDER_PUSHED, UICOLOR_TOOL_BACKGROUND_PUSHED, 0);
         rc.top += 2;
         rc.left++;
-    }
-    else if ((uState & UISTATE_HOT) != 0)  {
+    } else if (FlSet(uState, UISTATE_HOT))  {
         DoPaintFrame(hDC, manager, rc, UICOLOR_TOOL_BORDER_HOVER, UICOLOR_TOOL_BORDER_HOVER, UICOLOR_TOOL_BACKGROUND_HOVER, 0);
-    }
-    else if ((uState & UISTATE_DISABLED) != 0)  {
+    } else if (FlSet(uState, UISTATE_DISABLED))  {
         // TODO
     }
     RECT rcText = rc;
@@ -458,8 +448,7 @@ void BlueRenderEngineUI::DoPaintPrettyText(HDC hDC, PaintManagerUI* manager, REC
             cyLine = tm.tmHeight + tm.tmExternalLeading;
             if (pt.x >= rc.right)  break;
             while (*txt == ' ')  txt++;
-        }
-        else if (*txt == '<' 
+        } else if (*txt == '<' 
             && (txt[1] >= 'a' && txt[1] <= 'z')
             && (txt[2] == ' ' || txt[2] == '>')) 
         {
@@ -531,8 +520,7 @@ void BlueRenderEngineUI::DoPaintPrettyText(HDC hDC, PaintManagerUI* manager, REC
                             ::DrawIconEx(hDC, pt.x, pt.y, hIcon, iSize, iSize, 0, NULL, DI_NORMAL);
                             ::DestroyIcon(hIcon);
                         }
-                    }
-                    else {
+                    } else {
                         if (*txt == ' ')  txt++;
                         StdString sRes;
                         while (_istalnum(*txt) || *txt == '.' || *txt == '_')  sRes += *txt++;
@@ -564,8 +552,7 @@ void BlueRenderEngineUI::DoPaintPrettyText(HDC hDC, PaintManagerUI* manager, REC
                         COLORREF clrColor = strtol(txt, const_cast<char**>(&txt), 16);
                         clrColor = RGB(GetBValue(clrColor), GetGValue(clrColor), GetRValue(clrColor));
                         ::SetTextColor(hDC, clrColor);
-                    }
-                    else {
+                    } else {
                         UITYPE_COLOR Color = (UITYPE_COLOR) strtol(txt, const_cast<char**>(&txt), 10);
                         ::SetTextColor(hDC, manager->GetThemeColor(Color));
                     }
@@ -574,9 +561,7 @@ void BlueRenderEngineUI::DoPaintPrettyText(HDC hDC, PaintManagerUI* manager, REC
             }
             while (*txt != '\0' && *txt != '>')  txt++;
             txt++;
-        }
-        else if (*txt == '<' && txt[1] == '/') 
-        {
+        } else if (*txt == '<' && txt[1] == '/') {
             txt += 2;
             switch (*txt++) 
             {
@@ -599,14 +584,11 @@ void BlueRenderEngineUI::DoPaintPrettyText(HDC hDC, PaintManagerUI* manager, REC
             }
             while (*txt != '\0' && *txt != '>')  txt++;
             txt++;
-        }
-        else if (*txt == '&') 
-        {
+        } else if (*txt == '&') {
             if (!FlSet(uStyle, DT_NOPREFIX))  {
                 if (bDraw  && manager->GetSystemSettings().bShowKeyboardCues)
                     ::TextOutA(hDC, pt.x, pt.y, "_", 1);
-            }
-            else {
+            } else {
                 SIZE szChar = { 0 };
                 ::GetTextExtentPoint32A(hDC, "&", 1, &szChar);
                 if (bDraw)
@@ -614,9 +596,7 @@ void BlueRenderEngineUI::DoPaintPrettyText(HDC hDC, PaintManagerUI* manager, REC
                 pt.x += szChar.cx;
             }
             txt++;
-        }
-        else if (*txt == ' ') 
-        {
+        } else if (*txt == ' ') {
             SIZE szSpace = { 0 };
             ::GetTextExtentPoint32A(hDC, " ", 1, &szSpace);
             // Still need to paint the space because the font might have
@@ -730,8 +710,7 @@ void BlueRenderEngineUI::DoPaintGradient(HDC hDC, PaintManagerUI* manager, RECT 
                 r2.bottom = rc.bottom - ((i * RectDy(rc)) >> nShift);
                 r2.top = rc.bottom - (((i + 1) * RectDy(rc)) >> nShift);
                 if (RectDy(r2) > 0)  ::FillRect(hDC, &r2, hBrush);
-            }
-            else {
+            } else {
                 r2.left = rc.right - (((i + 1) * RectDx(rc)) >> nShift);
                 r2.right = rc.right - ((i * RectDx(rc)) >> nShift);
                 if ((r2.right - r2.left) > 0)  ::FillRect(hDC, &r2, hBrush);

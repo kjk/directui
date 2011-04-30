@@ -459,9 +459,8 @@ bool PaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRE
             if (m_focusNeeded)  {
                 SetNextTabControl();
             }
-            //
+
             // Render screen
-            //
             if (m_anim.IsAnimating()) 
             {
                 // 3D animation in progress
@@ -474,17 +473,14 @@ bool PaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRE
                 ::BeginPaint(m_hWndPaint, &ps);
                 ::EndPaint(m_hWndPaint, &ps);
                 ::InvalidateRect(m_hWndPaint, NULL, FALSE);
-            }
-            else if (m_anim.IsJobScheduled())  {
+            } else if (m_anim.IsJobScheduled())  {
                 // Animation system needs to be initialized
                 m_anim.Init(m_hWndPaint);
                 // A 3D animation was scheduled; allow the render engine to
                 // capture the window content and repaint some other time
                 if (!m_anim.PrepareAnimation(m_hWndPaint))  m_anim.CancelJobs();
                 ::InvalidateRect(m_hWndPaint, NULL, TRUE);
-            }
-            else
-            {
+            } else {
                 // Standard painting of control-tree - no 3D animation now.
                 // Prepare offscreen bitmap?
                 if (m_offscreenPaint && m_hbmpOffscreen == NULL) 
@@ -524,21 +520,19 @@ bool PaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRE
                         ps.rcPaint.top,
                         SRCCOPY);
                     ::SelectObject(m_hDcOffscreen, hOldBitmap);
-                }
-                else
-                {
+                } else {
                     // A standard paint job
                     int iSaveDC = ::SaveDC(ps.hdc);
                     m_root->DoPaint(ps.hdc, ps.rcPaint);
                     ::RestoreDC(ps.hdc, iSaveDC);
                 }
-                // All Done!
                 ::EndPaint(m_hWndPaint, &ps);
             }
         }
         // If any of the painting requested a resize again, we'll need
         // to invalidate the entire window once more.
-        if (m_resizeNeeded)  ::InvalidateRect(m_hWndPaint, NULL, FALSE);
+        if (m_resizeNeeded)
+            ::InvalidateRect(m_hWndPaint, NULL, FALSE);
         return true;
     case WM_PRINTCLIENT:
         {
@@ -680,8 +674,7 @@ bool PaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRE
                 event.type = UIEVENT_MOUSEMOVE;
                 event.sender = NULL;
                 m_eventClick->Event(event);
-            }
-            else if (pNewHover != NULL)  {
+            } else if (pNewHover != NULL)  {
                 event.type = UIEVENT_MOUSEMOVE;
                 event.sender = NULL;
                 pNewHover->Event(event);
@@ -1072,12 +1065,12 @@ bool PaintManagerUI::SetNextTabControl(bool bForward)
             info2.focus = bForward ? NULL : info1.pLast;
             info2.bForward = bForward;
             ctrl = m_root->FindControl(__FindControlFromTab, &info2, UIFIND_VISIBLE | UIFIND_ENABLED | UIFIND_ME_FIRST);
-        }
-        else {
+        } else {
             ctrl = info1.pLast;
         }
+    } else {
+        SetFocus(ctrl);
     }
-    if (ctrl != NULL)  SetFocus(ctrl);
     m_focusNeeded = false;
     return true;
 }

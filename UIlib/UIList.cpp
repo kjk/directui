@@ -170,8 +170,7 @@ void ListHeaderItemUI::Event(TEventUI& event)
             m_uDragState |= UISTATE_CAPTURED;
             m_ptLastMouse = event.ptMouse;
             m_manager->SendNotify(this, "headerdragging");
-        }
-        else {
+        } else {
             m_manager->SendNotify(this, "headerclick");
         }
     }
@@ -368,8 +367,7 @@ void ListUI::SetPos(RECT rc)
     // we should determine the correct dimensions...
     if (m_header->IsVisible())  {
         for (int i = 0; i < m_listInfo.nColumns; i++)  m_listInfo.rcColumn[i] = m_header->GetItem(i)->GetPos();
-    }
-    else {
+    } else {
         RECT rcCol = { rc.left, 0, rc.left, 0 };
         for (int i = 0; i < m_listInfo.nColumns; i++)  {
             SIZE sz = m_header->GetItem(i)->EstimateSize(CSize(RectDx(rc), RectDy(rc)));

@@ -127,13 +127,11 @@ void NavigatorButtonUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
 {
     RECT rcButton = GetButtonRect(m_rcItem);
 
-    if ((m_uButtonState & UISTATE_PUSHED) != 0)  {
+    if (FlSet(m_uButtonState, UISTATE_PUSHED))  {
         BlueRenderEngineUI::DoFillRect(hDC, m_manager, rcButton, UICOLOR_NAVIGATOR_BUTTON_PUSHED);
-    }
-    else if (m_bSelected)  {
+    } else if (m_bSelected)  {
         BlueRenderEngineUI::DoFillRect(hDC, m_manager, rcButton, UICOLOR_NAVIGATOR_BUTTON_SELECTED);
-    }
-    else if ((m_uButtonState & UISTATE_PUSHED) != 0)  {
+    } else if (FlSet(m_uButtonState, UISTATE_PUSHED))  {
         BlueRenderEngineUI::DoFillRect(hDC, m_manager, rcButton, UICOLOR_NAVIGATOR_BUTTON_HOVER);
     }
     ::SelectObject(hDC, m_manager->GetThemePen(m_bSelected ? UICOLOR_NAVIGATOR_BORDER_SELECTED : UICOLOR_NAVIGATOR_BORDER_NORMAL));

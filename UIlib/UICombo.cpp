@@ -33,8 +33,7 @@ void SingleLinePickUI::Event(TEventUI& event)
         if (::PtInRect(&m_rcButton, event.ptMouse))  {
             m_uButtonState |= UISTATE_PUSHED | UISTATE_CAPTURED;
             Invalidate();
-        }
-        else {
+        } else {
             // Check for link press
             for (int i = 0; i < m_nLinks; i++)  {
                 if (::PtInRect(&m_rcLinks[i], event.ptMouse))  {
@@ -177,16 +176,13 @@ LRESULT DropDownWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
         win->Add(pLayout);
         m_pm.AttachDialog(win);
         return 0;
-    }
-    else if (uMsg == WM_CLOSE)  {
+    } else if (uMsg == WM_CLOSE)  {
         m_owner->SetManager(m_owner->GetManager(), m_owner->GetParent());
         m_owner->SetPos(m_owner->GetPos());
         m_owner->SetFocus();
-    }
-    else if (uMsg == WM_LBUTTONUP)  {
+    } else if (uMsg == WM_LBUTTONUP)  {
         PostMessage(WM_KILLFOCUS);
-    }
-    else if (uMsg == WM_KEYDOWN)  {
+    } else if (uMsg == WM_KEYDOWN)  {
         switch (wParam)  {
         case VK_ESCAPE:
             m_owner->SelectItem(m_iOldSel);
@@ -201,8 +197,7 @@ LRESULT DropDownWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
             m_owner->Event(event);
             return 0;
         }
-    }
-    else if (uMsg == WM_KILLFOCUS)  {
+    } else if (uMsg == WM_KILLFOCUS)  {
         if (m_hWnd != (HWND) wParam)  PostMessage(WM_CLOSE);
     }
     LRESULT lRes = 0;
@@ -418,16 +413,14 @@ void DropDownUI::DoPaint(HDC hDC, const RECT& rcPaint)
         if (pElement != NULL)  {
             // Render item with specific draw-style
             pElement->DrawItem(hDC, rcText, UIDRAWSTYLE_INPLACE | (m_focused ? UIDRAWSTYLE_FOCUS : 0));
-        }
-        else {
+        } else {
             // Allow non-listitems to render as well.
             RECT rcOldPos = ctrl->GetPos();
             ctrl->SetPos(rcText);
             ctrl->DoPaint(hDC, rcText);
             ctrl->SetPos(rcOldPos);
         }
-    }
-    else {
+    } else {
         BlueRenderEngineUI::DoFillRect(hDC, m_manager, rcText, UICOLOR_CONTROL_BACKGROUND_NORMAL);
     }
     // Paint dropdown button
