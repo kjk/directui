@@ -47,6 +47,7 @@ Dialog\n\
         ListLabelElement text='<x 14>Vogn register'\n\
         ListLabelElement text='<x 14>Chauffør register'\n\
         TextPanel text='<x 16><c #F00000><b>A cool effect</b>\\n<h>'\n\
+      Button text=&Exit name=exit\n\
 ";
 #endif
 
@@ -181,6 +182,12 @@ public:
             const char *name = sender->GetName();
             if (str::Eq(name, "test_old")) {
                 CreateOldTestWindow();
+            }
+        } else if (str::Eq(msg.type, "click")) {
+            ControlUI *sender = msg.sender;
+            const char *name = sender->GetName();
+            if (str::Eq(name, "exit")) {
+                PostMessage(WM_CLOSE);
             }
         }
     }
