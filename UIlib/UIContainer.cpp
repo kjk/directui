@@ -100,7 +100,9 @@ void ContainerUI::SetHeight(int cy)
 void ContainerUI::SetVisible(bool visible)
 {
     // Hide possible scrollbar control
-    if (m_hwndScroll != NULL)  ::ShowScrollBar(m_hwndScroll, SB_CTL, visible);
+    // TODO: doesn't show if visible == true but no need to show the scrollbar
+    if (m_hwndScroll != NULL)
+        ::ShowScrollBar(m_hwndScroll, SB_CTL, visible);
     // Hide children as well
     for (int it = 0; it < m_items.GetSize(); it++)  {
         static_cast<ControlUI*>(m_items[it])->SetVisible(visible);
@@ -276,10 +278,10 @@ void ContainerUI::SetManager(PaintManagerUI* manager, ControlUI* parent)
 ControlUI* ContainerUI::FindControl(FINDCONTROLPROC Proc, void* data, UINT uFlags)
 {
     // Check if this guy is valid
-    if ((uFlags & UIFIND_VISIBLE) != 0 && !IsVisible())  return NULL;
-    if ((uFlags & UIFIND_ENABLED) != 0 && !IsEnabled())  return NULL;
-    if ((uFlags & UIFIND_HITTEST) != 0 && !::PtInRect(&m_rcItem, *(static_cast<LPPOINT>(data))))  return NULL;
-    if ((uFlags & UIFIND_ME_FIRST) != 0)  {
+    if (FlSet(uFlags, UIFIND_VISIBLE) && !IsVisible())  return NULL;
+    if (FlSet(uFlags, UIFIND_ENABLED) && !IsEnabled())  return NULL;
+    if (FlSet(uFlags, UIFIND_HITTEST) && !::PtInRect(&m_rcItem, *(static_cast<LPPOINT>(data))))  return NULL;
+    if (FlSet(uFlags, UIFIND_ME_FIRST))  {
         ControlUI* ctrl = ControlUI::FindControl(Proc, data, uFlags);
         if (ctrl != NULL)  return ctrl;
     }
@@ -344,7 +346,6 @@ void ContainerUI::ProcessScrollbar(RECT rc, int cyRequired)
         }
     }
 }
-
 
 CanvasUI::CanvasUI() : m_hBitmap(NULL), m_iOrientation(HTBOTTOMRIGHT)
 {
@@ -527,7 +528,6 @@ void VerticalLayoutUI::SetPos(RECT rc)
     ProcessScrollbar(rc, cyNeeded);
 }
 
-
 HorizontalLayoutUI::HorizontalLayoutUI()
 {
 }
@@ -577,7 +577,6 @@ void HorizontalLayoutUI::SetPos(RECT rc)
         szRemaining.cx -= sz.cx + m_iPadding;
     }
 }
-
 
 TileLayoutUI::TileLayoutUI() : m_nColumns(2), m_cyNeeded(0)
 {
@@ -648,7 +647,6 @@ void TileLayoutUI::SetPos(RECT rc)
     ProcessScrollbar(rc, m_cyNeeded);
 }
 
-
 DialogLayoutUI::DialogLayoutUI() : m_bFirstResize(true), m_aModes(sizeof(STRETCHMODE))
 {
     ::ZeroMemory(&m_rcDialog, sizeof(m_rcDialog));
@@ -699,12 +697,12 @@ void DialogLayoutUI::SetPos(RECT rc)
     int nCount, cxStretch, cyStretch, cxMove, cyMove;
     for (int i = 0; i < m_aModes.GetSize(); i++)  {
         STRETCHMODE* item = static_cast<STRETCHMODE*>(m_aModes[i]);
-        if (i == 0 || (item->uMode & UISTRETCH_NEWGROUP) != 0)  {
+        if (i == 0 || FlSet(item->uMode, UISTRETCH_NEWGROUP))  {
             nCount = 0;
             for (int j = i + 1; j < m_aModes.GetSize(); j++)  {
                 STRETCHMODE* pNext = static_cast<STRETCHMODE*>(m_aModes[j]);
-                if ((pNext->uMode & (UISTRETCH_NEWGROUP | UISTRETCH_NEWLINE)) != 0)  break;
-                if ((pNext->uMode & (UISTRETCH_SIZE_X | UISTRETCH_SIZE_Y)) != 0)  nCount++;
+                if (FlSet(pNext->uMode, (UISTRETCH_NEWGROUP | UISTRETCH_NEWLINE)))  break;
+                if (FlSet(pNext->uMode, (UISTRETCH_SIZE_X | UISTRETCH_SIZE_Y)))  nCount++;
             }
             if (nCount == 0)  nCount = 1;
             cxStretch = cxDiff / nCount;
@@ -712,7 +710,7 @@ void DialogLayoutUI::SetPos(RECT rc)
             cxMove = 0;
             cyMove = 0;
         }
-        if ((item->uMode & UISTRETCH_NEWLINE) != 0)  {
+        if (FlSet(item->uMode, UISTRETCH_NEWLINE))  {
             cxMove = 0;
             cyMove = 0;
         }
@@ -764,4 +762,3 @@ void DialogLayoutUI::RecalcArea()
     // We're done with initialization
     m_bFirstResize = false;
 }
-

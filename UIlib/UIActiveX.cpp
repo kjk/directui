@@ -445,7 +445,7 @@ STDMETHODIMP ActiveXCtrl::GetDC(LPCRECT pRect, DWORD grfFlags, HDC* phDC)
     if (phDC == NULL)  return E_POINTER;
     if (m_owner == NULL)  return E_UNEXPECTED;
     *phDC = ::GetDC(m_owner->m_hwndHost);
-    if ((grfFlags & OLEDC_PAINTBKGND) != 0)  {
+    if (FlSet(grfFlags, OLEDC_PAINTBKGND))  {
         CRect rcItem = m_owner->GetPos();
         if (!m_bWindowless)  rcItem.ResetOffset();
         ::FillRect(*phDC, &rcItem, (HBRUSH) (COLOR_WINDOW + 1));
@@ -505,7 +505,7 @@ STDMETHODIMP ActiveXCtrl::OnInPlaceActivateEx(BOOL* pfNoRedraw, DWORD dwFlags)
     ::OleLockRunning(m_owner->m_pUnk, TRUE, FALSE);
     HWND hWndFrame = m_owner->GetManager()->GetPaintWindow();
     HRESULT Hr = E_FAIL;
-    if ((dwFlags & ACTIVATE_WINDOWLESS) != 0)  {
+    if (FlSet(dwFlags, ACTIVATE_WINDOWLESS))  {
         m_bWindowless = true;
         Hr = m_owner->m_pUnk->QueryInterface(IID_IOleInPlaceObjectWindowless, (LPVOID*) &m_pInPlaceObject);
         m_owner->m_hwndHost = hWndFrame;
@@ -779,7 +779,7 @@ LRESULT ActiveXWnd::OnMouseActivate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOO
     CSafeRelease<IOleObject> RefOleObject = pUnk;
     DWORD dwMiscStatus = 0;
     pUnk->GetMiscStatus(DVASPECT_CONTENT, &dwMiscStatus);
-    if ((dwMiscStatus & OLEMISC_NOUIACTIVATE) != 0)  return 0;
+    if (FlSet(dwMiscStatus, OLEMISC_NOUIACTIVATE))  return 0;
     if (!m_owner->m_bInPlaceActive)  DoVerb(OLEIVERB_INPLACEACTIVATE);
     bHandled = FALSE;
     return 0;
@@ -1020,7 +1020,7 @@ bool ActiveXUI::DelayedControlCreation()
     m_ctrl->QueryInterface(IID_IOleClientSite, (LPVOID*) &pOleClientSite);
     CSafeRelease<IOleClientSite> RefOleClientSite = pOleClientSite;
     // Initialize control
-    if ((dwMiscStatus & OLEMISC_SETCLIENTSITEFIRST) != 0)  m_pUnk->SetClientSite(pOleClientSite);
+    if (FlSet(dwMiscStatus, OLEMISC_SETCLIENTSITEFIRST))  m_pUnk->SetClientSite(pOleClientSite);
     IPersistStreamInit* pPersistStreamInit = NULL;
     m_pUnk->QueryInterface(IID_IPersistStreamInit, (LPVOID*) &pPersistStreamInit);
     if (pPersistStreamInit != NULL)  {

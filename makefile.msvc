@@ -69,7 +69,8 @@ CFLAGS = $(CFLAGS) $(WINVER_DEFS) /I$(UIL) /I$(UIL)/util /D "UILIB_API="
 CFLAGS_TA = $(CFLAGS) /IApp
 
 LIBS = $(LIBS) kernel32.lib user32.lib gdi32.lib advapi32.lib comdlg32.lib \
-	comctl32.lib shell32.lib gdiplus.lib ole32.lib ws2_32.lib wininet.lib winmm.lib
+	comctl32.lib shell32.lib gdiplus.lib ole32.lib ws2_32.lib wininet.lib \
+	winmm.lib Msimg32.lib
 
 LD = link.exe
 LDFLAGS = $(LDFLAGS) /nologo /DEBUG /machine:x86 /SUBSYSTEM:WINDOWS

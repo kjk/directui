@@ -92,7 +92,7 @@ void NavigatorButtonUI::Event(TEventUI& event)
     }
     if (event.type == UIEVENT_MOUSEMOVE) 
     {
-        if ((m_uButtonState & UISTATE_CAPTURED) != 0)  {
+        if (FlSet(m_uButtonState, UISTATE_CAPTURED))  {
             RECT rcButton = GetButtonRect(m_rcItem);
             if (::PtInRect(&rcButton, event.ptMouse))  m_uButtonState |= UISTATE_PUSHED;
             else m_uButtonState &= ~UISTATE_PUSHED;
@@ -101,7 +101,7 @@ void NavigatorButtonUI::Event(TEventUI& event)
     }
     if (event.type == UIEVENT_BUTTONUP) 
     {
-        if ((m_uButtonState & UISTATE_CAPTURED) != 0)  {
+        if (FlSet(m_uButtonState, UISTATE_CAPTURED))  {
             RECT rcButton = GetButtonRect(m_rcItem);
             if (::PtInRect(&rcButton, event.ptMouse))  {
                 m_manager->SendNotify(this, "link");
@@ -141,13 +141,13 @@ void NavigatorButtonUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
     ::LineTo(hDC, rcButton.right, rcButton.bottom);
 
     UITYPE_COLOR iTextColor = UICOLOR_NAVIGATOR_TEXT_NORMAL;
-    if ((m_uButtonState & UISTATE_PUSHED) != 0)  iTextColor = UICOLOR_NAVIGATOR_TEXT_PUSHED;
+    if (FlSet(m_uButtonState, UISTATE_PUSHED))  iTextColor = UICOLOR_NAVIGATOR_TEXT_PUSHED;
     else if (m_bSelected)  iTextColor = UICOLOR_NAVIGATOR_TEXT_SELECTED;
 
     RECT rcText = rcButton;
     ::OffsetRect(&rcText, 0, 1);
     ::InflateRect(&rcText, -8, 0);
-    if ((m_uButtonState & UISTATE_PUSHED) != 0)  {
+    if (FlSet(m_uButtonState, UISTATE_PUSHED))  {
         rcText.left++; 
         rcText.top += 2;
     }

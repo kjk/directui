@@ -315,7 +315,7 @@ void MultiLineEditUI::SetReadOnly(bool bReadOnly)
 
 bool MultiLineEditUI::IsReadOnly() const
 {
-    return (GetWindowStyle(*m_win) & ES_READONLY) != 0;
+    return FlSet(GetWindowStyle(*m_win), ES_READONLY);
 }
 
 SIZE MultiLineEditUI::EstimateSize(SIZE /*szAvailable*/)

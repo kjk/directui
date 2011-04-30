@@ -30,7 +30,7 @@ void ButtonUI::Event(TEventUI& event)
     }
     if (event.type == UIEVENT_MOUSEMOVE) 
     {
-        if ((m_uButtonState & UISTATE_CAPTURED) != 0)  {
+        if (FlSet(m_uButtonState, UISTATE_CAPTURED))  {
             if (::PtInRect(&m_rcItem, event.ptMouse))  m_uButtonState |= UISTATE_PUSHED;
             else m_uButtonState &= ~UISTATE_PUSHED;
             Invalidate();
@@ -38,7 +38,7 @@ void ButtonUI::Event(TEventUI& event)
     }
     if (event.type == UIEVENT_BUTTONUP) 
     {
-        if ((m_uButtonState & UISTATE_CAPTURED) != 0)  {
+        if (FlSet(m_uButtonState, UISTATE_CAPTURED))  {
             if (::PtInRect(&m_rcItem, event.ptMouse))  Activate();
             m_uButtonState &= ~(UISTATE_PUSHED | UISTATE_CAPTURED);
             Invalidate();
@@ -146,7 +146,7 @@ void OptionUI::Event(TEventUI& event)
     }
     if (event.type == UIEVENT_MOUSEMOVE) 
     {
-        if ((m_uButtonState & UISTATE_CAPTURED) != 0)  {
+        if (FlSet(m_uButtonState, UISTATE_CAPTURED))  {
             if (::PtInRect(&m_rcItem, event.ptMouse))  m_uButtonState |= UISTATE_PUSHED;
             else m_uButtonState &= ~UISTATE_PUSHED;
             Invalidate();
@@ -154,7 +154,7 @@ void OptionUI::Event(TEventUI& event)
     }
     if (event.type == UIEVENT_BUTTONUP) 
     {
-        if ((m_uButtonState & UISTATE_CAPTURED) != 0)  {
+        if (FlSet(m_uButtonState, UISTATE_CAPTURED))  {
             if (::PtInRect(&m_rcItem, event.ptMouse))  Activate();
             m_uButtonState &= ~(UISTATE_PUSHED | UISTATE_CAPTURED);
             Invalidate();

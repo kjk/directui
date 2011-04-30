@@ -200,10 +200,6 @@ m_hWndPaint(NULL),
 
         // Boot Windows Common Controls (for the ToolTip control)
         ::InitCommonControls();
-
-        // We need the image library for effects. It is however optional in Windows so
-        // we'll also need to provide a gracefull fallback.
-        ::LoadLibraryA("msimg32.dll");
     }
     m_szMinWindow.cx = 140;
     m_szMinWindow.cy = 200;
@@ -1442,9 +1438,9 @@ void* ControlUI::GetInterface(const char* name)
 
 ControlUI* ControlUI::FindControl(FINDCONTROLPROC Proc, void* data, UINT uFlags)
 {
-    if ((uFlags & UIFIND_VISIBLE) != 0 && !IsVisible())  return NULL;
-    if ((uFlags & UIFIND_ENABLED) != 0 && !IsEnabled())  return NULL;
-    if ((uFlags & UIFIND_HITTEST) != 0 && !::PtInRect(&m_rcItem, * static_cast<LPPOINT>(data)))  return NULL;
+    if (FlSet(uFlags, UIFIND_VISIBLE) && !IsVisible())  return NULL;
+    if (FlSet(uFlags, UIFIND_ENABLED) && !IsEnabled())  return NULL;
+    if (FlSet(uFlags, UIFIND_HITTEST) && !::PtInRect(&m_rcItem, * static_cast<LPPOINT>(data)))  return NULL;
     return Proc(this, data);
 }
 

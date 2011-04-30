@@ -176,7 +176,7 @@ void ListHeaderItemUI::Event(TEventUI& event)
     }
     if (event.type == UIEVENT_BUTTONUP) 
     {
-        if ((m_uDragState & UISTATE_CAPTURED) != 0)  {
+        if (FlSet(m_uDragState, UISTATE_CAPTURED))  {
             m_uDragState &= ~UISTATE_CAPTURED;
             m_manager->SendNotify(this, "headerdragged");
             m_manager->UpdateLayout();
@@ -184,7 +184,7 @@ void ListHeaderItemUI::Event(TEventUI& event)
     }
     if (event.type == UIEVENT_MOUSEMOVE) 
     {
-        if ((m_uDragState & UISTATE_CAPTURED) != 0)  {
+        if (FlSet(m_uDragState, UISTATE_CAPTURED))  {
             RECT rc = m_rcItem;
             rc.right -= m_ptLastMouse.x - event.ptMouse.x;
             const int MIN_DRAGSIZE = 40;
@@ -601,7 +601,7 @@ void ListLabelElementUI::Event(TEventUI& event)
     }
     if (event.type == UIEVENT_MOUSELEAVE) 
     {
-        if ((m_uButtonState & UISTATE_HOT) != 0)  {
+        if (FlSet(m_uButtonState, UISTATE_HOT))  {
             m_uButtonState &= ~UISTATE_HOT;
             Invalidate();
         }
@@ -635,7 +635,7 @@ void ListLabelElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uDrawStyle)
 {
     UITYPE_COLOR iTextColor = UICOLOR_CONTROL_TEXT_NORMAL;
     UITYPE_COLOR iBackColor = UICOLOR__INVALID;
-    if ((m_uButtonState & UISTATE_HOT) != 0)  {
+    if (FlSet(m_uButtonState, UISTATE_HOT))  {
         iTextColor = UICOLOR_CONTROL_TEXT_NORMAL;
         iBackColor = UICOLOR_CONTROL_BACKGROUND_HOVER;
     }
@@ -643,7 +643,7 @@ void ListLabelElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uDrawStyle)
         iTextColor = UICOLOR_CONTROL_TEXT_SELECTED;
         iBackColor = UICOLOR_CONTROL_BACKGROUND_SELECTED;
     }
-    if ((uDrawStyle & UIDRAWSTYLE_INPLACE) != 0) 
+    if (FlSet(uDrawStyle, UIDRAWSTYLE_INPLACE)) 
     {
         iTextColor = UICOLOR_CONTROL_TEXT_NORMAL;
         iBackColor = UICOLOR_CONTROL_BACKGROUND_NORMAL;
@@ -734,7 +734,7 @@ void ListTextElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
     const TListInfoUI* pInfo = m_owner->GetListInfo();
     UITYPE_COLOR iTextColor = pInfo->Text;
     UITYPE_COLOR iBackColor = pInfo->Background;
-    if ((m_uButtonState & UISTATE_HOT) != 0)  {
+    if (FlSet(m_uButtonState, UISTATE_HOT))  {
         iBackColor = pInfo->HotBackground;
         iTextColor = pInfo->HotText;
     }
@@ -937,7 +937,7 @@ void ListExpandElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
     const TListInfoUI* pInfo = m_owner->GetListInfo();
     UITYPE_COLOR iTextColor = pInfo->Text;
     UITYPE_COLOR iBackColor = pInfo->Background;
-    if ((m_uButtonState & UISTATE_HOT) != 0)  {
+    if (FlSet(m_uButtonState, UISTATE_HOT))  {
         iBackColor = pInfo->HotBackground;
         iTextColor = pInfo->HotText;
     }

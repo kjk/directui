@@ -68,7 +68,7 @@ void BlueRenderEngineUI::DoPaintFrame(HDC hDC, PaintManagerUI* manager, RECT rcI
     if (Background != UICOLOR__INVALID)  {
         DoFillRect(hDC, manager, rcItem, Background);
     }
-    if ((uStyle & UIFRAME_ROUND) != 0) 
+    if (FlSet(uStyle, UIFRAME_ROUND)) 
     {
         POINT ptTemp;
         ::SelectObject(hDC, manager->GetThemePen(Light));
@@ -82,7 +82,7 @@ void BlueRenderEngineUI::DoPaintFrame(HDC hDC, PaintManagerUI* manager, RECT rcI
         ::LineTo(hDC, rcItem.right - 2, rcItem.bottom - 1);
         ::LineTo(hDC, rcItem.left, rcItem.bottom - 1);
     }
-    if ((uStyle & UIFRAME_FOCUS) != 0) 
+    if (FlSet(uStyle, UIFRAME_FOCUS)) 
     {
         HPEN hPen = ::CreatePen(PS_DOT, 1, manager->GetThemeColor(UICOLOR_BUTTON_BORDER_FOCUS));
         HPEN hOldPen = (HPEN) ::SelectObject(hDC, hPen);
@@ -130,7 +130,7 @@ void BlueRenderEngineUI::DoPaintArcCaption(HDC hDC, PaintManagerUI* manager, REC
 
     RECT rcText = { rc.left, rc.top + 3, rc.right, rc.bottom };
 
-    if ((uStyle & UIARC_GRIPPER) != 0)  {
+    if (FlSet(uStyle, UIARC_GRIPPER))  {
         RECT rcButton1 = { rc.left + 10, rc.top + 4, rc.left + 14, rc.top + 7 };
         DoPaintFrame(hDC, manager, rcButton1, UICOLOR_TITLE_BORDER_LIGHT, UICOLOR_TITLE_BORDER_DARK, UICOLOR__INVALID, 0);
         RECT rcButton2 = { rc.left + 6, rc.top + 8, rc.left + 10, rc.top + 11 };
@@ -151,7 +151,7 @@ void BlueRenderEngineUI::DoPaintButton(HDC hDC, PaintManagerUI* manager, RECT rc
 {
     ASSERT(::GetObjectType(hDC)==OBJ_DC || ::GetObjectType(hDC)==OBJ_MEMDC);
     // Draw focus rectangle
-    if (((uState & UISTATE_FOCUSED) != 0) && manager->GetSystemSettings().bShowKeyboardCues)  {
+    if ((FlSet(uState, UISTATE_FOCUSED)) && manager->GetSystemSettings().bShowKeyboardCues)  {
         BlueRenderEngineUI::DoPaintFrame(hDC, manager, rc, UICOLOR_BUTTON_BORDER_FOCUS, UICOLOR_BUTTON_BORDER_FOCUS, UICOLOR__INVALID, UIFRAME_ROUND);
         ::InflateRect(&rc, -1, -1);
     }
@@ -178,7 +178,7 @@ void BlueRenderEngineUI::DoPaintButton(HDC hDC, PaintManagerUI* manager, RECT rc
     DoPaintFrame(hDC, manager, rc, clrBorder1, clrBorder2, UICOLOR__INVALID, UIFRAME_ROUND);
     ::InflateRect(&rc, -1, -1);
     // The pushed button has an inner light shade
-    if ((uState & UISTATE_PUSHED) != 0)  {
+    if (FlSet(uState, UISTATE_PUSHED))  {
         DoPaintFrame(hDC, manager, rc, UICOLOR_STANDARD_LIGHTGREY, UICOLOR_STANDARD_LIGHTGREY, UICOLOR__INVALID);
         rc.top += 1;
         rc.left += 1;
@@ -233,26 +233,26 @@ void BlueRenderEngineUI::DoPaintOptionBox(HDC hDC, PaintManagerUI* manager, RECT
     // Determine placement of elements
     RECT rcText = rcItem;
     RECT rcButton = rcItem;
-    if ((uStyle & DT_RIGHT) != 0)  {
+    if (FlSet(uStyle, DT_RIGHT))  {
         rcText.right -= 18;
         rcButton.left = rcButton.right - 18;
     } else {
         rcText.left += 18;
         rcButton.right = rcButton.left + 18;
     }
-    bool bSelected = (uState & UISTATE_CHECKED) != 0;
+    bool bSelected = FlSet(uState, UISTATE_CHECKED);
     int iIcon = bSelected ? 8 : 9;
-    if ((uState & UISTATE_PUSHED) != 0)  iIcon = 10;
-    if ((uState & UISTATE_DISABLED) != 0)  iIcon = bSelected ? 10 : 11;
+    if (FlSet(uState, UISTATE_PUSHED))  iIcon = 10;
+    if (FlSet(uState, UISTATE_DISABLED))  iIcon = bSelected ? 10 : 11;
     HICON hIcon = manager->GetThemeIcon(iIcon, 16);
     ::DrawIconEx(hDC, rcButton.left, rcButton.top, hIcon, 16, 16, 0, NULL, DI_NORMAL);
     ::DestroyIcon(hIcon);
     // Paint text
-    UITYPE_COLOR iTextColor = ((uState & UISTATE_DISABLED) != 0) ? UICOLOR_EDIT_TEXT_DISABLED : UICOLOR_EDIT_TEXT_NORMAL;
+    UITYPE_COLOR iTextColor = FlSet(uState, UISTATE_DISABLED) ? UICOLOR_EDIT_TEXT_DISABLED : UICOLOR_EDIT_TEXT_NORMAL;
     int nLinks = 0;
     BlueRenderEngineUI::DoPaintPrettyText(hDC, manager, rcText, txt, iTextColor, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE);
     // Paint focus rectangle
-    if (((uState & UISTATE_FOCUSED) != 0) && manager->GetSystemSettings().bShowKeyboardCues)  {
+    if ((FlSet(uState, UISTATE_FOCUSED)) && manager->GetSystemSettings().bShowKeyboardCues)  {
         RECT rcFocus = { 0, 0, 9999, 9999 };;
         int nLinks = 0;
         BlueRenderEngineUI::DoPaintPrettyText(hDC, manager, rcFocus, txt, iTextColor, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE | DT_CALCRECT);
@@ -440,7 +440,7 @@ void BlueRenderEngineUI::DoPaintPrettyText(HDC hDC, PaintManagerUI* manager, REC
             // A new link was detected/requested. We'll adjust the line height
             // for the next line and expand the link hitbox (if any)
             if (bInLink && linkIdx < nLinkRects) ::SetRect(&prcLinks[linkIdx++], ptLinkStart.x, ptLinkStart.y, pt.x, pt.y + tm.tmHeight);
-            if ((uStyle & DT_SINGLELINE) != 0)  break;
+            if (FlSet(uStyle, DT_SINGLELINE))  break;
             if (*txt == '\n')  txt++;
             pt.x = rc.left + iLineIndent;
             pt.y += cyLine - tm.tmDescent;
@@ -625,11 +625,11 @@ void BlueRenderEngineUI::DoPaintPrettyText(HDC hDC, PaintManagerUI* manager, REC
                     ::GetTextExtentPoint32(hDC, txt, cchChars, &szText);
                 }
                 if (pt.x + szText.cx >= rc.right)  {
-                    if ((uStyle & DT_WORDBREAK) != 0 && cchLastGoodWord > 0)  {
+                    if (FlSet(uStyle, DT_WORDBREAK) && cchLastGoodWord > 0)  {
                         cchChars = cchLastGoodWord;
                         pt.x = rc.right;
                     }
-                    if ((uStyle & DT_END_ELLIPSIS) != 0 && cchChars > 2)  {
+                    if (FlSet(uStyle, DT_END_ELLIPSIS) && cchChars > 2)  {
                         cchChars -= 2;
                         pt.x = rc.right;
                     }
@@ -657,7 +657,7 @@ void BlueRenderEngineUI::DoPaintPrettyText(HDC hDC, PaintManagerUI* manager, REC
     nLinkRects = linkIdx;
 
     // Return size of text when requested
-    if ((uStyle & DT_CALCRECT) != 0)  {
+    if (FlSet(uStyle, DT_CALCRECT))  {
         rc.bottom = MAX(cyMinHeight, pt.y + cyLine);
         if (rc.right >= 9999)  {
             if (strlen(txt) > 0)  pt.x += 3;
@@ -674,58 +674,49 @@ void BlueRenderEngineUI::DoPaintPrettyText(HDC hDC, PaintManagerUI* manager, REC
 
 void BlueRenderEngineUI::DoPaintGradient(HDC hDC, PaintManagerUI* manager, RECT rc, COLORREF clrFirst, COLORREF clrSecond, bool bVertical, int nSteps)
 {
-    typedef BOOL (WINAPI *PGradientFill)(HDC, PTRIVERTEX, ULONG, PVOID, ULONG, ULONG);
-    static PGradientFill lpGradientFill = (PGradientFill) ::GetProcAddress(::GetModuleHandleA("msimg32.dll"), "GradientFill");
-    if (lpGradientFill != NULL)  
+#if 1
+    // Use GradientFill() from msimg32.dll
+    // It may be slower than the code below but makes really pretty gradients on 16bit colors.
+    TRIVERTEX triv[2] = 
     {
-        // Use Windows gradient function from msimg32.dll
-        // It may be slower than the code below but makes really pretty gradients on 16bit colors.
-        TRIVERTEX triv[2] = 
-        {
-            { rc.left, rc.top, GetRValue(clrFirst) << 8, GetGValue(clrFirst) << 8, GetBValue(clrFirst) << 8, 0xFF00 },
-            { rc.right, rc.bottom, GetRValue(clrSecond) << 8, GetGValue(clrSecond) << 8, GetBValue(clrSecond) << 8, 0xFF00 }
-        };
-        GRADIENT_RECT grc = { 0, 1 };
-        lpGradientFill(hDC, triv, 2, &grc, 1, bVertical ? GRADIENT_FILL_RECT_V : GRADIENT_FILL_RECT_H);
-    }
-    else 
-    {
-        // Determine how many shades
-        int nShift = 1;
-        if (nSteps >= 64)  nShift = 6;
-        else if (nSteps >= 32)  nShift = 5;
-        else if (nSteps >= 16)  nShift = 4;
-        else if (nSteps >= 8)  nShift = 3;
-        else if (nSteps >= 4)  nShift = 2;
-        int nLines = 1 << nShift;
-        for (int i = 0; i < nLines; i++)  {
-            // Do a little alpha blending
-            BYTE bR = (BYTE) ((GetRValue(clrSecond) * (nLines - i) + GetRValue(clrFirst) * i) >> nShift);
-            BYTE bG = (BYTE) ((GetGValue(clrSecond) * (nLines - i) + GetGValue(clrFirst) * i) >> nShift);
-            BYTE bB = (BYTE) ((GetBValue(clrSecond) * (nLines - i) + GetBValue(clrFirst) * i) >> nShift);
-            // ... then paint with the resulting color
-            HBRUSH hBrush = ::CreateSolidBrush(RGB(bR,bG,bB));
-            RECT r2 = rc;
-            if (bVertical)  {
-                r2.bottom = rc.bottom - ((i * RectDy(rc)) >> nShift);
-                r2.top = rc.bottom - (((i + 1) * RectDy(rc)) >> nShift);
-                if (RectDy(r2) > 0)  ::FillRect(hDC, &r2, hBrush);
-            } else {
-                r2.left = rc.right - (((i + 1) * RectDx(rc)) >> nShift);
-                r2.right = rc.right - ((i * RectDx(rc)) >> nShift);
-                if ((r2.right - r2.left) > 0)  ::FillRect(hDC, &r2, hBrush);
-            }
-            ::DeleteObject(hBrush);
+        { rc.left, rc.top, GetRValue(clrFirst) << 8, GetGValue(clrFirst) << 8, GetBValue(clrFirst) << 8, 0xFF00 },
+        { rc.right, rc.bottom, GetRValue(clrSecond) << 8, GetGValue(clrSecond) << 8, GetBValue(clrSecond) << 8, 0xFF00 }
+    };
+    GRADIENT_RECT grc = { 0, 1 };
+    ::GradientFill(hDC, triv, 2, &grc, 1, bVertical ? GRADIENT_FILL_RECT_V : GRADIENT_FILL_RECT_H);
+#else
+    // Determine how many shades
+    int nShift = 1;
+    if (nSteps >= 64)  nShift = 6;
+    else if (nSteps >= 32)  nShift = 5;
+    else if (nSteps >= 16)  nShift = 4;
+    else if (nSteps >= 8)  nShift = 3;
+    else if (nSteps >= 4)  nShift = 2;
+    int nLines = 1 << nShift;
+    for (int i = 0; i < nLines; i++)  {
+        // Do a little alpha blending
+        BYTE bR = (BYTE) ((GetRValue(clrSecond) * (nLines - i) + GetRValue(clrFirst) * i) >> nShift);
+        BYTE bG = (BYTE) ((GetGValue(clrSecond) * (nLines - i) + GetGValue(clrFirst) * i) >> nShift);
+        BYTE bB = (BYTE) ((GetBValue(clrSecond) * (nLines - i) + GetBValue(clrFirst) * i) >> nShift);
+        // ... then paint with the resulting color
+        HBRUSH hBrush = ::CreateSolidBrush(RGB(bR,bG,bB));
+        RECT r2 = rc;
+        if (bVertical)  {
+            r2.bottom = rc.bottom - ((i * RectDy(rc)) >> nShift);
+            r2.top = rc.bottom - (((i + 1) * RectDy(rc)) >> nShift);
+            if (RectDy(r2) > 0)  ::FillRect(hDC, &r2, hBrush);
+        } else {
+            r2.left = rc.right - (((i + 1) * RectDx(rc)) >> nShift);
+            r2.right = rc.right - ((i * RectDx(rc)) >> nShift);
+            if ((r2.right - r2.left) > 0)  ::FillRect(hDC, &r2, hBrush);
         }
+        ::DeleteObject(hBrush);
     }
+#endif
 }
 
 void BlueRenderEngineUI::DoPaintAlphaBitmap(HDC hDC, PaintManagerUI* manager, HBITMAP hBitmap, RECT rc, BYTE iAlpha)
 {
-    // Alpha blitting is only supported of the msimg32.dll library is located on the machine.
-    typedef BOOL (WINAPI *LPALPHABLEND)(HDC, int, int, int, int,HDC, int, int, int, int, BLENDFUNCTION);
-    static LPALPHABLEND lpAlphaBlend = (LPALPHABLEND) ::GetProcAddress(::GetModuleHandleA("msimg32.dll"), "AlphaBlend");
-    if (lpAlphaBlend == NULL)  return;
     if (hBitmap == NULL)  return;
     HDC hCloneDC = ::CreateCompatibleDC(manager->GetPaintDC());
     HBITMAP hOldBitmap = (HBITMAP) ::SelectObject(hCloneDC, hBitmap);
@@ -737,31 +728,26 @@ void BlueRenderEngineUI::DoPaintAlphaBitmap(HDC hDC, PaintManagerUI* manager, HB
     bf.BlendFlags = 0; 
     bf.AlphaFormat = AC_SRC_ALPHA;
     bf.SourceConstantAlpha = iAlpha;
-    lpAlphaBlend(hDC, rc.left, rc.top, cx, cy, hCloneDC, 0, 0, cx, cy, bf);
+    AlphaBlend(hDC, rc.left, rc.top, cx, cy, hCloneDC, 0, 0, cx, cy, bf);
     ::SelectObject(hCloneDC, hOldBitmap);
     ::DeleteDC(hCloneDC);
 }
 
 void BlueRenderEngineUI::DoAnimateWindow(HWND hWnd, UINT uStyle, DWORD dwTime /*= 200*/)
 {
-    typedef BOOL (CALLBACK* PFNANIMATEWINDOW)(HWND, DWORD, DWORD);
 #ifndef AW_HIDE
     const DWORD AW_HIDE = 0x00010000;
     const DWORD AW_BLEND = 0x00080000;
 #endif
     // Mix flags
     DWORD dwFlags = 0;
-    if ((uStyle & UIANIM_HIDE) != 0)  dwFlags |= AW_HIDE;
-    if ((uStyle & UIANIM_FADE) != 0)  dwFlags |= AW_BLEND;
-    PFNANIMATEWINDOW pfnAnimateWindow = (PFNANIMATEWINDOW) ::GetProcAddress(::GetModuleHandleA("user32.dll"), "AnimateWindow");
-    if (pfnAnimateWindow != NULL)  pfnAnimateWindow(hWnd, dwTime, dwFlags);
+    if (FlSet(uStyle, UIANIM_HIDE))  dwFlags |= AW_HIDE;
+    if (FlSet(uStyle, UIANIM_FADE))  dwFlags |= AW_BLEND;
+    AnimateWindow(hWnd, dwTime, dwFlags);
 }
 
 HBITMAP BlueRenderEngineUI::GenerateAlphaBitmap(PaintManagerUI* manager, ControlUI* ctrl, RECT rc, UITYPE_COLOR Background)
 {
-    typedef BOOL (WINAPI *LPALPHABLEND)(HDC, int, int, int, int,HDC, int, int, int, int, BLENDFUNCTION);
-    static FARPROC lpAlphaBlend = ::GetProcAddress(::GetModuleHandleA("msimg32.dll"), "AlphaBlend");
-    if (lpAlphaBlend == NULL)  return NULL;
     int cx = rc.right - rc.left;
     int cy = rc.bottom - rc.top;
 
