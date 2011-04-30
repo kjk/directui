@@ -222,10 +222,10 @@ PaintManagerUI::~PaintManagerUI()
     // Release other collections
     for (i = 0; i < m_timers.GetSize(); i++)  delete static_cast<TIMERINFO*>(m_timers[i]);
     // Reset other parts...
-    if (m_hwndTooltip != NULL)  ::DestroyWindow(m_hwndTooltip);
-    if (m_hDcOffscreen != NULL)  ::DeleteDC(m_hDcOffscreen);
-    if (m_hbmpOffscreen != NULL)  ::DeleteObject(m_hbmpOffscreen);
-    if (m_hDcPaint != NULL)  ::ReleaseDC(m_hWndPaint, m_hDcPaint);
+    ::DestroyWindow(m_hwndTooltip);
+    ::DeleteDC(m_hDcOffscreen);
+    ::DeleteObject(m_hbmpOffscreen);
+    ::ReleaseDC(m_hWndPaint, m_hDcPaint);
     m_preMessages.Remove(m_preMessages.Find(this));
 }
 
@@ -446,8 +446,8 @@ bool PaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRE
                     }
                 }
                 // Reset offscreen device
-                if (m_hDcOffscreen != NULL)  ::DeleteDC(m_hDcOffscreen);
-                if (m_hbmpOffscreen != NULL)  ::DeleteObject(m_hbmpOffscreen);
+                ::DeleteDC(m_hDcOffscreen);
+                ::DeleteObject(m_hbmpOffscreen);
                 m_hDcOffscreen = NULL;
                 m_hbmpOffscreen = NULL;
             }

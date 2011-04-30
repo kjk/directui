@@ -171,7 +171,7 @@ TaskPanelUI::TaskPanelUI() : m_hFadeBitmap(NULL)
 
 TaskPanelUI::~TaskPanelUI()
 {
-    if (m_hFadeBitmap != NULL)  ::DeleteObject(m_hFadeBitmap);
+    ::DeleteObject(m_hFadeBitmap);
     if (m_manager != NULL)  m_manager->KillTimer(this, FADE_TIMERID);
 }
 
@@ -189,7 +189,7 @@ SIZE TaskPanelUI::EstimateSize(SIZE szAvailable)
         // Generate a bitmap so we can paint this panel as slowly fading out.
         // Only do this when the control's size suddenly go below the threshold.
         if (m_rcItem.right - m_rcItem.left > 1 && m_hFadeBitmap == NULL)  {
-            if (m_hFadeBitmap != NULL)  ::DeleteObject(m_hFadeBitmap);
+            ::DeleteObject(m_hFadeBitmap);
             m_hFadeBitmap = BlueRenderEngineUI::GenerateAlphaBitmap(m_manager, this, m_rcItem, UICOLOR_DIALOG_BACKGROUND);
             // If we successfully created the 32bpp bitmap we'll set off the
             // timer so we can get animating...
@@ -355,12 +355,12 @@ ImagePanelUI::ImagePanelUI() : m_hBitmap(NULL)
 
 ImagePanelUI::~ImagePanelUI()
 {
-    if (m_hBitmap != NULL)  ::DeleteObject(m_hBitmap);
+    ::DeleteObject(m_hBitmap);
 }
 
 bool ImagePanelUI::SetImage(const char* pstrBitmap)
 {
-    if (m_hBitmap != NULL)  ::DeleteObject(m_hBitmap);
+    ::DeleteObject(m_hBitmap);
     m_hBitmap = (HBITMAP) ::LoadImageA(m_manager->GetResourceInstance(), pstrBitmap, IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION);
     ASSERT(m_hBitmap);
     if (m_hBitmap == NULL)  return false;

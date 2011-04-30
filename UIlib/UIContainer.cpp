@@ -353,7 +353,7 @@ CanvasUI::CanvasUI() : m_hBitmap(NULL), m_iOrientation(HTBOTTOMRIGHT)
 
 CanvasUI::~CanvasUI()
 {
-    if (m_hBitmap != NULL)  ::DeleteObject(m_hBitmap);
+    ::DeleteObject(m_hBitmap);
 }
 
 const char* CanvasUI::GetClass() const
@@ -368,7 +368,7 @@ bool CanvasUI::SetWatermark(UINT iBitmapRes, int iOrientation)
 
 bool CanvasUI::SetWatermark(const char* pstrBitmap, int iOrientation)
 {
-    if (m_hBitmap != NULL)  ::DeleteObject(m_hBitmap);
+    ::DeleteObject(m_hBitmap);
     m_hBitmap = (HBITMAP) ::LoadImageA(m_manager->GetResourceInstance(), pstrBitmap, IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION);
     ASSERT(m_hBitmap!=NULL);
     if (m_hBitmap == NULL)  return false;

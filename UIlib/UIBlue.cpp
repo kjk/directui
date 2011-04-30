@@ -796,7 +796,6 @@ HBITMAP BlueRenderEngineUI::GenerateAlphaBitmap(PaintManagerUI* manager, Control
         }
     }
 
-    // Cleanup
     ::SelectObject(hPaintDC, hOldPaintBitmap);
     ::DeleteObject(hPaintBitmap);
     ::DeleteDC(hPaintDC);
