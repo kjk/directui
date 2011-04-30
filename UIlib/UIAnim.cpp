@@ -1,8 +1,5 @@
-
 #include "stdafx.h"
 #include "UIAnim.h"
-#include "BaseUtil.h"
-#include "WinUtil.h"
 
 #if (_MSC_VER < 1300)
 #pragma comment(lib, "Delayimp.lib")
@@ -114,8 +111,8 @@ bool AnimationSpooler::Init(HWND hWnd)
     // Set viewport
     D3DVIEWPORT9 vp;
     vp.X = vp.Y = 0;
-    vp.Width = rcWindow.right - rcWindow.left;
-    vp.Height = rcWindow.bottom - rcWindow.top;
+    vp.Width = RectDx(rcWindow);
+    vp.Height = RectDy(rcWindow);
     vp.MinZ = 0.0;
     vp.MaxZ = 1.0;
     Hr = m_p3DDevice->SetViewport(&vp);

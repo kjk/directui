@@ -38,7 +38,7 @@ SIZE ToolbarTitlePanelUI::EstimateSize(SIZE szAvailable)
     ::InflateRect(&rcText, -m_iPadding, -m_iPadding);
     int nLinks = 0;
     BlueRenderEngineUI::DoPaintPrettyText(m_manager->GetPaintDC(), m_manager, rcText, m_txt, UICOLOR_EDIT_TEXT_NORMAL, UICOLOR__INVALID, NULL, nLinks, DT_WORDBREAK | DT_CALCRECT);
-    sz.cy = (rcText.bottom - rcText.top) + (m_iPadding * 2);
+    sz.cy = RectDy(rcText) + (m_iPadding * 2);
     return sz;
 }
 

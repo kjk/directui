@@ -2,7 +2,6 @@
 #include "StdAfx.h"
 #include "UITab.h"
 
-
 TabFolderUI::TabFolderUI() : m_curSel(-1), m_curPage(NULL), m_tabAreas(sizeof(RECT))
 {
     m_chShortcut = VK_NEXT;
@@ -119,7 +118,7 @@ void TabFolderUI::DoPaint(HDC hDC, const RECT& rcPaint)
                 if (!IsEnabled())  uState |= UISTATE_DISABLED;
                 if (m_curSel == i)  uState = UISTATE_PUSHED;
                 BlueRenderEngineUI::DoPaintTabFolder(hDC, m_manager, rcTab, txt, uState);
-                posX += (rcTab.right - rcTab.left) + 2;
+                posX += RectDx(rcTab) + 2;
                 m_tabAreas.Add(&rcTab);
             }
         }

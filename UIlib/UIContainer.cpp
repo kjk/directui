@@ -1,8 +1,5 @@
-
 #include "StdAfx.h"
 #include "UIContainer.h"
-#include "BaseUtil.h"
-#include "WinUtil.h"
 
 ContainerUI::ContainerUI() : 
 m_hwndScroll(NULL), 
@@ -607,9 +604,10 @@ void TileLayoutUI::SetPos(RECT rc)
     rc.top += m_rcInset.top;
     rc.right -= m_rcInset.right;
     rc.bottom -= m_rcInset.bottom;
-    if (m_hwndScroll != NULL)  rc.right -= m_manager->GetSystemMetrics().cxvscroll;
+    if (m_hwndScroll != NULL)
+        rc.right -= m_manager->GetSystemMetrics().cxvscroll;
     // Position the elements
-    int cxWidth = (rc.right - rc.left) / m_nColumns;
+    int cxWidth = RectDx(rc) / m_nColumns;
     int cyHeight = 0;
     int iCount = 0;
     POINT ptTile = { rc.left, rc.top - m_iScrollPos };
@@ -624,7 +622,7 @@ void TileLayoutUI::SetPos(RECT rc)
         else ::InflateRect(&rcTile, -(m_iPadding / 2), 0);
         // If this panel expands vertically
         if (m_cxyFixed.cy == 0) {
-            SIZE szAvailable = { rcTile.right - rcTile.left, 9999 };
+            SIZE szAvailable = { RectDx(rcTile), 9999 };
             int idx = iCount;
             for (int it2 = it1; it2 < m_items.GetSize(); it2++)  {
                 SIZE szTile = static_cast<ControlUI*>(m_items[it2])->EstimateSize(szAvailable);
@@ -679,7 +677,7 @@ void DialogLayoutUI::SetStretchMode(ControlUI* ctrl, UINT uMode)
 SIZE DialogLayoutUI::EstimateSize(SIZE szAvailable)
 {
     RecalcArea();
-    return CSize(m_rcDialog.right - m_rcDialog.left, m_rcDialog.bottom - m_rcDialog.top);
+    return CSize(RectDx(m_rcDialog), RectDy(m_rcDialog));
 }
 
 void DialogLayoutUI::SetPos(RECT rc)
@@ -720,11 +718,11 @@ void DialogLayoutUI::SetPos(RECT rc)
         }
         RECT rcPos = item->rcItem;
         ::OffsetRect(&rcPos, rc.left, rc.top - m_iScrollPos);
-        if ((item->uMode & UISTRETCH_MOVE_X) != 0)  ::OffsetRect(&rcPos, cxMove, 0);
-        if ((item->uMode & UISTRETCH_MOVE_Y) != 0)  ::OffsetRect(&rcPos, 0, cyMove);
-        if ((item->uMode & UISTRETCH_SIZE_X) != 0)  rcPos.right += cxStretch;
-        if ((item->uMode & UISTRETCH_SIZE_Y) != 0)  rcPos.bottom += cyStretch;
-        if ((item->uMode & (UISTRETCH_SIZE_X | UISTRETCH_SIZE_Y)) != 0)  {
+        if (FlSet(item->uMode, UISTRETCH_MOVE_X))  ::OffsetRect(&rcPos, cxMove, 0);
+        if (FlSet(item->uMode, UISTRETCH_MOVE_Y))  ::OffsetRect(&rcPos, 0, cyMove);
+        if (FlSet(item->uMode, UISTRETCH_SIZE_X))  rcPos.right += cxStretch;
+        if (FlSet(item->uMode, UISTRETCH_SIZE_Y))  rcPos.bottom += cyStretch;
+        if (FlSet(item->uMode, (UISTRETCH_SIZE_X | UISTRETCH_SIZE_Y)))  {
             cxMove += cxStretch;
             cyMove += cyStretch;
         }      

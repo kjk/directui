@@ -1,8 +1,5 @@
-
 #include "StdAfx.h"
 #include "UIBlue.h"
-#include "BaseUtil.h"
-#include "WinUtil.h"
 
 #ifndef BlendRGB
 #define BlendRGB(c1, c2, factor) \
@@ -383,7 +380,7 @@ void BlueRenderEngineUI::DoPaintPrettyText(HDC hDC, PaintManagerUI* manager, REC
 
     if (::IsRectEmpty(&rc))  return;
 
-    bool bDraw = (uStyle & DT_CALCRECT) == 0;
+    bool bDraw = !FlSet(uStyle, DT_CALCRECT);
 
     RECT rcClip = { 0 };
     ::GetClipBox(hDC, &rcClip);
@@ -401,28 +398,29 @@ void BlueRenderEngineUI::DoPaintPrettyText(HDC hDC, PaintManagerUI* manager, REC
 
     // If the drawstyle includes an alignment, we'll need to first determine the text-size so
     // we can draw it at the correct position...
-    if ((uStyle & DT_SINGLELINE) != 0 && (uStyle & DT_VCENTER) != 0 && (uStyle & DT_CALCRECT) == 0)  {
+    if (FlSet(uStyle, DT_SINGLELINE) && FlSet(uStyle, DT_VCENTER) && bDraw) {
         RECT rcText = { 0, 0, 9999, 100 };
         int nLinks = 0;
         DoPaintPrettyText(hDC, manager, rcText, txt, iTextColor, iBackColor, NULL, nLinks, uStyle | DT_CALCRECT);
         rc.top = rc.top + (RectDy(rc) / 2) - (RectDy(rcText) / 2);
         rc.bottom = rc.top + RectDy(rcText);
     }
-    if ((uStyle & DT_SINGLELINE) != 0 && (uStyle & DT_CENTER) != 0 && (uStyle & DT_CALCRECT) == 0)  {
+    if (FlSet(uStyle, DT_SINGLELINE) && FlSet(uStyle, DT_CENTER) && bDraw) {
         RECT rcText = { 0, 0, 9999, 100 };
         int nLinks = 0;
         DoPaintPrettyText(hDC, manager, rcText, txt, iTextColor, iBackColor, NULL, nLinks, uStyle | DT_CALCRECT);
-        ::OffsetRect(&rc, (rc.right - rc.left) / 2 - (rcText.right - rcText.left) / 2, 0);
+        ::OffsetRect(&rc, RectDx(rc) / 2 - RectDx(rcText) / 2, 0);
     }
-    if ((uStyle & DT_SINGLELINE) != 0 && (uStyle & DT_RIGHT) != 0 && (uStyle & DT_CALCRECT) == 0)  {
+    if (FlSet(uStyle, DT_SINGLELINE) && FlSet(uStyle, DT_RIGHT) && bDraw) {
         RECT rcText = { 0, 0, 9999, 100 };
         int nLinks = 0;
         DoPaintPrettyText(hDC, manager, rcText, txt, iTextColor, iBackColor, NULL, nLinks, uStyle | DT_CALCRECT);
-        rc.left = rc.right - (rcText.right - rcText.left);
+        rc.left = rc.right - RectDx(rcText);
     }
 
-    // Paint backhground
-    if (iBackColor != UICOLOR__INVALID)  DoFillRect(hDC, manager, rc, iBackColor);
+    // Paint background
+    if (iBackColor != UICOLOR__INVALID)
+        DoFillRect(hDC, manager, rc, iBackColor);
 
     // Determine if we're hovering over a link, because we would like to
     // indicate it by coloring the link text.
@@ -604,7 +602,7 @@ void BlueRenderEngineUI::DoPaintPrettyText(HDC hDC, PaintManagerUI* manager, REC
         }
         else if (*txt == '&') 
         {
-            if ((uStyle & DT_NOPREFIX) == 0)  {
+            if (!FlSet(uStyle, DT_NOPREFIX))  {
                 if (bDraw  && manager->GetSystemSettings().bShowKeyboardCues)
                     ::TextOutA(hDC, pt.x, pt.y, "_", 1);
             }
@@ -664,7 +662,7 @@ void BlueRenderEngineUI::DoPaintPrettyText(HDC hDC, PaintManagerUI* manager, REC
                 ::GetTextExtentPoint32(hDC, txt, cchChars, &szText);
                 if (bDraw)  {
                     ::TextOut(hDC, ptPos.x, ptPos.y, txt, cchChars);
-                    if (pt.x == rc.right && (uStyle & DT_END_ELLIPSIS) != 0)
+                    if (pt.x == rc.right && FlSet(uStyle, DT_END_ELLIPSIS))
                         ::TextOutA(hDC, rc.right - 10, ptPos.y, "...", 3);
                 }
                 pt.x += szText.cx;
@@ -752,8 +750,8 @@ void BlueRenderEngineUI::DoPaintAlphaBitmap(HDC hDC, PaintManagerUI* manager, HB
     if (hBitmap == NULL)  return;
     HDC hCloneDC = ::CreateCompatibleDC(manager->GetPaintDC());
     HBITMAP hOldBitmap = (HBITMAP) ::SelectObject(hCloneDC, hBitmap);
-    int cx = rc.right - rc.left;
-    int cy = rc.bottom - rc.top;
+    int cx = RectDx(rc);
+    int cy = RectDy(rc);
     ::SetStretchBltMode(hDC, COLORONCOLOR);
     BLENDFUNCTION bf = { 0 };
     bf.BlendOp = AC_SRC_OVER; 

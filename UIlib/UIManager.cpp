@@ -1,9 +1,6 @@
-
 #include "StdAfx.h"
 #include "UIManager.h"
 #include "UIAnim.h"
-#include "BaseUtil.h"
-#include "WinUtil.h"
 
 #include <zmouse.h>
 
@@ -495,7 +492,7 @@ bool PaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRE
                     RECT rcClient = { 0 };
                     ::GetClientRect(m_hWndPaint, &rcClient);
                     m_hDcOffscreen = ::CreateCompatibleDC(m_hDcPaint);
-                    m_hbmpOffscreen = ::CreateCompatibleBitmap(m_hDcPaint, rcClient.right - rcClient.left, rcClient.bottom - rcClient.top); 
+                    m_hbmpOffscreen = ::CreateCompatibleBitmap(m_hDcPaint, RectDx(rcClient), RectDy(rcClient)); 
                     ASSERT(m_hDcOffscreen);
                     ASSERT(m_hbmpOffscreen);
                 }
@@ -520,8 +517,8 @@ bool PaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRE
                     ::BitBlt(ps.hdc, 
                         ps.rcPaint.left, 
                         ps.rcPaint.top, 
-                        ps.rcPaint.right - ps.rcPaint.left,
-                        ps.rcPaint.bottom - ps.rcPaint.top,
+                        RectDx(ps.rcPaint),
+                        RectDy(ps.rcPaint),
                         m_hDcOffscreen,
                         ps.rcPaint.left,
                         ps.rcPaint.top,

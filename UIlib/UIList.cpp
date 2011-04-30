@@ -2,8 +2,6 @@
 #include "UIlist.h"
 #include "UILabel.h"
 #include "UIPanel.h"
-#include "BaseUtil.h"
-#include "WinUtil.h"
 
 ListElementUI::ListElementUI() : m_idx(-1),
     m_owner(NULL), m_bSelected(false)
@@ -191,9 +189,9 @@ void ListHeaderItemUI::Event(TEventUI& event)
             RECT rc = m_rcItem;
             rc.right -= m_ptLastMouse.x - event.ptMouse.x;
             const int MIN_DRAGSIZE = 40;
-            if (rc.right - rc.left > MIN_DRAGSIZE)  {
+            if (RectDx(rc) > MIN_DRAGSIZE)  {
                 m_rcItem = rc;
-                m_cxWidth = rc.right - rc.left;
+                m_cxWidth = RectDx(rc);
                 m_ptLastMouse = event.ptMouse;
                 m_parent->Invalidate();
             }

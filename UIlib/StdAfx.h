@@ -3,6 +3,9 @@
 
 #define _CRT_SECURE_NO_DEPRECATE
 
+#include "BaseUtil.h"
+#include "WinUtil.h"
+
 #include "UIlib.h"
 #include <olectl.h>
 #include <d3d9.h>

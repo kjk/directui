@@ -62,4 +62,8 @@ public:
     operator T*() const { return obj; }
 };
 
+inline bool FlSet(UINT val, UINT flag) {
+    return (val & flag) != 0;
+}
+
 #endif

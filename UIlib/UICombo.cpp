@@ -1,8 +1,5 @@
-
 #include "StdAfx.h"
 #include "UICombo.h"
-#include "BaseUtil.h"
-#include "WinUtil.h"
 
 SingleLinePickUI::SingleLinePickUI() : m_cxWidth(0), m_nLinks(0), m_uButtonState(0)
 {
@@ -144,7 +141,8 @@ void DropDownWnd::Init(DropDownUI* owner)
     RECT rc = owner->GetPos();
     rc.top = rc.bottom;
     rc.bottom = rc.top + szDrop.cy;
-    if (szDrop.cx > 0)  rc.right = rc.left + szDrop.cx;
+    if (szDrop.cx > 0)
+        rc.right = rc.left + szDrop.cx;
     MapWindowRect(owner->GetManager()->GetPaintWindow(), HWND_DESKTOP, &rc);
     Create(owner->GetManager()->GetPaintWindow(), NULL, WS_POPUP | WS_BORDER, WS_EX_TOOLWINDOW, rc);
     // HACK: Don't deselect the parent's caption
@@ -396,7 +394,7 @@ SIZE DropDownUI::EstimateSize(SIZE /*szAvailable*/)
     if (m_cxyFixed.cx > 0 && !m_items.IsEmpty())  {
         RECT rcText = m_rcItem;
         ::InflateRect(&rcText, -4, -2);
-        sz = static_cast<ControlUI*>(m_items[0])->EstimateSize(CSize(rcText.right - rcText.left, 0));
+        sz = static_cast<ControlUI*>(m_items[0])->EstimateSize(CSize(RectDx(rcText), 0));
     }
     return sz;
 }
@@ -409,8 +407,7 @@ void DropDownUI::DoPaint(HDC hDC, const RECT& rcPaint)
     RECT rcText = { m_rcItem.left, m_rcItem.top, m_rcButton.left + 1, m_rcItem.bottom };
     if (!IsEnabled())  {
         BlueRenderEngineUI::DoPaintFrame(hDC, m_manager, rcText, UICOLOR_CONTROL_BORDER_DISABLED, UICOLOR__INVALID, UICOLOR__INVALID);
-    }
-    else {
+    } else {
         BlueRenderEngineUI::DoPaintFrame(hDC, m_manager, rcText, UICOLOR_CONTROL_BORDER_NORMAL, UICOLOR_CONTROL_BORDER_NORMAL, UICOLOR__INVALID);
     }
     // Paint dropdown edit box

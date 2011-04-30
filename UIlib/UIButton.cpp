@@ -105,7 +105,7 @@ SIZE ButtonUI::EstimateSize(SIZE /*szAvailable*/)
         RECT rcText = { 0, 0, 9999, 20 };
         int nLinks = 0;
         BlueRenderEngineUI::DoPaintPrettyText(m_manager->GetPaintDC(), m_manager, rcText, m_txt, UICOLOR_STANDARD_BLACK, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE | DT_CALCRECT);
-        sz.cx = rcText.right - rcText.left;
+        sz.cx = RectDx(rcText);
     }
     sz.cx += m_szPadding.cx * 2;
     sz.cy += m_szPadding.cy * 2;

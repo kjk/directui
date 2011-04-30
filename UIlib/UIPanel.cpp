@@ -1,7 +1,5 @@
-
 #include "StdAfx.h"
 #include "UIPanel.h"
-
 
 NavigatorPanelUI::NavigatorPanelUI() : m_curSel(-1)
 {
@@ -243,7 +241,7 @@ void TaskPanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
         m_manager->AddPostPaintBlit(job);
     }
     // A tiny panel (see explaination in EstimateSize()) is invisible
-    if (m_rcItem.right - m_rcItem.left < 2) return;
+    if (RectDx(m_rcItem) < 2) return;
     // Paint caption
     int cyFont = m_manager->GetThemeFontInfo(UIFONT_NORMAL).tmHeight;
     RECT rcArc = { m_rcItem.left, m_rcItem.top, m_rcItem.right, m_rcItem.top + cyFont + 6 };
@@ -494,7 +492,7 @@ SIZE TextPanelUI::EstimateSize(SIZE szAvailable)
     RECT rcText = { 0, 0, MAX(szAvailable.cx, m_cxWidth), 9999 };
     m_nLinks = 0;
     BlueRenderEngineUI::DoPaintPrettyText(m_manager->GetPaintDC(), m_manager, rcText, m_txt, UICOLOR_EDIT_TEXT_NORMAL, UICOLOR__INVALID, NULL, m_nLinks, DT_CALCRECT | m_uTextStyle);
-    return CSize(rcText.right - rcText.left, rcText.bottom - rcText.left);
+    return CSize(RectDx(rcText), RectDy(rcText));
 }
 
 void TextPanelUI::DoPaint(HDC hDC, const RECT& rcPaint)
@@ -543,7 +541,7 @@ SIZE WarningPanelUI::EstimateSize(SIZE szAvailable)
     ::InflateRect(&rcText, -6, -4);
     int nLinks = 0;
     BlueRenderEngineUI::DoPaintPrettyText(m_manager->GetPaintDC(), m_manager, rcText, m_txt, UICOLOR_EDIT_TEXT_NORMAL, UICOLOR__INVALID, NULL, nLinks, DT_WORDBREAK | DT_CALCRECT);
-    return CSize(0, (rcText.bottom - rcText.top) + 16);
+    return CSize(0, RectDy(rcText) + 16);
 }
 
 void WarningPanelUI::DoPaint(HDC hDC, const RECT& rcPaint)

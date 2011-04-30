@@ -1,4 +1,3 @@
-
 #include "StdAfx.h"
 #include "UIActiveX.h"
 
@@ -855,8 +854,8 @@ void ActiveXUI::SetPos(RECT rc)
 
     SIZEL hmSize = { 0 };
     SIZEL pxSize = { 0 };
-    pxSize.cx = m_rcItem.right - m_rcItem.left;
-    pxSize.cy = m_rcItem.bottom - m_rcItem.top;
+    pxSize.cx = RectDx(m_rcItem);
+    pxSize.cy = RectDy(m_rcItem);
     PixelToHiMetric(&pxSize, &hmSize);
 
     if (m_pUnk != NULL)  {
@@ -869,7 +868,7 @@ void ActiveXUI::SetPos(RECT rc)
     }
     if (!m_ctrl->m_bWindowless)  {
         ASSERT(m_ctrl->m_win);
-        ::MoveWindow(*m_ctrl->m_win, m_rcItem.left, m_rcItem.top, m_rcItem.right - m_rcItem.left, m_rcItem.bottom - m_rcItem.top, TRUE);
+        ::MoveWindow(*m_ctrl->m_win, m_rcItem.left, m_rcItem.top, RectDx(m_rcItem), RectDy(m_rcItem), TRUE);
     }
 }
 
