@@ -61,6 +61,5 @@ protected:
    UINT m_uButtonState;
 };
 
-
 #endif // !defined(AFX_UICOMBO_H__20060218_C01D_1618_FBA5_0080AD509054__INCLUDED_)
 

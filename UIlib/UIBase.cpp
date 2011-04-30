@@ -392,8 +392,7 @@ LRESULT CALLBACK WindowWnd::__WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
       pThis = static_cast<WindowWnd*>(lpcs->lpCreateParams);
       pThis->m_hWnd = hWnd;
       ::SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LPARAM>(pThis));
-   } 
-   else {
+   } else {
       pThis = reinterpret_cast<WindowWnd*>(::GetWindowLongPtr(hWnd, GWLP_USERDATA));
       if (uMsg == WM_NCDESTROY && pThis != NULL)  {
          LRESULT lRes = ::CallWindowProc(pThis->m_OldWndProc, hWnd, uMsg, wParam, lParam);
@@ -420,8 +419,7 @@ LRESULT CALLBACK WindowWnd::__ControlProc(HWND hWnd, UINT uMsg, WPARAM wParam, L
       pThis = static_cast<WindowWnd*>(lpcs->lpCreateParams);
       ::SetPropA(hWnd, "WndX", (HANDLE) pThis);
       pThis->m_hWnd = hWnd;
-   } 
-   else {
+   } else {
       pThis = reinterpret_cast<WindowWnd*>(::GetPropA(hWnd, "WndX"));
       if (uMsg == WM_NCDESTROY && pThis != NULL)  {
          LRESULT lRes = ::CallWindowProc(pThis->m_OldWndProc, hWnd, uMsg, wParam, lParam);
@@ -434,8 +432,7 @@ LRESULT CALLBACK WindowWnd::__ControlProc(HWND hWnd, UINT uMsg, WPARAM wParam, L
    }
    if (pThis != NULL)  {
       return pThis->HandleMessage(uMsg, wParam, lParam);
-   } 
-   else {
+   } else {
       return ::DefWindowProc(hWnd, uMsg, wParam, lParam);
    }
 }
@@ -472,7 +469,6 @@ LRESULT WindowWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 void WindowWnd::OnFinalMessage(HWND /*hWnd*/)
 {
 }
-
 
 StdPtrArray::StdPtrArray(int iPreallocSize) : m_ppVoid(NULL), m_nCount(0), m_nAllocated(iPreallocSize)
 {
@@ -575,7 +571,6 @@ void* StdPtrArray::operator[] (int idx) const
    return m_ppVoid[idx];
 }
 
-
 StdValArray::StdValArray(int iElementSize, int iPreallocSize /*= 0*/) : 
    m_pVoid(NULL), 
    m_nCount(0), 
@@ -642,7 +637,6 @@ void* StdValArray::operator[] (int idx) const
    ASSERT(idx>=0 && idx<m_nCount);
    return m_pVoid + (idx * m_iElementSize);
 }
-
 
 WaitCursor::WaitCursor()
 {

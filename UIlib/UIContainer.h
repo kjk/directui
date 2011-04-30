@@ -39,7 +39,7 @@ public:
 
    virtual int FindSelectable(int idx, bool bForward = true) const;
 
-   void SetPos(RECT rc);
+   virtual void SetPos(RECT rc);
    virtual SIZE EstimateSize(SIZE szAvailable);
    virtual void DoPaint(HDC hDC, const RECT& rcPaint);
 

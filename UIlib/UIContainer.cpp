@@ -1,6 +1,8 @@
 
 #include "StdAfx.h"
 #include "UIContainer.h"
+#include "BaseUtil.h"
+#include "WinUtil.h"
 
 ContainerUI::ContainerUI() : 
    m_hwndScroll(NULL), 
@@ -310,7 +312,7 @@ void ContainerUI::DoPaint(HDC hDC, const RECT& rcPaint)
 void ContainerUI::ProcessScrollbar(RECT rc, int cyRequired)
 {
    // Need the scrollbar control, but it's been created already?
-   if (cyRequired > rc.bottom - rc.top && m_hwndScroll == NULL && m_bAllowScrollbars)  {
+   if (cyRequired > RectDy(rc) && m_hwndScroll == NULL && m_bAllowScrollbars)  {
       m_hwndScroll = ::CreateWindowEx(0, WC_SCROLLBAR, NULL, WS_CHILD | SBS_VERT, 0, 0, 0, 0, m_manager->GetPaintWindow(), NULL, m_manager->GetResourceInstance(), NULL);
       ASSERT(::IsWindow(m_hwndScroll));
       ::SetPropA(m_hwndScroll, "WndX", static_cast<HANDLE>(this));
@@ -323,7 +325,7 @@ void ContainerUI::ProcessScrollbar(RECT rc, int cyRequired)
    if (m_hwndScroll == NULL)  return;
    // Move it into place
    int cxScroll = m_manager->GetSystemMetrics().cxvscroll;
-   ::MoveWindow(m_hwndScroll, rc.right, rc.top, cxScroll, rc.bottom - rc.top, TRUE);
+   ::MoveWindow(m_hwndScroll, rc.right, rc.top, cxScroll, RectDy(rc), TRUE);
    // Scroll not needed anymore?
    int cyScroll = cyRequired - (rc.bottom - rc.top);
    if (cyScroll < 0)  {
@@ -483,7 +485,7 @@ void VerticalLayoutUI::SetPos(RECT rc)
    rc.bottom -= m_rcInset.bottom;
    if (m_hwndScroll != NULL)  rc.right -= m_manager->GetSystemMetrics().cxvscroll;
    // Determine the minimum size
-   SIZE szAvailable = { rc.right - rc.left, rc.bottom - rc.top };
+   SIZE szAvailable = { RectDx(rc), RectDy(rc) };
    int nAdjustables = 0;
    int cyFixed = 0;
    for (int it1 = 0; it1 < m_items.GetSize(); it1++)  {

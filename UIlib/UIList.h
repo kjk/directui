@@ -6,17 +6,17 @@ class ListFooterUI;
 
 #define UILIST_MAX_COLUMNS 10
 
-typedef struct tagTListInfoUI
+typedef struct
 {
-   int nColumns;
-   RECT rcColumn[UILIST_MAX_COLUMNS];
+   int          nColumns;
+   RECT         rcColumn[UILIST_MAX_COLUMNS];
    UITYPE_COLOR Text;
    UITYPE_COLOR Background;
    UITYPE_COLOR SelText;
    UITYPE_COLOR SelBackground;
    UITYPE_COLOR HotText;
    UITYPE_COLOR HotBackground;
-   bool expandable;
+   bool         expandable;
 } TListInfoUI;
 
 class IListCallbackUI

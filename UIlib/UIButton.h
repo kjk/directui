@@ -29,7 +29,6 @@ protected:
    UINT m_uButtonState;
 };
 
-
 class UILIB_API OptionUI : public ControlUI
 {
 public:
@@ -56,7 +55,6 @@ protected:
    UINT m_uButtonState;
    int  m_cxWidth;
 };
-
 
 #endif // !defined(AFX_UIBUTTON_H__20060218_72F5_1B46_6300_0080AD509054__INCLUDED_)
 

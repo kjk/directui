@@ -160,19 +160,19 @@ PaintManagerUI::PaintManagerUI() :
       m_colors[UICOLOR_NAVIGATOR_BUTTON_SELECTED][0]    = RGB(238,238,238);
       m_colors[UICOLOR_TAB_BACKGROUND_NORMAL][0]        = RGB(255,251,255);
       m_colors[UICOLOR_TAB_FOLDER_NORMAL][0]            = RGB(255,251,255);
-       m_colors[UICOLOR_TAB_FOLDER_NORMAL][1]           = RGB(233,231,215);
+      m_colors[UICOLOR_TAB_FOLDER_NORMAL][1]            = RGB(233,231,215);
       m_colors[UICOLOR_TAB_FOLDER_SELECTED][0]          = RGB(255,251,255);
       m_colors[UICOLOR_TAB_BORDER][0]                   = RGB(148,166,181);
       m_colors[UICOLOR_TAB_TEXT_NORMAL][0]              = RGB(0,0,0);
       m_colors[UICOLOR_TAB_TEXT_SELECTED][0]            = RGB(0,0,0);
       m_colors[UICOLOR_TAB_TEXT_DISABLED][0]            = RGB(0,0,0);      
       m_colors[UICOLOR_HEADER_BACKGROUND][0]            = RGB(233,231,215);
-       m_colors[UICOLOR_HEADER_BACKGROUND][1]           = RGB(150,150,147);
+      m_colors[UICOLOR_HEADER_BACKGROUND][1]            = RGB(150,150,147);
       m_colors[UICOLOR_HEADER_BORDER][0]                = RGB(218,219,201);
       m_colors[UICOLOR_HEADER_SEPARATOR][0]             = RGB(197,193,177);
       m_colors[UICOLOR_HEADER_TEXT][0]                  = RGB(0,0,0);
       m_colors[UICOLOR_TASK_BACKGROUND][0]              = RGB(230,243,255);
-       m_colors[UICOLOR_TASK_BACKGROUND][1]             = RGB(255,255,255);
+      m_colors[UICOLOR_TASK_BACKGROUND][1]              = RGB(255,255,255);
       m_colors[UICOLOR_TASK_BORDER][0]                  = RGB(140,158,198);
       m_colors[UICOLOR_TASK_CAPTION][0]                 = RGB(140,158,198);
       m_colors[UICOLOR_TASK_TEXT][0]                    = RGB(65,65,110);
@@ -185,7 +185,7 @@ PaintManagerUI::PaintManagerUI() :
       m_colors[UICOLOR_CONTROL_BACKGROUND_HOVER][0]     = RGB(233,245,255);
       m_colors[UICOLOR_CONTROL_BACKGROUND_SORTED][0]    = RGB(242,242,246);
       m_colors[UICOLOR_CONTROL_BACKGROUND_EXPANDED][0]  = RGB(255,255,255);
-       m_colors[UICOLOR_CONTROL_BACKGROUND_EXPANDED][1] = RGB(236,242,255);
+      m_colors[UICOLOR_CONTROL_BACKGROUND_EXPANDED][1]  = RGB(236,242,255);
       m_colors[UICOLOR_CONTROL_BORDER_NORMAL][0]        = RGB(123,158,189);
       m_colors[UICOLOR_CONTROL_BORDER_SELECTED][0]      = RGB(123,158,189);
       m_colors[UICOLOR_CONTROL_BORDER_DISABLED][0]      = RGB(204,204,204);
@@ -221,7 +221,8 @@ PaintManagerUI::~PaintManagerUI()
 {
    // Delete the control-tree structures
    int i;
-   for (i = 0; i < m_delayedCleanup.GetSize(); i++)  delete static_cast<ControlUI*>(m_delayedCleanup[i]);
+   for (i = 0; i < m_delayedCleanup.GetSize(); i++)
+       delete static_cast<ControlUI*>(m_delayedCleanup[i]);
    delete m_root;
    // Release other collections
    for (i = 0; i < m_timers.GetSize(); i++)  delete static_cast<TIMERINFO*>(m_timers[i]);
@@ -374,7 +375,8 @@ bool PaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRE
    }
 #endif
    // Not ready yet?
-   if (m_hWndPaint == NULL)  return false;
+   if (m_hWndPaint == NULL)
+       return false;
    // Cycle through listeners
    for (int i = 0; i < m_messageFilters.GetSize(); i++)  
    {
@@ -604,19 +606,19 @@ bool PaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRE
       {
          m_mouseTracking = false;
          POINT pt = { GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam) };
-         ControlUI* pHover = FindControl(pt);
-         if (pHover == NULL)  break;
+         ControlUI* hover = FindControl(pt);
+         if (hover == NULL)  break;
          // Generate mouse hover event
          if (m_eventHover != NULL)  {
             TEventUI event = { 0 };
             event.ptMouse = pt;
             event.type = UIEVENT_MOUSEHOVER;
-            event.sender = pHover;
+            event.sender = hover;
             event.timestamp = ::GetTickCount();
             m_eventHover->Event(event);
          }
          // Create tooltip information
-         StdString sToolTip = pHover->GetToolTip();
+         StdString sToolTip = hover->GetToolTip();
          if (sToolTip.IsEmpty())  return true;
          sToolTip.ProcessResourceTokens();
          ::ZeroMemory(&m_toolTip, sizeof(TOOLINFO));
@@ -626,7 +628,7 @@ bool PaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRE
          m_toolTip.uId = (UINT) m_hWndPaint;
          m_toolTip.hinst = m_hInstance;
          m_toolTip.lpszText = const_cast<char*>( (const char*) sToolTip) ;
-         m_toolTip.rect = pHover->GetPos();
+         m_toolTip.rect = hover->GetPos();
          if (m_hwndTooltip == NULL)  {
             m_hwndTooltip = ::CreateWindowEx(0, TOOLTIPS_CLASS, NULL, WS_POPUP | TTS_NOPREFIX | TTS_ALWAYSTIP, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, m_hWndPaint, NULL, m_hInstance, NULL);
             ::SendMessage(m_hwndTooltip, TTM_ADDTOOL, 0, (LPARAM) &m_toolTip);
