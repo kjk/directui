@@ -1,6 +1,8 @@
 
 #include "StdAfx.h"
 #include "UICombo.h"
+#include "BaseUtil.h"
+#include "WinUtil.h"
 
 SingleLinePickUI::SingleLinePickUI() : m_cxWidth(0), m_nLinks(0), m_uButtonState(0)
 {
@@ -85,14 +87,14 @@ SIZE SingleLinePickUI::EstimateSize(SIZE /*szAvailable*/)
         ::InflateRect(&rcText, -4, -2);
         m_nLinks = dimof(m_rcLinks);
         BlueRenderEngineUI::DoPaintPrettyText(m_manager->GetPaintDC(), m_manager, rcText, m_txt, UICOLOR_EDIT_TEXT_NORMAL, UICOLOR__INVALID, m_rcLinks, m_nLinks, DT_SINGLELINE | DT_CALCRECT);
-        sz.cy = rcText.bottom - rcText.top;
+        sz.cy = RectDy(rcText);
     }
     return sz;
 }
 
 void SingleLinePickUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
-    int cy = m_rcItem.bottom - m_rcItem.top;
+    int cy = RectDy(m_rcItem);
     ::SetRect(&m_rcButton, m_rcItem.right - cy, m_rcItem.top, m_rcItem.right, m_rcItem.bottom);
     RECT rcText = { m_rcItem.left, m_rcItem.top, m_rcButton.left - 4, m_rcItem.bottom };
     UITYPE_COLOR iTextColor = UICOLOR_EDIT_TEXT_NORMAL;
@@ -402,7 +404,7 @@ SIZE DropDownUI::EstimateSize(SIZE /*szAvailable*/)
 void DropDownUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
     // Paint the nice frame
-    int cy = m_rcItem.bottom - m_rcItem.top;
+    int cy = RectDy(m_rcItem);
     ::SetRect(&m_rcButton, m_rcItem.right - cy, m_rcItem.top, m_rcItem.right, m_rcItem.bottom);
     RECT rcText = { m_rcItem.left, m_rcItem.top, m_rcButton.left + 1, m_rcItem.bottom };
     if (!IsEnabled())  {

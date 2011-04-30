@@ -1,6 +1,8 @@
 
 #include "StdAfx.h"
 #include "UIBase.h"
+#include "BaseUtil.h"
+#include "WinUtil.h"
 
 #ifdef _DEBUG
 #include <shlwapi.h>
@@ -176,8 +178,8 @@ CSize::CSize(const SIZE& src)
 
 CSize::CSize(const RECT rc)
 {
-    cx = rc.right - rc.left;
-    cy = rc.bottom - rc.top;
+    cx = RectDx(rc);
+    cy = RectDy(rc);
 }
 
 CSize::CSize(int _cx, int _cy)
@@ -236,7 +238,7 @@ WindowWnd::operator HWND() const
 
 HWND WindowWnd::Create(HWND hwndParent, const char* name, DWORD dwStyle, DWORD dwExStyle, const RECT rc, HMENU hMenu)
 {
-    return Create(hwndParent, name, dwStyle, dwExStyle, rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top, hMenu);
+    return Create(hwndParent, name, dwStyle, dwExStyle, rc.left, rc.top, RectDx(rc), RectDy(rc), hMenu);
 }
 
 HWND WindowWnd::Create(HWND hwndParent, const char* name, DWORD dwStyle, DWORD dwExStyle, int x, int y, int cx, int cy, HMENU hMenu)
@@ -320,8 +322,8 @@ void WindowWnd::CenterWindow()
     ::SystemParametersInfo(SPI_GETWORKAREA, NULL, &rcArea, NULL);
     if (hWndCenter == NULL)  rcCenter = rcArea; else ::GetWindowRect(hWndCenter, &rcCenter);
 
-    int DlgWidth = rcDlg.right - rcDlg.left;
-    int DlgHeight = rcDlg.bottom - rcDlg.top;
+    int DlgWidth = RectDx(rcDlg);
+    int DlgHeight = RectDy(rcDlg);
 
     // Find dialog's upper left based on rcCenter
     int xLeft = (rcCenter.left + rcCenter.right) / 2 - DlgWidth / 2;
@@ -458,7 +460,7 @@ void WindowWnd::ResizeClient(int cx /*= -1*/, int cy /*= -1*/)
     if (cy != -1)  rc.bottom = cy;
     if (!::AdjustWindowRectEx(&rc, GetWindowStyle(m_hWnd), (!(GetWindowStyle(m_hWnd) & WS_CHILD) && (::GetMenu(m_hWnd) != NULL)), GetWindowExStyle(m_hWnd)))  return;
     UINT uFlags = SWP_NOZORDER | SWP_NOMOVE;
-    ::SetWindowPos(m_hWnd, NULL, 0, 0, rc.right - rc.left, rc.bottom - rc.top, uFlags);
+    ::SetWindowPos(m_hWnd, NULL, 0, 0, RectDx(rc), RectDy(rc), uFlags);
 }
 
 LRESULT WindowWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)

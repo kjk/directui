@@ -1,6 +1,8 @@
 
 #include "StdAfx.h"
 #include "UIBlue.h"
+#include "BaseUtil.h"
+#include "WinUtil.h"
 
 #ifndef BlendRGB
 #define BlendRGB(c1, c2, factor) \
@@ -116,7 +118,7 @@ void BlueRenderEngineUI::DoPaintBitmap(HDC hDC, PaintManagerUI* manager, HBITMAP
     // Paint image
     HDC hdcBmp = ::CreateCompatibleDC(hDC);
     HBITMAP hOldBitmap = (HBITMAP) ::SelectObject(hdcBmp, hBmp);
-    ::BitBlt(hDC, rcBitmap.left, rcBitmap.top, rcBitmap.right - rcBitmap.left, rcBitmap.bottom - rcBitmap.top, hdcBmp, 0, 0, SRCCOPY);
+    ::BitBlt(hDC, rcBitmap.left, rcBitmap.top, RectDx(rcBitmap), RectDy(rcBitmap), hdcBmp, 0, 0, SRCCOPY);
     ::SelectObject(hdcBmp, hOldBitmap);
 }
 
@@ -262,8 +264,8 @@ void BlueRenderEngineUI::DoPaintOptionBox(HDC hDC, PaintManagerUI* manager, RECT
         RECT rcFocus = { 0, 0, 9999, 9999 };;
         int nLinks = 0;
         BlueRenderEngineUI::DoPaintPrettyText(hDC, manager, rcFocus, txt, iTextColor, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE | DT_CALCRECT);
-        rcText.right = rcText.left + (rcFocus.right - rcFocus.left);
-        rcText.bottom = rcText.top + (rcFocus.bottom - rcFocus.top);
+        rcText.right = rcText.left + RectDx(rcFocus);
+        rcText.bottom = rcText.top + RectDy(rcFocus);
         ::InflateRect(&rcText, 2, 0);
         BlueRenderEngineUI::DoPaintFrame(hDC, manager, rcText, UICOLOR_STANDARD_BLACK, UICOLOR_STANDARD_BLACK, UICOLOR__INVALID, UIFRAME_FOCUS);
     }
@@ -403,8 +405,8 @@ void BlueRenderEngineUI::DoPaintPrettyText(HDC hDC, PaintManagerUI* manager, REC
         RECT rcText = { 0, 0, 9999, 100 };
         int nLinks = 0;
         DoPaintPrettyText(hDC, manager, rcText, txt, iTextColor, iBackColor, NULL, nLinks, uStyle | DT_CALCRECT);
-        rc.top = rc.top + ((rc.bottom - rc.top) / 2) - ((rcText.bottom - rcText.top) / 2);
-        rc.bottom = rc.top + (rcText.bottom - rcText.top);
+        rc.top = rc.top + (RectDy(rc) / 2) - (RectDy(rcText) / 2);
+        rc.bottom = rc.top + RectDy(rcText);
     }
     if ((uStyle & DT_SINGLELINE) != 0 && (uStyle & DT_CENTER) != 0 && (uStyle & DT_CALCRECT) == 0)  {
         RECT rcText = { 0, 0, 9999, 100 };
@@ -727,13 +729,13 @@ void BlueRenderEngineUI::DoPaintGradient(HDC hDC, PaintManagerUI* manager, RECT 
             HBRUSH hBrush = ::CreateSolidBrush(RGB(bR,bG,bB));
             RECT r2 = rc;
             if (bVertical)  {
-                r2.bottom = rc.bottom - ((i * (rc.bottom - rc.top)) >> nShift);
-                r2.top = rc.bottom - (((i + 1) * (rc.bottom - rc.top)) >> nShift);
-                if ((r2.bottom - r2.top) > 0)  ::FillRect(hDC, &r2, hBrush);
+                r2.bottom = rc.bottom - ((i * RectDy(rc)) >> nShift);
+                r2.top = rc.bottom - (((i + 1) * RectDy(rc)) >> nShift);
+                if (RectDy(r2) > 0)  ::FillRect(hDC, &r2, hBrush);
             }
             else {
-                r2.left = rc.right - (((i + 1) * (rc.right - rc.left)) >> nShift);
-                r2.right = rc.right - ((i * (rc.right - rc.left)) >> nShift);
+                r2.left = rc.right - (((i + 1) * RectDx(rc)) >> nShift);
+                r2.right = rc.right - ((i * RectDx(rc)) >> nShift);
                 if ((r2.right - r2.left) > 0)  ::FillRect(hDC, &r2, hBrush);
             }
             ::DeleteObject(hBrush);

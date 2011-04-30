@@ -1,6 +1,8 @@
 
 #include "stdafx.h"
 #include "UIAnim.h"
+#include "BaseUtil.h"
+#include "WinUtil.h"
 
 #if (_MSC_VER < 1300)
 #pragma comment(lib, "Delayimp.lib")
@@ -186,8 +188,8 @@ bool AnimationSpooler::PrepareAnimation(HWND hWnd)
     // Create the backdrop surface
     RECT rcClient;
     ::GetClientRect(m_hWnd, &rcClient);
-    int cx = rcClient.right - rcClient.left;
-    int cy = rcClient.bottom - rcClient.top;
+    int cx = RectDx(rcClient);
+    int cy = RectDy(rcClient);
     HRESULT Hr = m_p3DDevice->CreateOffscreenPlainSurface(cx, cy, m_ColorFormat, D3DPOOL_SYSTEMMEM, &m_p3DBackSurface, NULL);
     if (FAILED(Hr))  return false;
     // Paint the background
@@ -338,8 +340,8 @@ bool AnimationSpooler::PrepareJob_Flat(AnimJobUI* job)
     // Prepare surfaces
     HRESULT Hr;
     RECT rc = job->data.plot.rcFrom;
-    int cx = rc.right - rc.left;
-    int cy = rc.bottom - rc.left;
+    int cx = RectDx(rc);
+    int cy = RectDy(rc);
     FLOAT z = 0.1f;
     FLOAT rhw = 1.0f / (z * 990.0f + 10.0f);
     D3DCOLOR col = 0xffffffff;
@@ -385,7 +387,7 @@ bool AnimationSpooler::PrepareJob_Flat(AnimJobUI* job)
             Hr = m_p3DDevice->UpdateSurface(m_p3DBackSurface, &rcTile, pTexSurf1, &pt);
             if (FAILED(Hr))  return false;
             LPDIRECT3DTEXTURE9 pTex2 = NULL;
-            RECT rcDest = { 0, 0, rcTile.right - rcTile.left, rcTile.bottom - rcTile.top };
+            RECT rcDest = { 0, 0, RectDx(rcTile), RectDy(rcTile) };
             Hr = m_p3DDevice->CreateTexture(iTexSize, iTexSize, 1, D3DUSAGE_RENDERTARGET, D3DFMT_A8R8G8B8, D3DPOOL_DEFAULT, &pTex2, NULL);
             if (FAILED(Hr))  return false;
             CSafeRelease<IDirect3DTexture9> RefTex2 = pTex2;
@@ -427,7 +429,7 @@ bool AnimationSpooler::RenderJob_Flat(const AnimJobUI* job, LPDIRECT3DSURFACE9 /
     if (job->data.plot.iInterpolate == AnimJobUI::INTERPOLATE_LINEAR)  scale1 = (FLOAT) LinearInterpolate(0.0, 1.0, mu);
     if (job->data.plot.iInterpolate == AnimJobUI::INTERPOLATE_COS)  scale1 = (FLOAT) CosineInterpolate(0.0, 1.0, mu);
     FLOAT scale2 = 1.0f - scale1;
-    D3DVECTOR ptCenter = { rc.left + ((rc.right - rc.left) / 2.0f), rc.top + ((rc.bottom - rc.top) / 2.0f) };
+    D3DVECTOR ptCenter = { rc.left + (RectDx(rc) / 2.0f), rc.top + (RectDy(rc) / 2.0f) };
     FLOAT xtrans = (FLOAT) job->data.plot.mFrom.xtrans * scale1;
     FLOAT ytrans = (FLOAT) job->data.plot.mFrom.ytrans * scale1;
     FLOAT ztrans = 1.0f + ((FLOAT) abs(job->data.plot.mFrom.ztrans) * (job->data.plot.mFrom.ztrans >= 0.0 ? scale1 : scale2));

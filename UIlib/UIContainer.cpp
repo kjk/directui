@@ -548,7 +548,7 @@ void HorizontalLayoutUI::SetPos(RECT rc)
     rc.right -= m_rcInset.right;
     rc.bottom -= m_rcInset.bottom;
     // Determine the width of elements that are sizeable
-    SIZE szAvailable = { rc.right - rc.left, rc.bottom - rc.top };
+    SIZE szAvailable = { RectDx(rc), RectDy(rc) };
     int nAdjustables = 0;
     int cxFixed = 0;
     for (int it1 = 0; it1 < m_items.GetSize(); it1++)  {

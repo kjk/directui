@@ -2,6 +2,8 @@
 #include "StdAfx.h"
 #include "UIManager.h"
 #include "UIAnim.h"
+#include "BaseUtil.h"
+#include "WinUtil.h"
 
 #include <zmouse.h>
 
@@ -284,7 +286,7 @@ SIZE PaintManagerUI::GetClientSize() const
 {
     RECT rcClient = { 0 };
     ::GetClientRect(m_hWndPaint, &rcClient);
-    return CSize(rcClient.right - rcClient.left, rcClient.bottom - rcClient.top);
+    return CSize(RectDx(rcClient), RectDy(rcClient));
 }
 
 void PaintManagerUI::SetMinMaxInfo(int cx, int cy)
