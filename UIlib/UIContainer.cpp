@@ -313,7 +313,7 @@ void ContainerUI::ProcessScrollbar(RECT rc, int cyRequired)
 {
     // Need the scrollbar control, but it's been created already?
     if (cyRequired > RectDy(rc) && m_hwndScroll == NULL && m_bAllowScrollbars)  {
-        m_hwndScroll = ::CreateWindowEx(0, WC_SCROLLBAR, NULL, WS_CHILD | SBS_VERT, 0, 0, 0, 0, m_manager->GetPaintWindow(), NULL, m_manager->GetResourceInstance(), NULL);
+        m_hwndScroll = ::CreateWindowExA(0, WC_SCROLLBARA, NULL, WS_CHILD | SBS_VERT, 0, 0, 0, 0, m_manager->GetPaintWindow(), NULL, m_manager->GetResourceInstance(), NULL);
         ASSERT(::IsWindow(m_hwndScroll));
         ::SetPropA(m_hwndScroll, "WndX", static_cast<HANDLE>(this));
         ::SetScrollPos(m_hwndScroll, SB_CTL, 0, TRUE);
@@ -327,9 +327,10 @@ void ContainerUI::ProcessScrollbar(RECT rc, int cyRequired)
     int cxScroll = m_manager->GetSystemMetrics().cxvscroll;
     ::MoveWindow(m_hwndScroll, rc.right, rc.top, cxScroll, RectDy(rc), TRUE);
     // Scroll not needed anymore?
-    int cyScroll = cyRequired - (rc.bottom - rc.top);
+    int cyScroll = cyRequired - RectDy(rc);
     if (cyScroll < 0)  {
-        if (m_iScrollPos != 0)  SetScrollPos(0);
+        if (m_iScrollPos != 0)
+            SetScrollPos(0);
         cyScroll = 0;
     }
     // Scroll range changed?
@@ -337,7 +338,12 @@ void ContainerUI::ProcessScrollbar(RECT rc, int cyRequired)
     ::GetScrollRange(m_hwndScroll, SB_CTL, &cyOld1, &cyOld2);
     if (cyOld2 != cyScroll)  {
         ::SetScrollRange(m_hwndScroll, SB_CTL, 0, cyScroll, FALSE);
-        ::EnableScrollBar(m_hwndScroll, SB_CTL, cyScroll == 0 ? ESB_DISABLE_BOTH : ESB_ENABLE_BOTH);
+        if (cyScroll == 0) {
+            ::ShowScrollBar(m_hwndScroll, SB_CTL, FALSE);
+        } else {
+            ::ShowScrollBar(m_hwndScroll, SB_CTL, TRUE);
+            //::EnableScrollBar(m_hwndScroll, SB_CTL, ESB_ENABLE_BOTH);
+        }
     }
 }
 
@@ -680,12 +686,13 @@ void DialogLayoutUI::SetPos(RECT rc)
 {
     m_rcItem = rc;
     RecalcArea();
-    // Do Scrollbar
-    ProcessScrollbar(rc, m_rcDialog.bottom - m_rcDialog.top);
-    if (m_hwndScroll != NULL)  rc.right -= m_manager->GetSystemMetrics().cxvscroll;
+
+    ProcessScrollbar(rc, RectDy(m_rcDialog));
+    if (m_hwndScroll != NULL)
+        rc.right -= m_manager->GetSystemMetrics().cxvscroll;
     // Determine how "scaled" the dialog is compared to the original size
-    int cxDiff = (rc.right - rc.left) - (m_rcDialog.right - m_rcDialog.left);
-    int cyDiff = (rc.bottom - rc.top) - (m_rcDialog.bottom - m_rcDialog.top);
+    int cxDiff = RectDx(rc) - RectDx(m_rcDialog);
+    int cyDiff = RectDy(rc) - RectDy(m_rcDialog);
     if (cxDiff < 0)  cxDiff = 0;
     if (cyDiff < 0)  cyDiff = 0;
     // Stretch each control
