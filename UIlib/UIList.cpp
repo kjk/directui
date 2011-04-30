@@ -1,14 +1,12 @@
-
 #include "StdAfx.h"
 #include "UIlist.h"
-
 #include "UILabel.h"
 #include "UIPanel.h"
+#include "BaseUtil.h"
+#include "WinUtil.h"
 
-ListElementUI::ListElementUI() : 
-m_idx(-1),
-    m_owner(NULL), 
-    m_bSelected(false)
+ListElementUI::ListElementUI() : m_idx(-1),
+    m_owner(NULL), m_bSelected(false)
 {
 }
 
@@ -131,7 +129,6 @@ void ListHeaderUI::DoPaint(HDC hDC, const RECT& rcPaint)
     HorizontalLayoutUI::DoPaint(hDC, rcPaint);
 }
 
-
 ListHeaderItemUI::ListHeaderItemUI() : m_uDragState(0)
 {
 }
@@ -240,7 +237,6 @@ RECT ListHeaderItemUI::GetThumbRect(RECT rc) const
     return CRect(rc.right - 4, rc.top, rc.right, rc.bottom - 3);
 }
 
-
 ListFooterUI::ListFooterUI()
 {
     LabelPanelUI* pLabel = new LabelPanelUI;
@@ -277,7 +273,6 @@ void ListFooterUI::DoPaint(HDC hDC, const RECT& rcPaint)
     // Paint items as well...
     HorizontalLayoutUI::DoPaint(hDC, rcPaint);
 }
-
 
 ListUI::ListUI() : m_cb(NULL), m_curSel(-1), m_expandedItem(-1)
 {
@@ -379,7 +374,7 @@ void ListUI::SetPos(RECT rc)
     else {
         RECT rcCol = { rc.left, 0, rc.left, 0 };
         for (int i = 0; i < m_listInfo.nColumns; i++)  {
-            SIZE sz = m_header->GetItem(i)->EstimateSize(CSize(rc.right - rc.left, rc.bottom - rc.top));
+            SIZE sz = m_header->GetItem(i)->EstimateSize(CSize(RectDx(rc), RectDy(rc)));
             rcCol.right += sz.cx;
             m_listInfo.rcColumn[i] = rcCol;
             ::OffsetRect(&rcCol, sz.cx, 0);

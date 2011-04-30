@@ -50,7 +50,7 @@ public:
 class IListItemUI
 {
 public:
-    virtual int GetIndex() const = 0;
+    virtual int  GetIndex() const = 0;
     virtual void SetIndex(int idx) = 0;
     virtual void SetOwner(ControlUI* owner) = 0;
     virtual bool IsSelected() const = 0;

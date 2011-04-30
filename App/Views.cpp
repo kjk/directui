@@ -1,44 +1,39 @@
-
 #include "StdAfx.h"
-
 #include "Views.h"
-
-//#include <mshtml.h>
 #include <exdisp.h>
 #include <comdef.h>
 
-
 UINT StandardPageWnd::GetClassStyle() const 
 { 
-   return UI_CLASSSTYLE_CHILD; 
+    return UI_CLASSSTYLE_CHILD; 
 }
 
 void StandardPageWnd::OnFinalMessage(HWND /*hWnd*/) 
 { 
-   delete this; 
+    delete this; 
 }
 
 LRESULT StandardPageWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-   if (uMsg == WM_CREATE)  {     
-      m_pm.Init(m_hWnd);
-      ControlUI* root;
-      const char *s = GetDialogResourceSimple();
-      if (s) {
-        root = CreateDialogFromSimple(s);
-      } else {
-        s = GetDialogResourceXml();
-        root = CreateDialogFromXml(s);
-      }
-      ASSERT(root && "Failed to parse XML");
-      m_pm.AttachDialog(root);
-      m_pm.AddNotifier(this);
-      Init();
-      return 0;
-   }
-   LRESULT lRes = 0;
-   if (m_pm.MessageHandler(uMsg, wParam, lParam, lRes))  return lRes;
-   return WindowWnd::HandleMessage(uMsg, wParam, lParam);
+    if (uMsg == WM_CREATE)  {     
+        m_pm.Init(m_hWnd);
+        ControlUI* root;
+        const char *s = GetDialogResourceSimple();
+        if (s) {
+            root = CreateDialogFromSimple(s);
+        } else {
+            s = GetDialogResourceXml();
+            root = CreateDialogFromXml(s);
+        }
+        ASSERT(root && "Failed to parse XML");
+        m_pm.AttachDialog(root);
+        m_pm.AddNotifier(this);
+        Init();
+        return 0;
+    }
+    LRESULT lRes = 0;
+    if (m_pm.MessageHandler(uMsg, wParam, lParam, lRes))  return lRes;
+    return WindowWnd::HandleMessage(uMsg, wParam, lParam);
 }
 
 void StandardPageWnd::Init()
@@ -51,12 +46,12 @@ void StandardPageWnd::OnPrepareAnimation()
 
 void StandardPageWnd::Notify(TNotifyUI& msg)
 {
-   if (str::Eq(msg.type, "windowinit"))  OnPrepareAnimation();
+    if (str::Eq(msg.type, "windowinit"))  OnPrepareAnimation();
 }
 
 const char* StartPageWnd::GetWindowClassName() const 
 { 
-   return "UIStart"; 
+    return "UIStart"; 
 }
 
 const char* StartPageWnd::GetDialogResourceSimple() const 
@@ -133,15 +128,15 @@ const char* StartPageWnd::GetDialogResourceXml() const
 
 void StartPageWnd::OnPrepareAnimation()
 {
-   COLORREF clrBack = m_pm.GetThemeColor(UICOLOR_WINDOW_BACKGROUND);
-   RECT rcCtrl = m_pm.FindControl("link_registers")->GetPos();
-   m_pm.AddAnimJob(AnimJobUI(UIANIMTYPE_FLAT, 0, 350, clrBack, clrBack, CRect(rcCtrl.left, rcCtrl.top, rcCtrl.left + 50, rcCtrl.top + 50), 40, 0, 4, 255, 0.3f));
-   rcCtrl = m_pm.FindControl("link_systems")->GetPos();
-   m_pm.AddAnimJob(AnimJobUI(UIANIMTYPE_FLAT, 200, 350, clrBack, clrBack, CRect(rcCtrl.left, rcCtrl.top, rcCtrl.left + 50, rcCtrl.top + 50), 40, 0, 4, 255, 0.3f));
-   rcCtrl = m_pm.FindControl("link_configure")->GetPos();
-   m_pm.AddAnimJob(AnimJobUI(UIANIMTYPE_FLAT, 100, 350, clrBack, clrBack, CRect(rcCtrl.left, rcCtrl.top, rcCtrl.left + 50, rcCtrl.top + 50), 40, 0, 4, 255, 0.3f));
-   rcCtrl = m_pm.FindControl("link_reports")->GetPos();
-   m_pm.AddAnimJob(AnimJobUI(UIANIMTYPE_FLAT, 250, 350, clrBack, clrBack, CRect(rcCtrl.left, rcCtrl.top, rcCtrl.left + 50, rcCtrl.top + 50), 40, 0, 4, 255, 0.3f));
+    COLORREF clrBack = m_pm.GetThemeColor(UICOLOR_WINDOW_BACKGROUND);
+    RECT rcCtrl = m_pm.FindControl("link_registers")->GetPos();
+    m_pm.AddAnimJob(AnimJobUI(UIANIMTYPE_FLAT, 0, 350, clrBack, clrBack, CRect(rcCtrl.left, rcCtrl.top, rcCtrl.left + 50, rcCtrl.top + 50), 40, 0, 4, 255, 0.3f));
+    rcCtrl = m_pm.FindControl("link_systems")->GetPos();
+    m_pm.AddAnimJob(AnimJobUI(UIANIMTYPE_FLAT, 200, 350, clrBack, clrBack, CRect(rcCtrl.left, rcCtrl.top, rcCtrl.left + 50, rcCtrl.top + 50), 40, 0, 4, 255, 0.3f));
+    rcCtrl = m_pm.FindControl("link_configure")->GetPos();
+    m_pm.AddAnimJob(AnimJobUI(UIANIMTYPE_FLAT, 100, 350, clrBack, clrBack, CRect(rcCtrl.left, rcCtrl.top, rcCtrl.left + 50, rcCtrl.top + 50), 40, 0, 4, 255, 0.3f));
+    rcCtrl = m_pm.FindControl("link_reports")->GetPos();
+    m_pm.AddAnimJob(AnimJobUI(UIANIMTYPE_FLAT, 250, 350, clrBack, clrBack, CRect(rcCtrl.left, rcCtrl.top, rcCtrl.left + 50, rcCtrl.top + 50), 40, 0, 4, 255, 0.3f));
 }
 
 void StartPageWnd::Init()
@@ -150,7 +145,7 @@ void StartPageWnd::Init()
 
 const char* ConfigurePageWnd::GetWindowClassName() const 
 { 
-   return "UIConfigure"; 
+    return "UIConfigure"; 
 }
 
 const char* ConfigurePageWnd::GetDialogResourceXml() const 
@@ -212,14 +207,14 @@ const char* ConfigurePageWnd::GetDialogResourceXml() const
 
 void ConfigurePageWnd::OnPrepareAnimation()
 {
-   COLORREF clrBack = m_pm.GetThemeColor(UICOLOR_TITLE_BACKGROUND);
-   const RECT rcCtrl = m_pm.FindControl("titlepanel")->GetPos();
-   m_pm.AddAnimJob(AnimJobUI(UIANIMTYPE_FLAT, 0, 300, clrBack, CLR_INVALID, rcCtrl, 140, 0, 5, 200, 0.1f));
+    COLORREF clrBack = m_pm.GetThemeColor(UICOLOR_TITLE_BACKGROUND);
+    const RECT rcCtrl = m_pm.FindControl("titlepanel")->GetPos();
+    m_pm.AddAnimJob(AnimJobUI(UIANIMTYPE_FLAT, 0, 300, clrBack, CLR_INVALID, rcCtrl, 140, 0, 5, 200, 0.1f));
 }
 
 const char* RegistersPageWnd::GetWindowClassName() const 
 { 
-   return "UIRegisters"; 
+    return "UIRegisters"; 
 }
 
 const char* RegistersPageWnd::GetDialogResourceXml() const 
@@ -270,34 +265,34 @@ const char* RegistersPageWnd::GetDialogResourceXml() const
 
 void RegistersPageWnd::OnPrepareAnimation()
 {
-   ListUI* list = static_cast<ListUI*>(m_pm.FindControl("list"));
-   list->SetTextCallback(this);            // We want GetItemText for items
-   for (int i = 0; i < 1000; i++)
-      list->Add(new ListTextElementUI);    // We want 1000 items in list
+    ListUI* list = static_cast<ListUI*>(m_pm.FindControl("list"));
+    list->SetTextCallback(this);            // We want GetItemText for items
+    for (int i = 0; i < 1000; i++)
+        list->Add(new ListTextElementUI);    // We want 1000 items in list
 }
 
 const char* RegistersPageWnd::GetItemText(ControlUI* ctrl, int idx, int subItem)
 {
-   if (idx == 0 && subItem == 0)  return "<i 3>Item1";
-   if (idx == 1 && subItem == 0)  return "<i 3>Item2";
-   if (idx == 2 && subItem == 0)  return "<i 3>Item3";
-   if (idx == 0 && subItem == 1)  return "Horse";
-   if (idx == 1 && subItem == 1)  return "Dog";
-   if (idx == 2 && subItem == 1)  return "Rabbit";
-   static StdString sTemp;
-   sTemp.Format("Item %d %d", idx, subItem);
-   return sTemp;
+    if (idx == 0 && subItem == 0)  return "<i 3>Item1";
+    if (idx == 1 && subItem == 0)  return "<i 3>Item2";
+    if (idx == 2 && subItem == 0)  return "<i 3>Item3";
+    if (idx == 0 && subItem == 1)  return "Horse";
+    if (idx == 1 && subItem == 1)  return "Dog";
+    if (idx == 2 && subItem == 1)  return "Rabbit";
+    static StdString sTemp;
+    sTemp.Format("Item %d %d", idx, subItem);
+    return sTemp;
 }
 
 int RegistersPageWnd::CompareItem(ControlUI* list, ControlUI* item1, ControlUI* item2)
 {
-   return 0;
+    return 0;
 }
 
 
 const char* SystemsPageWnd::GetWindowClassName() const 
 { 
-   return "UISystems"; 
+    return "UISystems"; 
 }
 
 const char* SystemsPageWnd::GetDialogResourceXml() const 
@@ -357,52 +352,52 @@ const char* SystemsPageWnd::GetDialogResourceXml() const
 
 void SystemsPageWnd::Notify(TNotifyUI& msg)
 {
-   if (str::Eq(msg.type, "itemexpand"))  OnExpandItem(msg.sender);
-   StandardPageWnd::Notify(msg);
+    if (str::Eq(msg.type, "itemexpand"))  OnExpandItem(msg.sender);
+    StandardPageWnd::Notify(msg);
 }
 
 const char* SystemsPageWnd::GetItemText(ControlUI* ctrl, int idx, int subItem)
 {
-   if (idx == 0 && subItem == 1)  return "Expanding Item #1";
-   if (idx == 1 && subItem == 1)  return "Expanding Item #2";
-   if (idx == 2 && subItem == 1)  return "Expanding Item #3";
-   if (idx == 0 && subItem == 2)  return "100.0";
-   if (idx == 1 && subItem == 2)  return "20.0";
-   if (idx == 2 && subItem == 2)  return "30.0";
-   if (idx == 0 && subItem == 3)  return "<a>Kunde #1</a>";
-   if (idx == 1 && subItem == 3)  return "";
-   if (idx == 2 && subItem == 3)  return "<a>Kunde #3</a>";
-   return "";
+    if (idx == 0 && subItem == 1)  return "Expanding Item #1";
+    if (idx == 1 && subItem == 1)  return "Expanding Item #2";
+    if (idx == 2 && subItem == 1)  return "Expanding Item #3";
+    if (idx == 0 && subItem == 2)  return "100.0";
+    if (idx == 1 && subItem == 2)  return "20.0";
+    if (idx == 2 && subItem == 2)  return "30.0";
+    if (idx == 0 && subItem == 3)  return "<a>Kunde #1</a>";
+    if (idx == 1 && subItem == 3)  return "";
+    if (idx == 2 && subItem == 3)  return "<a>Kunde #3</a>";
+    return "";
 }
 
 int SystemsPageWnd::CompareItem(ControlUI* list, ControlUI* item1, ControlUI* item2)
 {
-   return 0;
+    return 0;
 }
 
 void SystemsPageWnd::OnPrepareAnimation()
 {
-   ListUI* list = static_cast<ListUI*>(m_pm.FindControl("list"));
-   list->SetTextCallback(this);  // List will call our GetItemText()
+    ListUI* list = static_cast<ListUI*>(m_pm.FindControl("list"));
+    list->SetTextCallback(this);  // List will call our GetItemText()
 }
 
 void SystemsPageWnd::OnExpandItem(ControlUI* ctrl)
 {
-   ListExpandElementUI* item = static_cast<ListExpandElementUI*>(ctrl);
-   // Add slowly...
-   TextPanelUI* text = new TextPanelUI();
-   StdString sText;
-   sText.Format("<b>Episode:</b> Gyldendal #%p", ctrl);
-   text->SetText(sText);
-   item->Add(text);
-   // Add quickly...
-   item->Add((new TextPanelUI())->ApplyAttributeList("text=\"<b>Name:</b> Anders And\""));
-   item->Add((new TextPanelUI())->ApplyAttributeList("text=\"<b>Tidspunkt:</b> <i 3>Juleaften\""));
+    ListExpandElementUI* item = static_cast<ListExpandElementUI*>(ctrl);
+    // Add slowly...
+    TextPanelUI* text = new TextPanelUI();
+    StdString sText;
+    sText.Format("<b>Episode:</b> Gyldendal #%p", ctrl);
+    text->SetText(sText);
+    item->Add(text);
+    // Add quickly...
+    item->Add((new TextPanelUI())->ApplyAttributeList("text=\"<b>Name:</b> Anders And\""));
+    item->Add((new TextPanelUI())->ApplyAttributeList("text=\"<b>Tidspunkt:</b> <i 3>Juleaften\""));
 }
 
 const char* ReportsPageWnd::GetWindowClassName() const 
 { 
-   return "UIReports"; 
+    return "UIReports"; 
 }
 
 const char* ReportsPageWnd::GetDialogResourceXml() const 
@@ -443,31 +438,31 @@ const char* ReportsPageWnd::GetDialogResourceXml() const
 
 void ReportsPageWnd::OnPrepareAnimation()
 {
-   const RECT rcCtrl = m_pm.FindControl("titlepanel")->GetPos();
-   m_pm.AddAnimJob(AnimJobUI(UIANIMTYPE_FLAT, 0, 300, CLR_INVALID, CLR_INVALID, rcCtrl, 0, 0, -2, -200, 0.0f));
+    const RECT rcCtrl = m_pm.FindControl("titlepanel")->GetPos();
+    m_pm.AddAnimJob(AnimJobUI(UIANIMTYPE_FLAT, 0, 300, CLR_INVALID, CLR_INVALID, rcCtrl, 0, 0, -2, -200, 0.0f));
 }
 
 const char* SearchPageWnd::GetWindowClassName() const 
 { 
-   return "UISearch"; 
+    return "UISearch"; 
 }
 
 void SearchPageWnd::Init()
 {
-   m_pm.SetMinMaxInfo(640,480);
+    m_pm.SetMinMaxInfo(640,480);
 }
 
 void SearchPageWnd::Notify(TNotifyUI& msg)
 {
-   if (str::Eq(msg.type, "click"))  
-   {
-      if (str::Eq(msg.sender->GetName(), "ok"))  {
-         StandardPageWnd* win = new EditPageWnd;
-         win->Create(m_hWnd, NULL, UI_WNDSTYLE_FRAME, 0L);
-      }
-      if (str::Eq(msg.sender->GetName(), "cancel")) Close();
-   }
-   StandardPageWnd::Notify(msg);
+    if (str::Eq(msg.type, "click"))  
+    {
+        if (str::Eq(msg.sender->GetName(), "ok"))  {
+            StandardPageWnd* win = new EditPageWnd;
+            win->Create(m_hWnd, NULL, UI_WNDSTYLE_FRAME, 0L);
+        }
+        if (str::Eq(msg.sender->GetName(), "cancel")) Close();
+    }
+    StandardPageWnd::Notify(msg);
 }
 
 const char* SearchPageWnd::GetDialogResourceXml() const 
@@ -512,24 +507,24 @@ const char* SearchPageWnd::GetDialogResourceXml() const
 
 const char* EditPageWnd::GetWindowClassName() const 
 { 
-   return "UIEdit"; 
+    return "UIEdit"; 
 }
 
 void EditPageWnd::Init()
 {
-   ResizeClient(640, 480);
-   m_pm.SetMinMaxInfo(640,480);
+    ResizeClient(640, 480);
+    m_pm.SetMinMaxInfo(640,480);
 }
 
 void EditPageWnd::Notify(TNotifyUI& msg)
 {
-   if (str::Eq(msg.type, "click") && str::Eq(msg.sender->GetName(), "cancel"))  Close();
-   if (str::Eq(msg.type, "link") && str::Eq(msg.sender->GetName(), "warning"))  {
-      PopupWnd* pPopup = new PopupWnd;
-      pPopup->Create(m_hWnd, "", UI_WNDSTYLE_DIALOG, UI_WNDSTYLE_EX_DIALOG, 0, 0, 0, 0, NULL);
-      pPopup->ShowModal();
-   }
-   StandardPageWnd::Notify(msg);
+    if (str::Eq(msg.type, "click") && str::Eq(msg.sender->GetName(), "cancel"))  Close();
+    if (str::Eq(msg.type, "link") && str::Eq(msg.sender->GetName(), "warning"))  {
+        PopupWnd* pPopup = new PopupWnd;
+        pPopup->Create(m_hWnd, "", UI_WNDSTYLE_DIALOG, UI_WNDSTYLE_EX_DIALOG, 0, 0, 0, 0, NULL);
+        pPopup->ShowModal();
+    }
+    StandardPageWnd::Notify(msg);
 }
 
 const char* EditPageWnd::GetDialogResourceXml() const 
@@ -606,30 +601,31 @@ const char* EditPageWnd::GetDialogResourceXml() const
    
 void EditPageWnd::OnPrepareAnimation()
 {
-   const RECT rcCtrl = m_pm.FindControl("warning")->GetPos();
-   m_pm.AddAnimJob(AnimJobUI(UIANIMTYPE_FLAT, 0, 300, CLR_INVALID, CLR_INVALID, rcCtrl, 0, 0, -2, -200, 0.0f));
+    const RECT rcCtrl = m_pm.FindControl("warning")->GetPos();
+    m_pm.AddAnimJob(AnimJobUI(UIANIMTYPE_FLAT, 0, 300, CLR_INVALID, CLR_INVALID, rcCtrl, 0, 0, -2, -200, 0.0f));
 }
 
 UINT PopupWnd::GetClassStyle() const
 {
-   return UI_CLASSSTYLE_DIALOG;
+    return UI_CLASSSTYLE_DIALOG;
 }
 
 const char* PopupWnd::GetWindowClassName() const 
 { 
-   return "UIPopup"; 
+    return "UIPopup"; 
 }
 
 void PopupWnd::Init()
 {
-   ResizeClient(440, 210);
-   CenterWindow();
+    ResizeClient(440, 210);
+    CenterWindow();
 }
 
 void PopupWnd::Notify(TNotifyUI& msg)
 {
-   if (str::Eq(msg.type, "click"))  Close();
-   StandardPageWnd::Notify(msg);
+    if (str::Eq(msg.type, "click"))
+        Close();
+    StandardPageWnd::Notify(msg);
 }
 
 const char* PopupWnd::GetDialogResourceXml() const 

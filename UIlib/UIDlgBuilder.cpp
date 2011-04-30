@@ -29,7 +29,7 @@ static ControlUI *CreateKnown(const char *cls)
         else if (str::Eq(cls, "TextPanel")) return new TextPanelUI;
         break;
     case 10:
-        if (str::Eq(cls, "ListHeader"))        return new ListHeaderUI;
+        if      (str::Eq(cls, "ListHeader"))   return new ListHeaderUI;
         else if (str::Eq(cls, "ListFooter"))   return new ListFooterUI;
         else if (str::Eq(cls, "TileLayout"))   return new TileLayoutUI;
         else if (str::Eq(cls, "ToolButton"))   return new ToolButtonUI;
@@ -37,25 +37,25 @@ static ControlUI *CreateKnown(const char *cls)
         else if (str::Eq(cls, "LabelPanel"))   return new LabelPanelUI;
         break;
     case 11:
-        if (str::Eq(cls, "ToolGripper"))       return new ToolGripperUI;
+        if      (str::Eq(cls, "ToolGripper"))  return new ToolGripperUI;
         else if (str::Eq(cls, "WhiteCanvas"))  return new WhiteCanvasUI;
         else if (str::Eq(cls, "TitleShadow"))  return new TitleShadowUI;
         break;
     case 12:
-        if (str::Eq(cls, "WindowCanvas"))      return new WindowCanvasUI;
+        if      (str::Eq(cls, "WindowCanvas")) return new WindowCanvasUI;
         else if (str::Eq(cls, "DialogCanvas")) return new DialogCanvasUI;
         else if (str::Eq(cls, "DialogLayout")) return new DialogLayoutUI;
         else if (str::Eq(cls, "PaddingPanel")) return new PaddingPanelUI;
         else if (str::Eq(cls, "WarningPanel")) return new WarningPanelUI;
         break;
     case 13:
-        if (str::Eq(cls, "SeparatorLine"))      return new SeparatorLineUI;
+        if      (str::Eq(cls, "SeparatorLine"))      return new SeparatorLineUI;
         else if (str::Eq(cls, "ControlCanvas")) return new ControlCanvasUI;
         else if (str::Eq(cls, "MultiLineEdit")) return new MultiLineEditUI;
         else if (str::Eq(cls, "ToolSeparator")) return new ToolSeparatorUI;
         break;
     case 14:
-        if (str::Eq(cls, "VerticalLayout"))      return new VerticalLayoutUI;
+        if      (str::Eq(cls, "VerticalLayout")) return new VerticalLayoutUI;
         else if (str::Eq(cls, "SingleLineEdit")) return new SingleLineEditUI;
         else if (str::Eq(cls, "SingleLinePick")) return new SingleLinePickUI;
         else if (str::Eq(cls, "NavigatorPanel")) return new NavigatorPanelUI;
@@ -63,18 +63,18 @@ static ControlUI *CreateKnown(const char *cls)
         else if (str::Eq(cls, "GreyTextHeader")) return new GreyTextHeaderUI;
         break;
     case 15:
-        if (str::Eq(cls, "ListTextElement"))      return new ListTextElementUI;
+        if      (str::Eq(cls, "ListTextElement")) return new ListTextElementUI;
         else if (str::Eq(cls, "NavigatorButton")) return new NavigatorButtonUI;      
         else if (str::Eq(cls, "TabFolderCanvas")) return new TabFolderCanvasUI;      
         break;
     case 16:
-        if (str::Eq(cls, "ListHeaderShadow"))      return new ListHeaderShadowUI; 
+        if      (str::Eq(cls, "ListHeaderShadow")) return new ListHeaderShadowUI; 
         else if (str::Eq(cls, "HorizontalLayout")) return new HorizontalLayoutUI;
         else if (str::Eq(cls, "ListLabelElement")) return new ListLabelElementUI;
         else if (str::Eq(cls, "SearchTitlePanel")) return new SearchTitlePanelUI;
         break;
     case 17:
-        if (str::Eq(cls, "ToolbarTitlePanel"))   return new ToolbarTitlePanelUI;
+        if      (str::Eq(cls, "ToolbarTitlePanel")) return new ToolbarTitlePanelUI;
         else if (str::Eq(cls, "ListExpandElement")) return new ListExpandElementUI;
         break;
     }
