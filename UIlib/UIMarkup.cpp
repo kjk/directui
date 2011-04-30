@@ -62,57 +62,57 @@ public:
 
 static void SkipWhitespace(char*& s)
 {
-   while (*s && *s <= ' ')
-      s++;
+    while (*s && *s <= ' ')
+        s++;
 }
 
 static void SkipIdentifier(char*& s)
 {
-   while (*s && (*s == '_' || *s == ':' || isalnum(*s)))
-      s++;
+    while (*s && (*s == '_' || *s == ':' || isalnum(*s)))
+        s++;
 }
 
 static void ParseEntity(char*& s, char*& dst)
 {
-   if (s[0] == 'a' && s[1] == 'm' && s[2] == 'p' && s[3] == ';')  {
-      *dst++ = '&';
-      s += 4;
-   } else if (s[0] == 'l' && s[1] == 't' && s[2] == ';')  {
-      *dst++ = '<';
-      s += 3;
-   } else if (s[0] == 'g' && s[1] == 't' && s[2] == ';')  {
-      *dst++ = '>';
-      s += 3;
-   } else if (s[0] == 'q' && s[1] == 'u' && s[2] == 'o' && s[3] == 't' && s[4] == ';')  {
-      *dst++ = '\"';
-      s += 5;
-   } else if (s[0] == 'a' && s[1] == 'p' && s[2] == 'o' && s[3] == 's' && s[4] == ';')  {
-      *dst++ = '\'';
-      s += 5;
-   } else {
-      *dst++ = '&';
-   }
+    if (s[0] == 'a' && s[1] == 'm' && s[2] == 'p' && s[3] == ';')  {
+        *dst++ = '&';
+        s += 4;
+    } else if (s[0] == 'l' && s[1] == 't' && s[2] == ';')  {
+        *dst++ = '<';
+        s += 3;
+    } else if (s[0] == 'g' && s[1] == 't' && s[2] == ';')  {
+        *dst++ = '>';
+        s += 3;
+    } else if (s[0] == 'q' && s[1] == 'u' && s[2] == 'o' && s[3] == 't' && s[4] == ';')  {
+        *dst++ = '\"';
+        s += 5;
+    } else if (s[0] == 'a' && s[1] == 'p' && s[2] == 'o' && s[3] == 's' && s[4] == ';')  {
+        *dst++ = '\'';
+        s += 5;
+    } else {
+        *dst++ = '&';
+    }
 }
 
 static bool ParseXmlData(char*& s, char*& dst, char until)
 {
-   while (*s && *s != until)  {
-      if (*s == '&')  {
-         ParseEntity(++s, dst);
-      }
-      if (*s == ' ')  {
-         *dst++ = *s++;
-         //if (!m_bPreserveWhitespace)  SkipWhitespace(s);
-      } else {
-         *dst++ = *s++;
-      }
-   }
-   // Make sure that MapAttributes() works correctly when it parses
-   // over a value that has been transformed.
-   char* sfill = dst + 1;
-   while (sfill < s)
-      *sfill++ = ' ';
-   return true;
+    while (*s && *s != until)  {
+        if (*s == '&')  {
+            ParseEntity(++s, dst);
+        }
+        if (*s == ' ')  {
+            *dst++ = *s++;
+            //if (!m_bPreserveWhitespace)  SkipWhitespace(s);
+        } else {
+            *dst++ = *s++;
+        }
+    }
+    // Make sure that MapAttributes() works correctly when it parses
+    // over a value that has been transformed.
+    char* sfill = dst + 1;
+    while (sfill < s)
+        *sfill++ = ' ';
+    return true;
 }
 
 static bool ParseAttributes(char* s, XmlTagInfo *tagInfo)

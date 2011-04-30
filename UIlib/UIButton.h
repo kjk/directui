@@ -4,57 +4,56 @@
 class UILIB_API ButtonUI : public ControlUI
 {
 public:
-   ButtonUI();
+    ButtonUI();
 
-   virtual const char* GetClass() const;
-   virtual UINT GetControlFlags() const;
+    virtual const char* GetClass() const;
+    virtual UINT GetControlFlags() const;
 
-   virtual bool Activate();
+    virtual bool Activate();
 
-   virtual void SetText(const char* txt);
+    virtual void SetText(const char* txt);
 
-   void SetWidth(int cxWidth);
-   void SetPadding(int cx, int cy);
+    void SetWidth(int cxWidth);
+    void SetPadding(int cx, int cy);
 
-   virtual void Event(TEventUI& event);
+    virtual void Event(TEventUI& event);
 
-   virtual SIZE EstimateSize(SIZE szAvailable);
-   virtual void DoPaint(HDC hDC, const RECT& rcPaint);
-   virtual void SetAttribute(const char* name, const char* value);
+    virtual SIZE EstimateSize(SIZE szAvailable);
+    virtual void DoPaint(HDC hDC, const RECT& rcPaint);
+    virtual void SetAttribute(const char* name, const char* value);
 
 protected:
-   int  m_cxWidth;
-   SIZE m_szPadding;
-   UINT m_uTextStyle;
-   UINT m_uButtonState;
+    int  m_cxWidth;
+    SIZE m_szPadding;
+    UINT m_uTextStyle;
+    UINT m_uButtonState;
 };
 
 class UILIB_API OptionUI : public ControlUI
 {
 public:
-   OptionUI();
+    OptionUI();
 
-   virtual const char* GetClass() const;
-   virtual UINT GetControlFlags() const;
+    virtual const char* GetClass() const;
+    virtual UINT GetControlFlags() const;
 
-   virtual bool Activate();
+    virtual bool Activate();
 
-   bool IsChecked() const;
-   void SetCheck(bool bSelected);
-   void SetWidth(int cxWidth);
-   
-   virtual void Event(TEventUI& event);
+    bool IsChecked() const;
+    void SetCheck(bool bSelected);
+    void SetWidth(int cxWidth);
 
-   virtual SIZE EstimateSize(SIZE szAvailable);
-   virtual void DoPaint(HDC hDC, const RECT& rcPaint);
-   virtual void SetAttribute(const char* name, const char* value);
+    virtual void Event(TEventUI& event);
+
+    virtual SIZE EstimateSize(SIZE szAvailable);
+    virtual void DoPaint(HDC hDC, const RECT& rcPaint);
+    virtual void SetAttribute(const char* name, const char* value);
 
 protected:
-   bool m_bSelected;
-   UINT m_uStyle;
-   UINT m_uButtonState;
-   int  m_cxWidth;
+    bool m_bSelected;
+    UINT m_uStyle;
+    UINT m_uButtonState;
+    int  m_cxWidth;
 };
 
 #endif // !defined(AFX_UIBUTTON_H__20060218_72F5_1B46_6300_0080AD509054__INCLUDED_)
-

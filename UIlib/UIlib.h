@@ -1,10 +1,10 @@
 
 #if !defined(UILIB_API)
-  #if defined(UILIB_EXPORTS)
-    #define UILIB_API __declspec(dllexport)
-  #else
-    #define UILIB_API __declspec(dllimport)
-  #endif
+#if defined(UILIB_EXPORTS)
+#define UILIB_API __declspec(dllexport)
+#else
+#define UILIB_API __declspec(dllimport)
+#endif
 #endif
 
 #include <windows.h>

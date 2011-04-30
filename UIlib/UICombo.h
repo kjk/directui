@@ -4,62 +4,61 @@
 class UILIB_API SingleLinePickUI : public ControlUI
 {
 public:
-   SingleLinePickUI();
+    SingleLinePickUI();
 
-   void SetWidth(int cxWidth);
+    void SetWidth(int cxWidth);
 
-   virtual const char* GetClass() const;
-   virtual UINT GetControlFlags() const;
-   virtual void Event(TEventUI& event);
+    virtual const char* GetClass() const;
+    virtual UINT GetControlFlags() const;
+    virtual void Event(TEventUI& event);
 
-   virtual SIZE EstimateSize(SIZE szAvailable);
-   virtual void DoPaint(HDC hDC, const RECT& rcPaint);
+    virtual SIZE EstimateSize(SIZE szAvailable);
+    virtual void DoPaint(HDC hDC, const RECT& rcPaint);
 
 protected:
-   RECT m_rcButton;
-   RECT m_rcLinks[8];
-   int  m_nLinks;
-   int  m_cxWidth;
-   UINT m_uButtonState;
+    RECT m_rcButton;
+    RECT m_rcLinks[8];
+    int  m_nLinks;
+    int  m_cxWidth;
+    UINT m_uButtonState;
 };
 
 class UILIB_API DropDownUI : public ContainerUI, public IListOwnerUI
 {
 public:
-   DropDownUI();
+    DropDownUI();
 
-   virtual const char* GetClass() const;
-   virtual void* GetInterface(const char* name);
-   
-   void Init();
-   virtual UINT GetControlFlags() const;
+    virtual const char* GetClass() const;
+    virtual void* GetInterface(const char* name);
 
-   virtual const char* GetText() const;
+    void Init();
+    virtual UINT GetControlFlags() const;
 
-   SIZE GetDropDownSize() const;
-   void SetDropDownSize(SIZE szDropBox);
+    virtual const char* GetText() const;
 
-   int GetCurSel() const;  
-   bool SelectItem(int idx);
+    SIZE GetDropDownSize() const;
+    void SetDropDownSize(SIZE szDropBox);
 
-   bool Add(ControlUI* ctrl);
-   bool Remove(ControlUI* ctrl);
-   void RemoveAll();
+    int GetCurSel() const;  
+    bool SelectItem(int idx);
 
-   virtual bool Activate();
+    bool Add(ControlUI* ctrl);
+    bool Remove(ControlUI* ctrl);
+    void RemoveAll();
 
-   virtual void SetPos(RECT rc);
-   virtual void Event(TEventUI& event);
-   virtual SIZE EstimateSize(SIZE szAvailable);
-   virtual void DoPaint(HDC hDC, const RECT& rcPaint);
+    virtual bool Activate();
+
+    virtual void SetPos(RECT rc);
+    virtual void Event(TEventUI& event);
+    virtual SIZE EstimateSize(SIZE szAvailable);
+    virtual void DoPaint(HDC hDC, const RECT& rcPaint);
 
 protected:
-   int  m_curSel;
-   int  m_cxWidth;
-   SIZE m_szDropBox;
-   RECT m_rcButton;
-   UINT m_uButtonState;
+    int  m_curSel;
+    int  m_cxWidth;
+    SIZE m_szDropBox;
+    RECT m_rcButton;
+    UINT m_uButtonState;
 };
 
 #endif // !defined(AFX_UICOMBO_H__20060218_C01D_1618_FBA5_0080AD509054__INCLUDED_)
-

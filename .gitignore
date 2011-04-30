@@ -2,6 +2,7 @@
 *.ncb
 *.suo
 *.sdf
+*.aps
 *.opensdf
 *.pyc
 dbg/
