@@ -295,7 +295,8 @@ ControlUI* ContainerUI::FindControl(FINDCONTROLPROC Proc, void* data, UINT uFlag
 void ContainerUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
     RECT rcTemp = { 0 };
-    if (!::IntersectRect(&rcTemp, &rcPaint, &m_rcItem))  return;
+    if (!::IntersectRect(&rcTemp, &rcPaint, &m_rcItem))
+        return;
 
     RenderClip clip;
     BlueRenderEngineUI::GenerateClip(hDC, m_rcItem, clip);
@@ -388,15 +389,17 @@ void CanvasUI::DoPaint(HDC hDC, const RECT& rcPaint)
     // Paint watermark bitmap
     if (m_hBitmap != NULL)  {
         RECT rcBitmap = { 0 };
+        int left = m_rcItem.right - m_BitmapInfo.bmWidth;
+        int right = m_rcItem.right;
         switch (m_iOrientation)  {
         case HTTOPRIGHT:
-            ::SetRect(&rcBitmap, m_rcItem.right - m_BitmapInfo.bmWidth, m_rcItem.top, m_rcItem.right, m_rcItem.top + m_BitmapInfo.bmHeight);
+            ::SetRect(&rcBitmap, left, m_rcItem.top,                            right, m_rcItem.top + m_BitmapInfo.bmHeight);
             break;
         case HTBOTTOMRIGHT:
-            ::SetRect(&rcBitmap, m_rcItem.right - m_BitmapInfo.bmWidth, m_rcItem.bottom - m_BitmapInfo.bmHeight, m_rcItem.right, m_rcItem.bottom);
+            ::SetRect(&rcBitmap, left, m_rcItem.bottom - m_BitmapInfo.bmHeight, right, m_rcItem.bottom);
             break;
         default:
-            ::SetRect(&rcBitmap, m_rcItem.right - m_BitmapInfo.bmWidth, m_rcItem.bottom - m_BitmapInfo.bmHeight, m_rcItem.right, m_rcItem.bottom);
+            ::SetRect(&rcBitmap, left, m_rcItem.bottom - m_BitmapInfo.bmHeight, right, m_rcItem.bottom);
             break;
         }
         RECT rcTemp = { 0 };
@@ -626,7 +629,8 @@ void TileLayoutUI::SetPos(RECT rc)
             rcTile.right -= m_iPadding / 2;
         else if ((iCount % m_nColumns) == m_nColumns - 1)
             rcTile.left += m_iPadding / 2;
-        else ::InflateRect(&rcTile, -(m_iPadding / 2), 0);
+        else
+            ::InflateRect(&rcTile, -(m_iPadding / 2), 0);
         // If this panel expands vertically
         if (m_cxyFixed.cy == 0) {
             SIZE szAvailable = { RectDx(rcTile), 9999 };
@@ -654,7 +658,7 @@ void TileLayoutUI::SetPos(RECT rc)
     ProcessScrollbar(rc, m_cyNeeded);
 }
 
-DialogLayoutUI::DialogLayoutUI() : m_bFirstResize(true), m_aModes(sizeof(STRETCHMODE))
+DialogLayoutUI::DialogLayoutUI() : m_bFirstResize(true), m_aModes(sizeof(StretchMode))
 {
     ::ZeroMemory(&m_rcDialog, sizeof(m_rcDialog));
 }
@@ -672,7 +676,7 @@ void* DialogLayoutUI::GetInterface(const char* name)
 
 void DialogLayoutUI::SetStretchMode(ControlUI* ctrl, UINT uMode)
 {
-    STRETCHMODE mode;
+    StretchMode mode;
     mode.ctrl = ctrl;
     mode.uMode = uMode;
     mode.rcItem = ctrl->GetPos();
@@ -703,11 +707,11 @@ void DialogLayoutUI::SetPos(RECT rc)
     // A "line" indicator is used to apply the same scaling to a new group of controls.
     int nCount, cxStretch, cyStretch, cxMove, cyMove;
     for (int i = 0; i < m_aModes.GetSize(); i++)  {
-        STRETCHMODE* item = static_cast<STRETCHMODE*>(m_aModes[i]);
+        StretchMode* item = static_cast<StretchMode*>(m_aModes[i]);
         if (i == 0 || FlSet(item->uMode, UISTRETCH_NEWGROUP))  {
             nCount = 0;
             for (int j = i + 1; j < m_aModes.GetSize(); j++)  {
-                STRETCHMODE* pNext = static_cast<STRETCHMODE*>(m_aModes[j]);
+                StretchMode* pNext = static_cast<StretchMode*>(m_aModes[j]);
                 if (FlSet(pNext->uMode, (UISTRETCH_NEWGROUP | UISTRETCH_NEWLINE)))  break;
                 if (FlSet(pNext->uMode, (UISTRETCH_SIZE_X | UISTRETCH_SIZE_Y)))  nCount++;
             }
@@ -749,10 +753,10 @@ void DialogLayoutUI::RecalcArea()
         ControlUI* ctrl = static_cast<ControlUI*>(m_items[it]);
         bool bFound = false;
         for (int i = 0; !bFound && i < m_aModes.GetSize(); i++)  {
-            if (static_cast<STRETCHMODE*>(m_aModes[i])->ctrl == ctrl)  bFound = true;
+            if (static_cast<StretchMode*>(m_aModes[i])->ctrl == ctrl)  bFound = true;
         }
         if (!bFound)  {
-            STRETCHMODE mode;
+            StretchMode mode;
             mode.ctrl = ctrl;
             mode.uMode = UISTRETCH_NEWGROUP;
             mode.rcItem = ctrl->GetPos();
@@ -766,7 +770,7 @@ void DialogLayoutUI::RecalcArea()
         rcDialog.Join(rcPos);
     }
     for (int j = 0; j < m_aModes.GetSize(); j++)  {
-        RECT& rcPos = static_cast<STRETCHMODE*>(m_aModes[j])->rcItem;
+        RECT& rcPos = static_cast<StretchMode*>(m_aModes[j])->rcItem;
         ::OffsetRect(&rcPos, -rcDialog.left, -rcDialog.top);
     }
     m_rcDialog = rcDialog;

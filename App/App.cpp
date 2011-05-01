@@ -41,7 +41,7 @@ Dialog\n\
       List header=hidden footer=hidden\n\
         TextPanel text='<x 16><c #585ebf><b>Click one of the items below:</b>\\n<h>'\n\
         ListLabelElement name=test_old text='<x 14>Old test window'\n\
-        ListLabelElement text='<x 14>Institutions register'\n\
+        ListLabelElement name=login_window text='<x 14>Login Window'\n\
         ListLabelElement text='<x 14>Kunde register'\n\
         ListLabelElement text='<x 14>Vognmandsregister'\n\
         ListLabelElement text='<x 14>Vogn register'\n\
@@ -49,6 +49,16 @@ Dialog\n\
         TextPanel text='<x 16><c #F00000><b>A cool effect</b>\\n<h>'\n\
       HorizontalLayout\n\
         Button text=&Exit name=exit\n\
+";
+
+static const char* loginWindowPageDialog = "\
+Dialog\n\
+  VerticalLayout backColor=3\n\
+    LabelPanel         text='&Search'\n\
+    SingleLineEdit     name=navn\n\
+    LabelPanel         text=&Type\n\
+    SingleLineEdit     name=type\n\
+    Button             name=ok text=Login\n\
 ";
 #endif
 
@@ -130,6 +140,108 @@ protected:
     HWND m_hWndClient;
 };
 
+class LoginWindowPageWnd : public WindowWnd, public INotifyUI
+{
+public:
+    virtual UINT GetClassStyle() const { return UI_CLASSSTYLE_CHILD; }
+    virtual const char* GetWindowClassName() const { return "UILoginWindow"; };
+    virtual void OnFinalMessage(HWND hWnd) { delete this; }
+    virtual LRESULT HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam);
+
+    virtual void Init() {}
+    virtual void Notify(TNotifyUI& msg) {}
+
+public:
+    PaintManagerUI m_pm;
+};
+
+LRESULT LoginWindowPageWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+    if (uMsg == WM_CREATE)  {     
+        m_pm.Init(m_hWnd);
+        ControlUI* root = CreateDialogFromSimple(loginWindowPageDialog);
+        ASSERT(root && "Failed to parse resource");
+        m_pm.AttachDialog(root);
+        m_pm.AddNotifier(this);
+        Init();
+        return 0;
+    }
+    LRESULT lRes = 0;
+    if (m_pm.MessageHandler(uMsg, wParam, lParam, lRes))
+        return lRes;
+    return WindowWnd::HandleMessage(uMsg, wParam, lParam);
+}
+
+class LoginWindowFrame : public WindowWnd, public INotifyUI
+{
+public:
+    LoginWindowFrame() : m_hWndClient(NULL) { };
+    virtual const char* GetWindowClassName() const { return "UILoginFrame"; };
+    virtual UINT GetClassStyle() const { return UI_CLASSSTYLE_FRAME; };
+    virtual void OnFinalMessage(HWND /*hWnd*/) { delete this; };
+
+    virtual void Notify(TNotifyUI& msg)
+    {
+#if 0
+        ControlUI *sender = msg.sender;
+        const char *name = sender->GetName();
+        if (str::Eq(msg.type, "itemclick")) {
+            if (str::Eq(name, "test_old")) {
+                CreateOldTestWindow();
+            } else if (str::Eq(name, "login_window")) {
+                CreateLoginWindow();
+            }
+        } else if (str::Eq(msg.type, "click")) {
+            if (str::Eq(name, "exit")) {
+                PostMessage(WM_CLOSE);
+            }
+        }
+#endif
+    }
+
+    void CreateUI()
+    {
+        LoginWindowPageWnd *win = new LoginWindowPageWnd();
+        if (m_hWndClient != NULL)  ::PostMessage(m_hWndClient, WM_CLOSE, 0, 0L);
+        win->m_pm.AddNotifier(this);
+        m_hWndClient = win->Create(m_hWnd, NULL, UI_WNDSTYLE_CHILD, 0);
+        PostMessage(WM_SIZE);
+    }
+
+    virtual LRESULT HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
+    {
+        if (uMsg == WM_CREATE)  {
+            SetIcon(IDR_MAINFRAME);
+            CreateUI();
+        }
+        if (uMsg == WM_DESTROY)  {
+            //::PostQuitMessage(0L);
+        }
+        if (uMsg == WM_SETFOCUS)  {
+            ::SetFocus(m_hWndClient);
+        }
+        if (uMsg == WM_SIZE)  {
+            RECT rcClient;
+            ::GetClientRect(m_hWnd, &rcClient);
+            ::MoveWindow(m_hWndClient, rcClient.left, rcClient.top, rcClient.right - rcClient.left, rcClient.bottom - rcClient.top, TRUE);
+            return 0;
+        }
+        if (uMsg == WM_ERASEBKGND)  {
+            return 1;
+        }
+        if (uMsg == WM_PAINT)  {
+            PAINTSTRUCT ps = { 0 };
+            ::BeginPaint(m_hWnd, &ps);
+            ::EndPaint(m_hWnd, &ps);
+            return 0;
+        }
+        return WindowWnd::HandleMessage(uMsg, wParam, lParam);
+    }
+
+protected:
+    HWND m_hWndClient;
+};
+
 class MainWindowPageWnd : public WindowWnd, public INotifyUI
 {
 public:
@@ -176,6 +288,11 @@ public:
         frame->Create(NULL, "OldTest", UI_WNDSTYLE_FRAME, WS_EX_WINDOWEDGE);
     }
 
+    void CreateLoginWindow() {
+        LoginWindowFrame* frame = new LoginWindowFrame();
+        frame->Create(NULL, "Login window test", UI_WNDSTYLE_FRAME, WS_EX_WINDOWEDGE);
+    }
+
     virtual void Notify(TNotifyUI& msg)
     {
         ControlUI *sender = msg.sender;
@@ -183,6 +300,8 @@ public:
         if (str::Eq(msg.type, "itemclick")) {
             if (str::Eq(name, "test_old")) {
                 CreateOldTestWindow();
+            } else if (str::Eq(name, "login_window")) {
+                CreateLoginWindow();
             }
         } else if (str::Eq(msg.type, "click")) {
             if (str::Eq(name, "exit")) {

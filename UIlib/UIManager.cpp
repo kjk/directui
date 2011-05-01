@@ -1415,10 +1415,11 @@ PaintManagerUI* ControlUI::GetManager() const
 
 void ControlUI::SetManager(PaintManagerUI* manager, ControlUI* parent)
 {
-    bool bInit = m_manager == NULL;
+    bool bInit = (m_manager == NULL);
     m_manager = manager;
     m_parent = parent;
-    if (bInit)  Init();
+    if (bInit)
+        Init();
 }
 
 const char* ControlUI::GetName() const
@@ -1506,18 +1507,18 @@ void ControlUI::SetAttribute(const char* name, const char* value)
     if (str::Eq(name, "pos"))  {
         RECT rcPos = { 0 };
         char* pstr = NULL;
-        rcPos.left = strtol(value, &pstr, 10);  ASSERT(pstr);    
+        rcPos.left = strtol(value, &pstr, 10);      ASSERT(pstr);    
         rcPos.top = strtol(pstr + 1, &pstr, 10);    ASSERT(pstr);    
         rcPos.right = strtol(pstr + 1, &pstr, 10);  ASSERT(pstr);    
         rcPos.bottom = strtol(pstr + 1, &pstr, 10); ASSERT(pstr);    
         SetPos(rcPos);
     }
-    else if (str::Eq(name, "name"))  SetName(value);
-    else if (str::Eq(name, "text"))  SetText(value);
+    else if (str::Eq(name, "name"))     SetName(value);
+    else if (str::Eq(name, "text"))     SetText(value);
     else if (str::Eq(name, "tooltip"))  SetToolTip(value);
     else if (str::Eq(name, "enabled"))  SetEnabled(str::Eq(value, "true"));
     else if (str::Eq(name, "visible"))  SetVisible(str::Eq(value, "true"));
-    else if (str::Eq(name, "shortcut"))  SetShortcut(value[0]);
+    else if (str::Eq(name, "shortcut")) SetShortcut(value[0]);
 }
 
 // handle xml attribute lists in the form:

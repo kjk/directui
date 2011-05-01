@@ -29,7 +29,7 @@ public:
     virtual void RemoveAll();
 
     virtual void Event(TEventUI& event);
-    void SetVisible(bool visible);
+    virtual void SetVisible(bool visible);
 
     virtual void SetInset(SIZE szInset);
     virtual void SetInset(RECT rcInset);
@@ -60,13 +60,13 @@ protected:
 
 protected:
     StdPtrArray m_items;
-    RECT m_rcInset;
-    int m_iPadding;
-    SIZE m_cxyFixed;
-    bool m_bAutoDestroy;
-    bool m_bAllowScrollbars;
-    HWND m_hwndScroll;
-    int m_iScrollPos;
+    RECT        m_rcInset;
+    int         m_iPadding;
+    SIZE        m_cxyFixed;
+    bool        m_bAutoDestroy;
+    bool        m_bAllowScrollbars;
+    HWND        m_hwndScroll;
+    int         m_iScrollPos;
 };
 
 class UILIB_API CanvasUI : public ContainerUI
@@ -138,7 +138,6 @@ protected:
     int m_nPrevItems;
 };
 
-
 class UILIB_API HorizontalLayoutUI : public ContainerUI
 {
 public:
@@ -183,14 +182,14 @@ protected:
 protected:  
     typedef struct 
     {
-        ControlUI* ctrl;
-        UINT uMode;
-        RECT rcItem;
-    } STRETCHMODE;
+        ControlUI*  ctrl;
+        UINT        uMode;
+        RECT        rcItem;
+    } StretchMode;
 
-    RECT m_rcDialog;
-    RECT m_rcOriginal;
-    bool m_bFirstResize;
+    RECT        m_rcDialog;
+    RECT        m_rcOriginal;
+    bool        m_bFirstResize;
     StdValArray m_aModes;
 };
 
