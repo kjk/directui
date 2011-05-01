@@ -21,7 +21,8 @@ bool HttpGet(const char *url, str::Str<char> *dataOut)
     if (!hInet)
         goto Exit;
 
-    hFile = InternetOpenUrlA(hInet, url, NULL, 0, 0, 0);
+    DWORD flags = INTERNET_FLAG_NO_CACHE_WRITE | INTERNET_FLAG_RELOAD;
+    hFile = InternetOpenUrlA(hInet, url, NULL, 0, flags, 0);
     if (!hFile)
         goto Exit;
 
