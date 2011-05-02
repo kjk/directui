@@ -112,59 +112,63 @@ void ContainerUI::SetVisible(bool visible)
 
 void ContainerUI::Event(TEventUI& event)
 {
-    if (m_hwndScroll != NULL)  
+    if (!IsScrollYVisible()) {
+        ControlUI::Event(event);
+        return;
+    }
+        
+    if (event.type == UIEVENT_VSCROLL)  
     {
-        if (event.type == UIEVENT_VSCROLL)  
-        {
-            switch (LOWORD(event.wParam))  {
-            case SB_THUMBPOSITION:
-            case SB_THUMBTRACK:
-                {
-                    SCROLLINFO si = { 0 };
-                    si.cbSize = sizeof(SCROLLINFO);
-                    si.fMask = SIF_TRACKPOS;
-                    ::GetScrollInfo(m_hwndScroll, SB_CTL, &si);
-                    SetScrollPos(si.nTrackPos);
-                }
-                break;
-            case SB_LINEUP:
-                SetScrollPos(GetScrollPos() - 5);
-                break;
-            case SB_LINEDOWN:
-                SetScrollPos(GetScrollPos() + 5);
-                break;
-            case SB_PAGEUP:
-                SetScrollPos(GetScrollPos() - GetScrollPage());
-                break;
-            case SB_PAGEDOWN:
-                SetScrollPos(GetScrollPos() + GetScrollPage());
-                break;
+        switch (LOWORD(event.wParam))  {
+        case SB_THUMBPOSITION:
+        case SB_THUMBTRACK:
+            {
+                SCROLLINFO si = { 0 };
+                si.cbSize = sizeof(SCROLLINFO);
+                si.fMask = SIF_TRACKPOS;
+                ::GetScrollInfo(m_hwndScroll, SB_CTL, &si);
+                SetScrollPos(si.nTrackPos);
             }
-        }
-        if (event.type == UIEVENT_KEYDOWN)  
-        {
-            switch (event.chKey)  {
-            case VK_DOWN:
-                SetScrollPos(GetScrollPos() + 5);
-                return;
-            case VK_UP:
-                SetScrollPos(GetScrollPos() - 5);
-                return;
-            case VK_NEXT:
-                SetScrollPos(GetScrollPos() + GetScrollPage());
-                return;
-            case VK_PRIOR:
-                SetScrollPos(GetScrollPos() - GetScrollPage());
-                return;
-            case VK_HOME:
-                SetScrollPos(0);
-                return;
-            case VK_END:
-                SetScrollPos(9999);
-                return;
-            }
+            break;
+        case SB_LINEUP:
+            SetScrollPos(GetScrollPos() - 5);
+            break;
+        case SB_LINEDOWN:
+            SetScrollPos(GetScrollPos() + 5);
+            break;
+        case SB_PAGEUP:
+            SetScrollPos(GetScrollPos() - GetScrollPage());
+            break;
+        case SB_PAGEDOWN:
+            SetScrollPos(GetScrollPos() + GetScrollPage());
+            break;
         }
     }
+
+    if (event.type == UIEVENT_KEYDOWN)  
+    {
+        switch (event.chKey)  {
+        case VK_DOWN:
+            SetScrollPos(GetScrollPos() + 5);
+            return;
+        case VK_UP:
+            SetScrollPos(GetScrollPos() - 5);
+            return;
+        case VK_NEXT:
+            SetScrollPos(GetScrollPos() + GetScrollPage());
+            return;
+        case VK_PRIOR:
+            SetScrollPos(GetScrollPos() - GetScrollPage());
+            return;
+        case VK_HOME:
+            SetScrollPos(0);
+            return;
+        case VK_END:
+            SetScrollPos(9999);
+            return;
+        }
+    }
+
     ControlUI::Event(event);
 }
 
@@ -181,7 +185,8 @@ int ContainerUI::GetScrollPage() const
 
 SIZE ContainerUI::GetScrollRange() const
 {
-    if (m_hwndScroll == NULL)  return CSize();
+    if (!IsScrollYVisible())
+        return CSize();
     int cx = 0, cy = 0;
     ::GetScrollRange(m_hwndScroll, SB_CTL, &cx, &cy);
     return CSize(cx, cy);
@@ -189,7 +194,7 @@ SIZE ContainerUI::GetScrollRange() const
 
 void ContainerUI::SetScrollPos(int iScrollPos)
 {
-    if (m_hwndScroll == NULL)  return;
+    if (!IsScrollYVisible())  return;
     int iRange1 = 0, iRange2 = 0;
     ::GetScrollRange(m_hwndScroll, SB_CTL, &iRange1, &iRange2);
     iScrollPos = CLAMP(iScrollPos, iRange1, iRange2);
@@ -326,7 +331,8 @@ void ContainerUI::ProcessScrollbar(RECT rc, int cyRequired)
         return;
     }
     // No scrollbar required
-    if (m_hwndScroll == NULL)  return;
+    if (m_hwndScroll == NULL)
+        return;
     // Move it into place
     int cxScroll = m_manager->GetSystemMetrics().cxvscroll;
     ::MoveWindow(m_hwndScroll, rc.right, rc.top, cxScroll, RectDy(rc), TRUE);
@@ -349,6 +355,13 @@ void ContainerUI::ProcessScrollbar(RECT rc, int cyRequired)
             //::EnableScrollBar(m_hwndScroll, SB_CTL, ESB_ENABLE_BOTH);
         }
     }
+}
+
+bool ContainerUI::IsScrollYVisible() const
+{
+    if (!m_hwndScroll)
+        return false;
+    return IsWindowVisible(m_hwndScroll) != 0;
 }
 
 CanvasUI::CanvasUI() : m_hBitmap(NULL), m_iOrientation(HTBOTTOMRIGHT)
@@ -494,7 +507,7 @@ void VerticalLayoutUI::SetPos(RECT rc)
     rc.top += m_rcInset.top;
     rc.right -= m_rcInset.right;
     rc.bottom -= m_rcInset.bottom;
-    if (m_hwndScroll != NULL)
+    if (IsScrollYVisible())
         rc.right -= m_manager->GetSystemMetrics().cxvscroll;
     // Determine the minimum size
     SIZE szAvailable = { RectDx(rc), RectDy(rc) };
@@ -615,7 +628,7 @@ void TileLayoutUI::SetPos(RECT rc)
     rc.top += m_rcInset.top;
     rc.right -= m_rcInset.right;
     rc.bottom -= m_rcInset.bottom;
-    if (m_hwndScroll != NULL)
+    if (IsScrollYVisible())
         rc.right -= m_manager->GetSystemMetrics().cxvscroll;
     // Position the elements
     int cxWidth = RectDx(rc) / m_nColumns;
@@ -698,7 +711,7 @@ void DialogLayoutUI::SetPos(RECT rc)
     RecalcArea();
 
     ProcessScrollbar(rc, RectDy(m_rcDialog));
-    if (m_hwndScroll != NULL)
+    if (IsScrollYVisible())
         rc.right -= m_manager->GetSystemMetrics().cxvscroll;
     // Determine how "scaled" the dialog is compared to the original size
     int cxDiff = RectDx(rc) - RectDx(m_rcDialog);

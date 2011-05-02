@@ -55,6 +55,8 @@ public:
     virtual void SetScrollPos(int pos);
     virtual void EnableScrollBar(bool bEnable = true);
 
+    bool IsScrollYVisible() const;
+
 protected:
     virtual void ProcessScrollbar(RECT rc, int cyRequired);
 
