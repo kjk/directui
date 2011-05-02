@@ -92,31 +92,10 @@ protected:
     int      m_iOrientation;
 };
 
-class UILIB_API WindowCanvasUI : public CanvasUI
-{
-public:
-    WindowCanvasUI();
-    virtual const char* GetClass() const;
-};
-
 class UILIB_API ControlCanvasUI : public CanvasUI
 {
 public:
     ControlCanvasUI();
-    virtual const char* GetClass() const;
-};
-
-class UILIB_API DialogCanvasUI : public CanvasUI
-{
-public:
-    DialogCanvasUI();
-    virtual const char* GetClass() const;
-};
-
-class UILIB_API TabFolderCanvasUI : public CanvasUI
-{
-public:
-    TabFolderCanvasUI();
     virtual const char* GetClass() const;
 };
 

@@ -169,7 +169,8 @@ LRESULT DropDownWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
         // the items back to the righfull owner/manager when the window closes.
         ControlCanvasUI* win = new ControlCanvasUI;
         VerticalLayoutUI* pLayout = new VerticalLayoutUI;
-        for (int i = 0; i < m_owner->GetCount(); i++)  pLayout->Add(static_cast<ControlUI*>(m_owner->GetItem(i)));
+        for (int i = 0; i < m_owner->GetCount(); i++)
+            pLayout->Add((ControlUI*)m_owner->GetItem(i));
         pLayout->SetAutoDestroy(false);
         pLayout->EnableScrollBar();
         win->Add(pLayout);

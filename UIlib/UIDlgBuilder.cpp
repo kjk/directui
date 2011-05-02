@@ -41,9 +41,7 @@ static ControlUI *CreateKnown(const char *cls)
         else if (str::Eq(cls, "TitleShadow"))  return new TitleShadowUI;
         break;
     case 12:
-        if      (str::Eq(cls, "WindowCanvas")) return new WindowCanvasUI;
-        else if (str::Eq(cls, "DialogCanvas")) return new DialogCanvasUI;
-        else if (str::Eq(cls, "DialogLayout")) return new DialogLayoutUI;
+        if      (str::Eq(cls, "DialogLayout")) return new DialogLayoutUI;
         else if (str::Eq(cls, "PaddingPanel")) return new PaddingPanelUI;
         else if (str::Eq(cls, "WarningPanel")) return new WarningPanelUI;
         break;
@@ -64,7 +62,6 @@ static ControlUI *CreateKnown(const char *cls)
     case 15:
         if      (str::Eq(cls, "ListTextElement")) return new ListTextElementUI;
         else if (str::Eq(cls, "NavigatorButton")) return new NavigatorButtonUI;      
-        else if (str::Eq(cls, "TabFolderCanvas")) return new TabFolderCanvasUI;      
         break;
     case 16:
         if      (str::Eq(cls, "ListHeaderShadow")) return new ListHeaderShadowUI; 

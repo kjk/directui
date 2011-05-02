@@ -448,17 +448,6 @@ void CanvasUI::SetAttribute(const char* name, const char* value)
     else ContainerUI::SetAttribute(name, value);
 }
 
-WindowCanvasUI::WindowCanvasUI()
-{
-    SetInset(CSize(10, 10));
-    m_clrBack = m_manager->GetThemeColor(UICOLOR_WINDOW_BACKGROUND);
-}
-
-const char* WindowCanvasUI::GetClass() const
-{
-    return "WindowCanvasUI";
-}
-
 ControlCanvasUI::ControlCanvasUI()
 {
     SetInset(CSize(0, 0));
@@ -468,29 +457,6 @@ ControlCanvasUI::ControlCanvasUI()
 const char* ControlCanvasUI::GetClass() const
 {
     return "ControlCanvasUI";
-}
-
-DialogCanvasUI::DialogCanvasUI()
-{
-    SetInset(CSize(10, 10));
-    m_clrBack = m_manager->GetThemeColor(UICOLOR_DIALOG_BACKGROUND);
-}
-
-const char* DialogCanvasUI::GetClass() const
-{
-    return "DialogCanvasUI";
-}
-
-TabFolderCanvasUI::TabFolderCanvasUI()
-{
-    SetInset(CSize(0, 0));
-    COLORREF clrColor1;
-    m_manager->GetThemeColorPair(UICOLOR_TAB_FOLDER_NORMAL, clrColor1, m_clrBack);
-}
-
-const char* TabFolderCanvasUI::GetClass() const
-{
-    return "TabFolderCanvasUI";
 }
 
 VerticalLayoutUI::VerticalLayoutUI() : m_cyNeeded(0)

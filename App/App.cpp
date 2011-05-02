@@ -23,7 +23,7 @@ Dialog\n\r\n\
         LabelPanel align=right text='<f 6><c #fffe28>Start Side</c></f>'\n\
       ToolbarTitlePanel text=\"<f 7>Bjarke's Test Program</f>\"\n\
       TitleShadow\n\
-      WindowCanvas watermark=StartWatermark\n\
+      Canvas bgCol=winbg watermark=StartWatermark\n\
         VerticalLayout\n\
           TextPanel text='<f 8>Vælg startområde?</f>'\n\
           FadedLine\n\

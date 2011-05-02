@@ -74,7 +74,7 @@ Dialog\n\r\n\
         LabelPanel align=right text='<f 6><c #fffe28>Start Side</c></f>'\n\
       ToolbarTitlePanel text=\"<f 7>Bjarke's Test Program</f>\"\n\
       TitleShadow\n\
-      WindowCanvas watermark=StartWatermark\n\
+      Canvas bgCol=winbg watermark=StartWatermark\n\
         VerticalLayout\n\
           TextPanel text='<f 8>Vælg startområde?</f>'\n\
           FadedLine\n\
@@ -109,7 +109,7 @@ const char* StartPageWnd::GetDialogResourceXml() const
           "</Toolbar>"
           "<ToolbarTitlePanel text=\"<f 7>Test program</f>\" />"
           "<TitleShadow />"
-          "<WindowCanvas watermark='StartWatermark' >"
+          "<Canvas bgCol='winbg' watermark='StartWatermark' >"
             "<VerticalLayout>"
               "<TextPanel text=\"<f 8>What do you want to do?</f>\" />"
               "<FadedLine />"
@@ -120,7 +120,7 @@ const char* StartPageWnd::GetDialogResourceXml() const
                 "<TextPanel name=\"link_reports\" text=\"<i 5 50><a><f 6>Rapporter</f></a>\n<h>\n<c #444540>Rapporter giver dig overblik over registre samt hverdagens ture og bestillinger.\n\nGennem statistik og lister kan du hurtigt få præsenteret historiske data fra systemet.\" />"
               "</TileLayout>"
             "</VerticalLayout>"
-          "</WindowCanvas>"
+          "</Canvas>"
         "</VerticalLayout>"
       "</HorizontalLayout>"
       "</Dialog>";     
@@ -171,7 +171,7 @@ const char* ConfigurePageWnd::GetDialogResourceXml() const
           "</Toolbar>"
           "<ToolbarTitlePanel name=\"titlepanel\" text=\"<f 7>System Opsætning</f>\" />"
           "<TitleShadow />"
-          "<WindowCanvas>"
+          "<Canvas bgCol='winbg'>"
             "<VerticalLayout>"
               "<TextPanel text=\"<f 8>Hvad vil du konfigurere?</h>\" />"
               "<FadedLine />"
@@ -199,7 +199,7 @@ const char* ConfigurePageWnd::GetDialogResourceXml() const
                 "</VerticalLayout>"
               "</HorizontalLayout>"
             "</VerticalLayout>"
-          "</WindowCanvas>"
+          "</Canvas>"
         "</VerticalLayout>"
       "</HorizontalLayout>"
       "</Dialog>";
@@ -239,7 +239,7 @@ const char* RegistersPageWnd::GetDialogResourceXml() const
             "<LabelPanel align=\"right\" text=\"<f 6><c #fffe28>Registre</c></f>\" />"
           "</Toolbar>"
           "<TitleShadow />"
-          "<WindowCanvas>"
+          "<Canvas bgCol='winbg'>"
             "<SearchTitlePanel image=\"10\" >"
               "<TabFolder width=\"200\" inset=\"8 8\" >"
                 "<TabPage text=\"Generelt\" >"
@@ -257,7 +257,7 @@ const char* RegistersPageWnd::GetDialogResourceXml() const
                 "<ListHeaderItem text=\"Type\" width=\"80\" />"
               "</List>"            
             "</SearchTitlePanel>"
-          "</WindowCanvas>"
+          "</Canvas>"
         "</VerticalLayout>"
       "</HorizontalLayout>"
     "</Dialog>";
@@ -317,7 +317,7 @@ const char* SystemsPageWnd::GetDialogResourceXml() const
             "<LabelPanel align=\"right\" text=\"<f 6><c #fffe28>Systemer</c></f>\" />"
           "</Toolbar>"
           "<TitleShadow />"
-          "<WindowCanvas>"
+          "<Canvas bgCol='winbg'>"
             "<VerticalLayout>"
               "<DialogLayout scrollbar=\"true\" >"
                 "<LabelPanel pos=\"0, 0, 80, 24\" text=\"<b>&Search</b>\" stretch=\"group\" />"
@@ -344,7 +344,7 @@ const char* SystemsPageWnd::GetDialogResourceXml() const
                 "<ListExpandElement />"
               "</List>"
             "</VerticalLayout>"
-          "</WindowCanvas>"
+          "</Canvas>"
         "</VerticalLayout>"
       "</HorizontalLayout>"
     "</Dialog>";
@@ -423,14 +423,14 @@ const char* ReportsPageWnd::GetDialogResourceXml() const
           "</Toolbar>"
           "<ToolbarTitlePanel name=\"titlepanel\" text=\"<f 7>Rapporter</f>\" />"
           "<TitleShadow />"
-          "<WindowCanvas>"
+          "<Canvas bgCol='winbg'>"
             "<TileLayout>"
                "<TextPanel text=\"<i 0 50><a><f 6>Kunde Rapporter</f></a>\n<h>\n<c #444540>Rapporter for kunde registeret.\" />"
                "<TextPanel text=\"<i 1 50><a><f 6>Vogn Rapporter</f></a>\n<h>\n<c #444540>Rapporter for vogn and vognmands-registeret.\" />"
                "<TextPanel text=\"<i 2 50><a><f 6>Chauffør Rapporter</f></a>\n<h>\n<c #444540>Rapporter for chauffører registeret.\" />"
                "<TextPanel text=\"<i 3 50><a><f 6>Bestilling Rapporter</f></a>\n<h>\n<c #444540>Rapporter over bestillinger.\" />"
             "</TileLayout>"
-          "</WindowCanvas>"
+          "</Canvas>"
         "</VerticalLayout>"
       "</HorizontalLayout>"
       "</Dialog>";
@@ -470,7 +470,7 @@ const char* SearchPageWnd::GetDialogResourceXml() const
    return "<Dialog caption=\"Search Page\" >"
       "<VerticalLayout>"
         "<ToolbarTitlePanel text=\"<f 6>Search for road.</f><p><x 10>Enter search criteria and search for the road.\" />"
-        "<DialogCanvas>"
+        "<Canvas bgCol='dlgbg'>"
           "<VerticalLayout>"
             "<DialogLayout>"
               "<LabelPanel pos=\"0, 10, 60, 34\" text=\"Type\" stretch=\"group\" />"
@@ -500,7 +500,7 @@ const char* SearchPageWnd::GetDialogResourceXml() const
               "<PaddingPanel pos=\"0, 38, 340, 48\" />"
             "</DialogLayout>"
           "</VerticalLayout>"
-        "</DialogCanvas>"
+        "</Canvas>"
       "</VerticalLayout>"
       "</Dialog>";
 }
@@ -538,7 +538,7 @@ const char* EditPageWnd::GetDialogResourceXml() const
           "<ToolSeparator />"
         "</Toolbar>"
         "<TitleShadow />"
-        "<DialogCanvas>"
+        "<Canvas bgCol='dlgbg'>"
           "<VerticalLayout>"
             "<WarningPanel name=\"warning\" type=\"warning\" text=\"<i 7>You have not specified an e-mail address.\nTry entering one. Click <a>here</a> to get more help.\" />"
             "<TabFolder>"
@@ -593,7 +593,7 @@ const char* EditPageWnd::GetDialogResourceXml() const
                "</TabPage>"
             "</TabFolder>"
           "</VerticalLayout>"
-        "</DialogCanvas>"
+        "</Canvas>"
         "<Statusbar text=\"<b>Status:</b> Klar\" />"
       "</VerticalLayout>"
       "</Dialog>";
@@ -633,7 +633,7 @@ const char* PopupWnd::GetDialogResourceXml() const
    return "<Dialog>"
       "<VerticalLayout>"
         "<ToolbarTitlePanel text=\"<f 6>Er du sikker?</f><p><x 10>Er du sikker på at du har trykket på linket?\" />"
-        "<DialogCanvas>"
+        "<Canvas bgCol='dlgbg'>"
           "<VerticalLayout>"
             "<TextPanel text=\"Det er ikke altid godt at trykke på linket. Du kan fortryde dit klik ved at vælge Nej knappen.\" />"
             "<PaddingPanel />"
@@ -646,7 +646,7 @@ const char* PopupWnd::GetDialogResourceXml() const
               "<PaddingPanel pos=\"0, 38, 340, 48\" />"
             "</DialogLayout>"
           "</VerticalLayout>"
-        "</DialogCanvas>"
+        "</Canvas>"
       "</VerticalLayout>"
       "</Dialog>";
 }
