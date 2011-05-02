@@ -36,7 +36,7 @@ Dialog\n\r\n\
 #else
 static const char* mainWindowPageDialog = "\
 Dialog\n\
-  VerticalLayout\n\
+  VerticalLayout bgCol=winbg\n\
       TextPanel backColor=3 text='<x 16><c #f00000>h&ello'\n\
       List header=hidden footer=hidden\n\
         TextPanel text='<x 16><c #585ebf><b>Click one of the items below:</b>\\n<h>'\n\
@@ -52,12 +52,12 @@ Dialog\n\
 
 static const char* loginWindowPageDialog = "\
 Dialog\n\
-  VerticalLayout\n\
-    LabelPanel         text='&Search'\n\
-    SingleLineEdit     name=navn\n\
-    LabelPanel         text=&Type\n\
-    SingleLineEdit     name=type\n\
-    Button             name=ok text=Login\n\
+  VerticalLayout     inset=12 bgCol=winbg\n\
+    LabelPanel       text='&Search'\n\
+    SingleLineEdit   name=navn\n\
+    LabelPanel       text=&Type\n\
+    SingleLineEdit   name=type\n\
+    Button           name=ok text=Login\n\
 ";
 #endif
 
@@ -289,7 +289,8 @@ public:
 
     void CreateLoginWindow() {
         LoginWindowFrame* frame = new LoginWindowFrame();
-        frame->Create(NULL, "Login window test", UI_WNDSTYLE_FRAME, WS_EX_WINDOWEDGE);
+        frame->Create(NULL, "Login window test", UI_WNDSTYLE_FRAME, WS_EX_WINDOWEDGE,
+            CW_USEDEFAULT, CW_USEDEFAULT, 320, 200);
     }
 
     virtual void Notify(TNotifyUI& msg)

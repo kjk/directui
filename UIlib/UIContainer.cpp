@@ -306,8 +306,22 @@ void ContainerUI::DoPaint(HDC hDC, const RECT& rcPaint)
     RenderClip clip;
     BlueRenderEngineUI::GenerateClip(hDC, m_rcItem, clip);
 
+    COLORREF bgCol = m_bgCol;
+    bool paintBg = (-1 != bgCol);
+    if (m_bgColIdx != UICOLOR__INVALID) {
+        if (m_bgColIdx == UICOLOR_TRANSPARENT) {
+            paintBg = false;
+        } else {
+            bgCol = m_manager->GetThemeColor(m_bgColIdx);
+            paintBg = true;
+        }
+    }
+
+    if (paintBg)
+        BlueRenderEngineUI::DoFillRect(hDC, m_manager, rcTemp, bgCol);
+
     for (int it = 0; it < m_items.GetSize(); it++)  {
-        ControlUI* ctrl = static_cast<ControlUI*>(m_items[it]);
+        ControlUI* ctrl = (ControlUI*)m_items[it];
         if (!ctrl->IsVisible())
             continue;
         if (!::IntersectRect(&rcTemp, &rcPaint, &ctrl->GetPos()))
@@ -454,17 +468,6 @@ ControlCanvasUI::ControlCanvasUI()
 const char* ControlCanvasUI::GetClass() const
 {
     return "ControlCanvasUI";
-}
-
-WhiteCanvasUI::WhiteCanvasUI()
-{
-    SetInset(CSize(0, 0));
-    m_clrBack = m_manager->GetThemeColor(UICOLOR_STANDARD_WHITE);
-}
-
-const char* WhiteCanvasUI::GetClass() const
-{
-    return "WhiteCanvasUI";
 }
 
 DialogCanvasUI::DialogCanvasUI()

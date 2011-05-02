@@ -137,6 +137,7 @@ typedef enum
     UICOLOR_STANDARD_GREY,
     UICOLOR_STANDARD_LIGHTGREY,
     UICOLOR_STANDARD_WHITE,
+    UICOLOR_TRANSPARENT,
     UICOLOR__LAST,
     UICOLOR__INVALID,
 } UITYPE_COLOR;
@@ -424,9 +425,18 @@ public:
     virtual void DoPaint(HDC hDC, const RECT& rcPaint) = 0;
 
 protected:
+
+    void SetBgColorAttribute(const char *name);
+
     PaintManagerUI*  m_manager;
     ControlUI*       m_parent;
     int              m_shortcut;
+
+    // if m_bgColIdx is UICOLOR__INVALID, we use
+    // m_bgCol
+    UITYPE_COLOR     m_bgColIdx;
+    COLORREF         m_bgCol;
+
     const char*      m_name;
     const char*      m_txt;
     const char*      m_toolTip;

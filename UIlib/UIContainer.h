@@ -106,13 +106,6 @@ public:
     virtual const char* GetClass() const;
 };
 
-class UILIB_API WhiteCanvasUI : public CanvasUI
-{
-public:
-    WhiteCanvasUI();
-    virtual const char* GetClass() const;
-};
-
 class UILIB_API DialogCanvasUI : public CanvasUI
 {
 public:

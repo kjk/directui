@@ -276,15 +276,13 @@ ListUI::ListUI() : m_cb(NULL), m_curSel(-1), m_expandedItem(-1)
     m_list = new VerticalLayoutUI;
     m_header = new ListHeaderUI;
     m_footer = new ListFooterUI;
-
-    WhiteCanvasUI* pWhite = new WhiteCanvasUI;
-    pWhite->Add(m_list);
+    m_bgColIdx = UICOLOR_STANDARD_WHITE;
 
     m_footer->Add(new LabelPanelUI);
     m_footer->Add(new PaddingPanelUI);
 
     Add(m_header);
-    VerticalLayoutUI::Add(pWhite);
+    VerticalLayoutUI::Add(m_list);
     Add(m_footer);
 
     m_list->EnableScrollBar();

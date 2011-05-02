@@ -1296,6 +1296,8 @@ m_manager(NULL),
     m_toolTip(NULL),
     m_tag(NULL),
     m_shortcut('\0'),
+    m_bgColIdx(UICOLOR__INVALID),
+    m_bgCol(-1),
     m_visible(true), 
     m_focused(false),
     m_enabled(true)
@@ -1500,9 +1502,41 @@ void ControlUI::Notify(TNotifyUI& /*msg*/)
 {
 }
 
+struct {
+    const char *    name;
+    UITYPE_COLOR    col;
+} knownColorNames[] = {
+    { "winbg", UICOLOR_WINDOW_BACKGROUND },
+    { "wintxt", UICOLOR_WINDOW_TEXT },
+    { "dlgbg", UICOLOR_DIALOG_BACKGROUND },
+    { "dlgtxt", UICOLOR_DIALOG_TEXT_NORMAL },
+    { "dlgtxtdark", UICOLOR_DIALOG_TEXT_DARK },
+    { "black", UICOLOR_STANDARD_BLACK },
+    { "yellow", UICOLOR_STANDARD_YELLOW },
+    { "red", UICOLOR_STANDARD_RED },
+    { "grey", UICOLOR_STANDARD_GREY },
+    { "lightgrey", UICOLOR_STANDARD_LIGHTGREY },
+    { "white", UICOLOR_STANDARD_WHITE },
+    { "transparent", UICOLOR_TRANSPARENT },
+    { NULL, UICOLOR__INVALID }
+};
+
+void ControlUI::SetBgColorAttribute(const char *name)
+{
+    for (int i=0; knownColorNames[i].name; i++) {
+        if (str::EqI(name, knownColorNames[i].name)) {
+            m_bgColIdx = knownColorNames[i].col;
+            return;
+        }
+    }
+    m_bgColIdx = UICOLOR__INVALID;
+    // TODO: parse name as a color
+    m_bgCol = RGB(255, 0, 0);
+}
+
 void ControlUI::SetAttribute(const char* name, const char* value)
 {
-    if (str::Eq(name, "pos"))  {
+    if (str::EqI(name, "pos"))  {
         RECT rcPos = { 0 };
         char* pstr = NULL;
         rcPos.left = strtol(value, &pstr, 10);      ASSERT(pstr);    
@@ -1511,12 +1545,14 @@ void ControlUI::SetAttribute(const char* name, const char* value)
         rcPos.bottom = strtol(pstr + 1, &pstr, 10); ASSERT(pstr);    
         SetPos(rcPos);
     }
-    else if (str::Eq(name, "name"))     SetName(value);
-    else if (str::Eq(name, "text"))     SetText(value);
-    else if (str::Eq(name, "tooltip"))  SetToolTip(value);
-    else if (str::Eq(name, "enabled"))  SetEnabled(str::Eq(value, "true"));
-    else if (str::Eq(name, "visible"))  SetVisible(str::Eq(value, "true"));
-    else if (str::Eq(name, "shortcut")) SetShortcut(value[0]);
+    else if (str::EqI(name, "name"))     SetName(value);
+    else if (str::EqI(name, "text"))     SetText(value);
+    else if (str::EqI(name, "tooltip"))  SetToolTip(value);
+    else if (str::EqI(name, "enabled"))  SetEnabled(str::Eq(value, "true"));
+    else if (str::EqI(name, "visible"))  SetVisible(str::Eq(value, "true"));
+    else if (str::EqI(name, "shortcut")) SetShortcut(value[0]);
+    else if (str::EqI(name, "bgCol") || str::EqI(name, "backColor"))
+        SetBgColorAttribute(value);
 }
 
 // handle xml attribute lists in the form:

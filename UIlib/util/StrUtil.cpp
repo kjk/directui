@@ -129,7 +129,6 @@ char *ToMultiByte(const char *src, UINT CodePageSrc, UINT CodePageDest)
 /* Caller needs to free() the result */
 WCHAR *ToWideChar(const char *src, UINT CodePage)
 {
-    assert(src);
     if (!src) return NULL;
 
     int requiredBufSize = MultiByteToWideChar(CodePage, 0, src, -1, NULL, 0);

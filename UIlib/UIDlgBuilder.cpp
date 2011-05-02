@@ -38,7 +38,6 @@ static ControlUI *CreateKnown(const char *cls)
         break;
     case 11:
         if      (str::Eq(cls, "ToolGripper"))  return new ToolGripperUI;
-        else if (str::Eq(cls, "WhiteCanvas"))  return new WhiteCanvasUI;
         else if (str::Eq(cls, "TitleShadow"))  return new TitleShadowUI;
         break;
     case 12:
