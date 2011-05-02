@@ -201,7 +201,7 @@ void BlueRenderEngineUI::DoPaintButton(HDC hDC, PaintManagerUI* manager, RECT rc
     rcText.right -= rcPadding.right;
     rcText.bottom -= rcPadding.bottom;
     int nLinks = 0;
-    DoPaintPrettyText(hDC, manager, rcText, txt, clrText, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE | uStyle);
+    DoPaintPrettyText(hDC, manager, rcText, txt, clrText, UICOLOR__INVALID, NULL, nLinks, DT_VCENTER | DT_SINGLELINE | uStyle);
 }
 
 void BlueRenderEngineUI::DoPaintEditBox(HDC hDC, PaintManagerUI* manager, RECT rcItem, const char* txt, UINT uState, UINT uDrawStyle, bool bPaintFrameOnly)

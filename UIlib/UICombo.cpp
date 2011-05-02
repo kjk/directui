@@ -126,14 +126,14 @@ public:
 
 public:
     PaintManagerUI m_pm;
-    DropDownUI* m_owner;
-    int m_iOldSel;
+    DropDownUI*    m_owner;
+    int            m_oldSel;
 };
 
 void DropDownWnd::Init(DropDownUI* owner)
 {
     m_owner = owner;
-    m_iOldSel = m_owner->GetCurSel();
+    m_oldSel = m_owner->GetCurSel();
     // Position the popup window in absolute space
     SIZE szDrop = m_owner->GetDropDownSize();
     RECT rc = owner->GetPos();
@@ -184,7 +184,7 @@ LRESULT DropDownWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
     } else if (uMsg == WM_KEYDOWN)  {
         switch (wParam)  {
         case VK_ESCAPE:
-            m_owner->SelectItem(m_iOldSel);
+            m_owner->SelectItem(m_oldSel);
             // FALL THROUGH...
         case VK_RETURN:
             PostMessage(WM_KILLFOCUS);

@@ -4,7 +4,7 @@
 
 TabFolderUI::TabFolderUI() : m_curSel(-1), m_curPage(NULL), m_tabAreas(sizeof(RECT))
 {
-    m_chShortcut = VK_NEXT;
+    m_shortcut = VK_NEXT;
 }
 
 const char* TabFolderUI::GetClass() const

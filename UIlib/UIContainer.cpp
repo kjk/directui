@@ -303,9 +303,12 @@ void ContainerUI::DoPaint(HDC hDC, const RECT& rcPaint)
 
     for (int it = 0; it < m_items.GetSize(); it++)  {
         ControlUI* ctrl = static_cast<ControlUI*>(m_items[it]);
-        if (!ctrl->IsVisible())  continue;
-        if (!::IntersectRect(&rcTemp, &rcPaint, &ctrl->GetPos()))  continue;
-        if (!::IntersectRect(&rcTemp, &m_rcItem, &ctrl->GetPos()))  continue;
+        if (!ctrl->IsVisible())
+            continue;
+        if (!::IntersectRect(&rcTemp, &rcPaint, &ctrl->GetPos()))
+            continue;
+        if (!::IntersectRect(&rcTemp, &m_rcItem, &ctrl->GetPos()))
+            continue;
         ctrl->DoPaint(hDC, rcPaint);
     }
 }

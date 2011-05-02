@@ -426,7 +426,7 @@ public:
 protected:
     PaintManagerUI*  m_manager;
     ControlUI*       m_parent;
-    char             m_chShortcut;
+    int              m_shortcut;
     const char*      m_name;
     const char*      m_txt;
     const char*      m_toolTip;

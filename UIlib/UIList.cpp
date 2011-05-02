@@ -304,8 +304,10 @@ UINT ListUI::GetControlFlags() const
 
 void* ListUI::GetInterface(const char* name)
 {
-    if (str::Eq(name, "List"))  return static_cast<IListUI*>(this);
-    if (str::Eq(name, "ListOwner"))  return static_cast<IListOwnerUI*>(this);
+    if (str::Eq(name, "List"))
+        return static_cast<IListUI*>(this);
+    if (str::Eq(name, "ListOwner"))
+        return static_cast<IListOwnerUI*>(this);
     return VerticalLayoutUI::GetInterface(name);
 }
 
@@ -314,11 +316,15 @@ bool ListUI::Add(ControlUI* ctrl)
     // Override the Add() method so we can add items specifically to
     // the intended widgets. Headers and footers are assumed to be
     // answer the correct interface so we can add multiple list headers/footers.
-    if (ctrl->GetInterface("ListHeader") != NULL)  return VerticalLayoutUI::Add(ctrl);
-    if (ctrl->GetInterface("ListFooter") != NULL)  return VerticalLayoutUI::Add(ctrl);
+    if (ctrl->GetInterface("ListHeader") != NULL)
+        return VerticalLayoutUI::Add(ctrl);
+    if (ctrl->GetInterface("ListFooter") != NULL)
+        return VerticalLayoutUI::Add(ctrl);
     // We also need to recognize header sub-items
-    if (str::Find(ctrl->GetClass(), "Header") != NULL)  return m_header->Add(ctrl);
-    if (str::Find(ctrl->GetClass(), "Footer") != NULL)  return m_footer->Add(ctrl);
+    if (str::Find(ctrl->GetClass(), "Header") != NULL)
+        return m_header->Add(ctrl);
+    if (str::Find(ctrl->GetClass(), "Footer") != NULL)
+        return m_footer->Add(ctrl);
     // The list items should know about us
     IListItemUI* listItem = static_cast<IListItemUI*>(ctrl->GetInterface("ListItem"));
     if (listItem != NULL)  {
@@ -366,7 +372,8 @@ void ListUI::SetPos(RECT rc)
     // The header/columns may or may not be visible at runtime. In either case
     // we should determine the correct dimensions...
     if (m_header->IsVisible())  {
-        for (int i = 0; i < m_listInfo.nColumns; i++)  m_listInfo.rcColumn[i] = m_header->GetItem(i)->GetPos();
+        for (int i = 0; i < m_listInfo.nColumns; i++)
+            m_listInfo.rcColumn[i] = m_header->GetItem(i)->GetPos();
     } else {
         RECT rcCol = { rc.left, 0, rc.left, 0 };
         for (int i = 0; i < m_listInfo.nColumns; i++)  {
@@ -452,13 +459,15 @@ int ListUI::GetCurSel() const
 
 bool ListUI::SelectItem(int idx)
 {
-    if (idx == m_curSel)  return true;
+    if (idx == m_curSel)
+        return true;
     // We should first unselect the currently selected item
     if (m_curSel >= 0)  {
         ControlUI* ctrl = GetItem(m_curSel);
         if (ctrl != NULL)  {
-            IListItemUI* listItem = static_cast<IListItemUI*>(ctrl->GetInterface("ListItem"));
-            if (listItem != NULL)  listItem->Select(false);
+            IListItemUI* listItem = (IListItemUI*)ctrl->GetInterface("ListItem");
+            if (listItem != NULL)
+                listItem->Select(false);
         }
     }
     // Now figure out if the control can be selected
@@ -467,7 +476,7 @@ bool ListUI::SelectItem(int idx)
     if (ctrl == NULL)  return false;
     if (!ctrl->IsVisible())  return false;
     if (!ctrl->IsEnabled())  return false;
-    IListItemUI* listItem = static_cast<IListItemUI*>(ctrl->GetInterface("ListItem"));
+    IListItemUI* listItem = (IListItemUI*)ctrl->GetInterface("ListItem");
     if (listItem == NULL)  return false;
     m_curSel = idx;
     if (!listItem->Select(true))  {
@@ -499,8 +508,9 @@ bool ListUI::ExpandItem(int idx, bool bExpand /*= true*/)
     if (m_expandedItem >= 0)  {
         ControlUI* ctrl = GetItem(m_expandedItem);
         if (ctrl != NULL)  {
-            IListItemUI* item = static_cast<IListItemUI*>(ctrl->GetInterface("ListItem"));
-            if (item != NULL)  item->Expand(false);
+            IListItemUI* item = (IListItemUI*)ctrl->GetInterface("ListItem");
+            if (item != NULL)
+                item->Expand(false);
         }
         m_expandedItem = -1;
     }
@@ -508,7 +518,7 @@ bool ListUI::ExpandItem(int idx, bool bExpand /*= true*/)
         ControlUI* ctrl = GetItem(idx);
         if (ctrl == NULL)  return false;
         if (!ctrl->IsVisible())  return false;
-        IListItemUI* item = static_cast<IListItemUI*>(ctrl->GetInterface("ListItem"));
+        IListItemUI* item = (IListItemUI*)ctrl->GetInterface("ListItem");
         if (item == NULL)  return false;
         m_expandedItem = idx;
         if (!item->Expand(true))  {
@@ -527,20 +537,25 @@ int ListUI::GetExpandedItem() const
 
 void ListUI::EnsureVisible(int idx)
 {
-    if (m_curSel < 0)  return;
+    if (m_curSel < 0)
+        return;
     RECT rcItem = m_list->GetItem(idx)->GetPos();
     RECT rcList = m_list->GetPos();
     int pos = m_list->GetScrollPos();
-    if (rcItem.top >= rcList.top && rcItem.bottom < rcList.bottom)  return;
+    if (rcItem.top >= rcList.top && rcItem.bottom < rcList.bottom)
+        return;
     int dx = 0;
-    if (rcItem.top < rcList.top)  dx = rcItem.top - rcList.top;
-    if (rcItem.bottom > rcList.bottom)  dx = rcItem.bottom - rcList.bottom;
+    if (rcItem.top < rcList.top)
+        dx = rcItem.top - rcList.top;
+    if (rcItem.bottom > rcList.bottom)
+        dx = rcItem.bottom - rcList.bottom;
     Scroll(0, dx);
 }
 
 void ListUI::Scroll(int dx, int dy)
 {
-    if (dx == 0 && dy == 0)  return;
+    if (dx == 0 && dy == 0)
+        return;
     m_list->SetScrollPos(m_list->GetScrollPos() + dy);
 }
 
@@ -564,7 +579,6 @@ void ListUI::SetTextCallback(IListCallbackUI* cb)
 {
     m_cb = cb;
 }
-
 
 ListLabelElementUI::ListLabelElementUI() : m_cxWidth(0), m_uTextStyle(DT_VCENTER | DT_NOPREFIX | DT_END_ELLIPSIS), m_uButtonState(0)
 {
@@ -615,15 +629,18 @@ void ListLabelElementUI::SetAttribute(const char* name, const char* value)
     if (ParseWidth(name, value, n)) {
         SetWidth(n);
     } else if (str::Eq(name, "align"))  {
-        if (str::Find(value, "center") != NULL)  m_uTextStyle |= DT_CENTER;
-        if (str::Find(value, "right") != NULL)  m_uTextStyle |= DT_RIGHT;
+        if (str::Find(value, "center") != NULL)
+            m_uTextStyle |= DT_CENTER;
+        if (str::Find(value, "right") != NULL)
+            m_uTextStyle |= DT_RIGHT;
     }
     else ListElementUI::SetAttribute(name, value);
 }
 
 SIZE ListLabelElementUI::EstimateSize(SIZE /*szAvailable*/)
 {
-    return CSize(m_cxWidth, m_manager->GetThemeFontInfo(UIFONT_NORMAL).tmHeight + 8);
+    LONG tmHeight = m_manager->GetThemeFontInfo(UIFONT_NORMAL).tmHeight;
+    return CSize(m_cxWidth, tmHeight + 8);
 }
 
 void ListLabelElementUI::DoPaint(HDC hDC, const RECT& rcPaint)

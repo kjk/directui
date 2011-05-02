@@ -47,13 +47,12 @@ Dialog\n\
         ListLabelElement text='<x 14>Vogn register'\n\
         ListLabelElement text='<x 14>Chauffør register'\n\
         TextPanel text='<x 16><c #F00000><b>A cool effect</b>\\n<h>'\n\
-      HorizontalLayout\n\
-        Button text=&Exit name=exit\n\
+      Button text=&Exit name=exit\n\
 ";
 
 static const char* loginWindowPageDialog = "\
 Dialog\n\
-  VerticalLayout backColor=3\n\
+  VerticalLayout\n\
     LabelPanel         text='&Search'\n\
     SingleLineEdit     name=navn\n\
     LabelPanel         text=&Type\n\

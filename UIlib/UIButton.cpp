@@ -63,7 +63,7 @@ void ButtonUI::SetText(const char* txt)
     // Automatic assignment of keyboard shortcut
     const char *s = str::Find(txt, "&");
     if (s)
-        m_chShortcut = s[1];
+        m_shortcut = s[1];
 }
 
 bool ButtonUI::Activate()

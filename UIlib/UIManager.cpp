@@ -485,8 +485,6 @@ bool PaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRE
                     ::GetClientRect(m_hWndPaint, &rcClient);
                     m_hDcOffscreen = ::CreateCompatibleDC(m_hDcPaint);
                     m_hbmpOffscreen = ::CreateCompatibleBitmap(m_hDcPaint, RectDx(rcClient), RectDy(rcClient)); 
-                    ASSERT(m_hDcOffscreen);
-                    ASSERT(m_hbmpOffscreen);
                 }
                 // Begin Windows paint
                 PAINTSTRUCT ps = { 0 };
@@ -1297,7 +1295,7 @@ m_manager(NULL),
     m_txt(NULL),
     m_toolTip(NULL),
     m_tag(NULL),
-    m_chShortcut('\0'),
+    m_shortcut('\0'),
     m_visible(true), 
     m_focused(false),
     m_enabled(true)
@@ -1365,12 +1363,12 @@ void ControlUI::SetFocus()
 
 void ControlUI::SetShortcut(char ch)
 {
-    m_chShortcut = ch;
+    m_shortcut = ch;
 }
 
 char ControlUI::GetShortcut() const
 {
-    return m_chShortcut;
+    return m_shortcut;
 }
 
 const char * ControlUI::GetText() const
