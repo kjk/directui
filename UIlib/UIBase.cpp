@@ -242,7 +242,7 @@ HWND WindowWnd::Create(HWND hwndParent, const char* name, DWORD dwStyle, DWORD d
 {
     if (GetSuperClassName() != NULL && !RegisterSuperclass())  return NULL;
     if (GetSuperClassName() == NULL && !RegisterWindowClass())  return NULL;
-    m_hWnd = ::CreateWindowEx(dwExStyle, GetWindowClassName(), name, dwStyle, x, y, cx, cy, hwndParent, hMenu, PaintManagerUI::GetResourceInstance(), this);
+    m_hWnd = ::CreateWindowExUtf8(dwExStyle, GetWindowClassName(), name, dwStyle, x, y, cx, cy, hwndParent, hMenu, PaintManagerUI::GetResourceInstance(), this);
     ASSERT(m_hWnd!=NULL);
     return m_hWnd;
 }
@@ -368,8 +368,8 @@ bool WindowWnd::RegisterSuperclass()
     // window so we can subclass it later on...
     WNDCLASSEXA wc = { 0 };
     wc.cbSize = sizeof(wc);
-    if (!::GetClassInfoEx(NULL, GetSuperClassName(), &wc))  {
-        if (!::GetClassInfoEx(PaintManagerUI::GetResourceInstance(), GetSuperClassName(), &wc))  {
+    if (!::GetClassInfoExA(NULL, GetSuperClassName(), &wc))  {
+        if (!::GetClassInfoExA(PaintManagerUI::GetResourceInstance(), GetSuperClassName(), &wc))  {
             ASSERT(!"Unable to locate window class");
             return NULL;
         }
@@ -769,6 +769,7 @@ const StdString& StdString::operator=(const char* lpStr)
     return *this;
 }
 
+#ifndef _UNICODE
 const StdString& StdString::operator=(LPCWSTR lpwStr)
 {      
     int cchStr = ((int) wcslen(lpwStr) * 2) + 1;
@@ -777,6 +778,7 @@ const StdString& StdString::operator=(LPCWSTR lpwStr)
     Assign(pstr);
     return *this;
 }
+#endif
 
 const StdString& StdString::operator=(const char ch)
 {

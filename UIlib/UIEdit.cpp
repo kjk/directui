@@ -33,7 +33,7 @@ void SingleLineEditWnd::Init(SingleLineEditUI* owner)
     rcPos.Deflate(1, 3);
     Create(owner->GetManager()->GetPaintWindow(), NULL, WS_CHILD | owner->m_uEditStyle, 0, rcPos);
     SetWindowFont(m_hWnd, owner->GetManager()->GetThemeFont(UIFONT_NORMAL), TRUE);
-    Edit_SetText(m_hWnd, owner->GetText());
+    Edit_SetTextUtf8(m_hWnd, owner->GetText());
     Edit_SetModify(m_hWnd, FALSE);
     SendMessage(EM_SETMARGINS, EC_LEFTMARGIN | EC_RIGHTMARGIN, MAKELPARAM(2, 2));
     Edit_SetSel(m_hWnd, 0, -1);
@@ -82,16 +82,12 @@ LRESULT SingleLineEditWnd::OnKillFocus(UINT uMsg, WPARAM wParam, LPARAM lParam, 
 LRESULT SingleLineEditWnd::OnEditChanged(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
     if (m_owner == NULL)  return 0;
-    // Copy text back
-    int cchLen = ::GetWindowTextLength(m_hWnd) + 1;
-    char* pstr = static_cast<char*>(_alloca(cchLen * sizeof(char)));
-    ASSERT(pstr);
-    if (pstr == NULL)  return 0;
-    ::GetWindowText(m_hWnd, pstr, cchLen);
-    m_owner->SetText(pstr);
+    char *s = GetWindowTextUtf8(m_hWnd);
+    if (s)
+        m_owner->SetText(s);
+    free(s);
     return 0;
 }
-
 
 SingleLineEditUI::SingleLineEditUI() : m_win(NULL), m_uEditStyle(ES_AUTOHSCROLL), m_bReadOnly(false)
 {
@@ -201,7 +197,7 @@ void MultiLineEditWnd::Init(MultiLineEditUI* owner)
     ::InflateRect(&rcPos, -1, -3);
     Create(owner->m_manager->GetPaintWindow(), NULL, WS_CHILD | WS_CLIPCHILDREN | WS_CLIPSIBLINGS | WS_VSCROLL | ES_MULTILINE | ES_AUTOVSCROLL, 0, rcPos);
     SetWindowFont(m_hWnd, owner->m_manager->GetThemeFont(UIFONT_NORMAL), TRUE);
-    Edit_SetText(m_hWnd, owner->m_txt);
+    Edit_SetTextUtf8(m_hWnd, owner->m_txt);
     Edit_SetModify(m_hWnd, FALSE);
     SendMessage(EM_SETMARGINS, EC_LEFTMARGIN | EC_RIGHTMARGIN, MAKELPARAM(2, 2));
     Edit_SetReadOnly(m_hWnd, owner->IsReadOnly() == true);
@@ -239,16 +235,14 @@ LRESULT MultiLineEditWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 LRESULT MultiLineEditWnd::OnEditChanged(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
     if (m_owner == NULL)  return 0;
-    // Copy text back
-    int cchLen = ::GetWindowTextLength(m_hWnd) + 1;
-    char* pstr = static_cast<char*>(_alloca(cchLen * sizeof(char)));
-    ASSERT(pstr);
-    ::GetWindowText(m_hWnd, pstr, cchLen);
-    m_owner->m_txt = pstr;
-    m_owner->GetManager()->SendNotify(m_owner, "changed");
+    char *s = GetWindowTextUtf8(m_hWnd);
+    if (s) {
+        m_owner->SetText(s);
+        m_owner->GetManager()->SendNotify(m_owner, "changed");
+        free(s);
+    }
     return 0;
 }
-
 
 MultiLineEditUI::MultiLineEditUI() : m_win(NULL)
 {
@@ -279,7 +273,7 @@ UINT MultiLineEditUI::GetControlFlags() const
 void MultiLineEditUI::SetText(const char* txt)
 {
     str::Replace(m_txt, txt);
-    if (m_win != NULL)  SetWindowText(*m_win, txt);
+    if (m_win != NULL)  SetWindowTextUtf8(*m_win, txt);
     if (m_manager != NULL)  m_manager->SendNotify(this, "changed");
     Invalidate();
 }
@@ -287,10 +281,9 @@ void MultiLineEditUI::SetText(const char* txt)
 const char * MultiLineEditUI::GetText() const
 {
     if (m_win != NULL)  {
-        int cchLen = ::GetWindowTextLength(*m_win) + 1;
-        char* pstr = static_cast<char*>(_alloca(cchLen * sizeof(char)));
-        ::GetWindowText(*m_win, pstr, cchLen);
-        return (const char*)str::Dup(pstr);  // TDOO: this leak
+        // TDOO: this leak
+        char *s = GetWindowTextUtf8(*m_win);
+        return (const char*)s;
     }
     return m_txt;
 }

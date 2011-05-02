@@ -55,7 +55,7 @@ AnimationSpooler m_anim;
 HPEN m_hPens[UICOLOR__LAST] = { 0 };
 HFONT m_hFonts[UIFONT__LAST] = { 0 };
 HBRUSH m_hBrushes[UICOLOR__LAST] = { 0 };
-LOGFONT m_aLogFonts[UIFONT__LAST] = { 0 };
+LOGFONTA m_aLogFonts[UIFONT__LAST] = { 0 };
 COLORREF m_colors[UICOLOR__LAST][2] = { 0 };
 TEXTMETRIC m_aTextMetrics[UIFONT__LAST] = { 0 };
 HIMAGELIST m_himgIcons16 = NULL;
@@ -97,17 +97,17 @@ m_hWndPaint(NULL),
         lf.lfHeight = -12;
         m_aLogFonts[UIFONT_NORMAL] = lf;
         m_aLogFonts[UIFONT_CAPTION] = lf;
-        LOGFONT lfBold = lf;
+        LOGFONTA lfBold = lf;
         lfBold.lfWeight += FW_BOLD;
         m_aLogFonts[UIFONT_BOLD] = lfBold;
         lfBold.lfHeight -= 2;
         m_aLogFonts[UIFONT_TITLE] = lfBold;
         lfBold.lfHeight -= 4;
         m_aLogFonts[UIFONT_HEADLINE] = lfBold;
-        LOGFONT lfSubscript = lf;
+        LOGFONTA lfSubscript = lf;
         lfSubscript.lfHeight -= 4;
         m_aLogFonts[UIFONT_SUBSCRIPT] = lfSubscript;
-        LOGFONT lfLink = lf;
+        LOGFONTA lfLink = lf;
         lfLink.lfUnderline = TRUE;
         m_aLogFonts[UIFONT_LINK] = lfLink;
 
@@ -614,10 +614,10 @@ bool PaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRE
             m_toolTip.hwnd = m_hWndPaint;
             m_toolTip.uId = (UINT) m_hWndPaint;
             m_toolTip.hinst = m_hInstance;
-            m_toolTip.lpszText = const_cast<char*>( (const char*) sToolTip) ;
+            m_toolTip.lpszText = (char*)sToolTip.GetData();
             m_toolTip.rect = hover->GetPos();
             if (m_hwndTooltip == NULL)  {
-                m_hwndTooltip = ::CreateWindowEx(0, TOOLTIPS_CLASS, NULL, WS_POPUP | TTS_NOPREFIX | TTS_ALWAYSTIP, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, m_hWndPaint, NULL, m_hInstance, NULL);
+                m_hwndTooltip = ::CreateWindowExA(0, TOOLTIPS_CLASSA, NULL, WS_POPUP | TTS_NOPREFIX | TTS_ALWAYSTIP, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, m_hWndPaint, NULL, m_hInstance, NULL);
                 ::SendMessage(m_hwndTooltip, TTM_ADDTOOL, 0, (LPARAM) &m_toolTip);
             }
             ::SendMessage(m_hwndTooltip, TTM_SETTOOLINFO, 0, (LPARAM) &m_toolTip);
@@ -1147,7 +1147,7 @@ void PaintManagerUI::SendNotify(TNotifyUI& Msg)
 HFONT PaintManagerUI::GetThemeFont(UITYPE_FONT idx) const
 {
     if (idx <= UIFONT__FIRST || idx >= UIFONT__LAST)  return NULL;
-    if (m_hFonts[idx] == NULL)  m_hFonts[idx] = ::CreateFontIndirect(&m_aLogFonts[idx]);
+    if (m_hFonts[idx] == NULL)  m_hFonts[idx] = ::CreateFontIndirectA(&m_aLogFonts[idx]);
     return m_hFonts[idx];
 }
 

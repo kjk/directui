@@ -1,3 +1,5 @@
+
+#define DONT_HIDE_WIN32
 #include "WinUtf8.h"
 
 #include "StrUtil.h"
@@ -5,7 +7,7 @@
 bool DeleteFileUtf8(const char* path)
 {
     ScopedMem<WCHAR> pathW(str::conv::Utf8ToUni(path));
-    return !!DeleteFileW(pathW);
+    return DeleteFileW(pathW) != 0;
 }
 
 char *GetFullPathNameUtf8(const char* lpFileNameUtf8)
@@ -94,4 +96,49 @@ bool GetFileAttributesExUtf8(const char* lpFileNameUtf8, GET_FILEEX_INFO_LEVELS 
 {
     ScopedMem<WCHAR> fileName(str::conv::Utf8ToUni(lpFileNameUtf8));
     return !!GetFileAttributesExW(fileName, fInfoLevelId, lpFileInformation);
+}
+
+HWND CreateWindowExUtf8(DWORD dwExStyle, const char * lpClassName, const char *lpWindowName,
+    DWORD dwStyle, int X, int Y, int nWidth, int nHeight,
+    HWND hWndParent, HMENU hMenu, HINSTANCE hInstance, LPVOID lpParam)
+{
+    ScopedMem<WCHAR> className(str::conv::Utf8ToUni(lpClassName));
+    ScopedMem<WCHAR> windowName(str::conv::Utf8ToUni(lpWindowName));
+    return CreateWindowExW(dwExStyle, className, windowName, dwStyle, X, Y, nWidth, nHeight,
+        hWndParent, hMenu, hInstance, lpParam);
+}
+
+void SetWindowTextUtf8(HWND hwnd, const char *s)
+{
+    ScopedMem<WCHAR> tmp(str::conv::Utf8ToUni(s));
+    SetWindowTextW(hwnd, tmp);
+}
+
+void Edit_SetTextUtf8(HWND hwnd, const char *s)
+{
+    SetWindowTextUtf8(hwnd, s);
+}
+
+char *GetWindowTextUtf8(HWND hwnd)
+{
+    WCHAR buf[1024];
+    WCHAR *tmp = buf;
+    int cch = GetWindowTextLength(hwnd);
+    if (cch + 1 > dimof(buf)) {
+        cch += 1;
+        tmp = (WCHAR*)malloc(cch * sizeof(WCHAR));
+    } else {
+        cch = dimof(buf);
+    }
+    BOOL ok = ::GetWindowTextW(hwnd, tmp, cch);
+    if (ok == 0)
+        return NULL;
+    return str::conv::UniToUtf8(buf);
+}
+
+int DrawTextUtf8(HDC hdc, const char* lpchText, int cchText, LPRECT lprc, UINT format)
+{
+    // TODO: not sure how cchText translates from utf8 to WCHAR
+    ScopedMem<WCHAR> s(str::conv::Utf8ToUni(lpchText));
+    return DrawTextW(hdc, s, cchText, lprc, format);
 }

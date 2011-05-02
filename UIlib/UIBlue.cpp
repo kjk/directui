@@ -224,7 +224,7 @@ void BlueRenderEngineUI::DoPaintEditBox(HDC hDC, PaintManagerUI* manager, RECT r
     ::SelectObject(hDC, manager->GetThemeFont(UIFONT_NORMAL));
     RECT rcEdit = rcItem;
     ::InflateRect(&rcEdit, -3, -2);
-    ::DrawText(hDC, txt, -1, &rcEdit, DT_SINGLELINE | DT_VCENTER | DT_NOPREFIX | DT_EDITCONTROL | uDrawStyle);
+    ::DrawTextUtf8(hDC, txt, -1, &rcEdit, DT_SINGLELINE | DT_VCENTER | DT_NOPREFIX | DT_EDITCONTROL | uDrawStyle);
 }
 
 void BlueRenderEngineUI::DoPaintOptionBox(HDC hDC, PaintManagerUI* manager, RECT rcItem, const char* txt, UINT uState, UINT uStyle)
@@ -343,7 +343,7 @@ void BlueRenderEngineUI::DoPaintQuickText(HDC hDC, PaintManagerUI* manager, RECT
     ::SetBkMode(hDC, TRANSPARENT);
     ::SetTextColor(hDC, manager->GetThemeColor(iTextColor));
     ::SelectObject(hDC, manager->GetThemeFont(iFont));
-    ::DrawText(hDC, txt, -1, &rc, DT_SINGLELINE);
+    ::DrawTextUtf8(hDC, txt, -1, &rc, DT_SINGLELINE);
 }
 
 void BlueRenderEngineUI::DoPaintPrettyText(HDC hDC, PaintManagerUI* manager, RECT& rc, const char* txt, UITYPE_COLOR iTextColor, UITYPE_COLOR iBackColor, RECT* prcLinks, int& nLinkRects, UINT uStyle)
@@ -641,7 +641,7 @@ void BlueRenderEngineUI::DoPaintPrettyText(HDC hDC, PaintManagerUI* manager, REC
             if (cchChars > 0)  {
                 ::GetTextExtentPoint32(hDC, txt, cchChars, &szText);
                 if (bDraw)  {
-                    ::TextOut(hDC, ptPos.x, ptPos.y, txt, cchChars);
+                    TextOut(hDC, ptPos.x, ptPos.y, txt, cchChars);
                     if (pt.x == rc.right && FlSet(uStyle, DT_END_ELLIPSIS))
                         ::TextOutA(hDC, rc.right - 10, ptPos.y, "...", 3);
                 }

@@ -5,6 +5,7 @@
 
 #include "BaseUtil.h"
 #include "WinUtil.h"
+#include "WinUtf8.h"
 
 #include "UIlib.h"
 #include <olectl.h>
