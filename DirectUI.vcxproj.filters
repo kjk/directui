@@ -69,15 +69,6 @@
     <ClInclude Include="UIlib\UITool.h">
       <Filter>UIlib</Filter>
     </ClInclude>
-    <ClInclude Include="App\resource.h">
-      <Filter>TestApp</Filter>
-    </ClInclude>
-    <ClInclude Include="App\StdAfx.h">
-      <Filter>TestApp</Filter>
-    </ClInclude>
-    <ClInclude Include="App\Views.h">
-      <Filter>TestApp</Filter>
-    </ClInclude>
     <ClInclude Include="util\WinUtil.h">
       <Filter>util</Filter>
     </ClInclude>
@@ -101,6 +92,15 @@
     </ClInclude>
     <ClInclude Include="util\WinUtf8.h">
       <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="TestApp\Views.h">
+      <Filter>TestApp</Filter>
+    </ClInclude>
+    <ClInclude Include="TestApp\resource.h">
+      <Filter>TestApp</Filter>
+    </ClInclude>
+    <ClInclude Include="TestApp\StdAfx.h">
+      <Filter>TestApp</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -158,15 +158,6 @@
     <ClCompile Include="UIlib\UITool.cpp">
       <Filter>UIlib</Filter>
     </ClCompile>
-    <ClCompile Include="App\App.cpp">
-      <Filter>TestApp</Filter>
-    </ClCompile>
-    <ClCompile Include="App\StdAfx.cpp">
-      <Filter>TestApp</Filter>
-    </ClCompile>
-    <ClCompile Include="App\Views.cpp">
-      <Filter>TestApp</Filter>
-    </ClCompile>
     <ClCompile Include="util\FileUtil.cpp">
       <Filter>util</Filter>
     </ClCompile>
@@ -182,18 +173,27 @@
     <ClCompile Include="util\WinUtf8.cpp">
       <Filter>util</Filter>
     </ClCompile>
+    <ClCompile Include="TestApp\StdAfx.cpp">
+      <Filter>TestApp</Filter>
+    </ClCompile>
+    <ClCompile Include="TestApp\TestApp.cpp">
+      <Filter>TestApp</Filter>
+    </ClCompile>
+    <ClCompile Include="TestApp\Views.cpp">
+      <Filter>TestApp</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Manifest Include="App\App.exe.manifest">
+    <ResourceCompile Include="TestApp\DirectUI.rc">
+      <Filter>TestApp</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="TestApp\TestApp.manifest.rc">
+      <Filter>TestApp</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="TestApp\TestApp.exe.manifest">
       <Filter>TestApp</Filter>
     </Manifest>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="App\App.manifest.rc">
-      <Filter>TestApp</Filter>
-    </ResourceCompile>
-    <ResourceCompile Include="App\DirectUI.rc">
-      <Filter>TestApp</Filter>
-    </ResourceCompile>
   </ItemGroup>
 </Project>

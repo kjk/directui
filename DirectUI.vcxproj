@@ -11,9 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="App\resource.h" />
-    <ClInclude Include="App\StdAfx.h" />
-    <ClInclude Include="App\Views.h" />
+    <ClInclude Include="TestApp\resource.h" />
+    <ClInclude Include="TestApp\StdAfx.h" />
+    <ClInclude Include="TestApp\Views.h" />
     <ClInclude Include="UIlib\StdAfx.h" />
     <ClInclude Include="UIlib\UIActiveX.h" />
     <ClInclude Include="UIlib\UIAnim.h" />
@@ -43,9 +43,9 @@
     <ClInclude Include="util\WinUtil.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="App\App.cpp" />
-    <ClCompile Include="App\StdAfx.cpp" />
-    <ClCompile Include="App\Views.cpp" />
+    <ClCompile Include="TestApp\StdAfx.cpp" />
+    <ClCompile Include="TestApp\TestApp.cpp" />
+    <ClCompile Include="TestApp\Views.cpp" />
     <ClCompile Include="UIlib\UIActiveX.cpp" />
     <ClCompile Include="UIlib\UIAnim.cpp" />
     <ClCompile Include="UIlib\UIBase.cpp" />
@@ -71,11 +71,11 @@
     <ClCompile Include="util\WinUtf8.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Manifest Include="App\App.exe.manifest" />
+    <ResourceCompile Include="TestApp\DirectUI.rc" />
+    <ResourceCompile Include="TestApp\TestApp.manifest.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="App\App.manifest.rc" />
-    <ResourceCompile Include="App\DirectUI.rc" />
+    <Manifest Include="TestApp\TestApp.exe.manifest" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectName>TestApp</ProjectName>
@@ -109,7 +109,7 @@
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">nmake -f makefile.msvc CFG=dbg clean</NMakeCleanCommandLine>
     <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">dbg\TestApp.exe</NMakeOutput>
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIN32;_DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
-    <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(NMakeIncludeSearchPath);$(ProjectDir)UIlib;$(ProjectDir)UIlib\util;$(ProjectDir)App</NMakeIncludeSearchPath>
+    <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(NMakeIncludeSearchPath);$(ProjectDir)UIlib;$(ProjectDir)util;$(ProjectDir)App</NMakeIncludeSearchPath>
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(NMakeForcedIncludes)</NMakeForcedIncludes>
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(NMakeAssemblySearchPath)</NMakeAssemblySearchPath>
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(NMakeForcedUsingAssemblies)</NMakeForcedUsingAssemblies>
@@ -120,7 +120,7 @@
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">nmake -f makefile.msvc CFG=rel clean</NMakeCleanCommandLine>
     <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">rel\TestApp.exe</NMakeOutput>
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIN32;NDEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
-    <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(NMakeIncludeSearchPath);$(ProjectDir)UIlib;$(ProjectDir)UIlib\util;$(ProjectDir)App</NMakeIncludeSearchPath>
+    <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(NMakeIncludeSearchPath);$(ProjectDir)UIlib;$(ProjectDir)util;$(ProjectDir)App</NMakeIncludeSearchPath>
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(NMakeForcedIncludes)</NMakeForcedIncludes>
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(NMakeAssemblySearchPath)</NMakeAssemblySearchPath>
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(NMakeForcedUsingAssemblies)</NMakeForcedUsingAssemblies>
