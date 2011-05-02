@@ -33,14 +33,14 @@
     <ClInclude Include="UIlib\UIPanel.h" />
     <ClInclude Include="UIlib\UITab.h" />
     <ClInclude Include="UIlib\UITool.h" />
-    <ClInclude Include="UIlib\util\BaseUtil.h" />
-    <ClInclude Include="UIlib\util\FileUtil.h" />
-    <ClInclude Include="UIlib\util\Http.h" />
-    <ClInclude Include="UIlib\util\SettingsParser.h" />
-    <ClInclude Include="UIlib\util\StrUtil.h" />
-    <ClInclude Include="UIlib\util\Vec.h" />
-    <ClInclude Include="UIlib\util\WinUtf8.h" />
-    <ClInclude Include="UIlib\util\WinUtil.h" />
+    <ClInclude Include="util\BaseUtil.h" />
+    <ClInclude Include="util\FileUtil.h" />
+    <ClInclude Include="util\Http.h" />
+    <ClInclude Include="util\SettingsParser.h" />
+    <ClInclude Include="util\StrUtil.h" />
+    <ClInclude Include="util\Vec.h" />
+    <ClInclude Include="util\WinUtf8.h" />
+    <ClInclude Include="util\WinUtil.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\App.cpp" />
@@ -64,11 +64,11 @@
     <ClCompile Include="UIlib\UIPanel.cpp" />
     <ClCompile Include="UIlib\UITab.cpp" />
     <ClCompile Include="UIlib\UITool.cpp" />
-    <ClCompile Include="UIlib\util\FileUtil.cpp" />
-    <ClCompile Include="UIlib\util\Http.cpp" />
-    <ClCompile Include="UIlib\util\SettingsParser.cpp" />
-    <ClCompile Include="UIlib\util\StrUtil.cpp" />
-    <ClCompile Include="UIlib\util\WinUtf8.cpp" />
+    <ClCompile Include="util\FileUtil.cpp" />
+    <ClCompile Include="util\Http.cpp" />
+    <ClCompile Include="util\SettingsParser.cpp" />
+    <ClCompile Include="util\StrUtil.cpp" />
+    <ClCompile Include="util\WinUtf8.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="App\App.exe.manifest" />
@@ -78,7 +78,7 @@
     <ResourceCompile Include="App\DirectUI.rc" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectName>App</ProjectName>
+    <ProjectName>TestApp</ProjectName>
     <ProjectGuid>{9458F693-A9CC-4786-B79A-A2103EC71FA3}</ProjectGuid>
     <RootNamespace>MusicaFantastica</RootNamespace>
     <Keyword>MakeFileProj</Keyword>

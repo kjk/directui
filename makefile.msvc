@@ -62,7 +62,7 @@ CFLAGS = $(CFLAGS) /MDd /EHsc /D "DEBUG" /D "_DEBUG"
 
 WINVER_DEFS =  /D "WINVER=0x0501" /D "_WIN32_WINNT=0x0501"
 
-CFLAGS = $(CFLAGS) $(WINVER_DEFS) /I$(UIL) /I$(UIL)/util /D "UILIB_API="
+CFLAGS = $(CFLAGS) $(WINVER_DEFS) /I$(UIL) /Iutil /D "UILIB_API="
 
 #CFLAGS = $(CFLAGS) /D"UNICODE" /D"_UNICODE"
 
@@ -129,7 +129,7 @@ $(TA_APP): $(TA_OBJS)
 {UIlib\}.cpp{$(OUI)}.obj::
 	$(CC) /TP $(CFLAGS) /Fo$(OUI)\ /Fd$(O)\vc80.pdb $<
 
-{UIlib\util}.cpp{$(OUI)}.obj::
+{util}.cpp{$(OUI)}.obj::
 	$(CC) /TP $(CFLAGS) /Fo$(OUI)\ /Fd$(O)\vc80.pdb $<
 
 {App\}.cpp{$(OTA)}.obj::
@@ -147,178 +147,178 @@ $(O)\App.obj: UIlib\UICombo.h UIlib\UIContainer.h UIlib\UIDecoration.h
 $(O)\App.obj: UIlib\UIDlgBuilder.h UIlib\UIEdit.h UIlib\UILabel.h
 $(O)\App.obj: UIlib\UIlib.h UIlib\UIlist.h UIlib\UIList.h
 $(O)\App.obj: UIlib\UIManager.h UIlib\UIMarkup.h UIlib\UIPanel.h
-$(O)\App.obj: UIlib\UITab.h UIlib\UITool.h UIlib\util\BaseUtil.h
-$(O)\App.obj: UIlib\util\FileUtil.h UIlib\util\StrUtil.h UIlib\util\Vec.h
-$(O)\FileUtil.obj: UIlib\util\BaseUtil.h UIlib\util\FileUtil.h UIlib\util\StrUtil.h
-$(O)\FileUtil.obj: UIlib\util\WinUtf8.h
-$(O)\Http.obj: UIlib\util\BaseUtil.h UIlib\util\Http.h UIlib\util\StrUtil.h
-$(O)\Http.obj: UIlib\util\Vec.h UIlib\util\WinUtil.h
-$(O)\SettingsParser.obj: UIlib\util\BaseUtil.h UIlib\util\SettingsParser.h UIlib\util\StrUtil.h
-$(O)\SettingsParser.obj: UIlib\util\Vec.h
+$(O)\App.obj: UIlib\UITab.h UIlib\UITool.h util\BaseUtil.h
+$(O)\App.obj: util\FileUtil.h util\StrUtil.h util\Vec.h
+$(O)\FileUtil.obj: util\BaseUtil.h util\FileUtil.h util\StrUtil.h
+$(O)\FileUtil.obj: util\WinUtf8.h
+$(O)\Http.obj: util\BaseUtil.h util\Http.h util\StrUtil.h
+$(O)\Http.obj: util\Vec.h util\WinUtil.h
+$(O)\SettingsParser.obj: util\BaseUtil.h util\SettingsParser.h util\StrUtil.h
+$(O)\SettingsParser.obj: util\Vec.h
 $(O)\StdAfx.obj: App\..\UIlib\UIlib.h App\stdafx.h UIlib\UIActiveX.h
 $(O)\StdAfx.obj: UIlib\UIAnim.h UIlib\UIBase.h UIlib\UIBlue.h
 $(O)\StdAfx.obj: UIlib\UIButton.h UIlib\UICombo.h UIlib\UIContainer.h
 $(O)\StdAfx.obj: UIlib\UIDecoration.h UIlib\UIDlgBuilder.h UIlib\UIEdit.h
 $(O)\StdAfx.obj: UIlib\UILabel.h UIlib\UIlist.h UIlib\UIList.h
 $(O)\StdAfx.obj: UIlib\UIManager.h UIlib\UIMarkup.h UIlib\UIPanel.h
-$(O)\StdAfx.obj: UIlib\UITab.h UIlib\UITool.h UIlib\util\BaseUtil.h
-$(O)\StdAfx.obj: UIlib\util\FileUtil.h UIlib\util\StrUtil.h UIlib\util\Vec.h
-$(O)\StrUtil.obj: UIlib\util\BaseUtil.h UIlib\util\StrUtil.h
+$(O)\StdAfx.obj: UIlib\UITab.h UIlib\UITool.h util\BaseUtil.h
+$(O)\StdAfx.obj: util\FileUtil.h util\StrUtil.h util\Vec.h
+$(O)\StrUtil.obj: util\BaseUtil.h util\StrUtil.h
 $(O)\UIActiveX.obj: UIlib\StdAfx.h UIlib\UIActiveX.h UIlib\UIAnim.h
 $(O)\UIActiveX.obj: UIlib\UIBase.h UIlib\UIBlue.h UIlib\UIButton.h
 $(O)\UIActiveX.obj: UIlib\UICombo.h UIlib\UIContainer.h UIlib\UIDecoration.h
 $(O)\UIActiveX.obj: UIlib\UIDlgBuilder.h UIlib\UIEdit.h UIlib\UILabel.h
 $(O)\UIActiveX.obj: UIlib\UIlib.h UIlib\UIlist.h UIlib\UIList.h
 $(O)\UIActiveX.obj: UIlib\UIManager.h UIlib\UIMarkup.h UIlib\UIPanel.h
-$(O)\UIActiveX.obj: UIlib\UITab.h UIlib\UITool.h UIlib\util\BaseUtil.h
-$(O)\UIActiveX.obj: UIlib\util\FileUtil.h UIlib\util\StrUtil.h UIlib\util\Vec.h
-$(O)\UIActiveX.obj: UIlib\util\WinUtf8.h UIlib\util\WinUtil.h
+$(O)\UIActiveX.obj: UIlib\UITab.h UIlib\UITool.h util\BaseUtil.h
+$(O)\UIActiveX.obj: util\FileUtil.h util\StrUtil.h util\Vec.h
+$(O)\UIActiveX.obj: util\WinUtf8.h util\WinUtil.h
 $(O)\UIAnim.obj: UIlib\stdafx.h UIlib\UIActiveX.h UIlib\UIAnim.h
 $(O)\UIAnim.obj: UIlib\UIBase.h UIlib\UIBlue.h UIlib\UIButton.h
 $(O)\UIAnim.obj: UIlib\UICombo.h UIlib\UIContainer.h UIlib\UIDecoration.h
 $(O)\UIAnim.obj: UIlib\UIDlgBuilder.h UIlib\UIEdit.h UIlib\UILabel.h
 $(O)\UIAnim.obj: UIlib\UIlib.h UIlib\UIlist.h UIlib\UIList.h
 $(O)\UIAnim.obj: UIlib\UIManager.h UIlib\UIMarkup.h UIlib\UIPanel.h
-$(O)\UIAnim.obj: UIlib\UITab.h UIlib\UITool.h UIlib\util\BaseUtil.h
-$(O)\UIAnim.obj: UIlib\util\FileUtil.h UIlib\util\StrUtil.h UIlib\util\Vec.h
-$(O)\UIAnim.obj: UIlib\util\WinUtf8.h UIlib\util\WinUtil.h
+$(O)\UIAnim.obj: UIlib\UITab.h UIlib\UITool.h util\BaseUtil.h
+$(O)\UIAnim.obj: util\FileUtil.h util\StrUtil.h util\Vec.h
+$(O)\UIAnim.obj: util\WinUtf8.h util\WinUtil.h
 $(O)\UIBase.obj: UIlib\StdAfx.h UIlib\UIActiveX.h UIlib\UIAnim.h
 $(O)\UIBase.obj: UIlib\UIBase.h UIlib\UIBlue.h UIlib\UIButton.h
 $(O)\UIBase.obj: UIlib\UICombo.h UIlib\UIContainer.h UIlib\UIDecoration.h
 $(O)\UIBase.obj: UIlib\UIDlgBuilder.h UIlib\UIEdit.h UIlib\UILabel.h
 $(O)\UIBase.obj: UIlib\UIlib.h UIlib\UIlist.h UIlib\UIList.h
 $(O)\UIBase.obj: UIlib\UIManager.h UIlib\UIMarkup.h UIlib\UIPanel.h
-$(O)\UIBase.obj: UIlib\UITab.h UIlib\UITool.h UIlib\util\BaseUtil.h
-$(O)\UIBase.obj: UIlib\util\FileUtil.h UIlib\util\StrUtil.h UIlib\util\Vec.h
-$(O)\UIBase.obj: UIlib\util\WinUtf8.h UIlib\util\WinUtil.h
+$(O)\UIBase.obj: UIlib\UITab.h UIlib\UITool.h util\BaseUtil.h
+$(O)\UIBase.obj: util\FileUtil.h util\StrUtil.h util\Vec.h
+$(O)\UIBase.obj: util\WinUtf8.h util\WinUtil.h
 $(O)\UIBlue.obj: UIlib\StdAfx.h UIlib\UIActiveX.h UIlib\UIAnim.h
 $(O)\UIBlue.obj: UIlib\UIBase.h UIlib\UIBlue.h UIlib\UIButton.h
 $(O)\UIBlue.obj: UIlib\UICombo.h UIlib\UIContainer.h UIlib\UIDecoration.h
 $(O)\UIBlue.obj: UIlib\UIDlgBuilder.h UIlib\UIEdit.h UIlib\UILabel.h
 $(O)\UIBlue.obj: UIlib\UIlib.h UIlib\UIlist.h UIlib\UIList.h
 $(O)\UIBlue.obj: UIlib\UIManager.h UIlib\UIMarkup.h UIlib\UIPanel.h
-$(O)\UIBlue.obj: UIlib\UITab.h UIlib\UITool.h UIlib\util\BaseUtil.h
-$(O)\UIBlue.obj: UIlib\util\FileUtil.h UIlib\util\StrUtil.h UIlib\util\Vec.h
-$(O)\UIBlue.obj: UIlib\util\WinUtf8.h UIlib\util\WinUtil.h
+$(O)\UIBlue.obj: UIlib\UITab.h UIlib\UITool.h util\BaseUtil.h
+$(O)\UIBlue.obj: util\FileUtil.h util\StrUtil.h util\Vec.h
+$(O)\UIBlue.obj: util\WinUtf8.h util\WinUtil.h
 $(O)\UIButton.obj: UIlib\StdAfx.h UIlib\UIActiveX.h UIlib\UIAnim.h
 $(O)\UIButton.obj: UIlib\UIBase.h UIlib\UIBlue.h UIlib\UIButton.h
 $(O)\UIButton.obj: UIlib\UICombo.h UIlib\UIContainer.h UIlib\UIDecoration.h
 $(O)\UIButton.obj: UIlib\UIDlgBuilder.h UIlib\UIEdit.h UIlib\UILabel.h
 $(O)\UIButton.obj: UIlib\UIlib.h UIlib\UIlist.h UIlib\UIList.h
 $(O)\UIButton.obj: UIlib\UIManager.h UIlib\UIMarkup.h UIlib\UIPanel.h
-$(O)\UIButton.obj: UIlib\UITab.h UIlib\UITool.h UIlib\util\BaseUtil.h
-$(O)\UIButton.obj: UIlib\util\FileUtil.h UIlib\util\StrUtil.h UIlib\util\Vec.h
-$(O)\UIButton.obj: UIlib\util\WinUtf8.h UIlib\util\WinUtil.h
+$(O)\UIButton.obj: UIlib\UITab.h UIlib\UITool.h util\BaseUtil.h
+$(O)\UIButton.obj: util\FileUtil.h util\StrUtil.h util\Vec.h
+$(O)\UIButton.obj: util\WinUtf8.h util\WinUtil.h
 $(O)\UICombo.obj: UIlib\StdAfx.h UIlib\UIActiveX.h UIlib\UIAnim.h
 $(O)\UICombo.obj: UIlib\UIBase.h UIlib\UIBlue.h UIlib\UIButton.h
 $(O)\UICombo.obj: UIlib\UICombo.h UIlib\UIContainer.h UIlib\UIDecoration.h
 $(O)\UICombo.obj: UIlib\UIDlgBuilder.h UIlib\UIEdit.h UIlib\UILabel.h
 $(O)\UICombo.obj: UIlib\UIlib.h UIlib\UIlist.h UIlib\UIList.h
 $(O)\UICombo.obj: UIlib\UIManager.h UIlib\UIMarkup.h UIlib\UIPanel.h
-$(O)\UICombo.obj: UIlib\UITab.h UIlib\UITool.h UIlib\util\BaseUtil.h
-$(O)\UICombo.obj: UIlib\util\FileUtil.h UIlib\util\StrUtil.h UIlib\util\Vec.h
-$(O)\UICombo.obj: UIlib\util\WinUtf8.h UIlib\util\WinUtil.h
+$(O)\UICombo.obj: UIlib\UITab.h UIlib\UITool.h util\BaseUtil.h
+$(O)\UICombo.obj: util\FileUtil.h util\StrUtil.h util\Vec.h
+$(O)\UICombo.obj: util\WinUtf8.h util\WinUtil.h
 $(O)\UIContainer.obj: UIlib\StdAfx.h UIlib\UIActiveX.h UIlib\UIAnim.h
 $(O)\UIContainer.obj: UIlib\UIBase.h UIlib\UIBlue.h UIlib\UIButton.h
 $(O)\UIContainer.obj: UIlib\UICombo.h UIlib\UIContainer.h UIlib\UIDecoration.h
 $(O)\UIContainer.obj: UIlib\UIDlgBuilder.h UIlib\UIEdit.h UIlib\UILabel.h
 $(O)\UIContainer.obj: UIlib\UIlib.h UIlib\UIlist.h UIlib\UIList.h
 $(O)\UIContainer.obj: UIlib\UIManager.h UIlib\UIMarkup.h UIlib\UIPanel.h
-$(O)\UIContainer.obj: UIlib\UITab.h UIlib\UITool.h UIlib\util\BaseUtil.h
-$(O)\UIContainer.obj: UIlib\util\FileUtil.h UIlib\util\StrUtil.h UIlib\util\Vec.h
-$(O)\UIContainer.obj: UIlib\util\WinUtf8.h UIlib\util\WinUtil.h
+$(O)\UIContainer.obj: UIlib\UITab.h UIlib\UITool.h util\BaseUtil.h
+$(O)\UIContainer.obj: util\FileUtil.h util\StrUtil.h util\Vec.h
+$(O)\UIContainer.obj: util\WinUtf8.h util\WinUtil.h
 $(O)\UIDecoration.obj: UIlib\StdAfx.h UIlib\UIActiveX.h UIlib\UIAnim.h
 $(O)\UIDecoration.obj: UIlib\UIBase.h UIlib\UIBlue.h UIlib\UIButton.h
 $(O)\UIDecoration.obj: UIlib\UICombo.h UIlib\UIContainer.h UIlib\UIDecoration.h
 $(O)\UIDecoration.obj: UIlib\UIDlgBuilder.h UIlib\UIEdit.h UIlib\UILabel.h
 $(O)\UIDecoration.obj: UIlib\UIlib.h UIlib\UIlist.h UIlib\UIList.h
 $(O)\UIDecoration.obj: UIlib\UIManager.h UIlib\UIMarkup.h UIlib\UIPanel.h
-$(O)\UIDecoration.obj: UIlib\UITab.h UIlib\UITool.h UIlib\util\BaseUtil.h
-$(O)\UIDecoration.obj: UIlib\util\FileUtil.h UIlib\util\StrUtil.h UIlib\util\Vec.h
-$(O)\UIDecoration.obj: UIlib\util\WinUtf8.h UIlib\util\WinUtil.h
+$(O)\UIDecoration.obj: UIlib\UITab.h UIlib\UITool.h util\BaseUtil.h
+$(O)\UIDecoration.obj: util\FileUtil.h util\StrUtil.h util\Vec.h
+$(O)\UIDecoration.obj: util\WinUtf8.h util\WinUtil.h
 $(O)\UIDlgBuilder.obj: UIlib\StdAfx.h UIlib\UIActiveX.h UIlib\UIAnim.h
 $(O)\UIDlgBuilder.obj: UIlib\UIBase.h UIlib\UIBlue.h UIlib\UIButton.h
 $(O)\UIDlgBuilder.obj: UIlib\UICombo.h UIlib\UIContainer.h UIlib\UIDecoration.h
 $(O)\UIDlgBuilder.obj: UIlib\UIDlgBuilder.h UIlib\UIEdit.h UIlib\UILabel.h
 $(O)\UIDlgBuilder.obj: UIlib\UIlib.h UIlib\UIlist.h UIlib\UIList.h
 $(O)\UIDlgBuilder.obj: UIlib\UIManager.h UIlib\UIMarkup.h UIlib\UIPanel.h
-$(O)\UIDlgBuilder.obj: UIlib\UITab.h UIlib\UITool.h UIlib\util\BaseUtil.h
-$(O)\UIDlgBuilder.obj: UIlib\util\FileUtil.h UIlib\util\StrUtil.h UIlib\util\Vec.h
-$(O)\UIDlgBuilder.obj: UIlib\util\WinUtf8.h UIlib\util\WinUtil.h
+$(O)\UIDlgBuilder.obj: UIlib\UITab.h UIlib\UITool.h util\BaseUtil.h
+$(O)\UIDlgBuilder.obj: util\FileUtil.h util\StrUtil.h util\Vec.h
+$(O)\UIDlgBuilder.obj: util\WinUtf8.h util\WinUtil.h
 $(O)\UIEdit.obj: UIlib\StdAfx.h UIlib\UIActiveX.h UIlib\UIAnim.h
 $(O)\UIEdit.obj: UIlib\UIBase.h UIlib\UIBlue.h UIlib\UIButton.h
 $(O)\UIEdit.obj: UIlib\UICombo.h UIlib\UIContainer.h UIlib\UIDecoration.h
 $(O)\UIEdit.obj: UIlib\UIDlgBuilder.h UIlib\UIEdit.h UIlib\UILabel.h
 $(O)\UIEdit.obj: UIlib\UIlib.h UIlib\UIlist.h UIlib\UIList.h
 $(O)\UIEdit.obj: UIlib\UIManager.h UIlib\UIMarkup.h UIlib\UIPanel.h
-$(O)\UIEdit.obj: UIlib\UITab.h UIlib\UITool.h UIlib\util\BaseUtil.h
-$(O)\UIEdit.obj: UIlib\util\FileUtil.h UIlib\util\StrUtil.h UIlib\util\Vec.h
-$(O)\UIEdit.obj: UIlib\util\WinUtf8.h UIlib\util\WinUtil.h
+$(O)\UIEdit.obj: UIlib\UITab.h UIlib\UITool.h util\BaseUtil.h
+$(O)\UIEdit.obj: util\FileUtil.h util\StrUtil.h util\Vec.h
+$(O)\UIEdit.obj: util\WinUtf8.h util\WinUtil.h
 $(O)\UILabel.obj: UIlib\StdAfx.h UIlib\UIActiveX.h UIlib\UIAnim.h
 $(O)\UILabel.obj: UIlib\UIBase.h UIlib\UIBlue.h UIlib\UIButton.h
 $(O)\UILabel.obj: UIlib\UICombo.h UIlib\UIContainer.h UIlib\UIDecoration.h
 $(O)\UILabel.obj: UIlib\UIDlgBuilder.h UIlib\UIEdit.h UIlib\UILabel.h
 $(O)\UILabel.obj: UIlib\UIlib.h UIlib\UIlist.h UIlib\UIList.h
 $(O)\UILabel.obj: UIlib\UIManager.h UIlib\UIMarkup.h UIlib\UIPanel.h
-$(O)\UILabel.obj: UIlib\UITab.h UIlib\UITool.h UIlib\util\BaseUtil.h
-$(O)\UILabel.obj: UIlib\util\FileUtil.h UIlib\util\StrUtil.h UIlib\util\Vec.h
-$(O)\UILabel.obj: UIlib\util\WinUtf8.h UIlib\util\WinUtil.h
+$(O)\UILabel.obj: UIlib\UITab.h UIlib\UITool.h util\BaseUtil.h
+$(O)\UILabel.obj: util\FileUtil.h util\StrUtil.h util\Vec.h
+$(O)\UILabel.obj: util\WinUtf8.h util\WinUtil.h
 $(O)\UIlib.obj: UIlib\stdafx.h UIlib\UIActiveX.h UIlib\UIAnim.h
 $(O)\UIlib.obj: UIlib\UIBase.h UIlib\UIBlue.h UIlib\UIButton.h
 $(O)\UIlib.obj: UIlib\UICombo.h UIlib\UIContainer.h UIlib\UIDecoration.h
 $(O)\UIlib.obj: UIlib\UIDlgBuilder.h UIlib\UIEdit.h UIlib\UILabel.h
 $(O)\UIlib.obj: UIlib\UIlib.h UIlib\UIlist.h UIlib\UIList.h
 $(O)\UIlib.obj: UIlib\UIManager.h UIlib\UIMarkup.h UIlib\UIPanel.h
-$(O)\UIlib.obj: UIlib\UITab.h UIlib\UITool.h UIlib\util\BaseUtil.h
-$(O)\UIlib.obj: UIlib\util\FileUtil.h UIlib\util\StrUtil.h UIlib\util\Vec.h
-$(O)\UIlib.obj: UIlib\util\WinUtf8.h UIlib\util\WinUtil.h
+$(O)\UIlib.obj: UIlib\UITab.h UIlib\UITool.h util\BaseUtil.h
+$(O)\UIlib.obj: util\FileUtil.h util\StrUtil.h util\Vec.h
+$(O)\UIlib.obj: util\WinUtf8.h util\WinUtil.h
 $(O)\UIList.obj: UIlib\StdAfx.h UIlib\UIActiveX.h UIlib\UIAnim.h
 $(O)\UIList.obj: UIlib\UIBase.h UIlib\UIBlue.h UIlib\UIButton.h
 $(O)\UIList.obj: UIlib\UICombo.h UIlib\UIContainer.h UIlib\UIDecoration.h
 $(O)\UIList.obj: UIlib\UIDlgBuilder.h UIlib\UIEdit.h UIlib\UILabel.h
 $(O)\UIList.obj: UIlib\UIlib.h UIlib\UIlist.h UIlib\UIList.h
 $(O)\UIList.obj: UIlib\UIManager.h UIlib\UIMarkup.h UIlib\UIPanel.h
-$(O)\UIList.obj: UIlib\UITab.h UIlib\UITool.h UIlib\util\BaseUtil.h
-$(O)\UIList.obj: UIlib\util\FileUtil.h UIlib\util\StrUtil.h UIlib\util\Vec.h
-$(O)\UIList.obj: UIlib\util\WinUtf8.h UIlib\util\WinUtil.h
+$(O)\UIList.obj: UIlib\UITab.h UIlib\UITool.h util\BaseUtil.h
+$(O)\UIList.obj: util\FileUtil.h util\StrUtil.h util\Vec.h
+$(O)\UIList.obj: util\WinUtf8.h util\WinUtil.h
 $(O)\UIManager.obj: UIlib\StdAfx.h UIlib\UIActiveX.h UIlib\UIAnim.h
 $(O)\UIManager.obj: UIlib\UIBase.h UIlib\UIBlue.h UIlib\UIButton.h
 $(O)\UIManager.obj: UIlib\UICombo.h UIlib\UIContainer.h UIlib\UIDecoration.h
 $(O)\UIManager.obj: UIlib\UIDlgBuilder.h UIlib\UIEdit.h UIlib\UILabel.h
 $(O)\UIManager.obj: UIlib\UIlib.h UIlib\UIlist.h UIlib\UIList.h
 $(O)\UIManager.obj: UIlib\UIManager.h UIlib\UIMarkup.h UIlib\UIPanel.h
-$(O)\UIManager.obj: UIlib\UITab.h UIlib\UITool.h UIlib\util\BaseUtil.h
-$(O)\UIManager.obj: UIlib\util\FileUtil.h UIlib\util\StrUtil.h UIlib\util\Vec.h
-$(O)\UIManager.obj: UIlib\util\WinUtf8.h UIlib\util\WinUtil.h
-$(O)\UIMarkup.obj: UIlib\UIMarkup.h UIlib\util\BaseUtil.h UIlib\util\StrUtil.h
-$(O)\UIMarkup.obj: UIlib\util\Vec.h
+$(O)\UIManager.obj: UIlib\UITab.h UIlib\UITool.h util\BaseUtil.h
+$(O)\UIManager.obj: util\FileUtil.h util\StrUtil.h util\Vec.h
+$(O)\UIManager.obj: util\WinUtf8.h util\WinUtil.h
+$(O)\UIMarkup.obj: UIlib\UIMarkup.h util\BaseUtil.h util\StrUtil.h
+$(O)\UIMarkup.obj: util\Vec.h
 $(O)\UIPanel.obj: UIlib\StdAfx.h UIlib\UIActiveX.h UIlib\UIAnim.h
 $(O)\UIPanel.obj: UIlib\UIBase.h UIlib\UIBlue.h UIlib\UIButton.h
 $(O)\UIPanel.obj: UIlib\UICombo.h UIlib\UIContainer.h UIlib\UIDecoration.h
 $(O)\UIPanel.obj: UIlib\UIDlgBuilder.h UIlib\UIEdit.h UIlib\UILabel.h
 $(O)\UIPanel.obj: UIlib\UIlib.h UIlib\UIlist.h UIlib\UIList.h
 $(O)\UIPanel.obj: UIlib\UIManager.h UIlib\UIMarkup.h UIlib\UIPanel.h
-$(O)\UIPanel.obj: UIlib\UITab.h UIlib\UITool.h UIlib\util\BaseUtil.h
-$(O)\UIPanel.obj: UIlib\util\FileUtil.h UIlib\util\StrUtil.h UIlib\util\Vec.h
-$(O)\UIPanel.obj: UIlib\util\WinUtf8.h UIlib\util\WinUtil.h
+$(O)\UIPanel.obj: UIlib\UITab.h UIlib\UITool.h util\BaseUtil.h
+$(O)\UIPanel.obj: util\FileUtil.h util\StrUtil.h util\Vec.h
+$(O)\UIPanel.obj: util\WinUtf8.h util\WinUtil.h
 $(O)\UITab.obj: UIlib\StdAfx.h UIlib\UIActiveX.h UIlib\UIAnim.h
 $(O)\UITab.obj: UIlib\UIBase.h UIlib\UIBlue.h UIlib\UIButton.h
 $(O)\UITab.obj: UIlib\UICombo.h UIlib\UIContainer.h UIlib\UIDecoration.h
 $(O)\UITab.obj: UIlib\UIDlgBuilder.h UIlib\UIEdit.h UIlib\UILabel.h
 $(O)\UITab.obj: UIlib\UIlib.h UIlib\UIlist.h UIlib\UIList.h
 $(O)\UITab.obj: UIlib\UIManager.h UIlib\UIMarkup.h UIlib\UIPanel.h
-$(O)\UITab.obj: UIlib\UITab.h UIlib\UITool.h UIlib\util\BaseUtil.h
-$(O)\UITab.obj: UIlib\util\FileUtil.h UIlib\util\StrUtil.h UIlib\util\Vec.h
-$(O)\UITab.obj: UIlib\util\WinUtf8.h UIlib\util\WinUtil.h
+$(O)\UITab.obj: UIlib\UITab.h UIlib\UITool.h util\BaseUtil.h
+$(O)\UITab.obj: util\FileUtil.h util\StrUtil.h util\Vec.h
+$(O)\UITab.obj: util\WinUtf8.h util\WinUtil.h
 $(O)\UITool.obj: UIlib\StdAfx.h UIlib\UIActiveX.h UIlib\UIAnim.h
 $(O)\UITool.obj: UIlib\UIBase.h UIlib\UIBlue.h UIlib\UIButton.h
 $(O)\UITool.obj: UIlib\UICombo.h UIlib\UIContainer.h UIlib\UIDecoration.h
 $(O)\UITool.obj: UIlib\UIDlgBuilder.h UIlib\UIEdit.h UIlib\UILabel.h
 $(O)\UITool.obj: UIlib\UIlib.h UIlib\UIlist.h UIlib\UIList.h
 $(O)\UITool.obj: UIlib\UIManager.h UIlib\UIMarkup.h UIlib\UIPanel.h
-$(O)\UITool.obj: UIlib\UITab.h UIlib\UITool.h UIlib\util\BaseUtil.h
-$(O)\UITool.obj: UIlib\util\FileUtil.h UIlib\util\StrUtil.h UIlib\util\Vec.h
-$(O)\UITool.obj: UIlib\util\WinUtf8.h UIlib\util\WinUtil.h
+$(O)\UITool.obj: UIlib\UITab.h UIlib\UITool.h util\BaseUtil.h
+$(O)\UITool.obj: util\FileUtil.h util\StrUtil.h util\Vec.h
+$(O)\UITool.obj: util\WinUtf8.h util\WinUtil.h
 $(O)\Views.obj: App\..\UIlib\UIlib.h App\StdAfx.h App\Views.h
 $(O)\Views.obj: UIlib\UIActiveX.h UIlib\UIAnim.h UIlib\UIBase.h
 $(O)\Views.obj: UIlib\UIBlue.h UIlib\UIButton.h UIlib\UICombo.h
@@ -326,6 +326,6 @@ $(O)\Views.obj: UIlib\UIContainer.h UIlib\UIDecoration.h UIlib\UIDlgBuilder.h
 $(O)\Views.obj: UIlib\UIEdit.h UIlib\UILabel.h UIlib\UIlist.h
 $(O)\Views.obj: UIlib\UIList.h UIlib\UIManager.h UIlib\UIMarkup.h
 $(O)\Views.obj: UIlib\UIPanel.h UIlib\UITab.h UIlib\UITool.h
-$(O)\Views.obj: UIlib\util\BaseUtil.h UIlib\util\FileUtil.h UIlib\util\StrUtil.h
-$(O)\Views.obj: UIlib\util\Vec.h
-$(O)\WinUtf8.obj: UIlib\util\BaseUtil.h UIlib\util\StrUtil.h UIlib\util\WinUtf8.h
+$(O)\Views.obj: util\BaseUtil.h util\FileUtil.h util\StrUtil.h
+$(O)\Views.obj: util\Vec.h
+$(O)\WinUtf8.obj: util\BaseUtil.h util\StrUtil.h util\WinUtf8.h

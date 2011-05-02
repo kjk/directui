@@ -4,11 +4,11 @@
     <Filter Include="UIlib">
       <UniqueIdentifier>{4d5b3d34-8156-4352-ac33-3dc29597fd99}</UniqueIdentifier>
     </Filter>
-    <Filter Include="App">
-      <UniqueIdentifier>{da419723-df32-47b8-bd26-b2ad3d454f0a}</UniqueIdentifier>
+    <Filter Include="util">
+      <UniqueIdentifier>{5516e8c8-02b7-48b2-a7ed-dee455fc442c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="UIlib\util">
-      <UniqueIdentifier>{6ab9e8da-3834-4874-b3db-0fc451a6cf14}</UniqueIdentifier>
+    <Filter Include="TestApp">
+      <UniqueIdentifier>{da419723-df32-47b8-bd26-b2ad3d454f0a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -70,37 +70,37 @@
       <Filter>UIlib</Filter>
     </ClInclude>
     <ClInclude Include="App\resource.h">
-      <Filter>App</Filter>
+      <Filter>TestApp</Filter>
     </ClInclude>
     <ClInclude Include="App\StdAfx.h">
-      <Filter>App</Filter>
+      <Filter>TestApp</Filter>
     </ClInclude>
     <ClInclude Include="App\Views.h">
-      <Filter>App</Filter>
+      <Filter>TestApp</Filter>
     </ClInclude>
-    <ClInclude Include="UIlib\util\BaseUtil.h">
-      <Filter>UIlib\util</Filter>
+    <ClInclude Include="util\WinUtil.h">
+      <Filter>util</Filter>
     </ClInclude>
-    <ClInclude Include="UIlib\util\FileUtil.h">
-      <Filter>UIlib\util</Filter>
+    <ClInclude Include="util\BaseUtil.h">
+      <Filter>util</Filter>
     </ClInclude>
-    <ClInclude Include="UIlib\util\Http.h">
-      <Filter>UIlib\util</Filter>
+    <ClInclude Include="util\FileUtil.h">
+      <Filter>util</Filter>
     </ClInclude>
-    <ClInclude Include="UIlib\util\SettingsParser.h">
-      <Filter>UIlib\util</Filter>
+    <ClInclude Include="util\Http.h">
+      <Filter>util</Filter>
     </ClInclude>
-    <ClInclude Include="UIlib\util\StrUtil.h">
-      <Filter>UIlib\util</Filter>
+    <ClInclude Include="util\SettingsParser.h">
+      <Filter>util</Filter>
     </ClInclude>
-    <ClInclude Include="UIlib\util\Vec.h">
-      <Filter>UIlib\util</Filter>
+    <ClInclude Include="util\StrUtil.h">
+      <Filter>util</Filter>
     </ClInclude>
-    <ClInclude Include="UIlib\util\WinUtil.h">
-      <Filter>UIlib\util</Filter>
+    <ClInclude Include="util\Vec.h">
+      <Filter>util</Filter>
     </ClInclude>
-    <ClInclude Include="UIlib\util\WinUtf8.h">
-      <Filter>UIlib\util</Filter>
+    <ClInclude Include="util\WinUtf8.h">
+      <Filter>util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -159,41 +159,41 @@
       <Filter>UIlib</Filter>
     </ClCompile>
     <ClCompile Include="App\App.cpp">
-      <Filter>App</Filter>
+      <Filter>TestApp</Filter>
     </ClCompile>
     <ClCompile Include="App\StdAfx.cpp">
-      <Filter>App</Filter>
+      <Filter>TestApp</Filter>
     </ClCompile>
     <ClCompile Include="App\Views.cpp">
-      <Filter>App</Filter>
+      <Filter>TestApp</Filter>
     </ClCompile>
-    <ClCompile Include="UIlib\util\FileUtil.cpp">
-      <Filter>UIlib\util</Filter>
+    <ClCompile Include="util\FileUtil.cpp">
+      <Filter>util</Filter>
     </ClCompile>
-    <ClCompile Include="UIlib\util\Http.cpp">
-      <Filter>UIlib\util</Filter>
+    <ClCompile Include="util\Http.cpp">
+      <Filter>util</Filter>
     </ClCompile>
-    <ClCompile Include="UIlib\util\SettingsParser.cpp">
-      <Filter>UIlib\util</Filter>
+    <ClCompile Include="util\SettingsParser.cpp">
+      <Filter>util</Filter>
     </ClCompile>
-    <ClCompile Include="UIlib\util\StrUtil.cpp">
-      <Filter>UIlib\util</Filter>
+    <ClCompile Include="util\StrUtil.cpp">
+      <Filter>util</Filter>
     </ClCompile>
-    <ClCompile Include="UIlib\util\WinUtf8.cpp">
-      <Filter>UIlib\util</Filter>
+    <ClCompile Include="util\WinUtf8.cpp">
+      <Filter>util</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="App\App.exe.manifest">
-      <Filter>App</Filter>
+      <Filter>TestApp</Filter>
     </Manifest>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="App\App.manifest.rc">
-      <Filter>App</Filter>
+      <Filter>TestApp</Filter>
     </ResourceCompile>
     <ResourceCompile Include="App\DirectUI.rc">
-      <Filter>App</Filter>
+      <Filter>TestApp</Filter>
     </ResourceCompile>
   </ItemGroup>
 </Project>
