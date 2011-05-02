@@ -114,7 +114,7 @@ void SingleLineEditUI::Event(TEventUI& event)
     }
     if (event.type == UIEVENT_WINDOWSIZE) 
     {
-        if (m_win != NULL)  m_manager->SetFocus(NULL);
+        if (m_win != NULL)  m_mgr->SetFocus(NULL);
     }
     if (event.type == UIEVENT_SETFOCUS)  
     {
@@ -139,7 +139,7 @@ void SingleLineEditUI::Event(TEventUI& event)
 void SingleLineEditUI::SetText(const char* txt)
 {
     str::Replace(m_txt, txt);
-    if (m_manager != NULL)  m_manager->SendNotify(this, "changed");
+    if (m_mgr != NULL)  m_mgr->SendNotify(this, "changed");
     Invalidate();
 }
 
@@ -162,7 +162,7 @@ void SingleLineEditUI::SetEditStyle(UINT uStyle)
 
 SIZE SingleLineEditUI::EstimateSize(SIZE /*szAvailable*/)
 {
-    return CSize(0, 12 + m_manager->GetThemeFontInfo(UIFONT_NORMAL).tmHeight);
+    return CSize(0, 12 + m_mgr->GetThemeFontInfo(UIFONT_NORMAL).tmHeight);
 }
 
 void SingleLineEditUI::DoPaint(HDC hDC, const RECT& /*rcPaint*/)
@@ -171,7 +171,7 @@ void SingleLineEditUI::DoPaint(HDC hDC, const RECT& /*rcPaint*/)
     if (IsFocused())  uState |= UISTATE_FOCUSED;
     if (IsReadOnly())  uState |= UISTATE_READONLY;
     if (!IsEnabled())  uState |= UISTATE_DISABLED;
-    BlueRenderEngineUI::DoPaintEditBox(hDC, m_manager, m_rcItem, m_txt, uState, m_uEditStyle, false);
+    BlueRenderEngineUI::DoPaintEditBox(hDC, m_mgr, m_rcItem, m_txt, uState, m_uEditStyle, false);
 }
 
 class MultiLineEditWnd : public WindowWnd
@@ -195,8 +195,8 @@ void MultiLineEditWnd::Init(MultiLineEditUI* owner)
 {
     RECT rcPos = owner->GetPos();
     ::InflateRect(&rcPos, -1, -3);
-    Create(owner->m_manager->GetPaintWindow(), NULL, WS_CHILD | WS_CLIPCHILDREN | WS_CLIPSIBLINGS | WS_VSCROLL | ES_MULTILINE | ES_AUTOVSCROLL, 0, rcPos);
-    SetWindowFont(m_hWnd, owner->m_manager->GetThemeFont(UIFONT_NORMAL), TRUE);
+    Create(owner->m_mgr->GetPaintWindow(), NULL, WS_CHILD | WS_CLIPCHILDREN | WS_CLIPSIBLINGS | WS_VSCROLL | ES_MULTILINE | ES_AUTOVSCROLL, 0, rcPos);
+    SetWindowFont(m_hWnd, owner->m_mgr->GetThemeFont(UIFONT_NORMAL), TRUE);
     Edit_SetTextUtf8(m_hWnd, owner->m_txt);
     Edit_SetModify(m_hWnd, FALSE);
     SendMessage(EM_SETMARGINS, EC_LEFTMARGIN | EC_RIGHTMARGIN, MAKELPARAM(2, 2));
@@ -274,7 +274,7 @@ void MultiLineEditUI::SetText(const char* txt)
 {
     str::Replace(m_txt, txt);
     if (m_win != NULL)  SetWindowTextUtf8(*m_win, txt);
-    if (m_manager != NULL)  m_manager->SendNotify(this, "changed");
+    if (m_mgr != NULL)  m_mgr->SendNotify(this, "changed");
     Invalidate();
 }
 
@@ -335,7 +335,7 @@ void MultiLineEditUI::Event(TEventUI& event)
 {
     if (event.type == UIEVENT_WINDOWSIZE) 
     {
-        if (m_win != NULL)  m_manager->SetFocus(NULL);
+        if (m_win != NULL)  m_mgr->SetFocus(NULL);
     }
     if (event.type == UIEVENT_SETFOCUS)  
     {
@@ -350,5 +350,5 @@ void MultiLineEditUI::DoPaint(HDC hDC, const RECT& /*rcPaint*/)
     if (IsFocused())  uState |= UISTATE_FOCUSED;
     if (IsReadOnly())  uState |= UISTATE_READONLY;
     if (!IsEnabled())  uState |= UISTATE_DISABLED;
-    BlueRenderEngineUI::DoPaintEditBox(hDC, m_manager, m_rcItem, "", uState, 0, true);
+    BlueRenderEngineUI::DoPaintEditBox(hDC, m_mgr, m_rcItem, "", uState, 0, true);
 }

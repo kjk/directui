@@ -37,13 +37,13 @@ bool TabFolderUI::SelectItem(int idx)
     if (m_curPage != NULL)  m_curPage->SetVisible(false);
     m_curSel = idx;
     m_curPage = static_cast<ControlUI*>(m_items[idx]);
-    if (m_manager != NULL)  m_manager->SendNotify(this, "itemselect");
+    if (m_mgr != NULL)  m_mgr->SendNotify(this, "itemselect");
     m_curPage->SetVisible(true);
     // Need to re-think the layout
-    if (m_manager != NULL)  m_manager->UpdateLayout();
+    if (m_mgr != NULL)  m_mgr->UpdateLayout();
     // Set focus on page
     m_curPage->SetFocus();
-    if (m_manager != NULL)  m_manager->SetNextTabControl();
+    if (m_mgr != NULL)  m_mgr->SetNextTabControl();
     return true;
 }
 
@@ -76,7 +76,7 @@ void TabFolderUI::SetPos(RECT rc)
 {
     ControlUI::SetPos(rc);
     // Determine size of embedded page and place it there
-    int cyFont = m_manager->GetThemeFontInfo(UIFONT_BOLD).tmHeight;
+    int cyFont = m_mgr->GetThemeFontInfo(UIFONT_BOLD).tmHeight;
     ::SetRect(&m_rcClient, rc.left + m_rcInset.left, rc.top + m_rcInset.top + cyFont + 8, rc.right - m_rcInset.right, rc.bottom - m_rcInset.bottom);
     m_rcPage = m_rcClient;
     ::InflateRect(&m_rcPage, -8, -8);
@@ -92,10 +92,10 @@ void TabFolderUI::DoPaint(HDC hDC, const RECT& rcPaint)
         // Fill client area background
         RECT rcFill = { 0 };
         ::IntersectRect(&rcFill, &rcPaint, &m_rcClient);
-        BlueRenderEngineUI::DoFillRect(hDC, m_manager, rcFill, UICOLOR_TAB_BACKGROUND_NORMAL);
+        BlueRenderEngineUI::DoFillRect(hDC, m_mgr, rcFill, UICOLOR_TAB_BACKGROUND_NORMAL);
 
         // Frame around client area
-        BlueRenderEngineUI::DoPaintRectangle(hDC, m_manager, m_rcClient, UICOLOR_TAB_BORDER, UICOLOR__INVALID);
+        BlueRenderEngineUI::DoPaintRectangle(hDC, m_mgr, m_rcClient, UICOLOR_TAB_BORDER, UICOLOR__INVALID);
 
         // Paint tab strip
         RECT rcTabs = m_rcItem;
@@ -117,7 +117,7 @@ void TabFolderUI::DoPaint(HDC hDC, const RECT& rcPaint)
                 if (IsFocused())  uState |= UISTATE_FOCUSED;
                 if (!IsEnabled())  uState |= UISTATE_DISABLED;
                 if (m_curSel == i)  uState = UISTATE_PUSHED;
-                BlueRenderEngineUI::DoPaintTabFolder(hDC, m_manager, rcTab, txt, uState);
+                BlueRenderEngineUI::DoPaintTabFolder(hDC, m_mgr, rcTab, txt, uState);
                 posX += RectDx(rcTab) + 2;
                 m_tabAreas.Add(&rcTab);
             }

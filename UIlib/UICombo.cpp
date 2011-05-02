@@ -37,7 +37,7 @@ void SingleLinePickUI::Event(TEventUI& event)
             // Check for link press
             for (int i = 0; i < m_nLinks; i++)  {
                 if (::PtInRect(&m_rcLinks[i], event.ptMouse))  {
-                    m_manager->SendNotify(this, "link");
+                    m_mgr->SendNotify(this, "link");
                     return;
                 }
             }      
@@ -55,15 +55,15 @@ void SingleLinePickUI::Event(TEventUI& event)
     if (event.type == UIEVENT_BUTTONUP) 
     {
         if (FlSet(m_uButtonState, UISTATE_CAPTURED))  {
-            if (::PtInRect(&m_rcButton, event.ptMouse))  m_manager->SendNotify(this, "browse");
+            if (::PtInRect(&m_rcButton, event.ptMouse))  m_mgr->SendNotify(this, "browse");
             m_uButtonState &= ~(UISTATE_PUSHED | UISTATE_CAPTURED);
             Invalidate();
         }
     }
     if (event.type == UIEVENT_KEYDOWN)  
     {
-        if (event.chKey == VK_SPACE && m_nLinks > 0)  m_manager->SendNotify(this, "link");
-        if (event.chKey == VK_F4 && IsEnabled())  m_manager->SendNotify(this, "browse");
+        if (event.chKey == VK_SPACE && m_nLinks > 0)  m_mgr->SendNotify(this, "link");
+        if (event.chKey == VK_F4 && IsEnabled())  m_mgr->SendNotify(this, "browse");
     }
     ControlUI::Event(event);
 }
@@ -76,13 +76,13 @@ void SingleLinePickUI::SetWidth(int cxWidth)
 
 SIZE SingleLinePickUI::EstimateSize(SIZE /*szAvailable*/)
 {
-    SIZE sz = { 0, 12 + m_manager->GetThemeFontInfo(UIFONT_NORMAL).tmHeight };
+    SIZE sz = { 0, 12 + m_mgr->GetThemeFontInfo(UIFONT_NORMAL).tmHeight };
     if (m_cxWidth > 0)  {
         sz.cx = m_cxWidth;
         RECT rcText = m_rcItem;
         ::InflateRect(&rcText, -4, -2);
         m_nLinks = dimof(m_rcLinks);
-        BlueRenderEngineUI::DoPaintPrettyText(m_manager->GetPaintDC(), m_manager, rcText, m_txt, UICOLOR_EDIT_TEXT_NORMAL, UICOLOR__INVALID, m_rcLinks, m_nLinks, DT_SINGLELINE | DT_CALCRECT);
+        BlueRenderEngineUI::DoPaintPrettyText(m_mgr->GetPaintDC(), m_mgr, rcText, m_txt, UICOLOR_EDIT_TEXT_NORMAL, UICOLOR__INVALID, m_rcLinks, m_nLinks, DT_SINGLELINE | DT_CALCRECT);
         sz.cy = RectDy(rcText);
     }
     return sz;
@@ -106,12 +106,12 @@ void SingleLinePickUI::DoPaint(HDC hDC, const RECT& rcPaint)
         iBorderColor = UICOLOR_CONTROL_BORDER_DISABLED;
         iBackColor = UICOLOR__INVALID;
     }
-    BlueRenderEngineUI::DoPaintFrame(hDC, m_manager, rcText, iBorderColor, iBorderColor, iBackColor);
+    BlueRenderEngineUI::DoPaintFrame(hDC, m_mgr, rcText, iBorderColor, iBorderColor, iBackColor);
     ::InflateRect(&rcText, -4, -2);
     m_nLinks = dimof(m_rcLinks);
-    BlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcText, m_txt, iTextColor, UICOLOR__INVALID, m_rcLinks, m_nLinks, DT_SINGLELINE);
+    BlueRenderEngineUI::DoPaintPrettyText(hDC, m_mgr, rcText, m_txt, iTextColor, UICOLOR__INVALID, m_rcLinks, m_nLinks, DT_SINGLELINE);
     RECT rcPadding = { 0 };
-    BlueRenderEngineUI::DoPaintButton(hDC, m_manager, m_rcButton, "<i 4>", rcPadding, m_uButtonState, 0);
+    BlueRenderEngineUI::DoPaintButton(hDC, m_mgr, m_rcButton, "<i 4>", rcPadding, m_uButtonState, 0);
 }
 
 
@@ -260,8 +260,8 @@ bool DropDownUI::SelectItem(int idx)
     m_curSel = idx;
     ctrl->SetFocus();
     listItem->Select(true);
-    if (m_manager != NULL)  m_manager->SendNotify(ctrl, "itemclick");
-    if (m_manager != NULL)  m_manager->SendNotify(this, "itemselect");
+    if (m_mgr != NULL)  m_mgr->SendNotify(ctrl, "itemclick");
+    if (m_mgr != NULL)  m_mgr->SendNotify(this, "itemselect");
     Invalidate();
     return true;
 }
@@ -350,7 +350,7 @@ bool DropDownUI::Activate()
     if (!ControlUI::Activate())  return false;
     DropDownWnd* win = new DropDownWnd;
     win->Init(this);
-    if (m_manager != NULL)  m_manager->SendNotify(this, "dropdown");
+    if (m_mgr != NULL)  m_mgr->SendNotify(this, "dropdown");
     Invalidate();
     return true;
 }
@@ -383,7 +383,7 @@ void DropDownUI::SetPos(RECT rc)
 
 SIZE DropDownUI::EstimateSize(SIZE /*szAvailable*/)
 {
-    SIZE sz = { 0, 12 + m_manager->GetThemeFontInfo(UIFONT_NORMAL).tmHeight };
+    SIZE sz = { 0, 12 + m_mgr->GetThemeFontInfo(UIFONT_NORMAL).tmHeight };
     // Once there is an element in the list, we'll use the first one to
     // determine the size of the dropdown base control.
     if (m_cxyFixed.cx > 0 && !m_items.IsEmpty())  {
@@ -401,9 +401,9 @@ void DropDownUI::DoPaint(HDC hDC, const RECT& rcPaint)
     ::SetRect(&m_rcButton, m_rcItem.right - cy, m_rcItem.top, m_rcItem.right, m_rcItem.bottom);
     RECT rcText = { m_rcItem.left, m_rcItem.top, m_rcButton.left + 1, m_rcItem.bottom };
     if (!IsEnabled())  {
-        BlueRenderEngineUI::DoPaintFrame(hDC, m_manager, rcText, UICOLOR_CONTROL_BORDER_DISABLED, UICOLOR__INVALID, UICOLOR__INVALID);
+        BlueRenderEngineUI::DoPaintFrame(hDC, m_mgr, rcText, UICOLOR_CONTROL_BORDER_DISABLED, UICOLOR__INVALID, UICOLOR__INVALID);
     } else {
-        BlueRenderEngineUI::DoPaintFrame(hDC, m_manager, rcText, UICOLOR_CONTROL_BORDER_NORMAL, UICOLOR_CONTROL_BORDER_NORMAL, UICOLOR__INVALID);
+        BlueRenderEngineUI::DoPaintFrame(hDC, m_mgr, rcText, UICOLOR_CONTROL_BORDER_NORMAL, UICOLOR_CONTROL_BORDER_NORMAL, UICOLOR__INVALID);
     }
     // Paint dropdown edit box
     ::InflateRect(&rcText, -1, -1);
@@ -421,10 +421,10 @@ void DropDownUI::DoPaint(HDC hDC, const RECT& rcPaint)
             ctrl->SetPos(rcOldPos);
         }
     } else {
-        BlueRenderEngineUI::DoFillRect(hDC, m_manager, rcText, UICOLOR_CONTROL_BACKGROUND_NORMAL);
+        BlueRenderEngineUI::DoFillRect(hDC, m_mgr, rcText, UICOLOR_CONTROL_BACKGROUND_NORMAL);
     }
     // Paint dropdown button
     RECT rcPadding = { 0 };
-    BlueRenderEngineUI::DoPaintButton(hDC, m_manager, m_rcButton, "<i 6>", rcPadding, m_uButtonState, 0);
+    BlueRenderEngineUI::DoPaintButton(hDC, m_mgr, m_rcButton, "<i 6>", rcPadding, m_uButtonState, 0);
 }
 

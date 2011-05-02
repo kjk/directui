@@ -995,7 +995,7 @@ void ActiveXUI::ReleaseControl()
         m_ctrl->Release();
         m_ctrl = NULL;
     }
-    m_manager->RemoveMessageFilter(this);
+    m_mgr->RemoveMessageFilter(this);
 }
 
 bool ActiveXUI::DelayedControlCreation()
@@ -1036,8 +1036,8 @@ bool ActiveXUI::DelayedControlCreation()
     // Activate and done...
     m_pUnk->SetHostNames(OLESTR("UIActiveX"), NULL);
     if ((dwMiscStatus & OLEMISC_INVISIBLEATRUNTIME) == 0)  {
-        Hr = m_pUnk->DoVerb(OLEIVERB_INPLACEACTIVATE, NULL, pOleClientSite, 0, m_manager->GetPaintWindow(), &m_rcItem);
-        ::RedrawWindow(m_manager->GetPaintWindow(), &m_rcItem, NULL, RDW_INVALIDATE | RDW_UPDATENOW | RDW_ERASE | RDW_INTERNALPAINT | RDW_FRAME);
+        Hr = m_pUnk->DoVerb(OLEIVERB_INPLACEACTIVATE, NULL, pOleClientSite, 0, m_mgr->GetPaintWindow(), &m_rcItem);
+        ::RedrawWindow(m_mgr->GetPaintWindow(), &m_rcItem, NULL, RDW_INVALIDATE | RDW_UPDATENOW | RDW_ERASE | RDW_INTERNALPAINT | RDW_FRAME);
     }
     IObjectWithSite* pSite = NULL;
     m_pUnk->QueryInterface(IID_IObjectWithSite, (LPVOID*) &pSite);

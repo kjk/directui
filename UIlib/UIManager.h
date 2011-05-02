@@ -428,7 +428,7 @@ protected:
 
     void SetBgColorAttribute(const char *name);
 
-    PaintManagerUI*  m_manager;
+    PaintManagerUI*  m_mgr;
     ControlUI*       m_parent;
     int              m_shortcut;
 

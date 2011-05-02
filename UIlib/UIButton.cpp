@@ -69,7 +69,7 @@ void ButtonUI::SetText(const char* txt)
 bool ButtonUI::Activate()
 {
     if (!ControlUI::Activate())  return false;
-    if (m_manager != NULL)  m_manager->SendNotify(this, "click");
+    if (m_mgr != NULL)  m_mgr->SendNotify(this, "click");
     return true;
 }
 
@@ -100,11 +100,11 @@ void ButtonUI::SetPadding(int cx, int cy)
 
 SIZE ButtonUI::EstimateSize(SIZE /*szAvailable*/)
 {
-    SIZE sz = { m_cxWidth, 12 + m_manager->GetThemeFontInfo(UIFONT_NORMAL).tmHeight };
-    if (m_cxWidth == 0 && m_manager != NULL)  {
+    SIZE sz = { m_cxWidth, 12 + m_mgr->GetThemeFontInfo(UIFONT_NORMAL).tmHeight };
+    if (m_cxWidth == 0 && m_mgr != NULL)  {
         RECT rcText = { 0, 0, 9999, 20 };
         int nLinks = 0;
-        BlueRenderEngineUI::DoPaintPrettyText(m_manager->GetPaintDC(), m_manager, rcText, m_txt, UICOLOR_STANDARD_BLACK, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE | DT_CALCRECT);
+        BlueRenderEngineUI::DoPaintPrettyText(m_mgr->GetPaintDC(), m_mgr, rcText, m_txt, UICOLOR_STANDARD_BLACK, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE | DT_CALCRECT);
         sz.cx = RectDx(rcText);
     }
     sz.cx += m_szPadding.cx * 2;
@@ -118,10 +118,10 @@ void ButtonUI::DoPaint(HDC hDC, const RECT& rcPaint)
     if (IsFocused())  uState |= UISTATE_FOCUSED;
     if (!IsEnabled())  uState |= UISTATE_DISABLED;
     RECT rcPadding = { m_szPadding.cx, m_szPadding.cy, m_szPadding.cx, m_szPadding.cy };
-    BlueRenderEngineUI::DoPaintButton(hDC, m_manager, m_rcItem, m_txt, rcPadding, m_uButtonState | uState, m_uTextStyle);
+    BlueRenderEngineUI::DoPaintButton(hDC, m_mgr, m_rcItem, m_txt, rcPadding, m_uButtonState | uState, m_uTextStyle);
 }
 
-OptionUI::OptionUI() : m_cxWidth(0), m_uButtonState(0), m_uStyle(DT_LEFT), m_bSelected(false)
+OptionUI::OptionUI() : m_cxWidth(0), m_uButtonState(0), m_uStyle(DT_LEFT), m_selected(false)
 {
 }
 
@@ -165,14 +165,14 @@ void OptionUI::Event(TEventUI& event)
 
 bool OptionUI::IsChecked() const
 {
-    return m_bSelected;
+    return m_selected;
 }
 
-void OptionUI::SetCheck(bool bSelected)
+void OptionUI::SetCheck(bool selected)
 {
-    if (m_bSelected == bSelected)  return;
-    m_bSelected = bSelected;
-    if (m_manager != NULL)  m_manager->SendNotify(this, "changed");
+    if (m_selected == selected)  return;
+    m_selected = selected;
+    if (m_mgr != NULL)  m_mgr->SendNotify(this, "changed");
     Invalidate();
 }
 
@@ -204,16 +204,16 @@ void OptionUI::SetAttribute(const char* name, const char* value)
 
 SIZE OptionUI::EstimateSize(SIZE /*szAvailable*/)
 {
-    return CSize(m_cxWidth, 18 + m_manager->GetThemeFontInfo(UIFONT_NORMAL).tmHeight);
+    return CSize(m_cxWidth, 18 + m_mgr->GetThemeFontInfo(UIFONT_NORMAL).tmHeight);
 }
 
 void OptionUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
     // Draw button
     UINT uState = 0;
-    if (m_bSelected)  uState |= UISTATE_CHECKED;
+    if (m_selected)  uState |= UISTATE_CHECKED;
     if (IsFocused())  uState |= UISTATE_FOCUSED;
     if (!IsEnabled())  uState |= UISTATE_DISABLED;
-    BlueRenderEngineUI::DoPaintOptionBox(hDC, m_manager, m_rcItem, m_txt, m_uButtonState | uState, m_uStyle);
+    BlueRenderEngineUI::DoPaintOptionBox(hDC, m_mgr, m_rcItem, m_txt, m_uButtonState | uState, m_uStyle);
 }
 

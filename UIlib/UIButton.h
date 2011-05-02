@@ -40,7 +40,7 @@ public:
     virtual bool Activate();
 
     bool IsChecked() const;
-    void SetCheck(bool bSelected);
+    void SetCheck(bool selected);
     void SetWidth(int cxWidth);
 
     virtual void Event(TEventUI& event);
@@ -50,7 +50,7 @@ public:
     virtual void SetAttribute(const char* name, const char* value);
 
 protected:
-    bool m_bSelected;
+    bool m_selected;
     UINT m_uStyle;
     UINT m_uButtonState;
     int  m_cxWidth;

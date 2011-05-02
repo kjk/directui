@@ -41,8 +41,8 @@ int ContainerUI::GetCount() const
 
 bool ContainerUI::Add(ControlUI* ctrl)
 {
-    if (m_manager != NULL)  m_manager->InitControls(ctrl, this);
-    if (m_manager != NULL)  m_manager->UpdateLayout();
+    if (m_mgr != NULL)  m_mgr->InitControls(ctrl, this);
+    if (m_mgr != NULL)  m_mgr->UpdateLayout();
     return m_items.Add(ctrl);
 }
 
@@ -50,7 +50,7 @@ bool ContainerUI::Remove(ControlUI* ctrl)
 {
     for (int it = 0; m_bAutoDestroy && it < m_items.GetSize(); it++)  {
         if (static_cast<ControlUI*>(m_items[it]) == ctrl)  {
-            if (m_manager != NULL)  m_manager->UpdateLayout();
+            if (m_mgr != NULL)  m_mgr->UpdateLayout();
             delete ctrl;
             return m_items.Remove(it);
         }
@@ -63,7 +63,7 @@ void ContainerUI::RemoveAll()
     for (int it = 0; m_bAutoDestroy && it < m_items.GetSize(); it++)  delete static_cast<ControlUI*>(m_items[it]);
     m_items.Empty();
     m_iScrollPos = 0;
-    if (m_manager != NULL)  m_manager->UpdateLayout();
+    if (m_mgr != NULL)  m_mgr->UpdateLayout();
 }
 
 void ContainerUI::SetAutoDestroy(bool bAuto)
@@ -312,13 +312,13 @@ void ContainerUI::DoPaint(HDC hDC, const RECT& rcPaint)
         if (m_bgColIdx == UICOLOR_TRANSPARENT) {
             paintBg = false;
         } else {
-            bgCol = m_manager->GetThemeColor(m_bgColIdx);
+            bgCol = m_mgr->GetThemeColor(m_bgColIdx);
             paintBg = true;
         }
     }
 
     if (paintBg)
-        BlueRenderEngineUI::DoFillRect(hDC, m_manager, rcTemp, bgCol);
+        BlueRenderEngineUI::DoFillRect(hDC, m_mgr, rcTemp, bgCol);
 
     for (int it = 0; it < m_items.GetSize(); it++)  {
         ControlUI* ctrl = (ControlUI*)m_items[it];
@@ -336,7 +336,7 @@ void ContainerUI::ProcessScrollbar(RECT rc, int cyRequired)
 {
     // Need the scrollbar control, but it's been created already?
     if (cyRequired > RectDy(rc) && m_hwndScroll == NULL && m_bAllowScrollbars)  {
-        m_hwndScroll = ::CreateWindowExA(0, WC_SCROLLBARA, NULL, WS_CHILD | SBS_VERT, 0, 0, 0, 0, m_manager->GetPaintWindow(), NULL, m_manager->GetResourceInstance(), NULL);
+        m_hwndScroll = ::CreateWindowExA(0, WC_SCROLLBARA, NULL, WS_CHILD | SBS_VERT, 0, 0, 0, 0, m_mgr->GetPaintWindow(), NULL, m_mgr->GetResourceInstance(), NULL);
         ASSERT(::IsWindow(m_hwndScroll));
         ::SetPropA(m_hwndScroll, "WndX", static_cast<HANDLE>(this));
         ::SetScrollPos(m_hwndScroll, SB_CTL, 0, TRUE);
@@ -348,7 +348,7 @@ void ContainerUI::ProcessScrollbar(RECT rc, int cyRequired)
     if (m_hwndScroll == NULL)
         return;
     // Move it into place
-    int cxScroll = m_manager->GetSystemMetrics().cxvscroll;
+    int cxScroll = m_mgr->GetSystemMetrics().cxvscroll;
     ::MoveWindow(m_hwndScroll, rc.right, rc.top, cxScroll, RectDy(rc), TRUE);
     // Scroll not needed anymore?
     int cyScroll = cyRequired - RectDy(rc);
@@ -400,7 +400,7 @@ bool CanvasUI::SetWatermark(UINT iBitmapRes, int iOrientation)
 bool CanvasUI::SetWatermark(const char* pstrBitmap, int iOrientation)
 {
     ::DeleteObject(m_hBitmap);
-    m_hBitmap = (HBITMAP) ::LoadImageA(m_manager->GetResourceInstance(), pstrBitmap, IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION);
+    m_hBitmap = (HBITMAP) ::LoadImageA(m_mgr->GetResourceInstance(), pstrBitmap, IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION);
     ASSERT(m_hBitmap!=NULL);
     if (m_hBitmap == NULL)  return false;
     ::GetObject(m_hBitmap, sizeof(BITMAP), &m_BitmapInfo);
@@ -414,7 +414,7 @@ void CanvasUI::DoPaint(HDC hDC, const RECT& rcPaint)
     // Fill background
     RECT rcFill = { 0 };
     if (::IntersectRect(&rcFill, &rcPaint, &m_rcItem))  {
-        BlueRenderEngineUI::DoFillRect(hDC, m_manager, rcFill, m_clrBack);
+        BlueRenderEngineUI::DoFillRect(hDC, m_mgr, rcFill, m_clrBack);
     }
     // Paint watermark bitmap
     if (m_hBitmap != NULL)  {
@@ -436,7 +436,7 @@ void CanvasUI::DoPaint(HDC hDC, const RECT& rcPaint)
         if (::IntersectRect(&rcTemp, &rcPaint, &rcBitmap))  {
             RenderClip clip;
             BlueRenderEngineUI::GenerateClip(hDC, m_rcItem, clip);
-            BlueRenderEngineUI::DoPaintBitmap(hDC, m_manager, m_hBitmap, rcBitmap);
+            BlueRenderEngineUI::DoPaintBitmap(hDC, m_mgr, m_hBitmap, rcBitmap);
         }
     }
     ContainerUI::DoPaint(hDC, rcPaint);
@@ -451,7 +451,7 @@ void CanvasUI::SetAttribute(const char* name, const char* value)
 ControlCanvasUI::ControlCanvasUI()
 {
     SetInset(CSize(0, 0));
-    m_clrBack = m_manager->GetThemeColor(UICOLOR_CONTROL_BACKGROUND_NORMAL);
+    m_clrBack = m_mgr->GetThemeColor(UICOLOR_CONTROL_BACKGROUND_NORMAL);
 }
 
 const char* ControlCanvasUI::GetClass() const
@@ -477,7 +477,7 @@ void VerticalLayoutUI::SetPos(RECT rc)
     rc.right -= m_rcInset.right;
     rc.bottom -= m_rcInset.bottom;
     if (IsScrollYVisible())
-        rc.right -= m_manager->GetSystemMetrics().cxvscroll;
+        rc.right -= m_mgr->GetSystemMetrics().cxvscroll;
     // Determine the minimum size
     SIZE szAvailable = { RectDx(rc), RectDy(rc) };
     int nAdjustables = 0;
@@ -598,7 +598,7 @@ void TileLayoutUI::SetPos(RECT rc)
     rc.right -= m_rcInset.right;
     rc.bottom -= m_rcInset.bottom;
     if (IsScrollYVisible())
-        rc.right -= m_manager->GetSystemMetrics().cxvscroll;
+        rc.right -= m_mgr->GetSystemMetrics().cxvscroll;
     // Position the elements
     int cxWidth = RectDx(rc) / m_nColumns;
     int cyHeight = 0;
@@ -681,7 +681,7 @@ void DialogLayoutUI::SetPos(RECT rc)
 
     ProcessScrollbar(rc, RectDy(m_rcDialog));
     if (IsScrollYVisible())
-        rc.right -= m_manager->GetSystemMetrics().cxvscroll;
+        rc.right -= m_mgr->GetSystemMetrics().cxvscroll;
     // Determine how "scaled" the dialog is compared to the original size
     int cxDiff = RectDx(rc) - RectDx(m_rcDialog);
     int cyDiff = RectDy(rc) - RectDy(m_rcDialog);

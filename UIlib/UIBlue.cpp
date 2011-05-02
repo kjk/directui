@@ -240,10 +240,10 @@ void BlueRenderEngineUI::DoPaintOptionBox(HDC hDC, PaintManagerUI* manager, RECT
         rcText.left += 18;
         rcButton.right = rcButton.left + 18;
     }
-    bool bSelected = FlSet(uState, UISTATE_CHECKED);
-    int iIcon = bSelected ? 8 : 9;
+    bool selected = FlSet(uState, UISTATE_CHECKED);
+    int iIcon = selected ? 8 : 9;
     if (FlSet(uState, UISTATE_PUSHED))  iIcon = 10;
-    if (FlSet(uState, UISTATE_DISABLED))  iIcon = bSelected ? 10 : 11;
+    if (FlSet(uState, UISTATE_DISABLED))  iIcon = selected ? 10 : 11;
     HICON hIcon = manager->GetThemeIcon(iIcon, 16);
     ::DrawIconEx(hDC, rcButton.left, rcButton.top, hIcon, 16, 16, 0, NULL, DI_NORMAL);
     ::DestroyIcon(hIcon);

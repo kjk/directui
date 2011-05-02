@@ -85,7 +85,7 @@ public:
 
 protected:
     int              m_idx;
-    bool             m_bSelected;
+    bool             m_selected;
     IListOwnerUI*    m_owner;
 };
 

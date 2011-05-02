@@ -4,7 +4,7 @@
 #include "UIPanel.h"
 
 ListElementUI::ListElementUI() : m_idx(-1),
-    m_owner(NULL), m_bSelected(false)
+    m_owner(NULL), m_selected(false)
 {
 }
 
@@ -37,20 +37,20 @@ void ListElementUI::SetIndex(int idx)
 bool ListElementUI::Activate()
 {
     if (!ControlUI::Activate())  return false;
-    if (m_manager != NULL)  m_manager->SendNotify(this, "itemactivate");
+    if (m_mgr != NULL)  m_mgr->SendNotify(this, "itemactivate");
     return true;
 }
 
 bool ListElementUI::IsSelected() const
 {
-    return m_bSelected;
+    return m_selected;
 }
 
 bool ListElementUI::Select(bool bSelect)
 {
     if (!IsEnabled())  return false;
-    if (bSelect == m_bSelected)  return true;
-    m_bSelected = bSelect;
+    if (bSelect == m_selected)  return true;
+    m_selected = bSelect;
     if (bSelect && m_owner != NULL)  m_owner->SelectItem(m_idx);
     Invalidate();
     return true;
@@ -112,17 +112,17 @@ void* ListHeaderUI::GetInterface(const char* name)
 
 SIZE ListHeaderUI::EstimateSize(SIZE /*szAvailable*/)
 {
-    return CSize(0, 6 + m_manager->GetThemeFontInfo(UIFONT_NORMAL).tmHeight);
+    return CSize(0, 6 + m_mgr->GetThemeFontInfo(UIFONT_NORMAL).tmHeight);
 }
 
 void ListHeaderUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
     // Draw background
     COLORREF clrBack1, clrBack2;
-    m_manager->GetThemeColorPair(UICOLOR_HEADER_BACKGROUND, clrBack1, clrBack2);
-    BlueRenderEngineUI::DoPaintFrame(hDC, m_manager, m_rcItem, UICOLOR_HEADER_BORDER, UICOLOR_HEADER_BORDER, UICOLOR_HEADER_BACKGROUND, 0);
+    m_mgr->GetThemeColorPair(UICOLOR_HEADER_BACKGROUND, clrBack1, clrBack2);
+    BlueRenderEngineUI::DoPaintFrame(hDC, m_mgr, m_rcItem, UICOLOR_HEADER_BORDER, UICOLOR_HEADER_BORDER, UICOLOR_HEADER_BACKGROUND, 0);
     RECT rcBottom = { m_rcItem.left + 1, m_rcItem.bottom - 3, m_rcItem.right - 1, m_rcItem.bottom };
-    BlueRenderEngineUI::DoPaintGradient(hDC, m_manager, rcBottom, clrBack1, clrBack2, true, 4);
+    BlueRenderEngineUI::DoPaintGradient(hDC, m_mgr, rcBottom, clrBack1, clrBack2, true, 4);
     // Draw headers too...
     HorizontalLayoutUI::DoPaint(hDC, rcPaint);
 }
@@ -169,17 +169,17 @@ void ListHeaderItemUI::Event(TEventUI& event)
         if (::PtInRect(&rcSeparator, event.ptMouse))  {
             m_uDragState |= UISTATE_CAPTURED;
             m_ptLastMouse = event.ptMouse;
-            m_manager->SendNotify(this, "headerdragging");
+            m_mgr->SendNotify(this, "headerdragging");
         } else {
-            m_manager->SendNotify(this, "headerclick");
+            m_mgr->SendNotify(this, "headerclick");
         }
     }
     if (event.type == UIEVENT_BUTTONUP) 
     {
         if (FlSet(m_uDragState, UISTATE_CAPTURED))  {
             m_uDragState &= ~UISTATE_CAPTURED;
-            m_manager->SendNotify(this, "headerdragged");
-            m_manager->UpdateLayout();
+            m_mgr->SendNotify(this, "headerdragged");
+            m_mgr->UpdateLayout();
         }
     }
     if (event.type == UIEVENT_MOUSEMOVE) 
@@ -209,7 +209,7 @@ void ListHeaderItemUI::Event(TEventUI& event)
 
 SIZE ListHeaderItemUI::EstimateSize(SIZE /*szAvailable*/)
 {
-    return CSize(m_cxWidth, 14 + m_manager->GetThemeFontInfo(UIFONT_NORMAL).tmHeight);
+    return CSize(m_cxWidth, 14 + m_mgr->GetThemeFontInfo(UIFONT_NORMAL).tmHeight);
 }
 
 void ListHeaderItemUI::DoPaint(HDC hDC, const RECT& rcPaint)
@@ -219,14 +219,14 @@ void ListHeaderItemUI::DoPaint(HDC hDC, const RECT& rcPaint)
     rcMessage.left += 6;
     rcMessage.bottom -= 1;
     int nLinks = 0;
-    BlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcMessage, m_txt, UICOLOR_HEADER_TEXT, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE | DT_VCENTER);
+    BlueRenderEngineUI::DoPaintPrettyText(hDC, m_mgr, rcMessage, m_txt, UICOLOR_HEADER_TEXT, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE | DT_VCENTER);
     // Draw gripper
     POINT ptTemp = { 0 };
     RECT rcThumb = GetThumbRect(m_rcItem);
     RECT rc1 = { rcThumb.left + 2, rcThumb.top + 4, rcThumb.left + 2, rcThumb.bottom - 1 };
-    BlueRenderEngineUI::DoPaintLine(hDC, m_manager, rc1, UICOLOR_HEADER_SEPARATOR);
+    BlueRenderEngineUI::DoPaintLine(hDC, m_mgr, rc1, UICOLOR_HEADER_SEPARATOR);
     RECT rc2 = { rcThumb.left + 3, rcThumb.top + 4, rcThumb.left + 3, rcThumb.bottom - 1 };
-    BlueRenderEngineUI::DoPaintLine(hDC, m_manager, rc2, UICOLOR_STANDARD_WHITE);
+    BlueRenderEngineUI::DoPaintLine(hDC, m_mgr, rc2, UICOLOR_STANDARD_WHITE);
 }
 
 RECT ListHeaderItemUI::GetThumbRect(RECT rc) const
@@ -255,18 +255,18 @@ void* ListFooterUI::GetInterface(const char* name)
 
 SIZE ListFooterUI::EstimateSize(SIZE /*szAvailable*/)
 {
-    return CSize(0, 8 + m_manager->GetThemeFontInfo(UIFONT_NORMAL).tmHeight);
+    return CSize(0, 8 + m_mgr->GetThemeFontInfo(UIFONT_NORMAL).tmHeight);
 }
 
 void ListFooterUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
     COLORREF clrBack1, clrBack2;
-    m_manager->GetThemeColorPair(UICOLOR_HEADER_BACKGROUND, clrBack1, clrBack2);
-    BlueRenderEngineUI::DoPaintFrame(hDC, m_manager, m_rcItem, UICOLOR_HEADER_BORDER, UICOLOR_HEADER_BORDER, UICOLOR_HEADER_BACKGROUND, 0);
+    m_mgr->GetThemeColorPair(UICOLOR_HEADER_BACKGROUND, clrBack1, clrBack2);
+    BlueRenderEngineUI::DoPaintFrame(hDC, m_mgr, m_rcItem, UICOLOR_HEADER_BORDER, UICOLOR_HEADER_BORDER, UICOLOR_HEADER_BACKGROUND, 0);
     RECT rcTop = { m_rcItem.left + 1, m_rcItem.top, m_rcItem.right - 1, m_rcItem.top + 1 };
-    BlueRenderEngineUI::DoPaintGradient(hDC, m_manager, rcTop, clrBack2, clrBack1, true, 2);
+    BlueRenderEngineUI::DoPaintGradient(hDC, m_mgr, rcTop, clrBack2, clrBack1, true, 2);
     RECT rcBottom = { m_rcItem.left + 1, m_rcItem.bottom - 3, m_rcItem.right - 1, m_rcItem.bottom };
-    BlueRenderEngineUI::DoPaintGradient(hDC, m_manager, rcBottom, clrBack1, clrBack2, true, 4);
+    BlueRenderEngineUI::DoPaintGradient(hDC, m_mgr, rcBottom, clrBack1, clrBack2, true, 4);
     // Paint items as well...
     HorizontalLayoutUI::DoPaint(hDC, rcPaint);
 }
@@ -482,9 +482,9 @@ bool ListUI::SelectItem(int idx)
         return false;
     }
     ctrl->SetFocus();
-    if (m_manager != NULL)  {
-        m_manager->SendNotify(ctrl, "itemclick");
-        m_manager->SendNotify(this, "itemselect");
+    if (m_mgr != NULL)  {
+        m_mgr->SendNotify(ctrl, "itemclick");
+        m_mgr->SendNotify(this, "itemselect");
     }
     Invalidate();
     return true;
@@ -637,7 +637,7 @@ void ListLabelElementUI::SetAttribute(const char* name, const char* value)
 
 SIZE ListLabelElementUI::EstimateSize(SIZE /*szAvailable*/)
 {
-    LONG tmHeight = m_manager->GetThemeFontInfo(UIFONT_NORMAL).tmHeight;
+    LONG tmHeight = m_mgr->GetThemeFontInfo(UIFONT_NORMAL).tmHeight;
     return CSize(m_cxWidth, tmHeight + 8);
 }
 
@@ -654,7 +654,7 @@ void ListLabelElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uDrawStyle)
         iTextColor = UICOLOR_CONTROL_TEXT_NORMAL;
         iBackColor = UICOLOR_CONTROL_BACKGROUND_HOVER;
     }
-    if (m_bSelected)  {
+    if (m_selected)  {
         iTextColor = UICOLOR_CONTROL_TEXT_SELECTED;
         iBackColor = UICOLOR_CONTROL_BACKGROUND_SELECTED;
     }
@@ -675,13 +675,13 @@ void ListLabelElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uDrawStyle)
     // Paint background (because we're vertically centering the text area
     // so it cannot paint the entire item rectangle)
     if (iBackColor != UICOLOR__INVALID)  {
-        BlueRenderEngineUI::DoFillRect(hDC, m_manager, rcItem, iBackColor);
+        BlueRenderEngineUI::DoFillRect(hDC, m_mgr, rcItem, iBackColor);
     }
     // Paint text
     RECT rcText = rcItem;
     ::InflateRect(&rcText, -4, 0);
     int nLinks = 0;
-    BlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcText, m_txt, iTextColor, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE | m_uTextStyle);
+    BlueRenderEngineUI::DoPaintPrettyText(hDC, m_mgr, rcText, m_txt, iTextColor, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE | m_uTextStyle);
 }
 
 
@@ -731,7 +731,7 @@ SIZE ListTextElementUI::EstimateSize(SIZE szAvailable)
         const char* txt = "XXX";
         RECT rcText = { 0, 0, 9999, 9999 };
         int nLinks = 0;
-        BlueRenderEngineUI::DoPaintPrettyText(m_manager->GetPaintDC(), m_manager, rcText, txt, UICOLOR__INVALID, UICOLOR__INVALID, NULL, nLinks, DT_CALCRECT | m_uTextStyle);
+        BlueRenderEngineUI::DoPaintPrettyText(m_mgr->GetPaintDC(), m_mgr, rcText, txt, UICOLOR__INVALID, UICOLOR__INVALID, NULL, nLinks, DT_CALCRECT | m_uTextStyle);
         m_cyItem = rcText.bottom - rcText.top;
     }
     return CSize(m_cxWidth, m_cyItem + 9);
@@ -762,7 +762,7 @@ void ListTextElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
         iBackColor = UICOLOR_CONTROL_BACKGROUND_DISABLED;
     }
     if (iBackColor != UICOLOR__INVALID)  {
-        BlueRenderEngineUI::DoFillRect(hDC, m_manager, m_rcItem, iBackColor);
+        BlueRenderEngineUI::DoFillRect(hDC, m_mgr, m_rcItem, iBackColor);
     }
     IListCallbackUI* cb = m_owner->GetTextCallback();
     ASSERT(cb);
@@ -775,11 +775,11 @@ void ListTextElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
         RECT rcItem = { info->rcColumn[i].left, m_rcItem.top, info->rcColumn[i].right, m_rcItem.bottom - 1 };
         const char* txt = cb->GetItemText(this, m_idx, i);
         ::InflateRect(&rcItem, -4, 0);
-        BlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcItem, txt, iTextColor, UICOLOR__INVALID, m_rcLinks, nLinks, DT_SINGLELINE | m_uTextStyle);
+        BlueRenderEngineUI::DoPaintPrettyText(hDC, m_mgr, rcItem, txt, iTextColor, UICOLOR__INVALID, m_rcLinks, nLinks, DT_SINGLELINE | m_uTextStyle);
         if (nLinks > 0)  m_nLinks = nLinks, nLinks = 0; else nLinks = dimof(m_rcLinks);
     }
     RECT rcLine = { m_rcItem.left, m_rcItem.bottom - 1, m_rcItem.right, m_rcItem.bottom - 1 };
-    BlueRenderEngineUI::DoPaintLine(hDC, m_manager, rcLine, UICOLOR_DIALOG_BACKGROUND);
+    BlueRenderEngineUI::DoPaintLine(hDC, m_mgr, rcLine, UICOLOR_DIALOG_BACKGROUND);
 }
 
 
@@ -812,12 +812,12 @@ bool ListExpandElementUI::Expand(bool bExpand)
         TileLayoutUI* pTile = new TileLayoutUI;
         pTile->SetPadding(4);
         m_container = pTile;
-        if (m_manager != NULL)  m_manager->SendNotify(this, "itemexpand");
-        m_manager->InitControls(m_container, this);
+        if (m_mgr != NULL)  m_mgr->SendNotify(this, "itemexpand");
+        m_mgr->InitControls(m_container, this);
     }
     else
     {
-        if (m_manager != NULL)  m_manager->SendNotify(this, "itemcollapse");
+        if (m_mgr != NULL)  m_mgr->SendNotify(this, "itemcollapse");
     }
     m_cyExpanded = 0;
     return true;
@@ -860,7 +860,7 @@ SIZE ListExpandElementUI::EstimateSize(SIZE szAvailable)
         const char* txt = "XXX";
         RECT rcText = { 0, 0, 9999, 9999 };
         int nLinks = 0;
-        BlueRenderEngineUI::DoPaintPrettyText(m_manager->GetPaintDC(), m_manager, rcText, txt, UICOLOR__INVALID, UICOLOR__INVALID, NULL, nLinks, DT_CALCRECT | m_uTextStyle);
+        BlueRenderEngineUI::DoPaintPrettyText(m_mgr->GetPaintDC(), m_mgr, rcText, txt, UICOLOR__INVALID, UICOLOR__INVALID, NULL, nLinks, DT_CALCRECT | m_uTextStyle);
         m_cyItem = (rcText.bottom - rcText.top) + 8;
     }
     int cyItem = m_cyItem;
@@ -921,11 +921,11 @@ void ListExpandElementUI::DoPaint(HDC hDC, const RECT& rcPaint)
         // Paint gradient box for the items
         RECT rcFrame = m_container->GetPos();
         COLORREF clr1, clr2;
-        m_manager->GetThemeColorPair(UICOLOR_CONTROL_BACKGROUND_EXPANDED, clr1, clr2);
-        BlueRenderEngineUI::DoPaintGradient(hDC, m_manager, rcFrame, clr1, clr2, true, 64);
-        BlueRenderEngineUI::DoPaintRectangle(hDC, m_manager, rcFrame, UICOLOR_HEADER_BORDER, UICOLOR__INVALID);
+        m_mgr->GetThemeColorPair(UICOLOR_CONTROL_BACKGROUND_EXPANDED, clr1, clr2);
+        BlueRenderEngineUI::DoPaintGradient(hDC, m_mgr, rcFrame, clr1, clr2, true, 64);
+        BlueRenderEngineUI::DoPaintRectangle(hDC, m_mgr, rcFrame, UICOLOR_HEADER_BORDER, UICOLOR__INVALID);
         RECT rcLine = { m_rcItem.left, rcFrame.top, m_rcItem.right, rcFrame.top };
-        BlueRenderEngineUI::DoPaintLine(hDC, m_manager, rcLine, UICOLOR_STANDARD_BLACK);
+        BlueRenderEngineUI::DoPaintLine(hDC, m_mgr, rcLine, UICOLOR_STANDARD_BLACK);
         // We'll draw the items then...
         m_container->DoPaint(hDC, rcPaint);
     }
@@ -966,7 +966,7 @@ void ListExpandElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
     }
     if (iBackColor != UICOLOR__INVALID)  {
         RECT rcItem = { m_rcItem.left, m_rcItem.top, m_rcItem.right, m_rcItem.top + m_cyItem };
-        BlueRenderEngineUI::DoFillRect(hDC, m_manager, rcItem, iBackColor);
+        BlueRenderEngineUI::DoFillRect(hDC, m_mgr, rcItem, iBackColor);
     }
     IListCallbackUI* cb = m_owner->GetTextCallback();
     ASSERT(cb);
@@ -987,9 +987,9 @@ void ListExpandElementUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
             txt = sColText;
         }
         ::InflateRect(&rcItem, -4, 0);
-        BlueRenderEngineUI::DoPaintPrettyText(hDC, m_manager, rcItem, txt, iTextColor, UICOLOR__INVALID, m_rcLinks, nLinks, DT_SINGLELINE | m_uTextStyle);
+        BlueRenderEngineUI::DoPaintPrettyText(hDC, m_mgr, rcItem, txt, iTextColor, UICOLOR__INVALID, m_rcLinks, nLinks, DT_SINGLELINE | m_uTextStyle);
         if (nLinks > 0)  m_nLinks = nLinks, nLinks = 0; else nLinks = dimof(m_rcLinks);
     }
     RECT rcLine = { m_rcItem.left, m_rcItem.bottom - 1, m_rcItem.right, m_rcItem.bottom - 1 };
-    BlueRenderEngineUI::DoPaintLine(hDC, m_manager, rcLine, UICOLOR_DIALOG_BACKGROUND);
+    BlueRenderEngineUI::DoPaintLine(hDC, m_mgr, rcLine, UICOLOR_DIALOG_BACKGROUND);
 }

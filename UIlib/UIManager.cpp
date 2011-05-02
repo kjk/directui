@@ -1289,7 +1289,7 @@ ControlUI* CALLBACK PaintManagerUI::__FindControlFromPoint(ControlUI* pThis, voi
 }
 
 ControlUI::ControlUI() : 
-m_manager(NULL), 
+m_mgr(NULL), 
     m_parent(NULL), 
     m_name(NULL),
     m_txt(NULL),
@@ -1307,7 +1307,7 @@ m_manager(NULL),
 
 ControlUI::~ControlUI()
 {
-    if (m_manager != NULL)  m_manager->ReapObjects(this);
+    if (m_mgr != NULL)  m_mgr->ReapObjects(this);
     free((void*)m_name);
     free((void*)m_txt);
     free((void*)m_toolTip);
@@ -1337,7 +1337,7 @@ void ControlUI::SetVisible(bool visible)
 {
     if (m_visible == visible)  return;
     m_visible = visible;
-    if (m_manager != NULL)  m_manager->UpdateLayout();
+    if (m_mgr != NULL)  m_mgr->UpdateLayout();
 }
 
 void ControlUI::SetEnabled(bool enabled)
@@ -1360,7 +1360,7 @@ ControlUI* ControlUI::GetParent() const
 
 void ControlUI::SetFocus()
 {
-    if (m_manager != NULL)  m_manager->SetFocus(this);
+    if (m_mgr != NULL)  m_mgr->SetFocus(this);
 }
 
 void ControlUI::SetShortcut(char ch)
@@ -1410,13 +1410,13 @@ void ControlUI::Init()
 
 PaintManagerUI* ControlUI::GetManager() const
 {
-    return m_manager;
+    return m_mgr;
 }
 
 void ControlUI::SetManager(PaintManagerUI* manager, ControlUI* parent)
 {
-    bool bInit = (m_manager == NULL);
-    m_manager = manager;
+    bool bInit = (m_mgr == NULL);
+    m_mgr = manager;
     m_parent = parent;
     if (bInit)
         Init();
@@ -1463,12 +1463,12 @@ void ControlUI::SetPos(RECT rc)
 
 void ControlUI::Invalidate()
 {
-    if (m_manager != NULL)  m_manager->Invalidate(m_rcItem);
+    if (m_mgr != NULL)  m_mgr->Invalidate(m_rcItem);
 }
 
 void ControlUI::UpdateLayout()
 {
-    if (m_manager != NULL)  m_manager->UpdateLayout();
+    if (m_mgr != NULL)  m_mgr->UpdateLayout();
 }
 
 void ControlUI::Event(TEventUI& event)
@@ -1492,7 +1492,7 @@ void ControlUI::Event(TEventUI& event)
     }
     if (event.type == UIEVENT_TIMER) 
     {
-        m_manager->SendNotify(this, "timer", event.wParam, event.lParam);
+        m_mgr->SendNotify(this, "timer", event.wParam, event.lParam);
         return;
     }
     if (m_parent != NULL)  m_parent->Event(event);
