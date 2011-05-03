@@ -82,7 +82,10 @@ const char* __TraceMsg(UINT uMsg)
     MSGDEF(WM_CTLCOLORSCROLLBAR);
     MSGDEF(WM_MOUSEACTIVATE);
     MSGDEF(WM_CTLCOLOREDIT);
-	MSGDEF(WM_EXITSIZEMOVE);
+    MSGDEF(WM_EXITSIZEMOVE);
+    MSGDEF(WM_QUERYUISTATE);
+    MSGDEF(WM_NOTIFYFORMAT);
+
     static char buf[32];
     ::sprintf(buf, "0x%04X", uMsg);
     return buf;
