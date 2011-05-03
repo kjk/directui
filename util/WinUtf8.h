@@ -26,6 +26,7 @@ void   SetWindowTextUtf8(HWND hwnd, const char *s);
 void   Edit_SetTextUtf8(HWND hwnd, const char *s);
 
 int    DrawTextUtf8(HDC hdc, const char* lpchText, int cchText, LPRECT lprc, UINT format);
+BOOL   TextOutUtf8(HDC hdc, int nXStart, int nYStart, const char* lpString, int cchString);
 
 BOOL   GetTextExtentPoint32Utf8(HDC hdc, const char *lpString, int cch, LPSIZE lpSize);
 
@@ -63,6 +64,9 @@ BOOL   GetTextExtentPoint32Utf8(HDC hdc, const char *lpString, int cch, LPSIZE l
 
 #undef Edit_SetText
 #define Edit_SetText Use_Edit_SetTextUtf8_Not_Edit_SetText
+
+#undef TextOut
+#define TextOut Use_TextOutUtf8_Not_TextOut
 
 #undef DrawText
 #define DrawText Use_DrawTextUtf8_Not_DrawText

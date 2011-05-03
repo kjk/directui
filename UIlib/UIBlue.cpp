@@ -337,7 +337,7 @@ void BlueRenderEngineUI::DoPaintToolbarButton(HDC hDC, PaintManagerUI* manager, 
     DoPaintPrettyText(hDC, manager, rcText, txt, UICOLOR_TITLE_TEXT, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE | DT_LEFT | DT_VCENTER);
 }
 
-void BlueRenderEngineUI::DoPaintQuickText(HDC hDC, PaintManagerUI* manager, RECT& rc, LPCTSTR txt, UITYPE_COLOR iTextColor, UITYPE_FONT iFont, UINT uStyle)
+void BlueRenderEngineUI::DoPaintQuickText(HDC hDC, PaintManagerUI* manager, RECT& rc, const char* txt, UITYPE_COLOR iTextColor, UITYPE_FONT iFont, UINT uStyle)
 {
     ASSERT(::GetObjectType(hDC)==OBJ_DC || ::GetObjectType(hDC)==OBJ_MEMDC);
     ::SetBkMode(hDC, TRANSPARENT);
@@ -524,7 +524,7 @@ void BlueRenderEngineUI::DoPaintPrettyText(HDC hDC, PaintManagerUI* manager, REC
                         if (*txt == ' ')  txt++;
                         StdString sRes;
                         while (_istalnum(*txt) || *txt == '.' || *txt == '_')  sRes += *txt++;
-                        HICON hIcon = (HICON) ::LoadImage(manager->GetResourceInstance(), sRes, IMAGE_ICON, 0, 0, LR_LOADTRANSPARENT | LR_SHARED);
+                        HICON hIcon = (HICON) ::LoadImageA(manager->GetResourceInstance(), sRes, IMAGE_ICON, 0, 0, LR_LOADTRANSPARENT | LR_SHARED);
                         ASSERT(hIcon!=NULL);
                         ICONINFO ii = { 0 };
                         ::GetIconInfo(hIcon, &ii);
@@ -636,12 +636,13 @@ void BlueRenderEngineUI::DoPaintPrettyText(HDC hDC, PaintManagerUI* manager, REC
                     break;
                 }
                 if (*p == ' ')  cchLastGoodWord = cchChars;
-                p = ::CharNext(p);
+                //p = ::CharNext(p);
+                p++; // TODO: make it utf8-aware
             }
             if (cchChars > 0)  {
                 GetTextExtentPoint32Utf8(hDC, txt, cchChars, &szText);
                 if (bDraw)  {
-                    TextOut(hDC, ptPos.x, ptPos.y, txt, cchChars);
+                    TextOutUtf8(hDC, ptPos.x, ptPos.y, txt, cchChars);
                     if (pt.x == rc.right && FlSet(uStyle, DT_END_ELLIPSIS))
                         ::TextOutA(hDC, rc.right - 10, ptPos.y, "...", 3);
                 }
