@@ -297,6 +297,17 @@ ControlUI* ContainerUI::FindControl(FINDCONTROLPROC Proc, void* data, UINT uFlag
     return ControlUI::FindControl(Proc, data, uFlags);
 }
 
+void ContainerUI::PaintBackground(HDC hDC, const RECT& rcPaint)
+{
+    if (-1 == m_bgCol && (UICOLOR__INVALID == m_bgColIdx || UICOLOR_TRANSPARENT == m_bgColIdx))
+        return;
+    COLORREF bgCol = m_bgCol;
+    if (m_bgColIdx != UICOLOR__INVALID) {
+        bgCol = m_mgr->GetThemeColor(m_bgColIdx);
+    }
+    BlueRenderEngineUI::DoFillRect(hDC, m_mgr, rcPaint, bgCol);
+}
+
 void ContainerUI::DoPaint(HDC hDC, const RECT& rcPaint)
 {
     RECT rcTemp = { 0 };
@@ -306,19 +317,7 @@ void ContainerUI::DoPaint(HDC hDC, const RECT& rcPaint)
     RenderClip clip;
     BlueRenderEngineUI::GenerateClip(hDC, m_rcItem, clip);
 
-    COLORREF bgCol = m_bgCol;
-    bool paintBg = (-1 != bgCol);
-    if (m_bgColIdx != UICOLOR__INVALID) {
-        if (m_bgColIdx == UICOLOR_TRANSPARENT) {
-            paintBg = false;
-        } else {
-            bgCol = m_mgr->GetThemeColor(m_bgColIdx);
-            paintBg = true;
-        }
-    }
-
-    if (paintBg)
-        BlueRenderEngineUI::DoFillRect(hDC, m_mgr, rcTemp, bgCol);
+    PaintBackground(hDC, rcTemp);
 
     for (int it = 0; it < m_items.GetSize(); it++)  {
         ControlUI* ctrl = (ControlUI*)m_items[it];
@@ -414,7 +413,7 @@ void CanvasUI::DoPaint(HDC hDC, const RECT& rcPaint)
     // Fill background
     RECT rcFill = { 0 };
     if (::IntersectRect(&rcFill, &rcPaint, &m_rcItem))  {
-        BlueRenderEngineUI::DoFillRect(hDC, m_mgr, rcFill, m_clrBack);
+        PaintBackground(hDC, rcFill);
     }
     // Paint watermark bitmap
     if (m_hBitmap != NULL)  {
@@ -439,7 +438,15 @@ void CanvasUI::DoPaint(HDC hDC, const RECT& rcPaint)
             BlueRenderEngineUI::DoPaintBitmap(hDC, m_mgr, m_hBitmap, rcBitmap);
         }
     }
+
+    // a hack to disable painting the background in ContainerUI::DoPaint()
+    COLORREF col = m_bgCol;
+    UITYPE_COLOR colIdx = m_bgColIdx;
+    m_bgCol = -1;
+    m_bgColIdx = UICOLOR_TRANSPARENT;
     ContainerUI::DoPaint(hDC, rcPaint);
+    m_bgColIdx = colIdx;
+    m_bgCol = col;
 }
 
 void CanvasUI::SetAttribute(const char* name, const char* value)
@@ -451,7 +458,7 @@ void CanvasUI::SetAttribute(const char* name, const char* value)
 ControlCanvasUI::ControlCanvasUI()
 {
     SetInset(CSize(0, 0));
-    m_clrBack = m_mgr->GetThemeColor(UICOLOR_CONTROL_BACKGROUND_NORMAL);
+    m_bgColIdx = UICOLOR_CONTROL_BACKGROUND_NORMAL;
 }
 
 const char* ControlCanvasUI::GetClass() const

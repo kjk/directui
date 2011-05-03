@@ -59,6 +59,7 @@ public:
 
 protected:
     virtual void ProcessScrollbar(RECT rc, int cyRequired);
+    void PaintBackground(HDC hDC, const RECT& rcPaint);
 
 protected:
     StdPtrArray m_items;
@@ -86,7 +87,6 @@ public:
     virtual void SetAttribute(const char* name, const char* value);
 
 protected:
-    COLORREF m_clrBack;
     HBITMAP  m_hBitmap;
     BITMAP   m_BitmapInfo;
     int      m_iOrientation;
