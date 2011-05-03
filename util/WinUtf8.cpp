@@ -142,3 +142,11 @@ int DrawTextUtf8(HDC hdc, const char* lpchText, int cchText, LPRECT lprc, UINT f
     ScopedMem<WCHAR> s(str::conv::Utf8ToUni(lpchText));
     return DrawTextW(hdc, s, cchText, lprc, format);
 }
+
+BOOL GetTextExtentPoint32Utf8(HDC hdc, const char *lpString, int cch, LPSIZE lpSize)
+{
+    // TODO: not sure how cchText translates from utf8 to WCHAR
+    ScopedMem<WCHAR> s(str::conv::Utf8ToUni(lpString));
+    return GetTextExtentPoint32(hdc, s, cch, lpSize);
+}
+

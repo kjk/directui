@@ -272,7 +272,7 @@ void BlueRenderEngineUI::DoPaintTabFolder(HDC hDC, PaintManagerUI* manager, RECT
     sText.ProcessResourceTokens();
     int cchText = sText.GetLength();
     SIZE szText = { 0 };
-    ::GetTextExtentPoint32(hDC, sText, cchText, &szText);
+    GetTextExtentPoint32Utf8(hDC, sText, cchText, &szText);
     RECT rcTab = { 0 };
     if (FlSet(uState, UISTATE_PUSHED))  
     {
@@ -622,7 +622,7 @@ void BlueRenderEngineUI::DoPaintPrettyText(HDC hDC, PaintManagerUI* manager, REC
                 cchChars++;
                 szText.cx = cchChars * tm.tmMaxCharWidth;
                 if (pt.x + szText.cx >= rc.right)  {
-                    ::GetTextExtentPoint32(hDC, txt, cchChars, &szText);
+                    GetTextExtentPoint32Utf8(hDC, txt, cchChars, &szText);
                 }
                 if (pt.x + szText.cx >= rc.right)  {
                     if (FlSet(uStyle, DT_WORDBREAK) && cchLastGoodWord > 0)  {
@@ -639,7 +639,7 @@ void BlueRenderEngineUI::DoPaintPrettyText(HDC hDC, PaintManagerUI* manager, REC
                 p = ::CharNext(p);
             }
             if (cchChars > 0)  {
-                ::GetTextExtentPoint32(hDC, txt, cchChars, &szText);
+                GetTextExtentPoint32Utf8(hDC, txt, cchChars, &szText);
                 if (bDraw)  {
                     TextOut(hDC, ptPos.x, ptPos.y, txt, cchChars);
                     if (pt.x == rc.right && FlSet(uStyle, DT_END_ELLIPSIS))
