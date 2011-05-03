@@ -407,6 +407,7 @@ Error:
 
 struct ParsedLine {
     int             indent;
+    bool            isComment;
     char *          name;
     Vec<char*> *    attributes;
 };
@@ -414,9 +415,14 @@ struct ParsedLine {
 static char *ParseSimpleLine(char *s, ParsedLine& p)
 {
     char *e = FindEndLine(s);
+    p.isComment = false;
     p.name = SkipSpaces(s);
     p.indent = p.name - s;
     s = p.name;
+    if (*s == '#') {
+        p.isComment = true;
+        return e;
+    }
     SkipIdentifier(s);
     if (*s) {
         if (' ' == *s)
@@ -449,6 +455,8 @@ static bool ParseSimple(ParserState *state)
         s = ParseSimpleLine(s, p);
         if (!s)
             return false;
+        if (p.isComment)
+            continue;
 
         while (stack.Count() > 0) {
             size_t pos = stack.Count() - 1;

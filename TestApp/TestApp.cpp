@@ -42,11 +42,8 @@ Dialog\n\
         TextPanel text='<x 16><c #585ebf><b>Click one of the items below:</b>\\n<h>'\n\
         ListLabelElement name=test_old text='<x 14>Old test window'\n\
         ListLabelElement name=login_window text='<x 14>Login Window'\n\
-        ListLabelElement text='<x 14>Kunde register'\n\
-        ListLabelElement text='<x 14>Vognmandsregister'\n\
-        ListLabelElement text='<x 14>Vogn register'\n\
-        ListLabelElement text='<x 14>Chauffør register'\n\
-        TextPanel text='<x 16><c #F00000><b>A cool effect</b>\\n<h>'\n\
+        ListLabelElement name=test_controls text='<x 14>Test controls'\n\
+        #TextPanel text='<x 16><c #F00000><b>A cool effect</b>\\n<h>'\n\
       Button text=&Exit name=exit\n\
 ";
 
