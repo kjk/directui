@@ -58,31 +58,25 @@ Dialog\n\
 ";
 #endif
 
-class FrameWindowWnd : public WindowWnd, public INotifyUI
+class BaseWindowWnd : public WindowWnd, public INotifyUI
 {
+protected:
+	const char *m_className;
+    HWND        m_hWndClient;
+
 public:
-    FrameWindowWnd() : m_hWndClient(NULL) { };
-    virtual const char* GetWindowClassName() const { return "UIMainFrame"; };
+    BaseWindowWnd(const char *className) : m_className(className), m_hWndClient(NULL)
+    {
+    }
+
+    virtual const char *GetWindowClassName() const {
+		return m_className;
+	}
     virtual UINT GetClassStyle() const { return UI_CLASSSTYLE_FRAME; };
     virtual void OnFinalMessage(HWND /*hWnd*/) { delete this; };
 
-    virtual void Notify(TNotifyUI& msg)
-    {
-        if (str::Eq(msg.type,"click") || str::Eq(msg.type, "link"))
-            _CreatePage(msg.sender->GetName());
-        if (str::Eq(msg.type, "itemactivate"))
-            _CreatePage("page_search");
-    }
-
     virtual LRESULT HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
     {
-        if (uMsg == WM_CREATE)  {
-            SetIcon(IDR_MAINFRAME);
-            _CreatePage("page_start");
-        }
-        if (uMsg == WM_DESTROY)  {
-            //::PostQuitMessage(0L);
-        }
         if (uMsg == WM_SETFOCUS)  {
             ::SetFocus(m_hWndClient);
         }
@@ -102,6 +96,30 @@ public:
             return 0;
         }
         return WindowWnd::HandleMessage(uMsg, wParam, lParam);
+    }
+};
+
+class FrameWindowWnd : public BaseWindowWnd
+{
+public:
+    FrameWindowWnd() : BaseWindowWnd("OldMainWindowWnd") { };
+
+    virtual void Notify(TNotifyUI& msg)
+    {
+        if (str::Eq(msg.type,"click") || str::Eq(msg.type, "link"))
+            _CreatePage(msg.sender->GetName());
+        if (str::Eq(msg.type, "itemactivate"))
+            _CreatePage("page_search");
+    }
+
+    virtual LRESULT HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
+    {
+        if (uMsg == WM_CREATE)  {
+            SetIcon(IDR_MAINFRAME);
+            _CreatePage("page_start");
+            return 0;
+        }
+        return BaseWindowWnd::HandleMessage(uMsg, wParam, lParam);
     }
 
     void _CreatePage(const char* sName)
@@ -131,9 +149,6 @@ public:
             return;
         }
     }
-
-protected:
-    HWND m_hWndClient;
 };
 
 class LoginWindowPageWnd : public WindowWnd, public INotifyUI
@@ -163,18 +178,17 @@ LRESULT LoginWindowPageWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lPara
         return 0;
     }
     LRESULT lRes = 0;
+	if (WM_PAINT == uMsg)
+		lRes = 0;
     if (m_pm.MessageHandler(uMsg, wParam, lParam, lRes))
         return lRes;
     return WindowWnd::HandleMessage(uMsg, wParam, lParam);
 }
 
-class LoginWindowFrame : public WindowWnd, public INotifyUI
+class LoginWindowFrame : public BaseWindowWnd
 {
 public:
-    LoginWindowFrame() : m_hWndClient(NULL) { };
-    virtual const char* GetWindowClassName() const { return "UILoginFrame"; };
-    virtual UINT GetClassStyle() const { return UI_CLASSSTYLE_FRAME; };
-    virtual void OnFinalMessage(HWND /*hWnd*/) { delete this; };
+    LoginWindowFrame() : BaseWindowWnd("LoginWindowFrame") { };
 
     virtual void Notify(TNotifyUI& msg)
     {
@@ -209,33 +223,10 @@ public:
         if (uMsg == WM_CREATE)  {
             SetIcon(IDR_MAINFRAME);
             CreateUI();
-        }
-        if (uMsg == WM_DESTROY)  {
-            //::PostQuitMessage(0L);
-        }
-        if (uMsg == WM_SETFOCUS)  {
-            ::SetFocus(m_hWndClient);
-        }
-        if (uMsg == WM_SIZE)  {
-            RECT rcClient;
-            ::GetClientRect(m_hWnd, &rcClient);
-            ::MoveWindow(m_hWndClient, rcClient.left, rcClient.top, rcClient.right - rcClient.left, rcClient.bottom - rcClient.top, TRUE);
             return 0;
         }
-        if (uMsg == WM_ERASEBKGND)  {
-            return 1;
-        }
-        if (uMsg == WM_PAINT)  {
-            PAINTSTRUCT ps = { 0 };
-            ::BeginPaint(m_hWnd, &ps);
-            ::EndPaint(m_hWnd, &ps);
-            return 0;
-        }
-        return WindowWnd::HandleMessage(uMsg, wParam, lParam);
+        return BaseWindowWnd::HandleMessage(uMsg, wParam, lParam);
     }
-
-protected:
-    HWND m_hWndClient;
 };
 
 class MainWindowPageWnd : public WindowWnd, public INotifyUI
@@ -271,14 +262,10 @@ LRESULT MainWindowPageWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam
     return WindowWnd::HandleMessage(uMsg, wParam, lParam);
 }
 
-class MainWindowFrame : public WindowWnd, public INotifyUI
+class MainWindowFrame : public BaseWindowWnd
 {
 public:
-    MainWindowFrame() : m_hWndClient(NULL) { };
-    virtual const char* GetWindowClassName() const { return "UIMainFrame2"; };
-    virtual UINT GetClassStyle() const { return UI_CLASSSTYLE_FRAME; };
-    virtual void OnFinalMessage(HWND /*hWnd*/) { delete this; };
-
+    MainWindowFrame() : BaseWindowWnd("MainWindowFrame") { };
     void CreateOldTestWindow() {
         FrameWindowWnd* frame = new FrameWindowWnd();
         frame->Create(NULL, "OldTest", UI_WNDSTYLE_FRAME, WS_EX_WINDOWEDGE);
@@ -290,6 +277,14 @@ public:
             CW_USEDEFAULT, CW_USEDEFAULT, 320, 200);
     }
 
+    void CreateControlsWindow() {
+#if 0
+		ControlsWindowFrame* frame = new ControlsWindowFrame();
+        frame->Create(NULL, "Test controls", UI_WNDSTYLE_FRAME, WS_EX_WINDOWEDGE,
+            CW_USEDEFAULT, CW_USEDEFAULT, 649, 480);
+#endif
+	}
+
     virtual void Notify(TNotifyUI& msg)
     {
         ControlUI *sender = msg.sender;
@@ -299,6 +294,8 @@ public:
                 CreateOldTestWindow();
             } else if (str::Eq(name, "login_window")) {
                 CreateLoginWindow();
+            } else if (str::Eq(name, "test_controls")) {
+                CreateControlsWindow();
             }
         } else if (str::Eq(msg.type, "click")) {
             if (str::Eq(name, "exit")) {
@@ -321,33 +318,14 @@ public:
         if (uMsg == WM_CREATE)  {
             SetIcon(IDR_MAINFRAME);
             CreateUI();
+            return 0;
         }
         if (uMsg == WM_DESTROY)  {
             ::PostQuitMessage(0L);
         }
-        if (uMsg == WM_SETFOCUS)  {
-            ::SetFocus(m_hWndClient);
-        }
-        if (uMsg == WM_SIZE)  {
-            RECT rcClient;
-            ::GetClientRect(m_hWnd, &rcClient);
-            ::MoveWindow(m_hWndClient, rcClient.left, rcClient.top, rcClient.right - rcClient.left, rcClient.bottom - rcClient.top, TRUE);
-            return 0;
-        }
-        if (uMsg == WM_ERASEBKGND)  {
-            return 1;
-        }
-        if (uMsg == WM_PAINT)  {
-            PAINTSTRUCT ps = { 0 };
-            ::BeginPaint(m_hWnd, &ps);
-            ::EndPaint(m_hWnd, &ps);
-            return 0;
-        }
-        return WindowWnd::HandleMessage(uMsg, wParam, lParam);
+        return BaseWindowWnd::HandleMessage(uMsg, wParam, lParam);
     }
 
-protected:
-    HWND m_hWndClient;
 };
 
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*lpCmdLine*/, int nCmdShow)
