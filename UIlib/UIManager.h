@@ -352,7 +352,7 @@ private:
     TSystemSettingsUI m_SystemConfig;
 
     Vec<INotifyUI*> m_notifiers;
-    StdPtrArray m_nameHash;
+    Vec<ControlUI*> m_nameHash;
     StdPtrArray m_timers;
     StdValArray m_postPaint;
     StdPtrArray m_messageFilters;

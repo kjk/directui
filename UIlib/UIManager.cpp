@@ -1212,7 +1212,7 @@ ControlUI* PaintManagerUI::FindControl(const char* name)
     if (m_nameHash.GetSize() == 0)  {
         int nCount = 0;
         m_root->FindControl(__FindControlFromCount, &nCount, UIFIND_ALL);
-        m_nameHash.Resize(nCount + (nCount / 10));
+        m_nameHash.EnsureCap(nCount + (nCount / 10));
         m_root->FindControl(__FindControlFromNameHash, this, UIFIND_ALL);
     }
     // Find name in the hash array
@@ -1220,9 +1220,9 @@ ControlUI* PaintManagerUI::FindControl(const char* name)
     int nSize = m_nameHash.GetSize();
     int iNameHash = (int) (GetNameHash(name) % nSize);
     while (m_nameHash[iNameHash] != NULL)  {
-        const char *ctrlName = static_cast<ControlUI*>(m_nameHash[iNameHash])->GetName();
+        const char *ctrlName = m_nameHash[iNameHash]->GetName();
         if (str::Eq(ctrlName, name))
-            return static_cast<ControlUI*>(m_nameHash[iNameHash]);
+            return m_nameHash[iNameHash];
         iNameHash = (iNameHash + 1) % nSize;
         if (++nCount >= nSize)  break;
     }
@@ -1270,7 +1270,7 @@ ControlUI* CALLBACK PaintManagerUI::__FindControlFromNameHash(ControlUI* pThis, 
         iNameHash = (iNameHash + 1) % nSize;
         if (++nCount == nSize)  return NULL;
     }
-    manager->m_nameHash.SetAt(iNameHash, pThis);
+    manager->m_nameHash.InsertAt(iNameHash, pThis);
     return NULL; // Attempt to add all controls
 }
 

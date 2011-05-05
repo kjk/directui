@@ -28,21 +28,6 @@ protected:
     T *     els;
     T       buf[INTERNAL_BUF_SIZE];
 
-    void EnsureCap(size_t needed) {
-        if (cap >= needed)
-            return;
-
-        size_t newCap = cap * 2;
-        if (needed > newCap)
-            newCap = needed;
-
-        if (newCap + pad >= INT_MAX / sizeof(T)) abort();
-        T * newEls = SAZA(T, newCap + pad);
-        memcpy(newEls, els, len * sizeof(T));
-        FreeEls();
-        cap = newCap;
-        els = newEls;
-    }
 
     void FreeEls() {
         if (els != buf)
@@ -59,6 +44,22 @@ public:
 
     ~Vec() {
         FreeEls();
+    }
+
+    void EnsureCap(size_t needed) {
+        if (cap >= needed)
+            return;
+
+        size_t newCap = cap * 2;
+        if (needed > newCap)
+            newCap = needed;
+
+        if (newCap + pad >= INT_MAX / sizeof(T)) abort();
+        T * newEls = SAZA(T, newCap + pad);
+        memcpy(newEls, els, len * sizeof(T));
+        FreeEls();
+        cap = newCap;
+        els = newEls;
     }
 
     void Reset() {
@@ -85,6 +86,8 @@ public:
         return res;
     }
 
+    // This is a dangerous call, should only be used in
+    // conjunction with MakeSpaceAtNoLenIncrease()
     void LenIncrease(size_t count) {
         len += count;
     }
