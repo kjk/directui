@@ -52,7 +52,7 @@ bool NavigatorPanelUI::Add(ControlUI* ctrl)
     IListItemUI* listItem = static_cast<IListItemUI*>(ctrl->GetInterface("ListItem"));
     if (listItem != NULL)  {
         listItem->SetOwner(this);
-        listItem->SetIndex(m_items.GetSize());
+        listItem->SetIndex(m_items.Count());
     }
     return ContainerUI::Add(ctrl);
 }

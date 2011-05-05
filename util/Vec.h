@@ -69,6 +69,10 @@ public:
         memset(buf, 0, sizeof(buf));
     }
 
+    void Empty() { // for compat
+        Reset();
+    }
+
     T *MakeSpaceAtNoLenIncrease(size_t idx, size_t count=1) {
         EnsureCap(len + count);
         T* res = &(els[idx]);
@@ -103,6 +107,14 @@ public:
         return len;
     }
 
+    int GetSize() const { // for compat with old code
+        return (int)len;
+    }
+
+    bool IsEmpty() const {
+        return 0 == len;
+    }
+
     void InsertAt(size_t idx, const T& el) {
         MakeSpaceAt(idx, 1)[0] = el;
     }
@@ -111,12 +123,19 @@ public:
         InsertAt(len, el);
     }
 
+    bool Add(const T& el) { // same as Append(), for compat
+        InsertAt(len, el);
+        return true;
+    }
+
     void Append(T* src, size_t count) {
         T* dst = MakeSpaceAt(len, count);
         memcpy(dst, src, count * sizeof(T));
     }
 
-    void RemoveAt(size_t idx, size_t count=1) {
+    bool RemoveAt(size_t idx, size_t count=1) {
+        if (idx >= len)
+            return false;
         int tomove = len - idx - count;
         if (tomove > 0) {
             T *dst = els + idx;
@@ -125,6 +144,7 @@ public:
         }
         len -= count;
         memset(els + len, 0, count * sizeof(T));
+        return true;
     }
 
     void Push(T el) {
@@ -176,6 +196,7 @@ public:
     void Sort(int (*cmpFunc)(const void *a, const void *b)) {
         qsort(els, len, sizeof(T), cmpFunc);
     }
+
 };
 
 // only suitable for T that are pointers that were malloc()ed

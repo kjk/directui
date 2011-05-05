@@ -62,7 +62,7 @@ protected:
     void PaintBackground(HDC hDC, const RECT& rcPaint);
 
 protected:
-    StdPtrArray m_items;
+    Vec<ControlUI*> m_items;
     RECT        m_rcInset;
     int         m_iPadding;
     SIZE        m_cxyFixed;

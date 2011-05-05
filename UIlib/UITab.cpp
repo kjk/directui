@@ -31,12 +31,14 @@ int TabFolderUI::GetCurSel() const
 bool TabFolderUI::SelectItem(int idx)
 {
     int iPrevSel = m_curSel;
-    if (idx < 0 || idx >= m_items.GetSize())  return false;
-    if (idx == m_curSel)  return true;
+    if (idx < 0 || idx >= m_items.GetSize())
+        return false;
+    if (idx == m_curSel)
+        return true;
     // Assign page to internal pointers
     if (m_curPage != NULL)  m_curPage->SetVisible(false);
     m_curSel = idx;
-    m_curPage = static_cast<ControlUI*>(m_items[idx]);
+    m_curPage = m_items[idx];
     if (m_mgr != NULL)  m_mgr->SendNotify(this, "itemselect");
     m_curPage->SetVisible(true);
     // Need to re-think the layout

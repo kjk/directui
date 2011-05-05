@@ -30,8 +30,9 @@ void* ContainerUI::GetInterface(const char* name)
 
 ControlUI* ContainerUI::GetItem(int idx) const
 {
-    if (idx < 0 || idx >= m_items.GetSize())  return NULL;
-    return static_cast<ControlUI*>(m_items[idx]);
+    if (idx < 0 || idx >= m_items.GetSize())
+        return NULL;
+    return m_items[idx];
 }
 
 int ContainerUI::GetCount() const
@@ -49,10 +50,10 @@ bool ContainerUI::Add(ControlUI* ctrl)
 bool ContainerUI::Remove(ControlUI* ctrl)
 {
     for (int it = 0; m_bAutoDestroy && it < m_items.GetSize(); it++)  {
-        if (static_cast<ControlUI*>(m_items[it]) == ctrl)  {
+        if (m_items[it] == ctrl)  {
             if (m_mgr != NULL)  m_mgr->UpdateLayout();
             delete ctrl;
-            return m_items.Remove(it);
+            return m_items.RemoveAt(it);
         }
     }
     return false;
@@ -105,7 +106,7 @@ void ContainerUI::SetVisible(bool visible)
         ::ShowScrollBar(m_hwndScroll, SB_CTL, visible);
     // Hide children as well
     for (int it = 0; it < m_items.GetSize(); it++)  {
-        static_cast<ControlUI*>(m_items[it])->SetVisible(visible);
+        m_items[it]->SetVisible(visible);
     }
     ControlUI::SetVisible(visible);
 }
@@ -248,7 +249,7 @@ void ContainerUI::SetPos(RECT rc)
     // We'll position the first child in the entire client area.
     // Do not leave a container empty.
     ASSERT(m_items.GetSize()==1);
-    static_cast<ControlUI*>(m_items[0])->SetPos(rc);
+    m_items[0]->SetPos(rc);
 }
 
 SIZE ContainerUI::EstimateSize(SIZE /*szAvailable*/)
@@ -275,7 +276,7 @@ void ContainerUI::SetAttribute(const char* name, const char* value)
 void ContainerUI::SetManager(PaintManagerUI* manager, ControlUI* parent)
 {
     for (int it = 0; it < m_items.GetSize(); it++)  {
-        static_cast<ControlUI*>(m_items[it])->SetManager(manager, this);
+        m_items[it]->SetManager(manager, this);
     }
     ControlUI::SetManager(manager, parent);
 }
@@ -291,7 +292,7 @@ ControlUI* ContainerUI::FindControl(FINDCONTROLPROC Proc, void* data, UINT uFlag
         if (ctrl != NULL)  return ctrl;
     }
     for (int it = 0; it != m_items.GetSize(); it++)  {
-        ControlUI* ctrl = static_cast<ControlUI*>(m_items[it])->FindControl(Proc, data, uFlags);
+        ControlUI* ctrl = m_items[it]->FindControl(Proc, data, uFlags);
         if (ctrl != NULL)  return ctrl;
     }
     return ControlUI::FindControl(Proc, data, uFlags);
@@ -320,7 +321,7 @@ void ContainerUI::DoPaint(HDC hDC, const RECT& rcPaint)
     PaintBackground(hDC, rcTemp);
 
     for (int it = 0; it < m_items.GetSize(); it++)  {
-        ControlUI* ctrl = (ControlUI*)m_items[it];
+        ControlUI* ctrl = m_items[it];
         if (!ctrl->IsVisible())
             continue;
         if (!::IntersectRect(&rcTemp, &rcPaint, &ctrl->GetPos()))
@@ -490,8 +491,9 @@ void VerticalLayoutUI::SetPos(RECT rc)
     int nAdjustables = 0;
     int cyFixed = 0;
     for (int it1 = 0; it1 < m_items.GetSize(); it1++)  {
-        ControlUI* ctrl = static_cast<ControlUI*>(m_items[it1]);
-        if (!ctrl->IsVisible())  continue;
+        ControlUI* ctrl = m_items[it1];
+        if (!ctrl->IsVisible())
+            continue;
         SIZE sz = ctrl->EstimateSize(szAvailable);
         if (sz.cy == 0)  nAdjustables++;
         cyFixed += sz.cy + m_iPadding;
@@ -506,8 +508,9 @@ void VerticalLayoutUI::SetPos(RECT rc)
     int posY = rc.top - m_iScrollPos;
     int iAdjustable = 0;
     for (int it2 = 0; it2 < m_items.GetSize(); it2++)  {
-        ControlUI* ctrl = static_cast<ControlUI*>(m_items[it2]);
-        if (!ctrl->IsVisible())  continue;
+        ControlUI* ctrl = m_items[it2];
+        if (!ctrl->IsVisible())
+            continue;
         SIZE sz = ctrl->EstimateSize(szRemaining);
         if (sz.cy == 0)  {
             iAdjustable++;
@@ -548,8 +551,9 @@ void HorizontalLayoutUI::SetPos(RECT rc)
     int nAdjustables = 0;
     int cxFixed = 0;
     for (int it1 = 0; it1 < m_items.GetSize(); it1++)  {
-        ControlUI* ctrl = static_cast<ControlUI*>(m_items[it1]);
-        if (!ctrl->IsVisible())  continue;
+        ControlUI* ctrl = m_items[it1];
+        if (!ctrl->IsVisible())
+            continue;
         SIZE sz = ctrl->EstimateSize(szAvailable);
         if (sz.cx == 0)  nAdjustables++;
         cxFixed += sz.cx + m_iPadding;
@@ -562,8 +566,9 @@ void HorizontalLayoutUI::SetPos(RECT rc)
     int posX = rc.left;
     int iAdjustable = 0;
     for (int it2 = 0; it2 < m_items.GetSize(); it2++)  {
-        ControlUI* ctrl = static_cast<ControlUI*>(m_items[it2]);
-        if (!ctrl->IsVisible())  continue;
+        ControlUI* ctrl = m_items[it2];
+        if (!ctrl->IsVisible())
+            continue;
         SIZE sz = ctrl->EstimateSize(szRemaining);
         if (sz.cx == 0)  {
             iAdjustable++;
@@ -612,8 +617,9 @@ void TileLayoutUI::SetPos(RECT rc)
     int iCount = 0;
     POINT ptTile = { rc.left, rc.top - m_iScrollPos };
     for (int it1 = 0; it1 < m_items.GetSize(); it1++)  {
-        ControlUI* ctrl = static_cast<ControlUI*>(m_items[it1]);
-        if (!ctrl->IsVisible())  continue;
+        ControlUI* ctrl = m_items[it1];
+        if (!ctrl->IsVisible())
+            continue;
         // Determine size
         RECT rcTile = { ptTile.x, ptTile.y, ptTile.x + cxWidth, ptTile.y };
         // Adjust with element padding
@@ -628,9 +634,10 @@ void TileLayoutUI::SetPos(RECT rc)
             SIZE szAvailable = { RectDx(rcTile), 9999 };
             int idx = iCount;
             for (int it2 = it1; it2 < m_items.GetSize(); it2++)  {
-                SIZE szTile = ((ControlUI*)m_items[it2])->EstimateSize(szAvailable);
+                SIZE szTile = m_items[it2]->EstimateSize(szAvailable);
                 cyHeight = MAX(cyHeight, szTile.cy);
-                if ((++idx % m_nColumns) == 0) break;
+                if ((++idx % m_nColumns) == 0)
+                    break;
             }
         }
         // Set position
@@ -742,7 +749,7 @@ void DialogLayoutUI::RecalcArea()
     // Controls that have specific stretching needs will define them in the XML resource
     // and by calling SetStretchMode(). Other controls need to be added as well now...
     for (int it = 0; it < m_items.GetSize(); it++)  {         
-        ControlUI* ctrl = static_cast<ControlUI*>(m_items[it]);
+        ControlUI* ctrl = m_items[it];
         bool bFound = false;
         for (int i = 0; !bFound && i < m_aModes.GetSize(); i++)  {
             if (static_cast<StretchMode*>(m_aModes[i])->ctrl == ctrl)  bFound = true;
@@ -758,7 +765,7 @@ void DialogLayoutUI::RecalcArea()
     // Figure out the actual size of the dialog so we can add proper scrollbars later
     CRect rcDialog(9999, 9999, 0,0);
     for (int i = 0; i < m_items.GetSize(); i++)  {
-        const RECT& rcPos = ((ControlUI*)m_items[i])->GetPos();
+        const RECT& rcPos = m_items[i]->GetPos();
         rcDialog.Join(rcPos);
     }
     for (int j = 0; j < m_aModes.GetSize(); j++)  {
