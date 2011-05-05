@@ -61,7 +61,7 @@ Dialog\n\
 class BaseWindowWnd : public WindowWnd, public INotifyUI
 {
 protected:
-	const char *m_className;
+    const char *m_className;
     HWND        m_hWndClient;
 
 public:
@@ -70,8 +70,9 @@ public:
     }
 
     virtual const char *GetWindowClassName() const {
-		return m_className;
-	}
+        return m_className;
+    }
+
     virtual UINT GetClassStyle() const { return UI_CLASSSTYLE_FRAME; };
     virtual void OnFinalMessage(HWND /*hWnd*/) { delete this; };
 

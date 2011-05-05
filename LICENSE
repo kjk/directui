@@ -1,0 +1,31 @@
+The code under util directory is under
+Simplified BSD license.
+
+The files under UILib and TestApp directory
+fall under terms described at
+http://www.viksoe.dk/code/terms.htm:
+
+Terms of use
+
+Copyright notice
+
+The source code available from this site can be used freely and
+for whatever purpose you may have. You cannot, however, remove the
+copyright notice that any source file may carry at the top of the
+file. You must leave this copyright notice unmodified - even if
+you change significant parts of the code. Please do not include
+any of the source code files in public source code library
+compilations or re-sell them without my permission.
+
+There are no restrictions on the use of the compiled binary code. 
+These files must however not be used in the production of nuclear
+waste or to kill whales.
+
+Disclaimer
+
+These files are provided "as is" without warranty of any kind.
+
+I shall not be liable for any damage or harm the applications or
+source code file available on this site have caused by their use
+- including direct, indirect, incidental, consequential, loss of
+business profits or special damages.

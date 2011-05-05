@@ -168,12 +168,12 @@ LRESULT DropDownWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
         // reassigned by this operation - which is why it is important to reassign
         // the items back to the righfull owner/manager when the window closes.
         ControlCanvasUI* win = new ControlCanvasUI;
-        VerticalLayoutUI* pLayout = new VerticalLayoutUI;
+        VerticalLayoutUI* layout = new VerticalLayoutUI;
         for (int i = 0; i < m_owner->GetCount(); i++)
-            pLayout->Add((ControlUI*)m_owner->GetItem(i));
-        pLayout->SetAutoDestroy(false);
-        pLayout->EnableScrollBar();
-        win->Add(pLayout);
+            layout->Add((ControlUI*)m_owner->GetItem(i));
+        layout->SetAutoDestroy(false);
+        layout->EnableScrollBar();
+        win->Add(layout);
         m_pm.AttachDialog(win);
         return 0;
     } else if (uMsg == WM_CLOSE)  {

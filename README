@@ -1,0 +1,14 @@
+This is my very unfinished, very much in progress fork of
+http://www.viksoe.dk/code/windowless1.htm
+
+DirectUI is a UI framework for Windows, in C++.
+
+It's not an object-oriented wrapper around win32 functions like e.g. MFC.
+
+It doesn't use standard Windows controls (well, except edit control)
+but instead custom paints the controls on a single HWND window.
+
+This is needed to achieve modern UI effects like transparency.
+
+The original DirectUI was a very promising project but apparently was
+abandoned in 2005.
