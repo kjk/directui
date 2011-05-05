@@ -6,6 +6,7 @@
 #include "BaseUtil.h"
 #include "WinUtil.h"
 #include "WinUtf8.h"
+#include "Vec.h"
 
 #include "UIlib.h"
 #include <olectl.h>
@@ -65,7 +66,7 @@ protected:
    HWND m_hWnd;
    bool m_bIsAnimating;
    bool m_bIsInitialized;
-   StdPtrArray m_aJobs;
+   Vec<AnimJobUI*> m_aJobs;
    D3DFORMAT m_ColorFormat;
    LPDIRECT3D9 m_pD3D;
    LPDIRECT3DDEVICE9 m_p3DDevice;
