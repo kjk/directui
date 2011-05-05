@@ -1095,8 +1095,8 @@ bool PaintManagerUI::AddNotifier(INotifyUI* pNotifier)
 bool PaintManagerUI::RemoveNotifier(INotifyUI* pNotifier)
 {
     for (int i = 0; i < m_notifiers.GetSize(); i++)  {
-        if (static_cast<INotifyUI*>(m_notifiers[i]) == pNotifier)  {
-            return m_notifiers.Remove(i);
+        if (m_notifiers[i] == pNotifier)  {
+            return m_notifiers.RemoveAt(i);
         }
     }
     return false;
@@ -1140,7 +1140,7 @@ void PaintManagerUI::SendNotify(TNotifyUI& Msg)
     Msg.sender->Notify(Msg);
     // Send to all listeners
     for (int i = 0; i < m_notifiers.GetSize(); i++)  {
-        static_cast<INotifyUI*>(m_notifiers[i])->Notify(Msg);
+        m_notifiers[i]->Notify(Msg);
     }
 }
 

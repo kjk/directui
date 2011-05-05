@@ -142,8 +142,7 @@ void AnimationSpooler::Term()
 {
     // Get rid of the animation jobs
     int i;
-    for (i = 0; i < m_aJobs.GetSize(); i++)  delete static_cast<AnimJobUI*>(m_aJobs[i]);
-    m_aJobs.Empty();
+    DeleteVecMembers(m_aJobs);
     // Release Direct3D references
     for (i = 0; i < m_nBuffers; i++)  {
         m_p3DVertices[i]->Release();
@@ -197,17 +196,17 @@ bool AnimationSpooler::PrepareAnimation(HWND hWnd)
     m_p3DBackSurface->ReleaseDC(hDC);
     // Allow each job to prepare its 3D objects
     for (int i = 0; i < m_aJobs.GetSize(); i++)  {
-        AnimJobUI* job = static_cast<AnimJobUI*>(m_aJobs[i]);
-        switch (job->AnimType)  {
-        case UIANIMTYPE_FLAT:
-            if (!PrepareJob_Flat(job))  return false;
-            break;
+        AnimJobUI* job = m_aJobs[i];
+        switch (job->AnimType) {
+            case UIANIMTYPE_FLAT:
+                if (!PrepareJob_Flat(job))  return false;
+                break;
         }
     }
     // Assign start time
     DWORD dwTick = ::timeGetTime();
     for (int j = 0; j < m_aJobs.GetSize(); j++)  {
-        AnimJobUI* job = static_cast<AnimJobUI*>(m_aJobs[j]);
+        AnimJobUI* job = m_aJobs[j];
         job->dwStartTick += dwTick;
     }
     m_bIsAnimating = true;
@@ -233,15 +232,17 @@ bool AnimationSpooler::Render()
     int nAnimated = 0;
     DWORD dwTick = ::timeGetTime();
     for (int i = 0; i < m_aJobs.GetSize(); i++)  {
-        const AnimJobUI* job = static_cast<AnimJobUI*>(m_aJobs[i]);
-        if (dwTick < job->dwStartTick)  continue;
+        const AnimJobUI* job = m_aJobs[i];
+        if (dwTick < job->dwStartTick)
+            continue;
         DWORD dwTickNow = MIN(dwTick, job->dwStartTick + job->dwDuration);
-        switch (job->AnimType)  {
-        case UIANIMTYPE_FLAT:
-            RenderJob_Flat(job, p3DTargetSurface, dwTickNow);
-            break;
+        switch (job->AnimType) {
+            case UIANIMTYPE_FLAT:
+                RenderJob_Flat(job, p3DTargetSurface, dwTickNow);
+                break;
         }
-        if (dwTick < job->dwStartTick + job->dwDuration)  nAnimated++;
+        if (dwTick < job->dwStartTick + job->dwDuration)
+            nAnimated++;
     }
     m_p3DDevice->EndScene();
     m_p3DDevice->Present(NULL, NULL, NULL, NULL);
