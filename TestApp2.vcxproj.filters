@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="util\FileUtil.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\Http.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\SettingsParser.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\StrUtil.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\WinUtf8.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="TestApp2\TestApp2.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="dui2\UIElem.h">
+      <Filter>dui2</Filter>
+    </ClInclude>
+    <ClInclude Include="dui2\UIElem.cpp">
+      <Filter>dui2</Filter>
+    </ClInclude>
+    <ClInclude Include="util\BaseUtil.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\FileUtil.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\Http.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\SettingsParser.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\StrUtil.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\Vec.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\WinUtf8.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\WinUtil.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="TestApp2\resource.h">
+      <Filter>src</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="util">
+      <UniqueIdentifier>{c9a49ef8-e57c-4637-9e45-44256c4ea1df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dui2">
+      <UniqueIdentifier>{c8c589fe-c5f8-438a-8c84-4a7e88c8e122}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{d8136403-bf12-4df0-a842-5a143a20fb06}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="TestApp2\TestApp2.exe.manifest">
+      <Filter>src</Filter>
+    </Manifest>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="TestApp2\TestApp2.manifest.rc">
+      <Filter>src</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="TestApp2\TestApp2.rc">
+      <Filter>src</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

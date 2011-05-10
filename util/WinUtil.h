@@ -8,13 +8,25 @@
 
 using namespace Gdiplus;
 
-class GdiPlusScope {
+class ScopedGdiPlus {
 protected:
-    GdiplusStartupInput si;
-    ULONG_PTR           token;
+    Gdiplus::GdiplusStartupInput si;
+    Gdiplus::GdiplusStartupOutput so;
+    ULONG_PTR token, hookToken;
+
 public:
-    GdiPlusScope() { GdiplusStartup(&token, &si, NULL); }
-    ~GdiPlusScope() { GdiplusShutdown(token); }
+    // suppress the GDI+ background thread when initiating in WinMain,
+    // as that thread causes DDE messages to be sent too early and
+    // thus unexpected timeouts
+    ScopedGdiPlus() {
+        si.SuppressBackgroundThread = true;
+        Gdiplus::GdiplusStartup(&token, &si, &so);
+        so.NotificationHook(&hookToken);
+    }
+    ~ScopedGdiPlus() {
+        so.NotificationUnhook(hookToken);
+        Gdiplus::GdiplusShutdown(token);
+    }
 };
 
 class ComScope {
@@ -31,7 +43,7 @@ inline void InitAllCommonControls()
     InitCommonControlsEx(&cex);
 }
 
-inline void FillWndClassEx(WNDCLASSEX &wcex, HINSTANCE hInstance) 
+inline void FillWndClassEx(WNDCLASSEXW &wcex, HINSTANCE hInstance) 
 {
     wcex.cbSize         = sizeof(WNDCLASSEX);
     wcex.style          = CS_HREDRAW | CS_VREDRAW;
