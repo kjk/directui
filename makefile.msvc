@@ -117,8 +117,8 @@ $(O): force
 	@if not exist $(OUI) mkdir $(OUI)
 	@if not exist $(OTA) mkdir $(OTA)
 
-$(TA_RES): TestApp\DirectUI.rc
-	rc /r /fo$(TA_RES) TestApp\DirectUI.rc
+$(TA_RES): TestApp\TestApp.rc
+	rc /r /fo$(TA_RES) TestApp\TestApp.rc
 
 $(TA_MANIFEST_RES): TestApp\TestApp.manifest.rc
 	rc /r /fo$(TA_MANIFEST_RES) TestApp\TestApp.manifest.rc
