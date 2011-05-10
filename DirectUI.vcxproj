@@ -71,8 +71,8 @@
     <ClCompile Include="util\WinUtf8.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="TestApp\DirectUI.rc" />
     <ResourceCompile Include="TestApp\TestApp.manifest.rc" />
+    <ResourceCompile Include="TestApp\TestApp.rc" />
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="TestApp\TestApp.exe.manifest" />

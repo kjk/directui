@@ -184,10 +184,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="TestApp\DirectUI.rc">
+    <ResourceCompile Include="TestApp\TestApp.manifest.rc">
       <Filter>TestApp</Filter>
     </ResourceCompile>
-    <ResourceCompile Include="TestApp\TestApp.manifest.rc">
+    <ResourceCompile Include="TestApp\TestApp.rc">
       <Filter>TestApp</Filter>
     </ResourceCompile>
   </ItemGroup>
