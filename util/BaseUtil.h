@@ -13,7 +13,8 @@
 #define _CRTDBG_MAP_ALLOC
 #endif
 #include <stdlib.h>
-#ifdef DEBUG
+
+#if defined(DEBUG) && 0 // TODO: this messes up Gdiplus, which also overloads new
 #include <crtdbg.h>
 #define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
 #define new DEBUG_NEW

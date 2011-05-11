@@ -16,6 +16,29 @@ static void OnSize(HWND hwnd, int dx, int dy)
 
 }
 
+static Bitmap *   doubleBufferBmp = NULL;
+static Graphics * doubleBufferGfx = NULL;
+
+Graphics *SetupGraphics(Graphics *g)
+{
+    g->SetPageUnit(UnitPixel);
+    g->SetCompositingMode(CompositingModeSourceOver);
+    g->SetInterpolationMode(InterpolationModeHighQualityBicubic);
+    g->SetSmoothingMode(SmoothingModeHighQuality);
+    g->SetTextRenderingHint(TextRenderingHintAntiAlias);
+    g->SetPixelOffsetMode(PixelOffsetModeHighQuality);
+    return g;
+}
+static void OnPaint(Graphics *g, RECT& rc)
+{
+    Color white(255, 255, 255);
+    Color red(255, 0, 0);
+    Rect rc2(rc.left, rc.top, RectDx(rc), RectDy(rc));
+    g->FillRectangle(&SolidBrush(white), rc2);
+    rc2.Inflate(-10, -10);
+    g->FillRectangle(&SolidBrush(red), rc2);
+}
+
 static void OnPaint(HWND hwnd)
 {
     PAINTSTRUCT ps;
@@ -23,14 +46,24 @@ static void OnPaint(HWND hwnd)
     RECT rc;
     GetClientRect(hwnd, &rc);
 
-    Graphics g(hdc);
-    Color white(255, 255, 255);
-    Color red(255, 0, 0);
+    if (!doubleBufferBmp ||
+        (doubleBufferBmp->GetWidth() != RectDx(rc)) ||
+        (doubleBufferBmp->GetHeight() != RectDy(rc)))
+    {
+        // TODO: could optimize by only creating new bitmap if rc is
+        // bigger (in any dimension) than 
+        // TODO: use CachedBitmap() ?
+        delete doubleBufferBmp;
+        delete doubleBufferGfx;
+        doubleBufferBmp = new Bitmap(RectDx(rc), RectDy(rc), PixelFormat32bppARGB);
+        doubleBufferGfx = new Graphics(doubleBufferBmp);
+        SetupGraphics(doubleBufferGfx);
+    }
 
-    Rect rc2(rc.left, rc.top, RectDx(rc), RectDy(rc));
-    g.FillRectangle(&SolidBrush(white), rc2);
-    rc2.Inflate(-10, -10);
-    g.FillRectangle(&SolidBrush(red), rc2);
+    OnPaint(doubleBufferGfx, rc);
+
+    Graphics g(hdc);
+    g.DrawImage(doubleBufferBmp, 0, 0);
     EndPaint(hwnd, &ps);
 }
 
