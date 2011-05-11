@@ -47,11 +47,9 @@ static void OnPaint(HWND hwnd)
     GetClientRect(hwnd, &rc);
 
     if (!doubleBufferBmp ||
-        (doubleBufferBmp->GetWidth() != RectDx(rc)) ||
-        (doubleBufferBmp->GetHeight() != RectDy(rc)))
+        (RectDx(rc) > (int)doubleBufferBmp->GetWidth()) ||
+        (RectDy(rc) > (int)doubleBufferBmp->GetHeight()))
     {
-        // TODO: could optimize by only creating new bitmap if rc is
-        // bigger (in any dimension) than 
         // TODO: use CachedBitmap() ?
         delete doubleBufferBmp;
         delete doubleBufferGfx;
