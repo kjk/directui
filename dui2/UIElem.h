@@ -96,11 +96,15 @@ public:
         el->SetParent(this);
     }
 
+    void SetHwndParent(HWND p) {
+        hwndParent = p;
+    }
+
     HWND GetHwndParent() {
         if (hwndParent)
             return hwndParent;
-        if (GetParent())
-            return GetParent()->GetHwndParent();
+        if (parent)
+            return parent->GetHwndParent();
         return 0;
     }
 
@@ -108,16 +112,14 @@ public:
         pos = p;
     }
 
+    UIElem *ChildFromPoint(int x, int y);
+
     void SetVisible(bool v) {
         visible = v;
     }
 
     bool IsVisible() {
         return visible;
-    }
-
-    void SetHwndParent(HWND p) {
-        hwndParent = p;
     }
 
     // part that needs to be redrawn can be different
@@ -129,16 +131,7 @@ public:
         *r = pos;
     }
 
-    void DrawChildren(Graphics *g) {
-        if (!children)
-            return;
-        for (size_t i=0; i<children->Count(); i++) {
-            UIElem *el = children->At(i);
-            if (el->IsVisible()) {
-                el->Draw(g);
-            }
-        }
-    }
+    void DrawChildren(Graphics *g);
 
     virtual void Draw(Graphics *g) {
         DrawChildren(g);
@@ -151,14 +144,6 @@ public:
     }
 
 };
-
-inline const PointF PointFFromRECT(RECT& r)
-{
-    PointF ret;
-    ret.X = (REAL)r.left;
-    ret.Y = (REAL)r.top;
-    return ret;
-}
 
 class UIRectangle : public UIElem {
 public:

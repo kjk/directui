@@ -55,6 +55,39 @@ void UIPainter::PaintEnd()
     hwnd = 0;
 }
 
+UIElem *UIElem::ChildFromPoint(int x, int y)
+{
+    if (!children)
+        return NULL;
+
+    for (size_t i=0; i<children->Count(); i++)
+    {
+        UIElem *el = children->At(i);
+        if (!el->IsVisible())
+            continue;
+        if (PointIn(el->pos, x, y)) {
+            UIElem *el2 = el->ChildFromPoint(el->pos.left + x, el->pos.top + y);
+            if (el2)
+                return el2;
+            return el;
+        }
+    }
+    return NULL;
+}
+
+void UIElem::DrawChildren(Graphics *g)
+{
+    if (!children)
+        return;
+
+    for (size_t i=0; i<children->Count(); i++) {
+        UIElem *el = children->At(i);
+        if (el->IsVisible()) {
+            el->Draw(g);
+        }
+    }
+}
+
 void UIRectangle::Draw(Graphics *g)
 {
     Rect r(RectFromRECT(pos));

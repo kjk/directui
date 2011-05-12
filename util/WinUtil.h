@@ -29,10 +29,10 @@ public:
     }
 };
 
-class ComScope {
+class ScopedCom {
 public:
-    ComScope() { CoInitialize(NULL); }
-    ~ComScope() { CoUninitialize(); }
+    ScopedCom() { CoInitialize(NULL); }
+    ~ScopedCom() { CoUninitialize(); }
 };
 
 inline void InitAllCommonControls()
@@ -114,6 +114,24 @@ inline void RectMove(RECT& r, int dx, int dy)
 {
     r.left += dx; r.right += dx;
     r.top += dy; r.bottom += dy;
+}
+
+inline bool PointIn(const RECT&r, int x, int y)
+{
+    if (x < r.left || x > r.right)
+        return false;
+    if (y < r.top || y > r.bottom)
+        return false;
+    return true;
+}
+
+
+inline const PointF PointFFromRECT(const RECT& r)
+{
+    PointF ret;
+    ret.X = (REAL)r.left;
+    ret.Y = (REAL)r.top;
+    return ret;
 }
 
 namespace win {

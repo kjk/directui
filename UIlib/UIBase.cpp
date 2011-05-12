@@ -458,7 +458,11 @@ void WindowWnd::ResizeClient(int cx /*= -1*/, int cy /*= -1*/)
     if (!::GetClientRect(m_hWnd, &rc))  return;
     if (cx != -1)  rc.right = cx;
     if (cy != -1)  rc.bottom = cy;
-    if (!::AdjustWindowRectEx(&rc, GetWindowStyle(m_hWnd), (!(GetWindowStyle(m_hWnd) & WS_CHILD) && (::GetMenu(m_hWnd) != NULL)), GetWindowExStyle(m_hWnd)))  return;
+    BOOL hasMenu = !(GetWindowStyle(m_hWnd) & WS_CHILD) && (::GetMenu(m_hWnd) != NULL);
+    DWORD style   = GetWindowStyle(m_hWnd);
+    DWORD exStyle = GetWindowExStyle(m_hWnd);
+    if (!::AdjustWindowRectEx(&rc, style, hasMenu, exStyle))
+        return;
     UINT uFlags = SWP_NOZORDER | SWP_NOMOVE;
     ::SetWindowPos(m_hWnd, NULL, 0, 0, RectDx(rc), RectDy(rc), uFlags);
 }

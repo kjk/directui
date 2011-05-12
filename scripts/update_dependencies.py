@@ -8,7 +8,7 @@ import os, re, fnmatch
 from util import verify_started_in_right_directory, group, uniquify
 pjoin = os.path.join
 
-DIRS = ["util", "UIlib", "TestApp"]
+DIRS = ["util", "UIlib", "dui2", "TestApp", "TestApp2"]
 INCLUDE_DIRS = DIRS
 MAKEFILE = "makefile.msvc"
 DEPENDENCIES_PER_LINE = 3

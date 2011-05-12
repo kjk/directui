@@ -121,6 +121,8 @@ TA2_OBJS = $(TA2_OBJS) $(TA2_MANIFEST)
 !endif
 
 all: $(O) $(TA_APP) $(TA2_APP)
+testapp: $(O) $(TA_APP)
+testapp2: $(O) $(TA2_APP)
 
 clean: force
 	rmdir /S /Q $(O)
@@ -192,6 +194,9 @@ $(O)\TestApp.obj: UIlib\UIlib.h UIlib\UIlist.h UIlib\UIList.h
 $(O)\TestApp.obj: UIlib\UIManager.h UIlib\UIMarkup.h UIlib\UIPanel.h
 $(O)\TestApp.obj: UIlib\UITab.h UIlib\UITool.h util\BaseUtil.h
 $(O)\TestApp.obj: util\FileUtil.h util\StrUtil.h util\Vec.h
+$(O)\TestApp2.obj: dui2\UIElem.h TestApp2\resource.h util\BaseUtil.h
+$(O)\TestApp2.obj: util\StrUtil.h util\Vec.h util\WinUtf8.h
+$(O)\TestApp2.obj: util\WinUtil.h
 $(O)\UIActiveX.obj: UIlib\StdAfx.h UIlib\UIActiveX.h UIlib\UIAnim.h
 $(O)\UIActiveX.obj: UIlib\UIBase.h UIlib\UIBlue.h UIlib\UIButton.h
 $(O)\UIActiveX.obj: UIlib\UICombo.h UIlib\UIContainer.h UIlib\UIDecoration.h
@@ -282,6 +287,8 @@ $(O)\UIEdit.obj: UIlib\UIManager.h UIlib\UIMarkup.h UIlib\UIPanel.h
 $(O)\UIEdit.obj: UIlib\UITab.h UIlib\UITool.h util\BaseUtil.h
 $(O)\UIEdit.obj: util\FileUtil.h util\StrUtil.h util\Vec.h
 $(O)\UIEdit.obj: util\WinUtf8.h util\WinUtil.h
+$(O)\UIElem.obj: dui2\UIElem.h util\BaseUtil.h util\StrUtil.h
+$(O)\UIElem.obj: util\Vec.h util\WinUtil.h
 $(O)\UILabel.obj: UIlib\StdAfx.h UIlib\UIActiveX.h UIlib\UIAnim.h
 $(O)\UILabel.obj: UIlib\UIBase.h UIlib\UIBlue.h UIlib\UIButton.h
 $(O)\UILabel.obj: UIlib\UICombo.h UIlib\UIContainer.h UIlib\UIDecoration.h
