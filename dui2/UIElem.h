@@ -32,6 +32,21 @@ public:
     virtual void Measure(UIElem *el, Graphics *g, MeasureInfo& mi) = 0;
 };
 
+class LayoutVertical : public ILayout {
+    virtual void Measure(UIElem *el, Graphics *g, MeasureInfo& mi);
+};
+
+class WinHwnd {
+    HINSTANCE   hinst;
+    HWND        hwnd;
+public:
+    WinHwnd(HINSTANCE hinst) : hinst(hinst), hwnd(NULL)
+    {}
+
+    void Create(UIElem *root, const char* name, DWORD dwStyle, DWORD dwExStyle, int x = CW_USEDEFAULT, int y = CW_USEDEFAULT, int dx = CW_USEDEFAULT, int dy = CW_USEDEFAULT, HMENU hMenu = NULL);
+    void Create(UIElem *root, const char* name, DWORD dwStyle, DWORD dwExStyle, const RECT rc, HMENU hMenu = NULL);
+};
+
 class UIPainter {
     HWND          hwnd;
     PAINTSTRUCT   ps;

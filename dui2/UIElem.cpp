@@ -1,4 +1,5 @@
 #include "UIElem.h"
+#include "WinUtf8.h"
 
 namespace dui {
 
@@ -53,6 +54,47 @@ void UIPainter::PaintEnd()
     g.DrawImage(bmp, 0, 0);
     EndPaint(hwnd, &ps);
     hwnd = 0;
+}
+
+#define WIN_HWND_CLS_NAME "WinHwndCls"
+
+static LRESULT CALLBACK __WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+    return ::DefWindowProc(hWnd, uMsg, wParam, lParam);
+}
+
+static void RegisterWinHwndClassName(HINSTANCE hinst)
+{
+    static bool registered = false;
+    if (registered)
+        return;
+
+    ScopedMem<WCHAR> clsName(str::Utf8ToUni(WIN_HWND_CLS_NAME));
+
+    WNDCLASSW wc = { 0 };
+    wc.style = 0;
+    wc.cbClsExtra = 0;
+    wc.cbWndExtra = 0;
+    wc.hIcon = NULL;
+    wc.lpfnWndProc = __WndProc;
+    wc.hInstance = hinst;
+    wc.hCursor = ::LoadCursor(NULL, IDC_ARROW);
+    wc.hbrBackground = NULL;
+    wc.lpszMenuName  = NULL;
+    wc.lpszClassName = clsName;
+    ::RegisterClassW(&wc);
+    registered = true;
+}
+
+void WinHwnd::Create(UIElem *root, const char* name, DWORD dwStyle, DWORD dwExStyle, int x, int y, int dx, int dy, HMENU hMenu)
+{
+    RegisterWinHwndClassName(hinst);
+    hwnd = ::CreateWindowExUtf8(dwExStyle, WIN_HWND_CLS_NAME, name, dwStyle, x, y, dx, dy, NULL, hMenu, hinst, this);
+}
+
+void WinHwnd::Create(UIElem *root, const char* name, DWORD dwStyle, DWORD dwExStyle, const RECT rc, HMENU hMenu)
+{
+    Create(root, name, dwStyle, dwExStyle, rc.left, rc.top, RectDx(rc), RectDy(rc), hMenu);
 }
 
 UIElem *UIElem::ChildFromPoint(int x, int y)
