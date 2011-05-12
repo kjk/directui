@@ -7,6 +7,8 @@
 namespace str {
 
 inline size_t Len(const char *s) { return strlen(s); }
+inline size_t Len(const WCHAR *s) { return wcslen(s); }
+
 inline char * Dup(const char *s) { return _strdup(s); }
 char *        DupN(const char *s, size_t lenCch);
 
@@ -37,12 +39,8 @@ inline void Replace(const char*& s, const char *replacement) {
         s = NULL;
 }
 
-namespace conv {
-
 inline char *UniToUtf8(const WCHAR *src) { return ToMultiByte(src, CP_UTF8); }
 inline WCHAR *Utf8ToUni(const char *src) { return ToWideChar(src, CP_UTF8); }
-
-} // namespace str::conv
 
 } // namespace str
 

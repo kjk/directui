@@ -1,6 +1,7 @@
 #include "resource.h"
 #include "BaseUtil.h"
 #include "WinUtil.h"
+#include "WinUtf8.h"
 #include "UIElem.h"
 
 using namespace Gdiplus;
@@ -11,58 +12,22 @@ static HINSTANCE ghinst;
 
 static int  gDeltaPerLine = 0;         // for mouse wheel logic
 
+static dui::UIElem *uiRoot = NULL;
+
 static void OnSize(HWND hwnd, int dx, int dy)
 {
-
+    RECT r = {0, 0, dx, dy};
+    InflateRect(&r, -20, -20);
+    uiRoot->SetPosition(r);
 }
 
-static Bitmap *   doubleBufferBmp = NULL;
-static Graphics * doubleBufferGfx = NULL;
-
-Graphics *SetupGraphics(Graphics *g)
-{
-    g->SetPageUnit(UnitPixel);
-    g->SetCompositingMode(CompositingModeSourceOver);
-    g->SetInterpolationMode(InterpolationModeHighQualityBicubic);
-    g->SetSmoothingMode(SmoothingModeHighQuality);
-    g->SetTextRenderingHint(TextRenderingHintAntiAlias);
-    g->SetPixelOffsetMode(PixelOffsetModeHighQuality);
-    return g;
-}
-static void OnPaint(Graphics *g, RECT& rc)
-{
-    Color white(255, 255, 255);
-    Color red(255, 0, 0);
-    Rect rc2(rc.left, rc.top, RectDx(rc), RectDy(rc));
-    g->FillRectangle(&SolidBrush(white), rc2);
-    rc2.Inflate(-10, -10);
-    g->FillRectangle(&SolidBrush(red), rc2);
-}
+static dui::UIPainter gPainter;
 
 static void OnPaint(HWND hwnd)
 {
-    PAINTSTRUCT ps;
-    HDC hdc = BeginPaint(hwnd, &ps);
-    RECT rc;
-    GetClientRect(hwnd, &rc);
-
-    if (!doubleBufferBmp ||
-        (RectDx(rc) > (int)doubleBufferBmp->GetWidth()) ||
-        (RectDy(rc) > (int)doubleBufferBmp->GetHeight()))
-    {
-        // TODO: use CachedBitmap() ?
-        delete doubleBufferBmp;
-        delete doubleBufferGfx;
-        doubleBufferBmp = new Bitmap(RectDx(rc), RectDy(rc), PixelFormat32bppARGB);
-        doubleBufferGfx = new Graphics(doubleBufferBmp);
-        SetupGraphics(doubleBufferGfx);
-    }
-
-    OnPaint(doubleBufferGfx, rc);
-
-    Graphics g(hdc);
-    g.DrawImage(doubleBufferBmp, 0, 0);
-    EndPaint(hwnd, &ps);
+    gPainter.PaintBegin(hwnd, Color::Blue);
+    gPainter.PaintUIElem(uiRoot);
+    gPainter.PaintEnd();
 }
 
 static LRESULT CALLBACK WndProcFrame(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -72,7 +37,10 @@ static LRESULT CALLBACK WndProcFrame(HWND hwnd, UINT message, WPARAM wParam, LPA
     switch (message)
     {
         case WM_CREATE:
-            // do nothing
+            //ModifyStyleEx(hwnd, WS_EX_LAYERED); // WS_EX_TRANSPARENT
+            //SetLayeredWindowAttributes(hwnd, RGB(255,255,255), 75, LWA_COLORKEY);
+            uiRoot = new dui::UIRectangle();
+            SetWindowTextUtf8(hwnd, "hello");
             goto InitMouseWheelInfo;
 
         case WM_DESTROY:
@@ -159,7 +127,7 @@ int APIENTRY WinMain(HINSTANCE hInst, HINSTANCE /*hPrevInstance*/, LPSTR /*lpCmd
         goto Exit;
     CreateMainWindow();
     dui::MessageLoop();
-
+    gPainter.Reset();
 Exit:
     ::CoUninitialize();
     return 0;

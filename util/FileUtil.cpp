@@ -117,7 +117,7 @@ bool Exists(const char *filePathUtf8)
     if (NULL == filePathUtf8)
         return false;
 
-    ScopedMem<WCHAR> filePath(str::conv::Utf8ToUni(filePathUtf8));
+    ScopedMem<WCHAR> filePath(str::Utf8ToUni(filePathUtf8));
     if (!filePath)
         return false;
     WIN32_FILE_ATTRIBUTE_DATA   fileInfo;
@@ -137,7 +137,7 @@ size_t GetSize(const char *filePathUtf8)
     if (NULL == filePathUtf8)
         return INVALID_FILE_SIZE;
 
-    ScopedMem<WCHAR> filePath(str::conv::Utf8ToUni(filePathUtf8));
+    ScopedMem<WCHAR> filePath(str::Utf8ToUni(filePathUtf8));
     if (!filePath)
         return false;
     BOOL res = GetFileAttributesExW(filePath, GetFileExInfoStandard, &fileInfo);

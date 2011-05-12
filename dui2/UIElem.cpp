@@ -2,6 +2,67 @@
 
 namespace dui {
 
+static Graphics *SetupGraphics(Graphics *g)
+{
+    g->SetPageUnit(UnitPixel);
+    g->SetCompositingMode(CompositingModeSourceOver);
+    g->SetInterpolationMode(InterpolationModeHighQualityBicubic);
+    g->SetSmoothingMode(SmoothingModeHighQuality);
+    g->SetTextRenderingHint(TextRenderingHintAntiAlias);
+    g->SetPixelOffsetMode(PixelOffsetModeHighQuality);
+    return g;
+}
+
+void UIPainter::PaintBegin(HWND hwnd, ARGB bgColor)
+{
+    this->hwnd = hwnd;
+    BeginPaint(hwnd,&ps);
+    RECT rc;
+    GetClientRect(hwnd, &rc);
+
+    if (!bmp ||
+        (RectDx(rc) > (int)bmp->GetWidth()) ||
+        (RectDy(rc) > (int)bmp->GetHeight()))
+    {
+        // TODO: use CachedBitmap() ?
+        delete bmp;
+        delete gfx;
+        bmp = new Bitmap(RectDx(rc), RectDy(rc), PixelFormat32bppARGB);
+        gfx = new Graphics(bmp);
+        SetupGraphics(gfx);
+    }
+
+    if (bgColor != Color::Transparent) {
+        gfx->FillRectangle(&SolidBrush(Color(bgColor)), RectFromRECT(rc));
+    }
+}
+
+void UIPainter::PaintUIElem(UIElem* el)
+{
+    if (gfx && el && el->IsVisible()) {
+        el->Draw(gfx);
+    }
+}
+
+void UIPainter::PaintEnd()
+{
+    // TODO: clip child hwnd windows
+
+    // TODO: only blit the part in ps.rcPaint
+    Graphics g(ps.hdc);
+    g.DrawImage(bmp, 0, 0);
+    EndPaint(hwnd, &ps);
+    hwnd = 0;
+}
+
+void UIRectangle::Draw(Graphics *g)
+{
+    Rect r(RectFromRECT(pos));
+    ARGB c = Color::MakeARGB(75,255,255,255);
+    g->FillRectangle(&SolidBrush(c), r);
+    DrawChildren(g);
+}
+
 static bool PreTranslateMessage(const MSG* pMsg)
 {
 #if 0

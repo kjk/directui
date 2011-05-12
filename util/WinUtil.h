@@ -116,5 +116,15 @@ inline void RectMove(RECT& r, int dx, int dy)
     r.top += dy; r.bottom += dy;
 }
 
+namespace win {
+
+inline void ModifyStyleEx(HWND hwnd, LONG styleExSet)
+{
+    LONG old = GetWindowLong(hwnd, GWL_EXSTYLE);
+    SetWindowLong(hwnd, GWL_EXSTYLE, old | styleExSet);
+}
+
+} // namespace win
+
 #endif
 
