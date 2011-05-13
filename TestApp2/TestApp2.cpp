@@ -30,12 +30,7 @@ static void OnPaint(HWND hwnd)
     gPainter.PaintUIElem(uiRoot);
     gPainter.PaintEnd();
     double ms = t.GetCurrTimeInMs();
-    int msi = (int)ms;
-    msi = 5;
-    char *s = str::Format("%s\n", "foo");
-    str::d(s);
-    str::d("OnPaint(): %d ms\n", msi);
-    free(s);
+    str::d("OnPaint(): %.2f ms\n", ms);
 }
 
 static LRESULT CALLBACK WndProcFrame(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)

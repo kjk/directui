@@ -54,8 +54,8 @@ char *FmtV(const char *fmt, va_list args)
     char  * buf = message;
     for (;;)
     {
-        int written = sprintf_s(buf, bufCchSize, fmt, args);
-        if (written >= 0 && (size_t)written < bufCchSize - 1)
+        int written = vsnprintf_s(buf, bufCchSize, bufCchSize-1, fmt, args);
+        if (written > 0)
             break;
         /* we have to make the buffer bigger. The algorithm used to calculate
            the new size is arbitrary (aka. educated guess) */
