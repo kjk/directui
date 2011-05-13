@@ -54,8 +54,8 @@ char *FmtV(const char *fmt, va_list args)
     char  * buf = message;
     for (;;)
     {
-        int count = sprintf_s(buf, bufCchSize, fmt, args);
-        if (0 <= count && (size_t)count < bufCchSize)
+        int written = sprintf_s(buf, bufCchSize, fmt, args);
+        if (written >= 0 && (size_t)written < bufCchSize - 1)
             break;
         /* we have to make the buffer bigger. The algorithm used to calculate
            the new size is arbitrary (aka. educated guess) */
@@ -94,6 +94,15 @@ char *Join(const char *s1, const char *s2, const char *s3)
     if (!s3) s3 = "";
 
     return Format("%s%s%s", s1, s2, s3);
+}
+
+void d(const char *format, ...)
+{
+    va_list args;
+    va_start(args, format);
+    ScopedMem<char> buf(FmtV(format, args));
+    OutputDebugStringA(buf);
+    va_end(args);
 }
 
 /* Caller needs to free() the result */
@@ -138,4 +147,5 @@ WCHAR *ToWideChar(const char *src, UINT CodePage)
     MultiByteToWideChar(CodePage, 0, src, -1, res, requiredBufSize);
     return res;
 }
+
 } // namespace str

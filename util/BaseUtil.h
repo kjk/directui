@@ -63,7 +63,8 @@ public:
     operator T*() const { return obj; }
 };
 
-inline bool FlSet(UINT val, UINT flag) {
+// true if all bits in <flag> are set in <val>
+inline bool IsFlSet(UINT val, UINT flag) {
     return (val & flag) != 0;
 }
 

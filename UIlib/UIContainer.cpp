@@ -284,10 +284,10 @@ void ContainerUI::SetManager(PaintManagerUI* manager, ControlUI* parent)
 ControlUI* ContainerUI::FindControl(FINDCONTROLPROC Proc, void* data, UINT uFlags)
 {
     // Check if this guy is valid
-    if (FlSet(uFlags, UIFIND_VISIBLE) && !IsVisible())  return NULL;
-    if (FlSet(uFlags, UIFIND_ENABLED) && !IsEnabled())  return NULL;
-    if (FlSet(uFlags, UIFIND_HITTEST) && !::PtInRect(&m_rcItem, *(static_cast<LPPOINT>(data))))  return NULL;
-    if (FlSet(uFlags, UIFIND_ME_FIRST))  {
+    if (IsFlSet(uFlags, UIFIND_VISIBLE) && !IsVisible())  return NULL;
+    if (IsFlSet(uFlags, UIFIND_ENABLED) && !IsEnabled())  return NULL;
+    if (IsFlSet(uFlags, UIFIND_HITTEST) && !::PtInRect(&m_rcItem, *(static_cast<LPPOINT>(data))))  return NULL;
+    if (IsFlSet(uFlags, UIFIND_ME_FIRST))  {
         ControlUI* ctrl = ControlUI::FindControl(Proc, data, uFlags);
         if (ctrl != NULL)  return ctrl;
     }
@@ -707,12 +707,12 @@ void DialogLayoutUI::SetPos(RECT rc)
     int nCount, cxStretch, cyStretch, cxMove, cyMove;
     for (int i = 0; i < m_aModes.GetSize(); i++)  {
         StretchMode* item = static_cast<StretchMode*>(m_aModes[i]);
-        if (i == 0 || FlSet(item->uMode, UISTRETCH_NEWGROUP))  {
+        if (i == 0 || IsFlSet(item->uMode, UISTRETCH_NEWGROUP))  {
             nCount = 0;
             for (int j = i + 1; j < m_aModes.GetSize(); j++)  {
                 StretchMode* pNext = static_cast<StretchMode*>(m_aModes[j]);
-                if (FlSet(pNext->uMode, (UISTRETCH_NEWGROUP | UISTRETCH_NEWLINE)))  break;
-                if (FlSet(pNext->uMode, (UISTRETCH_SIZE_X | UISTRETCH_SIZE_Y)))  nCount++;
+                if (IsFlSet(pNext->uMode, (UISTRETCH_NEWGROUP | UISTRETCH_NEWLINE)))  break;
+                if (IsFlSet(pNext->uMode, (UISTRETCH_SIZE_X | UISTRETCH_SIZE_Y)))  nCount++;
             }
             if (nCount == 0)  nCount = 1;
             cxStretch = cxDiff / nCount;
@@ -720,21 +720,21 @@ void DialogLayoutUI::SetPos(RECT rc)
             cxMove = 0;
             cyMove = 0;
         }
-        if (FlSet(item->uMode, UISTRETCH_NEWLINE))  {
+        if (IsFlSet(item->uMode, UISTRETCH_NEWLINE))  {
             cxMove = 0;
             cyMove = 0;
         }
         RECT rcPos = item->rcItem;
         ::OffsetRect(&rcPos, rc.left, rc.top - m_iScrollPos);
-        if (FlSet(item->uMode, UISTRETCH_MOVE_X))
+        if (IsFlSet(item->uMode, UISTRETCH_MOVE_X))
             ::OffsetRect(&rcPos, cxMove, 0);
-        if (FlSet(item->uMode, UISTRETCH_MOVE_Y))
+        if (IsFlSet(item->uMode, UISTRETCH_MOVE_Y))
             ::OffsetRect(&rcPos, 0, cyMove);
-        if (FlSet(item->uMode, UISTRETCH_SIZE_X))
+        if (IsFlSet(item->uMode, UISTRETCH_SIZE_X))
             rcPos.right += cxStretch;
-        if (FlSet(item->uMode, UISTRETCH_SIZE_Y))
+        if (IsFlSet(item->uMode, UISTRETCH_SIZE_Y))
             rcPos.bottom += cyStretch;
-        if (FlSet(item->uMode, (UISTRETCH_SIZE_X | UISTRETCH_SIZE_Y)))  {
+        if (IsFlSet(item->uMode, (UISTRETCH_SIZE_X | UISTRETCH_SIZE_Y)))  {
             cxMove += cxStretch;
             cyMove += cyStretch;
         }      

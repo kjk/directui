@@ -134,6 +134,32 @@ inline const PointF PointFFromRECT(const RECT& r)
     return ret;
 }
 
+class MillisecondTimer {
+    LARGE_INTEGER   start;
+    LARGE_INTEGER   end;
+public:
+    void Start() { QueryPerformanceCounter(&start); }
+    void Stop() { QueryPerformanceCounter(&end); }
+
+    double GetCurrTimeInMs()
+    {
+        LARGE_INTEGER curr;
+        LARGE_INTEGER freq;
+        QueryPerformanceFrequency(&freq);
+        QueryPerformanceCounter(&curr);
+        double timeInSecs = (double)(curr.QuadPart-start.QuadPart)/(double)freq.QuadPart;
+        return timeInSecs * 1000.0;
+    }
+
+    double GetTimeInMs()
+    {
+        LARGE_INTEGER   freq;
+        QueryPerformanceFrequency(&freq);
+        double timeInSecs = (double)(end.QuadPart-start.QuadPart)/(double)freq.QuadPart;
+        return timeInSecs * 1000.0;
+    }
+};
+
 namespace win {
 
 inline void ModifyStyleEx(HWND hwnd, LONG styleExSet)

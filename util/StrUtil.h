@@ -26,10 +26,11 @@ char *  Format(const char *fmt, ...);
 
 char *  Join(const char *s1, const char *s2, const char *s3=NULL);
 
+void    d(const char *format, ...);
+
 char *  ToMultiByte(const WCHAR *txt, UINT CodePage);
 char *  ToMultiByte(const char *src, UINT CodePageSrc, UINT CodePageDest);
 WCHAR * ToWideChar(const char *src, UINT CodePage);
-
 
 inline void Replace(const char*& s, const char *replacement) {
     free((void*)s);

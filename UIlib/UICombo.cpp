@@ -46,7 +46,7 @@ void SingleLinePickUI::Event(TEventUI& event)
     }
     if (event.type == UIEVENT_MOUSEMOVE) 
     {
-        if (FlSet(m_uButtonState, UISTATE_CAPTURED))  {
+        if (IsFlSet(m_uButtonState, UISTATE_CAPTURED))  {
             if (::PtInRect(&m_rcButton, event.ptMouse))  m_uButtonState |= UISTATE_PUSHED;
             else m_uButtonState &= ~UISTATE_PUSHED;
             Invalidate();
@@ -54,7 +54,7 @@ void SingleLinePickUI::Event(TEventUI& event)
     }
     if (event.type == UIEVENT_BUTTONUP) 
     {
-        if (FlSet(m_uButtonState, UISTATE_CAPTURED))  {
+        if (IsFlSet(m_uButtonState, UISTATE_CAPTURED))  {
             if (::PtInRect(&m_rcButton, event.ptMouse))  m_mgr->SendNotify(this, "browse");
             m_uButtonState &= ~(UISTATE_PUSHED | UISTATE_CAPTURED);
             Invalidate();
@@ -298,7 +298,7 @@ void DropDownUI::Event(TEventUI& event)
     }
     if (event.type == UIEVENT_MOUSEMOVE) 
     {
-        if (FlSet(m_uButtonState, UISTATE_CAPTURED))  {
+        if (IsFlSet(m_uButtonState, UISTATE_CAPTURED))  {
             if (::PtInRect(&m_rcButton, event.ptMouse))  m_uButtonState |= UISTATE_PUSHED;
             else m_uButtonState &= ~UISTATE_PUSHED;
             Invalidate();
@@ -306,7 +306,7 @@ void DropDownUI::Event(TEventUI& event)
     }
     if (event.type == UIEVENT_BUTTONUP) 
     {
-        if (FlSet(m_uButtonState, UISTATE_CAPTURED))  {
+        if (IsFlSet(m_uButtonState, UISTATE_CAPTURED))  {
             m_uButtonState &= ~(UISTATE_PUSHED | UISTATE_CAPTURED);
             Invalidate();
         }

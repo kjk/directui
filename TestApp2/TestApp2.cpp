@@ -25,9 +25,17 @@ static dui::UIPainter gPainter;
 
 static void OnPaint(HWND hwnd)
 {
+    MillisecondTimer t; t.Start();
     gPainter.PaintBegin(hwnd, Color::Blue);
     gPainter.PaintUIElem(uiRoot);
     gPainter.PaintEnd();
+    double ms = t.GetCurrTimeInMs();
+    int msi = (int)ms;
+    msi = 5;
+    char *s = str::Format("%s\n", "foo");
+    str::d(s);
+    str::d("OnPaint(): %d ms\n", msi);
+    free(s);
 }
 
 static LRESULT CALLBACK WndProcFrame(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)

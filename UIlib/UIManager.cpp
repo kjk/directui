@@ -1441,9 +1441,9 @@ void* ControlUI::GetInterface(const char* name)
 
 ControlUI* ControlUI::FindControl(FINDCONTROLPROC Proc, void* data, UINT uFlags)
 {
-    if (FlSet(uFlags, UIFIND_VISIBLE) && !IsVisible())  return NULL;
-    if (FlSet(uFlags, UIFIND_ENABLED) && !IsEnabled())  return NULL;
-    if (FlSet(uFlags, UIFIND_HITTEST) && !::PtInRect(&m_rcItem, * static_cast<LPPOINT>(data)))  return NULL;
+    if (IsFlSet(uFlags, UIFIND_VISIBLE) && !IsVisible())  return NULL;
+    if (IsFlSet(uFlags, UIFIND_ENABLED) && !IsEnabled())  return NULL;
+    if (IsFlSet(uFlags, UIFIND_HITTEST) && !::PtInRect(&m_rcItem, * static_cast<LPPOINT>(data)))  return NULL;
     return Proc(this, data);
 }
 

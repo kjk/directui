@@ -92,7 +92,7 @@ void NavigatorButtonUI::Event(TEventUI& event)
     }
     if (event.type == UIEVENT_MOUSEMOVE) 
     {
-        if (FlSet(m_uButtonState, UISTATE_CAPTURED))  {
+        if (IsFlSet(m_uButtonState, UISTATE_CAPTURED))  {
             RECT rcButton = GetButtonRect(m_rcItem);
             if (::PtInRect(&rcButton, event.ptMouse))  m_uButtonState |= UISTATE_PUSHED;
             else m_uButtonState &= ~UISTATE_PUSHED;
@@ -101,7 +101,7 @@ void NavigatorButtonUI::Event(TEventUI& event)
     }
     if (event.type == UIEVENT_BUTTONUP) 
     {
-        if (FlSet(m_uButtonState, UISTATE_CAPTURED))  {
+        if (IsFlSet(m_uButtonState, UISTATE_CAPTURED))  {
             RECT rcButton = GetButtonRect(m_rcItem);
             if (::PtInRect(&rcButton, event.ptMouse))  {
                 m_mgr->SendNotify(this, "link");
@@ -127,11 +127,11 @@ void NavigatorButtonUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
 {
     RECT rcButton = GetButtonRect(m_rcItem);
 
-    if (FlSet(m_uButtonState, UISTATE_PUSHED))  {
+    if (IsFlSet(m_uButtonState, UISTATE_PUSHED))  {
         BlueRenderEngineUI::DoFillRect(hDC, m_mgr, rcButton, UICOLOR_NAVIGATOR_BUTTON_PUSHED);
     } else if (m_selected)  {
         BlueRenderEngineUI::DoFillRect(hDC, m_mgr, rcButton, UICOLOR_NAVIGATOR_BUTTON_SELECTED);
-    } else if (FlSet(m_uButtonState, UISTATE_PUSHED))  {
+    } else if (IsFlSet(m_uButtonState, UISTATE_PUSHED))  {
         BlueRenderEngineUI::DoFillRect(hDC, m_mgr, rcButton, UICOLOR_NAVIGATOR_BUTTON_HOVER);
     }
     ::SelectObject(hDC, m_mgr->GetThemePen(m_selected ? UICOLOR_NAVIGATOR_BORDER_SELECTED : UICOLOR_NAVIGATOR_BORDER_NORMAL));
@@ -141,13 +141,13 @@ void NavigatorButtonUI::DrawItem(HDC hDC, const RECT& rcItem, UINT uStyle)
     ::LineTo(hDC, rcButton.right, rcButton.bottom);
 
     UITYPE_COLOR iTextColor = UICOLOR_NAVIGATOR_TEXT_NORMAL;
-    if (FlSet(m_uButtonState, UISTATE_PUSHED))  iTextColor = UICOLOR_NAVIGATOR_TEXT_PUSHED;
+    if (IsFlSet(m_uButtonState, UISTATE_PUSHED))  iTextColor = UICOLOR_NAVIGATOR_TEXT_PUSHED;
     else if (m_selected)  iTextColor = UICOLOR_NAVIGATOR_TEXT_SELECTED;
 
     RECT rcText = rcButton;
     ::OffsetRect(&rcText, 0, 1);
     ::InflateRect(&rcText, -8, 0);
-    if (FlSet(m_uButtonState, UISTATE_PUSHED))  {
+    if (IsFlSet(m_uButtonState, UISTATE_PUSHED))  {
         rcText.left++; 
         rcText.top += 2;
     }

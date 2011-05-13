@@ -68,7 +68,7 @@ void BlueRenderEngineUI::DoPaintFrame(HDC hDC, PaintManagerUI* manager, RECT rcI
     if (Background != UICOLOR__INVALID)  {
         DoFillRect(hDC, manager, rcItem, Background);
     }
-    if (FlSet(uStyle, UIFRAME_ROUND)) 
+    if (IsFlSet(uStyle, UIFRAME_ROUND)) 
     {
         POINT ptTemp;
         ::SelectObject(hDC, manager->GetThemePen(Light));
@@ -82,7 +82,7 @@ void BlueRenderEngineUI::DoPaintFrame(HDC hDC, PaintManagerUI* manager, RECT rcI
         ::LineTo(hDC, rcItem.right - 2, rcItem.bottom - 1);
         ::LineTo(hDC, rcItem.left, rcItem.bottom - 1);
     }
-    if (FlSet(uStyle, UIFRAME_FOCUS)) 
+    if (IsFlSet(uStyle, UIFRAME_FOCUS)) 
     {
         HPEN hPen = ::CreatePen(PS_DOT, 1, manager->GetThemeColor(UICOLOR_BUTTON_BORDER_FOCUS));
         HPEN hOldPen = (HPEN) ::SelectObject(hDC, hPen);
@@ -130,7 +130,7 @@ void BlueRenderEngineUI::DoPaintArcCaption(HDC hDC, PaintManagerUI* manager, REC
 
     RECT rcText = { rc.left, rc.top + 3, rc.right, rc.bottom };
 
-    if (FlSet(uStyle, UIARC_GRIPPER))  {
+    if (IsFlSet(uStyle, UIARC_GRIPPER))  {
         RECT rcButton1 = { rc.left + 10, rc.top + 4, rc.left + 14, rc.top + 7 };
         DoPaintFrame(hDC, manager, rcButton1, UICOLOR_TITLE_BORDER_LIGHT, UICOLOR_TITLE_BORDER_DARK, UICOLOR__INVALID, 0);
         RECT rcButton2 = { rc.left + 6, rc.top + 8, rc.left + 10, rc.top + 11 };
@@ -151,19 +151,19 @@ void BlueRenderEngineUI::DoPaintButton(HDC hDC, PaintManagerUI* manager, RECT rc
 {
     ASSERT(::GetObjectType(hDC)==OBJ_DC || ::GetObjectType(hDC)==OBJ_MEMDC);
     // Draw focus rectangle
-    if ((FlSet(uState, UISTATE_FOCUSED)) && manager->GetSystemSettings().bShowKeyboardCues)  {
+    if ((IsFlSet(uState, UISTATE_FOCUSED)) && manager->GetSystemSettings().bShowKeyboardCues)  {
         BlueRenderEngineUI::DoPaintFrame(hDC, manager, rc, UICOLOR_BUTTON_BORDER_FOCUS, UICOLOR_BUTTON_BORDER_FOCUS, UICOLOR__INVALID, UIFRAME_ROUND);
         ::InflateRect(&rc, -1, -1);
     }
     // Draw frame and body
     COLORREF clrColor1, clrColor2;
     UITYPE_COLOR clrBorder1, clrBorder2, clrText, clrBack;
-    if (FlSet(uState, UISTATE_DISABLED))  {
+    if (IsFlSet(uState, UISTATE_DISABLED))  {
         clrBorder1 = UICOLOR_BUTTON_BORDER_DISABLED;
         clrBorder2 = UICOLOR_BUTTON_BORDER_DISABLED;
         clrText = UICOLOR_BUTTON_TEXT_DISABLED;
         clrBack = UICOLOR_BUTTON_BACKGROUND_DISABLED;
-    } else if (FlSet(uState, UISTATE_PUSHED))  {
+    } else if (IsFlSet(uState, UISTATE_PUSHED))  {
         clrBorder1 = UICOLOR_BUTTON_BORDER_DARK;
         clrBorder2 = UICOLOR_BUTTON_BORDER_LIGHT;
         clrText = UICOLOR_BUTTON_TEXT_PUSHED;
@@ -178,7 +178,7 @@ void BlueRenderEngineUI::DoPaintButton(HDC hDC, PaintManagerUI* manager, RECT rc
     DoPaintFrame(hDC, manager, rc, clrBorder1, clrBorder2, UICOLOR__INVALID, UIFRAME_ROUND);
     ::InflateRect(&rc, -1, -1);
     // The pushed button has an inner light shade
-    if (FlSet(uState, UISTATE_PUSHED))  {
+    if (IsFlSet(uState, UISTATE_PUSHED))  {
         DoPaintFrame(hDC, manager, rc, UICOLOR_STANDARD_LIGHTGREY, UICOLOR_STANDARD_LIGHTGREY, UICOLOR__INVALID);
         rc.top += 1;
         rc.left += 1;
@@ -207,9 +207,9 @@ void BlueRenderEngineUI::DoPaintButton(HDC hDC, PaintManagerUI* manager, RECT rc
 void BlueRenderEngineUI::DoPaintEditBox(HDC hDC, PaintManagerUI* manager, RECT rcItem, const char* txt, UINT uState, UINT uDrawStyle, bool bPaintFrameOnly)
 {
     ASSERT(::GetObjectType(hDC)==OBJ_DC || ::GetObjectType(hDC)==OBJ_MEMDC);
-    if (FlSet(uState, UISTATE_DISABLED))  {
+    if (IsFlSet(uState, UISTATE_DISABLED))  {
         DoPaintFrame(hDC, manager, rcItem, UICOLOR_CONTROL_BORDER_DISABLED, UICOLOR_CONTROL_BORDER_DISABLED, UICOLOR_EDIT_BACKGROUND_DISABLED);
-    } else if (FlSet(uState, UISTATE_READONLY))  {
+    } else if (IsFlSet(uState, UISTATE_READONLY))  {
         DoPaintFrame(hDC, manager, rcItem, UICOLOR_CONTROL_BORDER_DISABLED, UICOLOR_CONTROL_BORDER_DISABLED, UICOLOR_EDIT_BACKGROUND_READONLY);
     } else {
         DoPaintFrame(hDC, manager, rcItem, UICOLOR_CONTROL_BORDER_NORMAL, UICOLOR_CONTROL_BORDER_NORMAL, UICOLOR_EDIT_BACKGROUND_NORMAL);
@@ -217,8 +217,8 @@ void BlueRenderEngineUI::DoPaintEditBox(HDC hDC, PaintManagerUI* manager, RECT r
     if (bPaintFrameOnly)  return;
     // We should also draw the actual text
     COLORREF clrText = manager->GetThemeColor(UICOLOR_EDIT_TEXT_NORMAL);
-    if (FlSet(uState, UISTATE_READONLY))  clrText = manager->GetThemeColor(UICOLOR_EDIT_TEXT_READONLY);
-    if (FlSet(uState, UISTATE_DISABLED))  clrText = manager->GetThemeColor(UICOLOR_EDIT_TEXT_DISABLED);
+    if (IsFlSet(uState, UISTATE_READONLY))  clrText = manager->GetThemeColor(UICOLOR_EDIT_TEXT_READONLY);
+    if (IsFlSet(uState, UISTATE_DISABLED))  clrText = manager->GetThemeColor(UICOLOR_EDIT_TEXT_DISABLED);
     ::SetBkMode(hDC, TRANSPARENT);
     ::SetTextColor(hDC, clrText);
     ::SelectObject(hDC, manager->GetThemeFont(UIFONT_NORMAL));
@@ -233,26 +233,26 @@ void BlueRenderEngineUI::DoPaintOptionBox(HDC hDC, PaintManagerUI* manager, RECT
     // Determine placement of elements
     RECT rcText = rcItem;
     RECT rcButton = rcItem;
-    if (FlSet(uStyle, DT_RIGHT))  {
+    if (IsFlSet(uStyle, DT_RIGHT))  {
         rcText.right -= 18;
         rcButton.left = rcButton.right - 18;
     } else {
         rcText.left += 18;
         rcButton.right = rcButton.left + 18;
     }
-    bool selected = FlSet(uState, UISTATE_CHECKED);
+    bool selected = IsFlSet(uState, UISTATE_CHECKED);
     int iIcon = selected ? 8 : 9;
-    if (FlSet(uState, UISTATE_PUSHED))  iIcon = 10;
-    if (FlSet(uState, UISTATE_DISABLED))  iIcon = selected ? 10 : 11;
+    if (IsFlSet(uState, UISTATE_PUSHED))  iIcon = 10;
+    if (IsFlSet(uState, UISTATE_DISABLED))  iIcon = selected ? 10 : 11;
     HICON hIcon = manager->GetThemeIcon(iIcon, 16);
     ::DrawIconEx(hDC, rcButton.left, rcButton.top, hIcon, 16, 16, 0, NULL, DI_NORMAL);
     ::DestroyIcon(hIcon);
     // Paint text
-    UITYPE_COLOR iTextColor = FlSet(uState, UISTATE_DISABLED) ? UICOLOR_EDIT_TEXT_DISABLED : UICOLOR_EDIT_TEXT_NORMAL;
+    UITYPE_COLOR iTextColor = IsFlSet(uState, UISTATE_DISABLED) ? UICOLOR_EDIT_TEXT_DISABLED : UICOLOR_EDIT_TEXT_NORMAL;
     int nLinks = 0;
     BlueRenderEngineUI::DoPaintPrettyText(hDC, manager, rcText, txt, iTextColor, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE);
     // Paint focus rectangle
-    if ((FlSet(uState, UISTATE_FOCUSED)) && manager->GetSystemSettings().bShowKeyboardCues)  {
+    if ((IsFlSet(uState, UISTATE_FOCUSED)) && manager->GetSystemSettings().bShowKeyboardCues)  {
         RECT rcFocus = { 0, 0, 9999, 9999 };;
         int nLinks = 0;
         BlueRenderEngineUI::DoPaintPrettyText(hDC, manager, rcFocus, txt, iTextColor, UICOLOR__INVALID, NULL, nLinks, DT_SINGLELINE | DT_CALCRECT);
@@ -274,7 +274,7 @@ void BlueRenderEngineUI::DoPaintTabFolder(HDC hDC, PaintManagerUI* manager, RECT
     SIZE szText = { 0 };
     GetTextExtentPoint32Utf8(hDC, sText, cchText, &szText);
     RECT rcTab = { 0 };
-    if (FlSet(uState, UISTATE_PUSHED))  
+    if (IsFlSet(uState, UISTATE_PUSHED))  
     {
         ::SetRect(&rcTab, rcItem.left, rcItem.top + 1, rcItem.left + szText.cx + 14, rcItem.bottom);
         DoFillRect(hDC, manager, rcTab, UICOLOR_TAB_BACKGROUND_NORMAL);
@@ -296,7 +296,7 @@ void BlueRenderEngineUI::DoPaintTabFolder(HDC hDC, PaintManagerUI* manager, RECT
 
         RECT rcTop = { rcTab.left + 1, rcTab.top, rcTab.right - 1, rcTab.top + 3 };
         DoPaintGradient(hDC, manager, rcTop, RGB(222,142,41), RGB(255,199,25), true, 4);
-    } else if (FlSet(uState, UISTATE_DISABLED)) 
+    } else if (IsFlSet(uState, UISTATE_DISABLED)) 
     {
     } else {
         ::SetRect(&rcTab, rcItem.left, rcItem.top + 3, rcItem.left + szText.cx + 12, rcItem.bottom);
@@ -322,13 +322,13 @@ void BlueRenderEngineUI::DoPaintTabFolder(HDC hDC, PaintManagerUI* manager, RECT
 void BlueRenderEngineUI::DoPaintToolbarButton(HDC hDC, PaintManagerUI* manager, RECT rc, const char* txt, SIZE szPadding, UINT uState)
 {
     ASSERT(::GetObjectType(hDC)==OBJ_DC || ::GetObjectType(hDC)==OBJ_MEMDC);
-    if (FlSet(uState, UISTATE_PUSHED))  {
+    if (IsFlSet(uState, UISTATE_PUSHED))  {
         DoPaintFrame(hDC, manager, rc, UICOLOR_TOOL_BORDER_PUSHED, UICOLOR_TOOL_BORDER_PUSHED, UICOLOR_TOOL_BACKGROUND_PUSHED, 0);
         rc.top += 2;
         rc.left++;
-    } else if (FlSet(uState, UISTATE_HOT))  {
+    } else if (IsFlSet(uState, UISTATE_HOT))  {
         DoPaintFrame(hDC, manager, rc, UICOLOR_TOOL_BORDER_HOVER, UICOLOR_TOOL_BORDER_HOVER, UICOLOR_TOOL_BACKGROUND_HOVER, 0);
-    } else if (FlSet(uState, UISTATE_DISABLED))  {
+    } else if (IsFlSet(uState, UISTATE_DISABLED))  {
         // TODO
     }
     RECT rcText = rc;
@@ -370,7 +370,7 @@ void BlueRenderEngineUI::DoPaintPrettyText(HDC hDC, PaintManagerUI* manager, REC
 
     if (::IsRectEmpty(&rc))  return;
 
-    bool bDraw = !FlSet(uStyle, DT_CALCRECT);
+    bool bDraw = !IsFlSet(uStyle, DT_CALCRECT);
 
     RECT rcClip = { 0 };
     ::GetClipBox(hDC, &rcClip);
@@ -388,20 +388,20 @@ void BlueRenderEngineUI::DoPaintPrettyText(HDC hDC, PaintManagerUI* manager, REC
 
     // If the drawstyle includes an alignment, we'll need to first determine the text-size so
     // we can draw it at the correct position...
-    if (FlSet(uStyle, DT_SINGLELINE) && FlSet(uStyle, DT_VCENTER) && bDraw) {
+    if (IsFlSet(uStyle, DT_SINGLELINE) && IsFlSet(uStyle, DT_VCENTER) && bDraw) {
         RECT rcText = { 0, 0, 9999, 100 };
         int nLinks = 0;
         DoPaintPrettyText(hDC, manager, rcText, txt, iTextColor, iBackColor, NULL, nLinks, uStyle | DT_CALCRECT);
         rc.top = rc.top + (RectDy(rc) / 2) - (RectDy(rcText) / 2);
         rc.bottom = rc.top + RectDy(rcText);
     }
-    if (FlSet(uStyle, DT_SINGLELINE) && FlSet(uStyle, DT_CENTER) && bDraw) {
+    if (IsFlSet(uStyle, DT_SINGLELINE) && IsFlSet(uStyle, DT_CENTER) && bDraw) {
         RECT rcText = { 0, 0, 9999, 100 };
         int nLinks = 0;
         DoPaintPrettyText(hDC, manager, rcText, txt, iTextColor, iBackColor, NULL, nLinks, uStyle | DT_CALCRECT);
         ::OffsetRect(&rc, RectDx(rc) / 2 - RectDx(rcText) / 2, 0);
     }
-    if (FlSet(uStyle, DT_SINGLELINE) && FlSet(uStyle, DT_RIGHT) && bDraw) {
+    if (IsFlSet(uStyle, DT_SINGLELINE) && IsFlSet(uStyle, DT_RIGHT) && bDraw) {
         RECT rcText = { 0, 0, 9999, 100 };
         int nLinks = 0;
         DoPaintPrettyText(hDC, manager, rcText, txt, iTextColor, iBackColor, NULL, nLinks, uStyle | DT_CALCRECT);
@@ -440,7 +440,7 @@ void BlueRenderEngineUI::DoPaintPrettyText(HDC hDC, PaintManagerUI* manager, REC
             // A new link was detected/requested. We'll adjust the line height
             // for the next line and expand the link hitbox (if any)
             if (bInLink && linkIdx < nLinkRects) ::SetRect(&prcLinks[linkIdx++], ptLinkStart.x, ptLinkStart.y, pt.x, pt.y + tm.tmHeight);
-            if (FlSet(uStyle, DT_SINGLELINE))  break;
+            if (IsFlSet(uStyle, DT_SINGLELINE))  break;
             if (*txt == '\n')  txt++;
             pt.x = rc.left + iLineIndent;
             pt.y += cyLine - tm.tmDescent;
@@ -585,7 +585,7 @@ void BlueRenderEngineUI::DoPaintPrettyText(HDC hDC, PaintManagerUI* manager, REC
             while (*txt != '\0' && *txt != '>')  txt++;
             txt++;
         } else if (*txt == '&') {
-            if (!FlSet(uStyle, DT_NOPREFIX))  {
+            if (!IsFlSet(uStyle, DT_NOPREFIX))  {
                 if (bDraw  && manager->GetSystemSettings().bShowKeyboardCues)
                     ::TextOutA(hDC, pt.x, pt.y, "_", 1);
             } else {
@@ -625,11 +625,11 @@ void BlueRenderEngineUI::DoPaintPrettyText(HDC hDC, PaintManagerUI* manager, REC
                     GetTextExtentPoint32Utf8(hDC, txt, cchChars, &szText);
                 }
                 if (pt.x + szText.cx >= rc.right)  {
-                    if (FlSet(uStyle, DT_WORDBREAK) && cchLastGoodWord > 0)  {
+                    if (IsFlSet(uStyle, DT_WORDBREAK) && cchLastGoodWord > 0)  {
                         cchChars = cchLastGoodWord;
                         pt.x = rc.right;
                     }
-                    if (FlSet(uStyle, DT_END_ELLIPSIS) && cchChars > 2)  {
+                    if (IsFlSet(uStyle, DT_END_ELLIPSIS) && cchChars > 2)  {
                         cchChars -= 2;
                         pt.x = rc.right;
                     }
@@ -643,7 +643,7 @@ void BlueRenderEngineUI::DoPaintPrettyText(HDC hDC, PaintManagerUI* manager, REC
                 GetTextExtentPoint32Utf8(hDC, txt, cchChars, &szText);
                 if (bDraw)  {
                     TextOutUtf8(hDC, ptPos.x, ptPos.y, txt, cchChars);
-                    if (pt.x == rc.right && FlSet(uStyle, DT_END_ELLIPSIS))
+                    if (pt.x == rc.right && IsFlSet(uStyle, DT_END_ELLIPSIS))
                         ::TextOutA(hDC, rc.right - 10, ptPos.y, "...", 3);
                 }
                 pt.x += szText.cx;
@@ -658,7 +658,7 @@ void BlueRenderEngineUI::DoPaintPrettyText(HDC hDC, PaintManagerUI* manager, REC
     nLinkRects = linkIdx;
 
     // Return size of text when requested
-    if (FlSet(uStyle, DT_CALCRECT))  {
+    if (IsFlSet(uStyle, DT_CALCRECT))  {
         rc.bottom = MAX(cyMinHeight, pt.y + cyLine);
         if (rc.right >= 9999)  {
             if (strlen(txt) > 0)  pt.x += 3;
@@ -742,8 +742,8 @@ void BlueRenderEngineUI::DoAnimateWindow(HWND hWnd, UINT uStyle, DWORD dwTime /*
 #endif
     // Mix flags
     DWORD dwFlags = 0;
-    if (FlSet(uStyle, UIANIM_HIDE))  dwFlags |= AW_HIDE;
-    if (FlSet(uStyle, UIANIM_FADE))  dwFlags |= AW_BLEND;
+    if (IsFlSet(uStyle, UIANIM_HIDE))  dwFlags |= AW_HIDE;
+    if (IsFlSet(uStyle, UIANIM_FADE))  dwFlags |= AW_BLEND;
     AnimateWindow(hWnd, dwTime, dwFlags);
 }
 
