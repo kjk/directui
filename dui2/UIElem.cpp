@@ -58,38 +58,144 @@ void UIPainter::PaintEnd()
 
 #define WIN_HWND_CLS_NAME "WinHwndCls"
 
-static LRESULT CALLBACK __WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+
+void WinHwnd::OnPaint()
 {
-    return ::DefWindowProc(hWnd, uMsg, wParam, lParam);
+    MillisecondTimer t; t.Start();
+    painter.PaintBegin(hwnd, Color::Blue);
+    painter.PaintUIElem(uiRoot);
+    painter.PaintEnd();
+    double ms = t.GetCurrTimeInMs();
+    str::d("OnPaint(): %.2f ms\n", ms);
 }
 
-static void RegisterWinHwndClassName(HINSTANCE hinst)
+void WinHwnd::OnSize(int dx, int dy)
 {
-    static bool registered = false;
-    if (registered)
-        return;
+    RECT r = {0, 0, dx, dy};
+    InflateRect(&r, -20, -20);
+    uiRoot->SetPosition(r);
+}
 
-    ScopedMem<WCHAR> clsName(str::Utf8ToUni(WIN_HWND_CLS_NAME));
+void WinHwnd::OnSettingsChanged()
+{
+    ULONG scrollLines;
+    SystemParametersInfo(SPI_GETWHEELSCROLLLINES, 0, &scrollLines, 0);
+    // scrollLines usually equals 3 or 0 (for no scrolling)
+    // WHEEL_DELTA equals 120, so deltaPerLine will be 40
+    deltaPerLine = 0;
+    if (scrollLines)
+        deltaPerLine = WHEEL_DELTA / scrollLines;
+}
 
-    WNDCLASSW wc = { 0 };
-    wc.style = 0;
+void WinHwnd::OnFinalMessage(HWND hwnd)
+{
+    PostQuitMessage(0);
+}
+
+LRESULT CALLBACK WinHwnd::WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+    WinHwnd* win = NULL;
+
+    if (WM_ERASEBKGND == uMsg)
+        return TRUE;
+
+    if (WM_NCCREATE == uMsg) {
+        CREATESTRUCT *lpcs = (CREATESTRUCT*)lParam;
+        win = (WinHwnd*)lpcs->lpCreateParams;
+        win->hwnd = hWnd;
+        ::SetWindowLongPtr(hWnd, GWLP_USERDATA, (LPARAM)win);
+        win->OnSettingsChanged();
+        goto Exit;
+    }
+
+    win = (WinHwnd*)::GetWindowLongPtr(hWnd, GWLP_USERDATA);
+    if (!win)
+        goto Exit;
+
+    if (WM_NCDESTROY == uMsg) {
+        LRESULT res = ::CallWindowProc(win->oldWndProc, hWnd, uMsg, wParam, lParam);
+        ::SetWindowLongPtr(win->hwnd, GWLP_USERDATA, 0L);
+        //if (win->m_subclassed)  win->Unsubclass();
+        win->hwnd = NULL;
+        win->OnFinalMessage(hWnd);
+        return res;
+    }
+
+    if (WM_PAINT == uMsg) {
+        win->OnPaint();
+        return 0;
+    }
+
+    if (WM_SIZE == uMsg) {
+        if (SIZE_MINIMIZED != wParam) {
+            win->OnSize(LOWORD(lParam), HIWORD(lParam));
+        }
+        goto Exit;
+    }
+
+    if (WM_SETTINGCHANGE == uMsg) {
+        win->OnSettingsChanged();
+        return 0;
+    }
+
+Exit:
+    if (win) {
+        return win->HandleMessage(uMsg, wParam, lParam);
+    } else {
+        return ::DefWindowProc(hWnd, uMsg, wParam, lParam);
+    }
+}
+
+LRESULT WinHwnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+    return ::CallWindowProc(oldWndProc, hwnd, uMsg, wParam, lParam);
+}
+
+void WinHwnd::Show(bool show, bool takeFocus)
+{
+    ::ShowWindow(hwnd, show ? (takeFocus ? SW_SHOWNORMAL : SW_SHOWNOACTIVATE) : SW_HIDE);
+    if (show)
+        ::UpdateWindow(hwnd);
+}
+
+WinHwnd::~WinHwnd()
+{
+    delete uiRoot;
+}
+
+void WinHwnd::SetUIRoot(UIElem *root)
+{
+    delete uiRoot;
+    uiRoot = root;
+    uiRoot->SetHwndParent(hwnd);
+}
+
+static void RegisterWinHwndClass(HINSTANCE hinst)
+{
+    WNDCLASSA wc = { 0 };
+    // TODO: don't set CS_*REDRAW and instead schedule repaint in WM_SIZE
+    // to improve fluidity during resize?
+    wc.style = CS_HREDRAW | CS_VREDRAW;
     wc.cbClsExtra = 0;
     wc.cbWndExtra = 0;
     wc.hIcon = NULL;
-    wc.lpfnWndProc = __WndProc;
+    wc.lpfnWndProc = WinHwnd::WndProc;
     wc.hInstance = hinst;
     wc.hCursor = ::LoadCursor(NULL, IDC_ARROW);
     wc.hbrBackground = NULL;
     wc.lpszMenuName  = NULL;
-    wc.lpszClassName = clsName;
-    ::RegisterClassW(&wc);
-    registered = true;
+    wc.lpszClassName = WIN_HWND_CLS_NAME;
+    // it's safe to register a class twice (it'll return an error
+    // and GetLastError()will be ERROR_CLASS_ALREADY_EXISTS)
+    ::RegisterClassA(&wc);
 }
 
 void WinHwnd::Create(UIElem *root, const char* name, DWORD dwStyle, DWORD dwExStyle, int x, int y, int dx, int dy, HMENU hMenu)
 {
-    RegisterWinHwndClassName(hinst);
+    RegisterWinHwndClass(hinst);
     hwnd = ::CreateWindowExUtf8(dwExStyle, WIN_HWND_CLS_NAME, name, dwStyle, x, y, dx, dy, NULL, hMenu, hinst, this);
+    if (root)
+        SetUIRoot(root);
 }
 
 void WinHwnd::Create(UIElem *root, const char* name, DWORD dwStyle, DWORD dwExStyle, const RECT rc, HMENU hMenu)

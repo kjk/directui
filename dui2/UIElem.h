@@ -36,17 +36,6 @@ class LayoutVertical : public ILayout {
     virtual void Measure(UIElem *el, Graphics *g, MeasureInfo& mi);
 };
 
-class WinHwnd {
-    HINSTANCE   hinst;
-    HWND        hwnd;
-public:
-    WinHwnd(HINSTANCE hinst) : hinst(hinst), hwnd(NULL)
-    {}
-
-    void Create(UIElem *root, const char* name, DWORD dwStyle, DWORD dwExStyle, int x = CW_USEDEFAULT, int y = CW_USEDEFAULT, int dx = CW_USEDEFAULT, int dy = CW_USEDEFAULT, HMENU hMenu = NULL);
-    void Create(UIElem *root, const char* name, DWORD dwStyle, DWORD dwExStyle, const RECT rc, HMENU hMenu = NULL);
-};
-
 class UIPainter {
     HWND          hwnd;
     PAINTSTRUCT   ps;
@@ -71,6 +60,35 @@ public:
     void PaintBegin(HWND hwnd, ARGB bgColor);
     void PaintUIElem(UIElem* el);
     void PaintEnd();
+};
+
+class WinHwnd {
+    HINSTANCE   hinst;
+    HWND        hwnd;
+    WNDPROC     oldWndProc;
+    UIPainter   painter;
+    UIElem *    uiRoot;
+    int         deltaPerLine; // for scroll-wheel messages
+
+    void OnPaint();
+    void OnSize(int dx, int dy);
+    void OnSettingsChanged();
+
+    virtual LRESULT HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam);
+    virtual void OnFinalMessage(HWND hwnd);
+
+public:
+    WinHwnd(HINSTANCE hinst) : hinst(hinst), hwnd(NULL), oldWndProc(DefWindowProc), uiRoot(NULL)
+    {}
+
+    virtual ~WinHwnd();
+
+    static LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+
+    void Create(UIElem *root, const char* name, DWORD dwStyle, DWORD dwExStyle, int x = CW_USEDEFAULT, int y = CW_USEDEFAULT, int dx = CW_USEDEFAULT, int dy = CW_USEDEFAULT, HMENU hMenu = NULL);
+    void Create(UIElem *root, const char* name, DWORD dwStyle, DWORD dwExStyle, const RECT rc, HMENU hMenu = NULL);
+    void Show(bool show=true, bool takeFocus=false);
+    void SetUIRoot(UIElem *root);
 };
 
 class UIElem {
